@@ -17,13 +17,13 @@ class Register extends Component {
     handleClick = (e) => {
         e.preventDefault()
         console.log(e)
-        fb.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then((e) => {
-            console.log(e)
+        fb.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then((res) => {
+            console.log(res)
            this.postToServer();
            localStorage.setItem('token', "cookie")
            this.props.history.push('/home')// a redirection to home after succeful sign up 
-        }).catch((e) => {
-            console.log(e)
+        }).catch((exception) => {
+            console.log(exception)
         })
     
     }
@@ -36,8 +36,8 @@ class Register extends Component {
         }).then((res)=>{
             console.log(res)
             
-        }).catch((e)=>{
-            console.log(e)
+        }).catch((exception)=>{
+            console.log(exception)
         })
     }
     render() {

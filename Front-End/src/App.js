@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
-import Login from './components/login';
-import WelcomeScreen from './components/WelcomeScreen'
-import NavBar from './components/Navbar'
+import Login from './components/accessing the system/login';
+import WelcomeScreen from './components/accessing the system/WelcomeScreen'
+import NavBar from './components/layout/Navbar'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import Register from './components/register';
-import Home from './components/Home';
+import Register from './components/accessing the system/register';
+import Home from './components/initiating project/Home';
 import RequireAuth from './HOCs/require_auth';
 import { connect } from 'react-redux'
 

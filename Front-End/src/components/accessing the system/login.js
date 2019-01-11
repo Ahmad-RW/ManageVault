@@ -19,12 +19,12 @@ class Login extends Component {
     }
     handelClick = (e) =>{
         e.preventDefault();
-        fb.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((e)=>{
-            console.log(e, "1")
+        fb.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((res)=>{
+            console.log(res)
             localStorage.setItem('token', this.state.email);// change this.
             this.props.authenticate()
            this.props.history.push('/home');//redirection
-        }).catch((e)=>{
+        }).catch((exception)=>{
             alert("wrong email or password")
         })
     }
