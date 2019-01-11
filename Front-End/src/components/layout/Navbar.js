@@ -7,51 +7,44 @@ class NavBar extends Component {
         super(props)
         console.log(props, 'navbar cons')
     }
-    handleSignOut = (e) =>{
+    handleSignOut = (e) => {
         console.log(e)
-        fb.auth().signOut().then((e)=>{
+        fb.auth().signOut().then((e) => {
             console.log(e, 'signed out')
             this.props.removeAuth()
             localStorage.removeItem('token')
-        }).catch((e)=>{
+        }).catch((e) => {
             console.log(e, 'exception')
         })
     }
     render() {//if he is signed in we render different Navbar
-        const navbar = this.props.authenticated ? ( 
+        const navbar = this.props.authenticated ? (
             <div>
-                <nav className="navbar navbar-default">
-                    <div className="container-fluid">
-                        <div className="navbar-header">
-                            <Link className="navbar-brand" to="/"><img alt="manage vault logo" src={require('../../favicon.ico')} /></Link>
+                   <nav className="navbar navbar-expand-lg navbar-light bg-light">
+                        <Link className="navbar-brand" to="/"><img src={require('../../favicon.ico')} width="30" height="30" alt="logo" /></Link>
+                        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                            <span className="navbar-toggler-icon"></span>
+                        </button>
+                        <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+                            <div className="navbar-nav">
+                                <Link className="nav-item nav-link" to='/home'>Home</Link>
+                                <Link className="nav-item nav-link" onClick={this.handleSignOut} to='#'>Sign Out</Link>
+                            </div>
                         </div>
-                        <ul className="nav navbar-nav">
-                            <li><Link to="#">Home</Link></li>
-                            <li><Link to="#">Page 1</Link></li>
-                            <li><Link to="#">Page 2</Link></li>
-                        </ul>
-                        <ul className="nav navbar-nav navbar-right">
-                            <li><Link to="#" onClick={this.handleSignOut}><span className="glyphicon glyphicon-log-out"></span> Sign Out</Link></li>
-                        </ul>
-                    </div>
-                </nav>
+                    </nav>
             </div>
         ) : (//ture : false
                 <div>
-                    <nav className="navbar navbar-default">
-                        <div className="container-fluid">
-                            <div className="navbar-header">
-                                <Link className="navbar-brand" to="/"><img alt="manage vault logo" src={require('../../favicon.ico')} /></Link>
+                    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+                        <Link className="navbar-brand" to="/"><img src={require('../../favicon.ico')} width="30" height="30" alt="logo" /></Link>
+                        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                            <span className="navbar-toggler-icon"></span>
+                        </button>
+                        <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+                            <div className="navbar-nav">
+                                <Link className="nav-item nav-link" to='/register'>Register</Link>
+                                <Link className="nav-item nav-link" to='/login'>Sign In</Link>
                             </div>
-                            <ul className="nav navbar-nav">
-                                <li><Link to="#">Home</Link></li>
-                                <li><Link to="#">Page 1</Link></li>
-                                <li><Link to="#">Page 2</Link></li>
-                            </ul>
-                            <ul className="nav navbar-nav navbar-right">
-                                <li><Link to="/register"><span className="glyphicon glyphicon-user"></span> Sign Up</Link></li>
-                                <li><Link to="#"><span className="glyphicon glyphicon-log-in"></span> Login</Link></li>
-                            </ul>
                         </div>
                     </nav>
                 </div>)
@@ -68,8 +61,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        removeAuth : () =>{
-            dispatch({type : 'REMOVE_AUTH'})
+        removeAuth: () => {
+            dispatch({ type: 'REMOVE_AUTH' })
         }
     }
 }
