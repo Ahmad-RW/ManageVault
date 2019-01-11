@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import fb from '../FirebaseConfig/authConfig';
+import fb from '../../FirebaseConfig/authConfig';
 import axios from 'axios';
 class Register extends Component {
     state = {

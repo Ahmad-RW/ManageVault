@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import fb from '../FirebaseConfig/authConfig';
+import fb from '../../FirebaseConfig/authConfig';
 import { connect } from 'react-redux';
 class Login extends Component {
     state = {
@@ -25,6 +25,7 @@ class Login extends Component {
             this.props.authenticate()
            this.props.history.push('/home');//redirection
         }).catch((exception)=>{
+            console.log(exception)
             alert("wrong email or password")
         })
     }
@@ -46,7 +47,7 @@ class Login extends Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         authenticate : () =>{
-            dispatch({type : 'AUTHENTICATE_THE_USER'})
+            dispatch({type : "AUTHENTICATE_THE_USER"})
         }
     }
 }

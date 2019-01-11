@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import fb from '../FirebaseConfig/authConfig'
+import fb from '../../FirebaseConfig/authConfig'
 class NavBar extends Component {
     constructor(props) {
         super(props)
@@ -23,7 +23,7 @@ class NavBar extends Component {
                 <nav className="navbar navbar-default">
                     <div className="container-fluid">
                         <div className="navbar-header">
-                            <Link className="navbar-brand" to="/"><img alt="manage vault logo" src={require('../favicon.ico')} /></Link>
+                            <Link className="navbar-brand" to="/"><img alt="manage vault logo" src={require('../../favicon.ico')} /></Link>
                         </div>
                         <ul className="nav navbar-nav">
                             <li><Link to="#">Home</Link></li>
@@ -41,7 +41,7 @@ class NavBar extends Component {
                     <nav className="navbar navbar-default">
                         <div className="container-fluid">
                             <div className="navbar-header">
-                                <Link className="navbar-brand" to="/"><img alt="manage vault logo" src={require('../favicon.ico')} /></Link>
+                                <Link className="navbar-brand" to="/"><img alt="manage vault logo" src={require('../../favicon.ico')} /></Link>
                             </div>
                             <ul className="nav navbar-nav">
                                 <li><Link to="#">Home</Link></li>
