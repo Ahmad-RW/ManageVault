@@ -8,7 +8,7 @@ import Register from './components/accessing the system/register';
 import Home from './components/initiating project/Home';
 import RequireAuth from './HOCs/require_auth';
 import { connect } from 'react-redux'
-
+import CreateProject from './components/initiating project/createProject';
 
 class App extends Component {
   componentWillMount() {
@@ -18,9 +18,7 @@ class App extends Component {
     }
   }
   render() {
-
     return (
-
       <BrowserRouter>
         <div className="App">
           <NavBar />
@@ -29,6 +27,7 @@ class App extends Component {
             <Route path='/login' component={Login} />
             <Route path='/register' component={Register} />
             <Route path='/home' component={RequireAuth(Home)} />
+            <Route path='/newproject' component={RequireAuth(CreateProject)} />
           </Switch>
 
         </div>

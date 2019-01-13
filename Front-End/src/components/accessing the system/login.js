@@ -15,6 +15,7 @@ class Login extends Component {
         this.setState({
             [e.target.id] : e.target.value
         })
+        console.log(this.state)
         
     }
     handelClick = (e) =>{
