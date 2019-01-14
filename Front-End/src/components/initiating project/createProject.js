@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-
-
+import {connect} from 'react-redux'
+import {createProjectAction} from '../../store/actionCreators/projectActions'
 class CreateProject extends Component {
     constructor(props){
         super(props)
@@ -38,7 +38,13 @@ class CreateProject extends Component {
             return
         }
         else{
-            console.log('redirect here')
+            let project = {
+                projectTitle : this.state.projectTitle,
+                major_course : this.state.major_course,
+                invitedMembers : this.state.invitedMembers
+
+            }
+            this.props.createProject(project)
         }
     }
     render() {
@@ -89,4 +95,9 @@ class CreateProject extends Component {
     }
 
 }
-export default CreateProject
+const mapDispatchToProps = (dispatch) =>{
+    return{
+        createProject : (project)=> dispatch(createProjectAction(project))
+    }
+}
+export default connect(null, mapDispatchToProps)(CreateProject)

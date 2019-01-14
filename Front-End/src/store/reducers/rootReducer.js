@@ -1,5 +1,6 @@
 const initState = {
-    isAuthenticated : false
+    isAuthenticated : false,
+    projects : []
 }
 
 const rootReducer = (state = initState, action) =>{
@@ -13,6 +14,10 @@ const rootReducer = (state = initState, action) =>{
             isAuthenticated : false
         }
     }
+    if(action.type ==="CREATE_PROJECT"){
+        console.log('long winded MAN', action.project)
+    }
+
     return state
 }
 
