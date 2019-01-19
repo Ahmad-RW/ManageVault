@@ -1,33 +1,28 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import ProjectCard from './ProjectCard'
 import CreateProjectCard from './createProjectCard'
 class Home extends Component {
-    state = {
-        projects: []
+    componentDidMount(){
+        this.setState()
     }
-
-
     render() {
         return (
-
             <div className="container">
+                <ProjectCard projects = {this.props.projects} />
                 <div className="row">
-                    <ProjectCard />
-                    <ProjectCard />
-                    <ProjectCard />
-                </div>
-                <div className="row">
-                <CreateProjectCard />
+                    <CreateProjectCard />
                 </div>
             </div>
         )
     }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) =>{
     return {
-        authenticated: state.isAuthenticated
+        projects : state.projects,
+        authenticated: state.isAuthenticated,
     }
 }
 

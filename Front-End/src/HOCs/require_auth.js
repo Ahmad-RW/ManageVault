@@ -9,7 +9,7 @@ export default function (ComposedComponent) {
     
     constructor(props){
       super(props)
-      console.log(props, "require auth")
+      
     }
     componentWillMount() {
       if (!this.props.authenticated) {

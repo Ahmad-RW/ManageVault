@@ -3,7 +3,7 @@ var app = express()
 var bodyParser = require('body-parser');
 const mongoose = require('mongoose')
 const users = require('./models/users');
-
+const projects = require('./models/projects')
 
 
 //db connection
@@ -24,19 +24,52 @@ app.get('/', function(req,res){
     res.send('hi')
 });
 
-app.post('/newuser', function(req, res){
-console.log(req.body)
-users.create(req.body).then(function(user){
-
-    res.status(200).send(user)
-
-}).catch(function(){
-
-    res.status(500)
-})
-
+app.get('/getUserData',function(req, res){
+    mongoose.model('users').findOne({email : req.query.userEmail},
+        function(err, userInfo){
+        if(err){
+            res.status(500)
+        }
+        res.status(200).send(userInfo)
+        
+    })
 });
 
+app.get('/getUserProjects', function(req, res){
+    mongoose.model('projects').find({email : req.query.userEmail},
+        function(err, userProjects){
+            if(err){
+                res.status(500)
+            }
+            console.log(userProjects, "userProjects ")
+            res.status(200).send(userProjects)
+        })
+});
+
+app.post('/newuser', function(req, res){
+users.create(req.body).then(function(user){
+    res.status(200).send(user)
+}).catch(function(){
+    res.status(500)
+})
+});
+
+app.post('/newproject', function(req, res){
+    let project = {
+        title : req.body.project.title,
+        creator : req.body.project.creator,
+        major_course : req.body.project.major_course,
+        status : 'RUNNING',
+        members : req.body.project.members
+    }
+    projects.create(project).then(function(project){
+        res.status(200).send(project)
+        console.log('done')
+    }).catch(function(error){
+        console.log(error)
+        res.status(500)
+    });
+});
 
 app.listen('3333', function(){
     console.log('listening on 3333')

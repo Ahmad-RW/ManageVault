@@ -9,11 +9,15 @@ import Home from './components/initiating project/Home';
 import RequireAuth from './HOCs/require_auth';
 import { connect } from 'react-redux'
 import CreateProject from './components/initiating project/createProject';
-
+import {authenticate, fetchUserInfo} from './store/actionCreators/authAction'
+import { userInfo } from 'os';
+import { fetchUserProjects } from './store/actionCreators/projectActions';
 class App extends Component {
   componentWillMount() {
     const token = localStorage.getItem('token');
     if (token) {
+      this.props.fetchUserInfo(token)
+      this.props.fetchUserProjects(token)
       this.props.authenticate()
     }
   }
@@ -40,8 +44,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     authenticate: () => {
       dispatch({ type: "AUTHENTICATE_THE_USER" })
-    }
+    },
+    fetchUserInfo : (userEmail) => dispatch(fetchUserInfo(userEmail)),
+    fetchUserProjects : (userEmail) => dispatch(fetchUserProjects(userEmail))
   }
 }
+
 
 export default connect(null, mapDispatchToProps)(App);

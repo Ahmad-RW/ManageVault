@@ -35,7 +35,6 @@ class Register extends Component {
             email : this.state.email
         }).then((res)=>{
             console.log(res)
-            
         }).catch((exception)=>{
             console.log(exception)
         })

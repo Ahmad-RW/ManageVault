@@ -5,7 +5,6 @@ import fb from '../../FirebaseConfig/authConfig'
 class NavBar extends Component {
     constructor(props) {
         super(props)
-        console.log(props, 'navbar cons')
     }
     handleSignOut = (e) => {
         console.log(e)
@@ -31,6 +30,9 @@ class NavBar extends Component {
                                 <Link className="nav-item nav-link" onClick={this.handleSignOut} to='#'>Sign Out</Link>
                             </div>
                         </div>
+                        <div className="mx-auto welcome-badge"  >
+                            Welcome {this.props.userInfo.username}
+                        </div>
                     </nav>
             </div>
         ) : (//ture : false
@@ -55,7 +57,8 @@ class NavBar extends Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        authenticated: state.isAuthenticated
+        authenticated: state.isAuthenticated,
+        userInfo : state.userInfo
     }
 }
 
