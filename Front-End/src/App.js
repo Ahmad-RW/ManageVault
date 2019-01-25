@@ -10,7 +10,6 @@ import RequireAuth from './HOCs/require_auth';
 import { connect } from 'react-redux'
 import CreateProject from './components/initiating project/createProject';
 import {authenticate, fetchUserInfo} from './store/actionCreators/authAction'
-import { userInfo } from 'os';
 import { fetchUserProjects } from './store/actionCreators/projectActions';
 class App extends Component {
   componentWillMount() {
@@ -26,6 +25,7 @@ class App extends Component {
       <BrowserRouter>
         <div className="App">
           <NavBar />
+          
           <Switch>
             <Route exact path='/' component={WelcomeScreen} />
             <Route path='/login' component={Login} />
@@ -33,7 +33,7 @@ class App extends Component {
             <Route path='/home' component={RequireAuth(Home)} />
             <Route path='/newproject' component={RequireAuth(CreateProject)} />
           </Switch>
-
+          
         </div>
       </BrowserRouter>
     );

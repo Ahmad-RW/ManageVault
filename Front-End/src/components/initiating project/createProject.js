@@ -45,15 +45,12 @@ class CreateProject extends Component {
                 major_course: this.state.major_course,
                 invitedMembers: this.state.invitedMembers,
                 members : [{
-                    name: this.props.userInfo.name,
+                    email: this.props.userInfo.email,
                     teamLeader : true
                 }]
             }
             this.props.createProject(project)
            this.props.history.push('/home')
-        
-           
-
         }
     }
     render() {

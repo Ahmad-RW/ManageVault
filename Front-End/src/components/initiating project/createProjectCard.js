@@ -8,6 +8,7 @@ const createProjectCard = () =>{
             <Link to="/newproject">  <span className="card-title material-icons md-48"> add </span></Link>
             <br />
             </div>
+            
         </div>
             )
 }

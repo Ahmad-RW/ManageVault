@@ -31,7 +31,7 @@ class NavBar extends Component {
                             </div>
                         </div>
                         <div className="mx-auto welcome-badge"  >
-                            Welcome {this.props.userInfo.username}
+                            Welcome {this.props.userInfo.name}
                         </div>
                     </nav>
             </div>

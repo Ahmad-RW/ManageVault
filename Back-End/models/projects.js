@@ -20,7 +20,7 @@ const projectsSchema = new schema({
         enum : ['TABLE', 'TIMELINE']
     },
     members : [{
-        name : String,
+        email : String,
         teamLeader : Boolean,
         kind : String,
         authorities : [] //roles : {task mng: true, team mng: false}

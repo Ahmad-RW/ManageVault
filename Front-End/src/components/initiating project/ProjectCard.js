@@ -7,9 +7,16 @@ const ProjectCard = (props) => {
         projects.map((project) => {
             return (
                 <div className="card col-sm w-25 m-auto" key={project.id} >
+                    <div>
+                        <ul class="nav nav-pills card-header-pills">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Active</a>
+                            </li>
+                        </ul>
+                    </div>
                     <div className="card-body">
-                        <h5 className="card-title">{project.title}</h5>
-                        <p className="card-text">{project.discription}</p>
+                        <h4 className="card-title">{project.title}</h4>
+                        <p className="card-text"> velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                         <Link to="#" className="card-link">Open Project</Link>
                     </div>
                 </div>
@@ -18,9 +25,9 @@ const ProjectCard = (props) => {
 
     return (
         <div className="row">
-        { projectsList }
+            {projectsList}
         </div>
-        )
+    )
 }
 
 export default ProjectCard
