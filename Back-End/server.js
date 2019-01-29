@@ -63,15 +63,30 @@ app.post('/newproject', function (req, res) {
     }
     let invitedMembers = req.body.project.invitedMembers.replace(/\s/g,'')//remove all spaces so when we matcn names we don't include spaces (e.g. test@test.com,test2@test.com)
     invitedMembers = invitedMembers.split(',')//basically split the string at the commas and return each section as an element in an array.
-    handleInvite(invitedMembers, project)
     projects.create(project).then(function (project) {
         res.status(200).send(project)
-        console.log('done')
+        handleInvite(invitedMembers, project)
     }).catch(function (error) {
         console.log(error)
         res.status(500)
     });
 });
+
+app.post('/leaveProject', function(req, res){
+   // console.log(req.body)
+    mongoose.model('projects').findByIdAndUpdate(req.body.project._id, {$pull : { "members" : {email : req.body.userInfo.email} }}).then(function(record){
+       if(record.members.length === 1){//delete the project if the last member leaves it. RIP 
+           mongoose.model('projects').findByIdAndDelete(req.body.project._id).then(function(record){
+               console.log(record)
+           }).catch(function(exception){
+               console.log(exception)
+           })
+       }
+        res.status(200).send(record)
+    }).catch(function(exception){
+        console.log(exception)
+    })
+})
 
 app.listen('3333', function () {
     console.log('listening on 3333')
@@ -79,8 +94,8 @@ app.listen('3333', function () {
 
 //functions
 function handleInvite(invitedMembers, project) {//basically this function sends a notification to the users who are invited to a project. It's been refactored due to size.
-    console.log(invitedMembers)
-    const obj = {kind : "PROJECT_INVITE", date : new Date, data : { title : project.title , creator : project.creator}}
+    console.log(project._id, "project ID")
+    const obj = {kind : "PROJECT_INVITE", date : new Date, data : { title : project.title , creator : project.creator, projectId : project._id}}
     invitedMembers.forEach(member => {
         console.log(member)
         mongoose.model('users').findOneAndUpdate({email : member}, {$push :{"notifications" : obj}}).then(function(record){

@@ -30,3 +30,17 @@ export const fetchUserProjects = (userEmail) =>{
         })
     }
 }
+
+export const leaveProject = (project, userInfo) =>{
+    
+    return(dispatch, getState)=>{
+        console.log('in action')
+        const payload={project, userInfo}
+        axios.post('http://localhost:3333/leaveProject', {project, userInfo}).then((res)=>{
+        dispatch({type:"LEAVE_PROJECT", payload})
+        console.log(res)
+        }).catch((exception)=>{
+            console.log(exception)
+        })
+    }
+}

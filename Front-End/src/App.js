@@ -6,6 +6,7 @@ import NavBar from './components/layout/Navbar'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import Register from './components/accessing the system/register';
 import Home from './components/initiating project/Home';
+import ProjectSettings from './components/initiating project/projectSettings';
 import RequireAuth from './HOCs/require_auth';
 import { connect } from 'react-redux'
 import CreateProject from './components/initiating project/createProject';
@@ -32,6 +33,7 @@ class App extends Component {
             <Route path='/register' component={Register} />
             <Route path='/home' component={RequireAuth(Home)} />
             <Route path='/newproject' component={RequireAuth(CreateProject)} />
+            <Route path='/projectSettings' component={RequireAuth(ProjectSettings)} />
           </Switch>
           
         </div>

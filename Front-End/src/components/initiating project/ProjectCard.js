@@ -6,11 +6,14 @@ const ProjectCard = (props) => {
     const projectsList = projects.length ? (
         projects.map((project) => {
             return (
-                <div className="card col-sm w-25 m-auto" key={project.id} >
+                <div className="card bg-light col-sm w-25 m-auto" key={project._id} >
                     <div>
-                        <ul class="nav nav-pills card-header-pills">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Active</a>
+                        <ul className="nav nav-pills card-header-pills">
+                            <li className="nav-item">
+                                <Link to={{ pathname:"/projectSettings", state:{project}}}  >Settings</Link>
+                            </li>
+                            <li className="nav-item ml-2 ">
+                                <span >{project.status}</span>
                             </li>
                         </ul>
                     </div>

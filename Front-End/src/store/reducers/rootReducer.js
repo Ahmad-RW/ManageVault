@@ -32,11 +32,22 @@ const rootReducer = (state = initState, action) =>{
         }
     }
     if(action.type === "SET_USER_PROJECTS"){
-        console.log("in reducer")
         return state = {
             ...state,
             projects : action.projects
         }
+    }
+    if(action.type === "LEAVE_PROJECT"){
+        console.log("in reducer")
+        const newProjects = state.projects.filter(project=>{
+           return project._id !== action.payload.project._id
+        })
+      console.log(newProjects)
+      return state ={
+          ...state, 
+          projects : newProjects
+      }
+
     }
 
     return state
