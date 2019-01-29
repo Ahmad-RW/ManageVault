@@ -88,6 +88,7 @@ app.post('/leaveProject', function(req, res){
     }).catch(function(exception){
         console.log(exception)
     })
+})
 app.post('/handleInvite', function (req, res) {
     console.log(req.body.project)
     const member = {
@@ -111,7 +112,7 @@ app.listen('3333', function () {
     console.log('listening on 3333')
 });
 
-//functions
+//helper functions
 function handleInvite(invitedMembers, project) {//basically this function sends a notification to the users who are invited to a project. It's been refactored due to size.
     console.log(project._id, "this is project id")
     const obj = {kind : "PROJECT_INVITE", date : new Date, data : { title : project.title , creator : project.creator, projectId :  project._id}}
@@ -123,5 +124,5 @@ function handleInvite(invitedMembers, project) {//basically this function sends 
         }).catch(function(error){
             console.log(error)
         })
-    });
+    })
 }

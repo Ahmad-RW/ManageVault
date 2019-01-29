@@ -52,6 +52,7 @@ class ProjectSettings extends Component {
     handleLeave = () => {
         console.log(this.state)
         this.props.leaveProject(this.state.project, this.props.userInfo)
+        this.props.history.push('/home')
     }
 
     render() {
