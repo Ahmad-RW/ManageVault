@@ -38,6 +38,21 @@ const rootReducer = (state = initState, action) =>{
             projects : action.projects
         }
     }
+    if(action.type === "ACCEPT_INVITE"){
+        console.log(action.payload)
+        let newNotifications = state.userInfo.notifications
+        newNotifications.filter(notification => {return action.payload.notification._id === notification._id});
+        console.log(newNotifications)
+       let newUserInfo = {
+            ...state.userInfo,
+            notifications : newNotifications
+        }
+        console.log(newUserInfo)
+        return state ={
+            ...state,
+            userInfo : newUserInfo
+        }
+    }
 
     return state
 }

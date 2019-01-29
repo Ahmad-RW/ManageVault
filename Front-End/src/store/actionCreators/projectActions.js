@@ -30,3 +30,15 @@ export const fetchUserProjects = (userEmail) =>{
         })
     }
 }
+export const handleInvite = (project, userInfo, notification) => {
+    console.log("in store")
+    return(dispatch, getState) => {
+        const payload = {project, userInfo, notification}
+        axios.post('http://localhost:3333/handleInvite',{project, userInfo, notification}).then((res)=>{
+            console.log(res)
+            dispatch({ type: "ACCEPT_INVITE", payload } )
+        }).catch((exception)=>{
+            console.log(exception)
+        })
+    }
+}

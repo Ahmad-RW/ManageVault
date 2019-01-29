@@ -34,7 +34,7 @@ class App extends Component {
             <Route path='/register' component={Register} />
             <Route path='/home' component={RequireAuth(Home)} />
             <Route path='/newproject' component={RequireAuth(CreateProject)} />
-            <Route path='/notification' component={Notification} />
+            <Route path='/notification' component={RequireAuth(Notification)} />
           </Switch>
           
         </div>
