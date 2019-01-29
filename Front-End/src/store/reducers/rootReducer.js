@@ -47,6 +47,7 @@ const rootReducer = (state = initState, action) =>{
           ...state, 
           projects : newProjects
       }
+    }
 
     if(action.type === "ACCEPT_INVITE"){
         console.log(action.payload)
