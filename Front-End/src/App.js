@@ -12,6 +12,8 @@ import { connect } from 'react-redux'
 import CreateProject from './components/initiating project/createProject';
 import {authenticate, fetchUserInfo} from './store/actionCreators/authAction'
 import { fetchUserProjects } from './store/actionCreators/projectActions';
+import Notification from './components/initiating project/Notification'
+
 class App extends Component {
   componentWillMount() {
     const token = localStorage.getItem('token');
@@ -34,6 +36,7 @@ class App extends Component {
             <Route path='/home' component={RequireAuth(Home)} />
             <Route path='/newproject' component={RequireAuth(CreateProject)} />
             <Route path='/projectSettings' component={RequireAuth(ProjectSettings)} />
+            <Route path='/notification' component={RequireAuth(Notification)} />
           </Switch>
           
         </div>

@@ -12,3 +12,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.notiHead {
+  display: inline;
+  margin-left: 420px;
+}
+
+.Xicon {
+  padding-left: 400px;
+}
