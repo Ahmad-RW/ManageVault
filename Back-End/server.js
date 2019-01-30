@@ -45,6 +45,15 @@ app.get('/getUserProjects', function (req, res) {
         })
 });
 
+app.post('/deleteproject', function (req,res) {
+    mongoose.model('projects').findByIdAndDelete(req.body.project._id).then(function (err,record) {
+        console.log(record)
+        res.status(200)
+    }).catch(function (err) {
+        console.log(err)
+        res.status(500)
+    })
+})
 app.post('/newuser', function (req, res) {
     users.create(req.body).then(function (user) {
         res.status(200).send(user)

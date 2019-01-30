@@ -16,6 +16,18 @@ export const createProjectAction = (project) => {
     //after adding to the data base the dispatcher continues his role.
 }
 
+export const requestDeleteAction = (project) => {
+    return(dispatch) => {
+        console.log(project)
+        axios.post('http://localhost:3333/deleteproject', {project}).then((res) => {
+            dispatch({ type: "REQUEST_DELETE", project})
+            console.log(res)
+        }).catch((exception) => {
+            console.log(exception)
+        })
+    }
+}
+
 
 
 
