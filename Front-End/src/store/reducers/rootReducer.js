@@ -65,6 +65,19 @@ const rootReducer = (state = initState, action) =>{
         }
     }
 
+    if(action.type === "DELETE_NOTIFICATION"){
+        let newNotifications = state.userInfo.notifications
+        newNotifications.filter(notification => {return action.payload.notification._id === notification._id});
+        let newUserInfo ={
+            ...state.userInfo,
+            notification : newNotifications
+        }
+        return state ={
+            ...state,
+            userInfo : newUserInfo
+        }
+    }
+
     return state
 }
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { handleInvite } from '../../store/actionCreators/projectActions'
+import { handleInvite, handleNotificationDelete } from '../../store/actionCreators/projectActions'
 
 class Notification extends Component {
     constructor(props) {
@@ -24,6 +24,10 @@ class Notification extends Component {
         this.props.history.push('/home');
         window.location.reload()
     }
+    handleDelete = (notification, projectId) =>{
+        this.props.handleNotificationDelete(projectId, this.state.userInfo, notification)
+
+    }
     render() {
         
         if(this.props.authenticated === false){
@@ -45,7 +49,7 @@ class Notification extends Component {
                                     )
                                     } 
                                     
-                                    <a onClick={() => { this.handleClick(Notification.id) }}>
+                                    <a onClick={() => { this.handleDelete(Notification, Notification.data.projectId) }}>
                                         <i className="material-icons Xicon">highlight_off</i>
                                     </a>
                             </div>
@@ -77,7 +81,8 @@ const mapStateToProps = (state) => {
  }
 const mapDispatchToProps = (dispatch) => {
     return {
-        handleInvite: (project, userInfo, notification) => { dispatch(handleInvite(project, userInfo, notification)) }
+        handleInvite: (project, userInfo, notification) => { dispatch(handleInvite(project, userInfo, notification)) },
+        handleNotificationDelete : (projectId, userInfo, notification) => {dispatch(handleNotificationDelete(projectId, userInfo, notification))}
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Notification)
