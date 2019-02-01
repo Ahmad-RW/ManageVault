@@ -53,6 +53,14 @@ const rootReducer = (state = initState, action) => {
             }
         }
     }
+    if(action.type === "REQUEST_TO_DELETE_PROJECT"){
+        let newProjects = state.projects;
+        let project = newProjects.find(project => project._id === action.payload.project._id)
+        project.status = 'PENDING';
+        newProjects = {
+            ...project
+        }
+    }
     if(action.type === "LEAVE_PROJECT"){
         console.log("in reducer")
         const newProjects = state.projects.filter(project=>{

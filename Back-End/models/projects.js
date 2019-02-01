@@ -15,6 +15,9 @@ const projectsSchema = new schema({
         enum : ['PENDING', 'RUNNING', 'PUBLISHED', 'STOPPED'],
         required : true
     },
+    votes: {
+        type: Number
+    },
     displayStyle: {
         type : String,
         enum : ['TABLE', 'TIMELINE']

@@ -1,19 +1,39 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { leaveProject } from '../../store/actionCreators/projectActions'
+import { leaveProject, requestToDeleteProject } from '../../store/actionCreators/projectActions'
 import { isNullOrUndefined } from 'util';
 class ProjectSettings extends Component {
     state = {
         project: {},
         teamLeader: "",
-        members: {}
+        members: {},
+        requestDeleteButton: false,
+        renderMessageFlag: false 
     }
 
     constructor(props) {
         super(props)
+        }
 
+
+        renderMessage = () => {
+            if(this.state.renderMessageFlag){
+            document.getElementById('deletebtn').className = "d-none";
+            return (
+                <div className="container">
+                    <div className = "alert alert-danger">
+                        <p>Delete request has been sent to team members</p>
+                    </div>
+                </div>
+            )
+        }
     }
-
+        setRenderFlag = () => {
+            this.setState({
+                ...this.state,
+                renderMessageFlag: true
+            })
+        }
     componentWillMount() {
         console.log(this.props.location.state.project)
         // const project = this.props.projects.find(project => {
@@ -42,11 +62,17 @@ class ProjectSettings extends Component {
             })
         ) : (<li class="list-group-item">project has no members</li>)
 
+                let flag = false;
+                if(teamLeader.email === this.props.userInfo.email){
+                    flag = true;
+                }
            this.setState({
             project,
             teamLeader,
-            members
+            members,
+            requestDeleteButton: flag
         })
+
 
     }
     handleLeave = () => {
@@ -54,13 +80,23 @@ class ProjectSettings extends Component {
         this.props.leaveProject(this.state.project, this.props.userInfo)
         this.props.history.push('/home')
     }
+    handleDelete = (e) => {
+        console.log(this.state)
+        this.props.deleteProject(this.state.project, this.props.userInfo);
+        this.setRenderFlag()
+    }
 
     render() {
+        let deleteButton = <span></span>
+        if(this.state.requestDeleteButton && this.state.project.status !== 'PENDING'){
+            deleteButton = <button className="btn btn-danger" id="deletebtn" onClick={this.handleDelete}>Delete Project</button> //Request to delete
+        }
         return (
             <div className="container-fluid">
                 <div className="jumbotron jumbotron-fluid">
                     <div className="container">
                         <h1 className="display-1">{this.state.project.title}</h1>
+                            {this.renderMessage()}
                         <div className="row">
                             <h4>Team leader  : </h4>
                         </div>
@@ -84,6 +120,9 @@ class ProjectSettings extends Component {
                             <div className="col-4">
                                 <button className="btn btn-secondary" onClick={this.handleLeave}>Leave Project</button>
                             </div>
+                            <div className="col-4">
+                                {deleteButton}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -100,9 +139,10 @@ const mapStateToProps = (state) => {
         userInfo: state.userInfo
     }
 }
-const mapDispatchToProps = (dispatch, project, ) => {
+const mapDispatchToProps = (dispatch) => {
     return {
-        leaveProject: (project, userInfo) => dispatch(leaveProject(project, userInfo))
+        leaveProject: (project, userInfo) => dispatch(leaveProject(project, userInfo)),
+        deleteProject : (project, userInfo)=> dispatch(requestToDeleteProject(project, userInfo))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectSettings)

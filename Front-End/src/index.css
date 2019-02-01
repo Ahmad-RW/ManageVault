@@ -15,9 +15,14 @@ code {
 
 .notiHead {
   display: inline;
-  margin-left: 420px;
+  margin-left: 400px;
+  margin-right: 400px;
 }
 
 .Xicon {
-  padding-left: 400px;
+  position: absolute;
+  right: 10px;
+}
+.btn-primary {
+  margin-left: 10px;
 }

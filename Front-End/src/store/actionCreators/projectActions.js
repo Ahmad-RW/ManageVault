@@ -28,6 +28,23 @@ export const requestDeleteAction = (project) => {
     }
 }
 
+export const requestToDeleteProject = (project, userInfo) =>{
+    return(dispatch)=>{
+        console.log(project, userInfo)
+        console.log("In request to delete project")
+        const payload ={ 
+            project, 
+            userInfo
+        }
+        axios.post('http://localhost:3333/requestDeleteProject', {project, userInfo}).then((res)=>{
+            dispatch({ type: "REQUEST_TO_DELETE_PROJECT", payload})  
+        console.log(res)
+        }).catch((exception)=>{
+            console.log(exception)
+        })
+    }
+}
+
 
 
 
@@ -62,6 +79,21 @@ export const handleInvite = (project, userInfo, notification) => {
         axios.post('http://localhost:3333/handleInvite', { project, userInfo, notification }).then((res) => {
             console.log(res)
             dispatch({ type: "ACCEPT_INVITE", payload })
+        }).catch((exception) => {
+            console.log(exception)
+        })
+    }
+}
+
+
+
+export const handleVoting = (payload) => {
+    console.log(payload, "IN ACTION")
+    return (dispatch) => {
+        axios.post("http://localhost:3333/handleVoting", {payload}).then((res) => {
+            console.log(res)
+            //dispatch({ type: "REQUEST_TO_DELETE_PROJECT", payload})
+            console.log("DISPATCHED")
         }).catch((exception) => {
             console.log(exception)
         })
