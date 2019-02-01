@@ -55,7 +55,7 @@ class Notification extends Component {
                             </div>
                             <div class="card-body">
                             <p class="card-text">You have been invited to {Notification.data.title} by {Notification.data.creator} do you accept?</p>
-                            <a onClick={() => {this.handleAccept(Notification.data.projectId, Notification)} } class="btn btn-primary">Accept invite </a>
+                            <button onClick={() => {this.handleAccept(Notification.data.projectId, Notification)} } class="btn btn-primary">Accept invite </button>
                             </div>
                             <div className="pt-2">{Notification.date}</div>
                         </div>

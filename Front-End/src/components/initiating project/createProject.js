@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { createProjectAction } from '../../store/actionCreators/projectActions'
+
 class CreateProject extends Component {
     constructor(props) {
         super(props)
@@ -11,7 +12,8 @@ class CreateProject extends Component {
         projectTitle: "",
         major_course: "",
         invitedMembers: "",
-        showWarningMessage: false
+        showWarningMessage: false,
+        redirect: false
     }
 
     handleChange = (e) => {
@@ -19,7 +21,7 @@ class CreateProject extends Component {
         this.setState({
             [e.target.id]: e.target.value
         })
-        
+
     }
 
     handleNoneSelection = (e) => {
@@ -40,17 +42,18 @@ class CreateProject extends Component {
         }
         else {
             let project = {
-                creator : this.props.userInfo.name,
+                creator: this.props.userInfo.name,
                 title: this.state.projectTitle,
                 major_course: this.state.major_course,
                 invitedMembers: this.state.invitedMembers,
-                members : [{
+                members: [{
                     email: this.props.userInfo.email,
-                    teamLeader : true
+                    teamLeader: true
                 }]
             }
             this.props.createProject(project)
-           this.props.history.push('/home')
+          
+            this.props.history.push('/home')
         }
     }
     render() {
@@ -96,16 +99,16 @@ class CreateProject extends Component {
             </div>
         )
     }
- 
+
 }
 const mapDispatchToProps = (dispatch) => {
     return {
         createProject: (project) => dispatch(createProjectAction(project))
     }
 }
-const mapStateToProps = (state) =>{
+const mapStateToProps = (state) => {
     return {
-        userInfo : state.userInfo
+        userInfo: state.userInfo
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(CreateProject)

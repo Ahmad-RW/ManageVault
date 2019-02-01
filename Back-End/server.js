@@ -46,9 +46,10 @@ app.get('/getUserProjects', function (req, res) {
 });
 
 app.post('/deleteproject', function (req,res) {
+    console.log(req.body)
     mongoose.model('projects').findByIdAndDelete(req.body.project._id).then(function (err,record) {
         console.log(record)
-        res.status(200)
+        res.status(200).send(record)
     }).catch(function (err) {
         console.log(err)
         res.status(500)

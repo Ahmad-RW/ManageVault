@@ -39,19 +39,21 @@ const rootReducer = (state = initState, action) => {
         }
     }
     if (action.type === "REQUEST_DELETE") {
-        for (var i = 0; i < this.state.projects.length; i++) {
-            if (this.state.project[i] === this.props.action.project.id) {
-                const project = this.state.project[i];
+        for (var i = 0; i < state.projects.length; i++) {
+            if (state.projects[i]._id === action.project._id) {
+                const project = state.projects[i];
                 console.log(project);
-                let updatedProjects = state.projects
-                updatedProjects.filter(project.id === this.props.action.project.id);
+                let updatedProjects = state.projects.filter(project => { return project._id !== action.project._id });
                 console.log(state);
-                return state = {
+                state = {
                     ...state,
                     projects: updatedProjects
                 }
+                console.log(state)
+                
             }
         }
+        return state
     }
     if(action.type === "LEAVE_PROJECT"){
         console.log("in reducer")
@@ -82,13 +84,14 @@ const rootReducer = (state = initState, action) => {
     }
 
     if(action.type === "DELETE_NOTIFICATION"){
-        let newNotifications = state.userInfo.notifications
-        newNotifications.filter(notification => {return action.payload.notification._id === notification._id});
-        let newUserInfo ={
+        console.log('in reducer delete')
+         
+       let newNotifications = state.userInfo.notifications.filter(notification => {return action.payload.notification._id !== notification._id});
+        let newUserInfo = {
             ...state.userInfo,
-            notification : newNotifications
+            notifications : newNotifications
         }
-        return state ={
+      return state ={
             ...state,
             userInfo : newUserInfo
         }

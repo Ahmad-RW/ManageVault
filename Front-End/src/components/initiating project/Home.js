@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import ProjectCard from './ProjectCard'
 import CreateProjectCard from './createProjectCard'
 class Home extends Component {
-    componentDidMount(){
-        this.setState()
+    state = {
+        projects : this.props.projects
     }
     render() {
         return (

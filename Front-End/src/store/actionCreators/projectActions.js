@@ -44,7 +44,6 @@ export const fetchUserProjects = (userEmail) => {
 }
 
 export const leaveProject = (project, userInfo) => {
-
     return (dispatch, getState) => {
         console.log('in action')
         const payload = { project, userInfo }
