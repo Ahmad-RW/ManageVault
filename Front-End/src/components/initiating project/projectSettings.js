@@ -1,19 +1,19 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { leaveProject, requestToDeleteProject } from '../../store/actionCreators/projectActions'
-import { isNullOrUndefined } from 'util';
+import { leaveProject, requestToDeleteProject, removeTeamMember } from '../../store/actionCreators/projectActions'
+
 class ProjectSettings extends Component {
+    constructor(props) {
+        super(props)
+    }
+    
     state = {
-        project: {},
+        project: this.props.location.state.project,
         teamLeader: "",
         members: {},
         requestDeleteButton: false,
         renderMessageFlag: false 
     }
-
-    constructor(props) {
-        super(props)
-        }
 
 
         renderMessage = () => {
@@ -35,46 +35,26 @@ class ProjectSettings extends Component {
             })
         }
     componentWillMount() {
-        console.log(this.props.location.state.project)
-        // const project = this.props.projects.find(project => {
-        //     return project._id === this.props.match.params._id
-        // })
-        // const teamLeader = project.members.find(member => {
-        //     return member.teamLeader
-        // })
-        // const members = project.members.length ? (
-        //     project.members.map(member => {
-        //         if (!member.teamLeader) return (<li class="list-group-item">{member.email}</li>)
-        //     })
-        // ) : (<li class="list-group-item">project has no members</li>)
-        // this.setState({
-        //     project,
-        //     teamLeader,
-        //     members
-        // })
         const project = this.props.location.state.project
            const teamLeader = project.members.find(member => {
             return member.teamLeader
         })
-        const members = project.members.length ? (
-            project.members.map(member => {
-                if (!member.teamLeader) return (<li class="list-group-item">{member.email}</li>)
-            })
-        ) : (<li class="list-group-item">project has no members</li>)
-
                 let flag = false;
                 if(teamLeader.email === this.props.userInfo.email){
                     flag = true;
                 }
            this.setState({
-            project,
-            teamLeader,
-            members,
+               ...this.state,
             requestDeleteButton: flag
         })
 
 
     }
+    
+    // componentWillUpdate() {
+    //     console.log("i am in component Will Receive Props")
+    //     this.forceUpdate()
+    // }
     handleLeave = () => {
         console.log(this.state)
         this.props.leaveProject(this.state.project, this.props.userInfo)
@@ -86,23 +66,53 @@ class ProjectSettings extends Component {
         this.setRenderFlag()
     }
 
+    handleRemove = (member) => {
+        // console.log(member.email,"TM email")
+        this.props.removeTeamMember(this.state.project, member)
+        this.props.history.push('/home')
+        alert("Team member has been removed")
+    }
     render() {
         let deleteButton = <span></span>
         if(this.state.requestDeleteButton && this.state.project.status !== 'PENDING'){
             deleteButton = <button className="btn btn-danger" id="deletebtn" onClick={this.handleDelete}>Delete Project</button> //Request to delete
         }
+        const project = this.state.project
+        const teamLeader = project.members.find(member => {
+         return member.teamLeader
+        })
+
+        let removeButton = <span></span>
+        console.log(this.state)
+        
+
+        const members = project.members.length ? (
+            project.members.map(member => {
+                if(teamLeader.email === this.props.userInfo.email){
+                    removeButton = <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => {this.handleRemove(member)}}>
+                        <i className="material-icons ">highlight_off</i>
+                        </button>
+                }
+                if (!member.teamLeader) return (<li class="list-group-item" key={member.email}>{member.email} {removeButton}</li>)
+            })
+        ) : (<li class="list-group-item">project has no members</li>)
+        //    this.setState({
+        //     project,
+        //     teamLeader,
+        //     members
+        // })
         return (
             <div className="container-fluid">
                 <div className="jumbotron jumbotron-fluid">
                     <div className="container">
-                        <h1 className="display-1">{this.state.project.title}</h1>
+                        <h1 className="display-1">{project.title}</h1>
                             {this.renderMessage()}
                         <div className="row">
                             <h4>Team leader  : </h4>
                         </div>
                         <div className="row">
                             <ul class="list-group">
-                                <li class="list-group-item list-group-item-primary">{this.state.teamLeader.email}</li>
+                                <li class="list-group-item list-group-item-primary">{teamLeader.email}</li>
                             </ul>
                         </div>
                         <hr />
@@ -112,8 +122,9 @@ class ProjectSettings extends Component {
                         </div>
                         <div className="row">
                             <ul class="list-group">
-                                {this.state.members}
+                                {members}
                             </ul>
+
                         </div>
                         <hr />
                         <div className="row">
@@ -142,7 +153,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         leaveProject: (project, userInfo) => dispatch(leaveProject(project, userInfo)),
-        deleteProject : (project, userInfo)=> dispatch(requestToDeleteProject(project, userInfo))
+        deleteProject : (project, userInfo)=> dispatch(requestToDeleteProject(project, userInfo)),
+        removeTeamMember: (project, member) => dispatch(removeTeamMember(project, member))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectSettings)

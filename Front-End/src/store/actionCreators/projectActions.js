@@ -61,7 +61,6 @@ export const fetchUserProjects = (userEmail) => {
 }
 
 export const leaveProject = (project, userInfo) => {
-
     return (dispatch, getState) => {
         console.log('in action')
         const payload = { project, userInfo }
@@ -72,9 +71,20 @@ export const leaveProject = (project, userInfo) => {
     }
 }
 
+export const removeTeamMember = (project, member) => {
+    console.log("remove action here")
+    return (dispatch, getState) => {
+        const payload = { project, member}
+        axios.post('http://localhost:3333/removeTeamMember', { project, member}).then((res) => {
+            dispatch({ type: "REMOVE_TEAM_MEMBER", payload })
+            console.log(res)
+        })
+    }
+}
+
 export const handleInvite = (project, userInfo, notification) => {
     console.log("in store")
-    return (dispatch, getState) => {
+    return (dispatch) => {
         const payload = { project, userInfo, notification }
         axios.post('http://localhost:3333/handleInvite', { project, userInfo, notification }).then((res) => {
             console.log(res)
@@ -84,6 +94,18 @@ export const handleInvite = (project, userInfo, notification) => {
         })
     }
 }
+export const handleNotificationDelete = (projectId, userInfo, notification)=>{
+    console.log('in store')
+    return (dispatch) =>{
+        const payload = {projectId, userInfo, notification}
+        axios.post('http://localhost:3333/handleNotificationDelete', {projectId, userInfo, notification}).then((res)=>{
+            dispatch({type : "DELETE_NOTIFICATION", payload})
+        }).catch((exception)=>{
+            console.log(exception)
+        })
+    }
+}
+
 
 
 

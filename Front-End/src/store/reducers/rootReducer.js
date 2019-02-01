@@ -26,10 +26,11 @@ const rootReducer = (state = initState, action) => {
     if (action.type === "CREATE_PROJECT") {
         let newProjects = state.projects
         newProjects.push(action.project)
-        return state = {
+        state = {
             ...state,
             projects: newProjects
         }
+        return state
     }
     if (action.type === "SET_USER_PROJECTS") {
         console.log("in reducer")
@@ -39,19 +40,21 @@ const rootReducer = (state = initState, action) => {
         }
     }
     if (action.type === "REQUEST_DELETE") {
-        for (var i = 0; i < this.state.projects.length; i++) {
-            if (this.state.project[i] === this.props.action.project.id) {
-                const project = this.state.project[i];
+        for (var i = 0; i < state.projects.length; i++) {
+            if (state.projects[i]._id === action.project._id) {
+                const project = state.projects[i];
                 console.log(project);
-                let updatedProjects = state.projects
-                updatedProjects.filter(project.id === this.props.action.project.id);
+                let updatedProjects = state.projects.filter(project => { return project._id !== action.project._id });
                 console.log(state);
-                return state = {
+                state = {
                     ...state,
                     projects: updatedProjects
                 }
+                console.log(state)
+                
             }
         }
+        return state
     }
     if(action.type === "REQUEST_TO_DELETE_PROJECT"){
         let newProjects = state.projects;
@@ -74,16 +77,49 @@ const rootReducer = (state = initState, action) => {
     }
 
     if(action.type === "ACCEPT_INVITE"){
-        console.log(action.payload)
-        let newNotifications = state.userInfo.notifications
-        newNotifications.filter(notification => {return action.payload.notification._id === notification._id});
-        console.log(newNotifications)
+        console.log(action.payload, "payload")
+        let newNotifications = state.userInfo.notifications.filter(notification => {return action.payload.notification._id !== notification._id});
+        console.log(newNotifications, "new notifications")
        let newUserInfo = {
             ...state.userInfo,
             notifications : newNotifications
         }
-        console.log(newUserInfo)
-        return state ={
+        console.log(newUserInfo, "new user info")
+        state ={
+            ...state,
+            userInfo : newUserInfo
+        }
+        console.log(state)
+        return state
+    }
+    if(action.type === "REMOVE_TEAM_MEMBER"){
+        let newProject = state.projects.find(project => {return action.payload.project._id === project._id})
+        let newProjectsList = state.projects.filter(project => {return action.payload.project._id !== project._id})
+        let newMembers = newProject.members.filter(member => {return action.payload.member.email !== member.email});
+        console.log(newMembers,"new Members")
+        newProject = {
+            ...newProject,
+            members: newMembers
+        }
+        console.log(newProject,"the project we modified")
+        newProjectsList.push(newProject)
+        state = {
+            ...state,
+            projects: newProjectsList
+        }
+        console.log(state,"هذي الستييييت")
+        return state
+    }
+
+    if(action.type === "DELETE_NOTIFICATION"){
+        console.log('in reducer delete')
+         
+       let newNotifications = state.userInfo.notifications.filter(notification => {return action.payload.notification._id !== notification._id});
+        let newUserInfo = {
+            ...state.userInfo,
+            notifications : newNotifications
+        }
+      return state ={
             ...state,
             userInfo : newUserInfo
         }

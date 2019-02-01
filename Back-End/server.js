@@ -46,9 +46,10 @@ app.get('/getUserProjects', function (req, res) {
 });
 
 app.post('/deleteproject', function (req,res) {
+    console.log(req.body)
     mongoose.model('projects').findByIdAndDelete(req.body.project._id).then(function (err,record) {
         console.log(record)
-        res.status(200)
+        res.status(200).send(record)
     }).catch(function (err) {
         console.log(err)
         res.status(500)
@@ -154,7 +155,7 @@ app.post('/handleInvite', function (req, res) {
         kind : "ACTIVE",
         authorities : []
     }
-    mongoose.model("projects").findByIdAndUpdate(req.body.project, {$push :{"members" : member}}).then(function(record){
+    mongoose.model("projects").findByIdAndUpdate(req.body.project, {$push :{"members" : member}}).then(function(record){//handles accepting invite. First it pushess themmeber in the project then removes the notification from his mailbox
         mongoose.model("users").findByIdAndUpdate(req.body.userInfo._id, {$pull : {"notifications" : {_id : req.body.notification._id}}}).then(function(record){
             // console.log(record)
             res.status(200).send(record)
@@ -163,6 +164,25 @@ app.post('/handleInvite', function (req, res) {
         console.log(err)
     })
     
+})
+app.post('/handleNotificationDelete', function(req, res){
+    console.log(req.body)
+    mongoose.model('users').findByIdAndUpdate(req.body.userInfo._id, {$pull : {"notifications" :{_id : req.body.notification._id}}}).then(function(record){
+        console.log(record)
+        res.status(200).send(record)
+    }).catch(function(err){
+        console.log(err)
+    })
+})
+
+app.post('/removeTeamMember', function (req, res) {
+    console.log(req.body.project)
+    mongoose.model("projects").findByIdAndUpdate(req.body.project._id, {$pull : {"members" : {_id : req.body.member._id}}}).then(function(record){
+        console.log(record,"this is the member we removed")
+        res.status(200).send(record)
+    }).catch(function(err){
+        console.log(err)
+    })
 })
 
 app.listen('3333', function () {

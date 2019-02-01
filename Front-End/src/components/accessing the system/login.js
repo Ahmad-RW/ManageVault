@@ -36,15 +36,17 @@ class Login extends Component {
     }
     render() {
         return (
+            <form onSubmit={this.handelClick}>
             <div className="card container ">
                 <div className="form-group card-body" >
                     <label>Email Address</label>
                     <input type="email" className="form-control" id="email" placeholder="Email" onChange={this.handlechange} />
                     <label>Password</label>
                     <input type="password" className="form-control" id="password" placeholder="password" onChange={this.handlechange} />
-                    <button className="form-control btn btn-info sign-in-button" type="button" onClick={this.handelClick}>Sign In</button>
+                    <button className="form-control btn btn-info sign-in-button" type="submit" onClick={this.handelClick}>Sign In</button>
                 </div>
             </div>
+            </form>
         )
     }
 }
