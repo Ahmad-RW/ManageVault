@@ -2,13 +2,15 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { handleInvite } from '../../store/actionCreators/projectActions'
 
+
 class Notification extends Component {
     constructor(props) {
         super(props)
         console.log(props)
     }
     state = {
-        userInfo: this.props.userInfo
+        userInfo: this.props.userInfo,
+        notifications: []
     }
     // componentWillMount() {
     //     console.log(this.props.isAuthenticated)
@@ -21,17 +23,22 @@ class Notification extends Component {
     handleAccept = (project, notification) => {
         console.log(project, "howdy")
         this.props.handleInvite(project, this.state.userInfo, notification)
-        this.props.history.push('/home');
-        window.location.reload()
+        // window.location.reload()
+        // this.props.history.push('/home');
+        // window.location.reload()
     }
     render() {
         
-        if(this.props.authenticated === false){
-            this.props.history.push('/')
+        var { notifications } = this.props
+        if (typeof notifications === "undefined") {
+            notifications = []
         }
-        const { notifications } = this.props
+        
         const NotificationsList = notifications.length ? (
             this.props.notifications.map(Notification => {
+                //foe printing the date
+                var date = Notification.date.split("T")
+                var time = date[1].split(":")[0] + ":" + date[1].split(":")[1]
                 return (
                     <div className="container pt-3" key={Notification._id}>
                     <div class="card text-center" >
@@ -53,7 +60,7 @@ class Notification extends Component {
                             <p class="card-text">You have been invited to {Notification.data.title} by {Notification.data.creator} do you accept?</p>
                             <a onClick={() => {this.handleAccept(Notification.data.projectId, Notification)} } class="btn btn-primary">Accept invite </a>
                             </div>
-                            <div className="pt-2">{Notification.date}</div>
+                            <div className="pt-2">{date[0]} {time}</div>
                         </div>
                     </div>
                     </div>

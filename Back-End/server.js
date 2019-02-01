@@ -117,6 +117,16 @@ app.post('/handleInvite', function (req, res) {
     
 })
 
+app.post('/removeTeamMember', function (req, res) {
+    console.log(req.body.project)
+    mongoose.model("projects").findByIdAndUpdate(req.body.project._id, {$pull : {"members" : {_id : req.body.member._id}}}).then(function(record){
+        console.log(record,"this is the member we removed")
+        res.status(200).send(record)
+    }).catch(function(err){
+        console.log(err)
+    })
+})
+
 app.listen('3333', function () {
     console.log('listening on 3333')
 });

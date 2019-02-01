@@ -51,6 +51,7 @@ class CreateProject extends Component {
             }
             this.props.createProject(project)
            this.props.history.push('/home')
+        //    window.location.reload()
         }
     }
     render() {

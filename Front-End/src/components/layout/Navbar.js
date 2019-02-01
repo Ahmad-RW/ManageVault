@@ -12,6 +12,7 @@ class NavBar extends Component {
             console.log(e, 'signed out')
             this.props.removeAuth()
             localStorage.removeItem('token')
+            
         }).catch((e) => {
             console.log(e, 'exception')
         })

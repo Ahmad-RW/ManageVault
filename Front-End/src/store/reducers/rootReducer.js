@@ -26,10 +26,11 @@ const rootReducer = (state = initState, action) => {
     if (action.type === "CREATE_PROJECT") {
         let newProjects = state.projects
         newProjects.push(action.project)
-        return state = {
+        state = {
             ...state,
             projects: newProjects
         }
+        return state
     }
     if (action.type === "SET_USER_PROJECTS") {
         console.log("in reducer")
@@ -66,19 +67,38 @@ const rootReducer = (state = initState, action) => {
     }
 
     if(action.type === "ACCEPT_INVITE"){
-        console.log(action.payload)
-        let newNotifications = state.userInfo.notifications
-        newNotifications.filter(notification => {return action.payload.notification._id === notification._id});
-        console.log(newNotifications)
+        console.log(action.payload, "payload")
+        let newNotifications = state.userInfo.notifications.filter(notification => {return action.payload.notification._id !== notification._id});
+        console.log(newNotifications, "new notifications")
        let newUserInfo = {
             ...state.userInfo,
             notifications : newNotifications
         }
-        console.log(newUserInfo)
-        return state ={
+        console.log(newUserInfo, "new user info")
+        state ={
             ...state,
             userInfo : newUserInfo
         }
+        console.log(state)
+        return state
+    }
+    if(action.type === "REMOVE_TEAM_MEMBER"){
+        let newProject = state.projects.find(project => {return action.payload.project._id === project._id})
+        let newProjectsList = state.projects.filter(project => {return action.payload.project._id !== project._id})
+        let newMembers = newProject.members.filter(member => {return action.payload.member.email !== member.email});
+        console.log(newMembers,"new Members")
+        newProject = {
+            ...newProject,
+            members: newMembers
+        }
+        console.log(newProject,"the project we modified")
+        newProjectsList.push(newProject)
+        state = {
+            ...state,
+            projects: newProjectsList
+        }
+        console.log(state,"هذي الستييييت")
+        return state
     }
 
     return state

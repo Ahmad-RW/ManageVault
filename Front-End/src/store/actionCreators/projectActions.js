@@ -55,6 +55,17 @@ export const leaveProject = (project, userInfo) => {
     }
 }
 
+export const removeTeamMember = (project, member) => {
+    console.log("remove action here")
+    return (dispatch, getState) => {
+        const payload = { project, member}
+        axios.post('http://localhost:3333/removeTeamMember', { project, member}).then((res) => {
+            dispatch({ type: "REMOVE_TEAM_MEMBER", payload })
+            console.log(res)
+        })
+    }
+}
+
 export const handleInvite = (project, userInfo, notification) => {
     console.log("in store")
     return (dispatch, getState) => {

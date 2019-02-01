@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import RequestDelete from './requestDelete';
 
-const ProjectCard = (props) => {
-    const projects = props.projects
+
+class ProjectCard extends Component {
+    
+    render(){
+    const projects = this.props.projects
     const projectsList = projects.length ? (
         projects.map((project) => {
             return (
@@ -35,5 +38,5 @@ const ProjectCard = (props) => {
         </div>
     )
 }
-
+}
 export default ProjectCard

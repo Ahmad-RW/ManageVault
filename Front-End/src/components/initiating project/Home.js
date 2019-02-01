@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom'
 import ProjectCard from './ProjectCard'
 import CreateProjectCard from './createProjectCard'
 class Home extends Component {
-    componentDidMount(){
-        this.setState()
-    }
+    // componentDidMount(){
+    //     this.setState()
+    // }
     render() {
         return (
             <div className="container">
