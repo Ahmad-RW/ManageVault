@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
 import RequestDelete from './requestDelete';
 
 
@@ -15,7 +14,7 @@ class ProjectCard extends Component {
                     <div>
                         <ul className="nav nav-pills card-header-pills">
                             <li className="nav-item">
-                                <Link to={{ pathname:"/projectSettings", state:{project}}}  >Settings</Link>
+                                <Link to={{ pathname:"/projectSettings", state:{project}}}>Settings</Link>
                             </li>
                             <li className="nav-item ml-2 ">
                                 <span >{project.status}</span>

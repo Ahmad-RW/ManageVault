@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { handleInvite } from '../../store/actionCreators/projectActions'
+import { handleInvite, handleNotificationDelete } from '../../store/actionCreators/projectActions'
 
 
 class Notification extends Component {
@@ -27,6 +27,10 @@ class Notification extends Component {
         // this.props.history.push('/home');
         // window.location.reload()
     }
+    handleDelete = (notification, projectId) =>{
+        this.props.handleNotificationDelete(projectId, this.state.userInfo, notification)
+
+    }
     render() {
         
         var { notifications } = this.props
@@ -52,13 +56,13 @@ class Notification extends Component {
                                     )
                                     } 
                                     
-                                    <a onClick={() => { this.handleClick(Notification.id) }}>
+                                    <a onClick={() => { this.handleDelete(Notification, Notification.data.projectId) }}>
                                         <i className="material-icons Xicon">highlight_off</i>
                                     </a>
                             </div>
                             <div class="card-body">
                             <p class="card-text">You have been invited to {Notification.data.title} by {Notification.data.creator} do you accept?</p>
-                            <a onClick={() => {this.handleAccept(Notification.data.projectId, Notification)} } class="btn btn-primary">Accept invite </a>
+                            <button onClick={() => {this.handleAccept(Notification.data.projectId, Notification)} } class="btn btn-primary">Accept invite </button>
                             </div>
                             <div className="pt-2">{date[0]} {time}</div>
                         </div>
@@ -84,7 +88,8 @@ const mapStateToProps = (state) => {
  }
 const mapDispatchToProps = (dispatch) => {
     return {
-        handleInvite: (project, userInfo, notification) => { dispatch(handleInvite(project, userInfo, notification)) }
+        handleInvite: (project, userInfo, notification) => { dispatch(handleInvite(project, userInfo, notification)) },
+        handleNotificationDelete : (projectId, userInfo, notification) => {dispatch(handleNotificationDelete(projectId, userInfo, notification))}
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Notification)
