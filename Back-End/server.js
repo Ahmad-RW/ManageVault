@@ -75,11 +75,9 @@ app.post('/newproject', function (req, res) {
     }
     let invitedMembers = req.body.project.invitedMembers.replace(/\s/g,'')//remove all spaces so when we match names we don't include spaces (e.g. test@test.com,test2@test.com)
     invitedMembers = invitedMembers.split(',')//basically split the string at the commas and return each section as an element in an array.
-    
     projects.create(project).then(function (project) {
         res.status(200).send(project)
         handleInvite(invitedMembers, project)
-        console.log('done')
     }).catch(function (error) {
         console.log(error)
         res.status(500)
@@ -128,7 +126,7 @@ app.post('/handleVoting', function(req, res) {//payload
                 console.log(votes)
                 var majority = record.members.length/2
                 console.log(majority, "Majority")
-                if (votes > majority){
+                if (votes >= majority){
                     console.log("Inside if")
                     mongoose.model("projects").findByIdAndDelete(req.body.payload.projectId).then(function(record){
                         console.log(record, "DELETE QUERY")
@@ -140,6 +138,7 @@ app.post('/handleVoting', function(req, res) {//payload
             })
         }else{
             console.log("DECLINED DELETE")
+            
         }
         res.sendStatus(200)
     }).catch(function(error){

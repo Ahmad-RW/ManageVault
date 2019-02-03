@@ -83,7 +83,7 @@ export const removeTeamMember = (project, member) => {
 }
 
 export const handleInvite = (project, userInfo, notification) => {
-    console.log("in store")
+    console.log(userInfo)
     return (dispatch) => {
         const payload = { project, userInfo, notification }
         axios.post('http://localhost:3333/handleInvite', { project, userInfo, notification }).then((res) => {
@@ -95,11 +95,12 @@ export const handleInvite = (project, userInfo, notification) => {
     }
 }
 export const handleNotificationDelete = (projectId, userInfo, notification)=>{
-    console.log('in store')
+    console.log(userInfo)
     return (dispatch) =>{
         const payload = {projectId, userInfo, notification}
         axios.post('http://localhost:3333/handleNotificationDelete', {projectId, userInfo, notification}).then((res)=>{
             dispatch({type : "DELETE_NOTIFICATION", payload})
+            console.log(res)
         }).catch((exception)=>{
             console.log(exception)
         })

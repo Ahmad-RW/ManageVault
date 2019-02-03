@@ -24,8 +24,9 @@ const rootReducer = (state = initState, action) => {
         }
     }
     if (action.type === "CREATE_PROJECT") {
-        let newProjects = state.projects
-        newProjects.push(action.project)
+        // let newProjects = state.projects creates a pointer only
+        // newProjects.push(action.project)
+        let newProjects = [...state.projects, action.project]
         state = {
             ...state,
             projects: newProjects
@@ -51,12 +52,12 @@ const rootReducer = (state = initState, action) => {
                     projects: updatedProjects
                 }
                 console.log(state)
-                
+
             }
         }
         return state
     }
-    if(action.type === "REQUEST_TO_DELETE_PROJECT"){
+    if (action.type === "REQUEST_TO_DELETE_PROJECT") {
         let newProjects = state.projects;
         let project = newProjects.find(project => project._id === action.payload.project._id)
         project.status = 'PENDING';
@@ -64,35 +65,32 @@ const rootReducer = (state = initState, action) => {
             ...project
         }
     }
-    if(action.type === "LEAVE_PROJECT"){
+    if (action.type === "LEAVE_PROJECT") {
         console.log("in reducer")
-        const newProjects = state.projects.filter(project=>{
-           return project._id !== action.payload.project._id
+        const newProjects = state.projects.filter(project => {
+            return project._id !== action.payload.project._id
         })
-      console.log(newProjects)
-      return state ={
-          ...state, 
-          projects : newProjects
-      }
+        console.log(newProjects)
+        return state = {
+            ...state,
+            projects: newProjects
+        }
     }
 
-    if(action.type === "ACCEPT_INVITE"){
-        console.log(action.payload, "payload")
-        let newNotifications = state.userInfo.notifications.filter(notification => {return action.payload.notification._id !== notification._id});
-        console.log(newNotifications, "new notifications")
-       let newUserInfo = {
+    if (action.type === "ACCEPT_INVITE") {
+        let newNotifications = state.userInfo.notifications.filter(notification => { return action.payload.notification._id !== notification._id });
+        let newUserInfo = {
             ...state.userInfo,
-            notifications : newNotifications
+            notifications: newNotifications
         }
-        console.log(newUserInfo, "new user info")
-        state ={
+        state = {
             ...state,
-            userInfo : newUserInfo
+            userInfo: newUserInfo
         }
-        console.log(state)
         return state
     }
-    if(action.type === "REMOVE_TEAM_MEMBER"){
+
+    if (action.type === "REMOVE_TEAM_MEMBER") {
         let newProject = state.projects.find(project => {return action.payload.project._id === project._id})
         let newProjectsList = state.projects.filter(project => {return action.payload.project._id !== project._id})
         let newMembers = newProject.members.filter(member => {return action.payload.member.email !== member.email});
@@ -111,17 +109,17 @@ const rootReducer = (state = initState, action) => {
         return state
     }
 
-    if(action.type === "DELETE_NOTIFICATION"){
+    if (action.type === "DELETE_NOTIFICATION") {
         console.log('in reducer delete')
-         
-       let newNotifications = state.userInfo.notifications.filter(notification => {return action.payload.notification._id !== notification._id});
+
+        let newNotifications = state.userInfo.notifications.filter(notification => { return action.payload.notification._id !== notification._id });
         let newUserInfo = {
             ...state.userInfo,
-            notifications : newNotifications
+            notifications: newNotifications
         }
-      return state ={
+        return state = {
             ...state,
-            userInfo : newUserInfo
+            userInfo: newUserInfo
         }
     }
 

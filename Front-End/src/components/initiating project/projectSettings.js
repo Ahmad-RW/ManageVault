@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { leaveProject, requestToDeleteProject, removeTeamMember } from '../../store/actionCreators/projectActions'
+import { leaveProject, requestToDeleteProject, removeTeamMember, requestDeleteAction } from '../../store/actionCreators/projectActions'
 
 class ProjectSettings extends Component {
     constructor(props) {
@@ -60,8 +60,13 @@ class ProjectSettings extends Component {
         this.props.leaveProject(this.state.project, this.props.userInfo)
         this.props.history.push('/home')
     }
-    handleDelete = (e) => {
+    handleDelete = () => {
         console.log(this.state)
+        if(this.state.project.members.length ===1){
+            this.props.requestDelete(this.state.project)
+            this.props.history.push('/home')
+            return
+        }
         this.props.deleteProject(this.state.project, this.props.userInfo);
         this.setRenderFlag()
     }
@@ -154,7 +159,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         leaveProject: (project, userInfo) => dispatch(leaveProject(project, userInfo)),
         deleteProject : (project, userInfo)=> dispatch(requestToDeleteProject(project, userInfo)),
-        removeTeamMember: (project, member) => dispatch(removeTeamMember(project, member))
+        removeTeamMember: (project, member) => dispatch(removeTeamMember(project, member)),
+        requestDelete: (project) => { dispatch(requestDeleteAction(project)) }
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectSettings)
