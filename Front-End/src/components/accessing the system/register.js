@@ -20,7 +20,7 @@ class Register extends Component {
         console.log(e)
         fb.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then((res) => {
             console.log(res)
-            this.postToServer();
+            this.postToServer()
             localStorage.setItem('token', "cookie")
         }).catch((exception) => {
             console.log(exception)
@@ -31,7 +31,7 @@ class Register extends Component {
 
     }
     postToServer = () => {
-        axios.post('http://localhost:3333/newuser', {
+        axios.post('http://localhost:3333/user/newuser', {
             name: this.state.name,
             password: this.state.password,
             email: this.state.email
@@ -68,5 +68,4 @@ class Register extends Component {
         )
     }
 }
-
-export default Register
+export default(Register)
