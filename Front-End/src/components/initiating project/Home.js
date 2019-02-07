@@ -14,7 +14,7 @@ class Home extends Component {
             <div className="container">
                 <ProjectCard projects = {this.props.projects} />
                 <div className="row">
-                    <CreateProjectCard />
+                        <CreateProjectCard />
                 </div>
             </div>
         )

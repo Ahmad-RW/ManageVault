@@ -10,7 +10,7 @@ class ProjectCard extends Component {
     const projectsList = projects.length ? (
         projects.map((project) => {
             return (
-                <div className="card bg-light col-sm w-25 m-auto" key={project._id} >
+                <div className="card bg-light col-sm-3" key={project._id} >
                     <div>
                         <ul className="nav nav-pills card-header-pills">
                             <li className="nav-item">
@@ -33,7 +33,7 @@ class ProjectCard extends Component {
 
     return (
         <div className="row">
-            {projectsList}
+                {projectsList}
         </div>
     )
 }
