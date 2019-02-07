@@ -9,7 +9,10 @@ projectRoute.post('/newproject', function (req, res) {
         creator: req.body.project.creator,
         major_course: req.body.project.major_course,
         status: 'RUNNING',
-        votes : 0,
+        votes : {
+            yes : 0,
+            no : 0
+        },
         members: req.body.project.members
     }
     let invitedMembers = req.body.project.invitedMembers.replace(/\s/g,'')//remove all spaces so when we match names we don't include spaces (e.g. test@test.com,test2@test.com)
@@ -45,8 +48,7 @@ projectRoute.post('/deleteproject', function (req,res) {
 
 projectRoute.post('/requestDeleteProject', function (req, res) {
     console.log(req.body, "PROJECT")
-    let votes = 1;
-    mongoose.model("projects").findByIdAndUpdate(req.body.project._id, {$set :{"status":"PENDING", "votes": votes}}).then(function(record){
+    mongoose.model("projects").findByIdAndUpdate(req.body.project._id, {$set :{"status":"PENDING"}, $inc:{"votes.yes" : 1}}).then(function(record){
         console.log(record)
         handleRequest(req.body.project)
         res.status(200).send(record)
@@ -57,20 +59,15 @@ projectRoute.post('/requestDeleteProject', function (req, res) {
 })
 
 projectRoute.post('/handleVoting', function(req, res) {//payload
-    console.log(req.body, "BODY")
     mongoose.model("projects").findById(req.body.payload.projectId).then(function(record){
-        console.log(record, "THIS IS THE RECORD");
-        let votes = record.votes; // Get hold of the votes from the DB.
         if(req.body.payload.yes){
-            votes++;
-            mongoose.model("projects").findByIdAndUpdate(record._id,{$set :{"votes":votes}}).then(function(record){
-                var votes = record.votes;
-                console.log(votes)
-                votes++
-                console.log(votes)
+            mongoose.model("projects").findByIdAndUpdate(record._id,{$inc :{"votes.yes":1}}).then(function(record){//thiss is the record before changing
+                var Previousvotes = record.votes.yes;
+                Previousvotes++
+                console.log(Previousvotes)
                 var majority = record.members.length/2
                 console.log(majority, "Majority")
-                if (votes >= majority){
+                if (Previousvotes > majority){
                     console.log("Inside if")
                     mongoose.model("projects").findByIdAndDelete(req.body.payload.projectId).then(function(record){
                         console.log(record, "DELETE QUERY")
@@ -81,8 +78,23 @@ projectRoute.post('/handleVoting', function(req, res) {//payload
                 )}
             })
         }else{
-            console.log("DECLINED DELETE")
-            
+            mongoose.model("projects").findByIdAndUpdate(record._id, {$inc : {"votes.no" : 1}}).then(function(record){
+                var Previousvotes = record.votes.no
+                Previousvotes++
+                var majority = record.members.length/2
+                if(Previousvotes >= majority){
+                    console.log("inside if No Vote")
+                    mongoose.model("projects").findByIdAndUpdate(req.body.payload.projectId, {$set : {"status" : "RUNNING"}}).then(function(record){
+                        console.log(record, "CHANGED STATUS")
+                    })
+                    mongoose.model("users").findByIdAndDelete(req.body.payload.userInfo._id, {$pull : {"notifications" : {_id : req.body.payload.notification._id}}}).then(function(record){
+                        console.log(record, "deleted notification")
+                    })
+                }
+            }).catch(function(exception){
+                console.log("EXCEPTION OCCURED")
+                console.log(exception)
+            })
         }
         res.sendStatus(200)
     }).catch(function(error){
@@ -141,6 +153,17 @@ projectRoute.post('/handleNotificationDelete', function(req, res){
     }).catch(function(err){
         console.log(err)
     })
+})
+
+projectRoute.post('/setAuthority', function(req, res){
+    console.log(req.body.payload)
+        console.log("inside first if")
+        mongoose.model('projects').findOneAndUpdate(req.body.payload.project, {$set :{"members.$[elem].authorities":req.body.payload.newAuthorities}}, {arrayFilters :[{"elem.email" :req.body.payload.member.email}]}).then(function(record){
+            res.status(200).send(record)  
+        }).catch(function(exception){
+            console.log(exception)
+            res.status(500).send()
+        })
 })
 
 //helper functions

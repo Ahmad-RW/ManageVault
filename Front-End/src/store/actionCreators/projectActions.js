@@ -125,3 +125,13 @@ export const handleVoting = (payload) => {
     }
 }
 
+export const setAuthority = (payload) => {
+return (dispatch)=>{
+    axios.post('http://localhost:3333/project/setAuthority', {payload}).then((res)=>{
+        console.log(res)
+        dispatch({type : "SET_AUTHORITY", payload})
+    }).catch((exception)=>{
+        console.log(exception)
+    })
+}
+}

@@ -11,6 +11,7 @@ app.use(function (req, res, next) {
 });
 app.use(bodyParser.json());// post request body parser
 app.use(express.static('public'));//I think this allows all public URLs in
+
 //routes
 app.get('/', function (req, res) {
     res.send('hi')

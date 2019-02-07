@@ -1,60 +1,41 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import {Link} from 'react-router-dom'
 import { leaveProject, requestToDeleteProject, removeTeamMember, requestDeleteAction } from '../../store/actionCreators/projectActions'
-
 class ProjectSettings extends Component {
     constructor(props) {
         super(props)
+        console.log(this.state, "CONSTURCTOR")
     }
-    
+
     state = {
         project: this.props.location.state.project,
         teamLeader: "",
         members: {},
         requestDeleteButton: false,
-        renderMessageFlag: false 
+        renderMessageFlag: false
     }
 
 
-        renderMessage = () => {
-            if(this.state.renderMessageFlag){
+    renderMessage = () => {
+        console.log(document.getElementById('deletebtn'))
+        if (this.state.renderMessageFlag && document.getElementById('deletebtn')!==null ) {
             document.getElementById('deletebtn').className = "d-none";
             return (
                 <div className="container">
-                    <div className = "alert alert-danger">
+                    <div className="alert alert-danger">
                         <p>Delete request has been sent to team members</p>
                     </div>
                 </div>
             )
         }
     }
-        setRenderFlag = () => {
-            this.setState({
-                ...this.state,
-                renderMessageFlag: true
-            })
-        }
-    componentWillMount() {
-        const project = this.props.location.state.project
-           const teamLeader = project.members.find(member => {
-            return member.teamLeader
+    setRenderFlag = () => {
+        this.setState({
+            ...this.state,
+            renderMessageFlag: true
         })
-                let flag = false;
-                if(teamLeader.email === this.props.userInfo.email){
-                    flag = true;
-                }
-           this.setState({
-               ...this.state,
-            requestDeleteButton: flag
-        })
-
-
     }
-    
-    // componentWillUpdate() {
-    //     console.log("i am in component Will Receive Props")
-    //     this.forceUpdate()
-    // }
     handleLeave = () => {
         console.log(this.state)
         this.props.leaveProject(this.state.project, this.props.userInfo)
@@ -62,7 +43,7 @@ class ProjectSettings extends Component {
     }
     handleDelete = () => {
         console.log(this.state)
-        if(this.state.project.members.length ===1){
+        if (this.state.project.members.length === 1) {
             this.props.requestDelete(this.state.project)
             this.props.history.push('/home')
             return
@@ -77,41 +58,60 @@ class ProjectSettings extends Component {
         this.props.history.push('/home')
         alert("Team member has been removed")
     }
+    checkAuthority =(member)=>{
+        console.log(member)
+        const authorities = member.authorities
+        let result = false
+        authorities.forEach(element => {
+            console.log(element.includes("REMOVE_TEAM_MEMBERS"))
+            if(element.includes("REMOVE_TEAM_MEMBERS")){
+                result = true
+            }
+        });
+        return result
+    }
     render() {
-        let deleteButton = <span></span>
-        if(this.state.requestDeleteButton && this.state.project.status !== 'PENDING'){
-            deleteButton = <button className="btn btn-danger" id="deletebtn" onClick={this.handleDelete}>Delete Project</button> //Request to delete
-        }
         const project = this.state.project
         const teamLeader = project.members.find(member => {
-         return member.teamLeader
+            return member.teamLeader
         })
+        let flag = false;
+        if (teamLeader.email === this.props.userInfo.email && project.status !== "PENDING") {
+            flag = true;
+        }
+
+        let deleteButton = <span></span>
+        if (flag && this.state.project.status !== 'PENDING') {
+            deleteButton = <button className="btn btn-danger" id="deletebtn" onClick={this.handleDelete}>Delete Project</button> //Request to delete
+        }
 
         let removeButton = <span></span>
-        console.log(this.state)
-        
-
+        let grantAuthority = <span></span>
         const members = project.members.length ? (
             project.members.map(member => {
-                if(teamLeader.email === this.props.userInfo.email){
-                    removeButton = <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => {this.handleRemove(member)}}>
+               const isAuthorized = this.checkAuthority(member)
+                console.log(isAuthorized)
+                if (teamLeader.email === this.props.userInfo.email ) {
+                    removeButton = <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleRemove(member) }}>
                         <i className="material-icons ">highlight_off</i>
-                        </button>
+                    </button>
+                    grantAuthority = <Link to={{ pathname:"/grantAuthority", state:{project, member}}}>Grant Authority</Link>
                 }
-                if (!member.teamLeader) return (<li class="list-group-item" key={member.email}>{member.email} {removeButton}</li>)
+                if(isAuthorized){
+                    removeButton = <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleRemove(member) }}>
+                        <i className="material-icons ">highlight_off</i>
+                    </button>
+
+                }
+                if (!member.teamLeader) return (<li class="list-group-item" key={member.email}>{member.email} {removeButton} {grantAuthority} </li>)
             })
         ) : (<li class="list-group-item">project has no members</li>)
-        //    this.setState({
-        //     project,
-        //     teamLeader,
-        //     members
-        // })
         return (
             <div className="container-fluid">
                 <div className="jumbotron jumbotron-fluid">
                     <div className="container">
                         <h1 className="display-1">{project.title}</h1>
-                            {this.renderMessage()}
+                        {this.renderMessage()}
                         <div className="row">
                             <h4>Team leader  : </h4>
                         </div>
@@ -143,8 +143,8 @@ class ProjectSettings extends Component {
                     </div>
                 </div>
             </div>
-         
-            
+
+
         )
     }
 }
@@ -158,7 +158,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         leaveProject: (project, userInfo) => dispatch(leaveProject(project, userInfo)),
-        deleteProject : (project, userInfo)=> dispatch(requestToDeleteProject(project, userInfo)),
+        deleteProject: (project, userInfo) => dispatch(requestToDeleteProject(project, userInfo)),
         removeTeamMember: (project, member) => dispatch(removeTeamMember(project, member)),
         requestDelete: (project) => { dispatch(requestDeleteAction(project)) }
     }

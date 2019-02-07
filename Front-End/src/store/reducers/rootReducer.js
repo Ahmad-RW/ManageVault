@@ -122,6 +122,10 @@ const rootReducer = (state = initState, action) => {
             userInfo: newUserInfo
         }
     }
+    if(action.type === "SET_AUTHORITY"){
+        console.log("in reducer set authority")
+        console.log(action.payload)
+    }
 
     return state
 }
