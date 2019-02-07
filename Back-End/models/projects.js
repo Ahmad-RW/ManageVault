@@ -2,46 +2,52 @@ const mongoose = require('mongoose')
 const schema = mongoose.Schema;
 
 const projectsSchema = new schema({
-    name :{
+    title :{
         type: String,
         required :true
     },
-    course : {
-        type : String,
-        required : true
+    creator : {
+        type : String
     },
-    major : {
-        type : String,
-        required : true
-    },
+    major_course : { type : String },
     status : {
         type : String,
-        enum : ['PENDING', 'RUNNING', 'PUBLISHED'],
+        enum : ['PENDING', 'RUNNING', 'PUBLISHED', 'STOPPED'],
         required : true
+    },
+    votes: {
+        yes : Number,
+        no : Number
     },
     displayStyle: {
         type : String,
         enum : ['TABLE', 'TIMELINE']
     },
+    roles :{
+        TeamManager : {type : Array, default: ["INVITE_USERS", "REMOVE_TEAM_MEMBERS", "PUBLISH_PROJECT", "UNPUBLISH_PROJECT"]},
+        TaskManager : {type : Array, default:  ["CREATE_TASK", "CONFIRM_SUBMISSION", "DELETE_TASK", "ASSIGN_TASK", "UN-ASSIGN_TASK", "MODIFY_TASK"]},
+    },
     members : [{
-        name : String,
+        email : String,
+        teamLeader : Boolean,
         kind : String,
-        authorities : []
+        authorities : [],//roles : {task mng: true, team mng: false}
     }],
     files : [{
-        name : String,
+        name : {type : String},
         extension : String,
         size : String,
         lasModified : String,
         creator : String,
     }],
     tasks : [{
-        name :{type : String, required: true},
+        name :{type : String},
         status : String,
-        deadline : String,
+        startDate : Date, //we calculate the deadline given startdate and duration
+        duration : Number, // we need to find integers in react OR handle entering floats as days. 
+        deadline : Date, //String or Date ? 
         dependencies : [{
-            startDate : Date,
-            endDate : Date,
+            Date : Date,
             predecessor : String,
             successor : String
         }],
@@ -49,14 +55,15 @@ const projectsSchema = new schema({
             name : String,
             messages :[{
                 date : Date,
-                content : String,
+                content : Object,   //handle if its a only a string in the back end. if thats the case convert it using JSON.parse
                 author : String
             }]
         },
         assignment : {
             assigner : String,
             assignedMembers : [{name : String}],
-            date : Date,
+            startDate : Date,
+            endDate : Date
         },
         comments : [{
             date : Date,
@@ -77,4 +84,3 @@ const projectsSchema = new schema({
 const Projects = mongoose.model('projects', projectsSchema)
 
 module.exports = Projects
-

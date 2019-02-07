@@ -2,10 +2,6 @@ const mongoose = require('mongoose')
 const schema = mongoose.Schema;
 
 const usersSchema = new schema({
-    username :{
-        type : String,
-        required : true
-    },
     name : {
         type : String,
         required : true
@@ -17,7 +13,12 @@ const usersSchema = new schema({
     password : {
         type : String,
         required : true
-    }
+    },
+    notifications : [{
+        kind : String,
+        date : Date,
+        data : {}
+    }]
 });
 
 const Users = mongoose.model('users', usersSchema)

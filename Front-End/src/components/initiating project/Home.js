@@ -1,23 +1,30 @@
-import React, {Component} from 'react'
-import {connect } from 'react-redux'
-class Home extends Component{
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import ProjectCard from './ProjectCard'
+import CreateProjectCard from './createProjectCard'
+class Home extends Component {
+    // componentDidMount(){
+    //     this.setState()
+    // }
     state = {
-        projects : []
+        projects : this.props.projects
     }
-    constructor(props){
-        super(props)
-        console.log(props, 'home construct')
-    }
-    render(){
-        return(
-          <h1>hi</h1>
+    render() {
+        return (
+            <div className="container">
+                <ProjectCard projects = {this.props.projects} />
+                <div className="row">
+                        <CreateProjectCard />
+                </div>
+            </div>
         )
     }
 }
 
-const mapStateToProps = (state, ownProps) =>{
-    return{
-        authenticated : state.isAuthenticated
+const mapStateToProps = (state) =>{
+    return {
+        projects : state.projects,
+        authenticated: state.isAuthenticated,
     }
 }
 
