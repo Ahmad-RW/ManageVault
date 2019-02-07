@@ -125,6 +125,9 @@ const rootReducer = (state = initState, action) => {
     if(action.type === "SET_AUTHORITY"){
         console.log("in reducer set authority")
         console.log(action.payload)
+        // const newAuthorities = payload.newAuthorities
+        // let projects = state.projects.slice()
+        
     }
 
     return state
