@@ -3,7 +3,7 @@ export const createProjectAction = (project) => {
     return (dispatch, getState) => {
         console.log(project)
         //async call to database. after that the dispatcher is sent 
-        axios.post('http://localhost:3333/newproject', { project: project }).then((res) => {
+        axios.post('http://localhost:3333/project/newproject', { project: project }).then((res) => {
             dispatch({ type: "CREATE_PROJECT", project })
             console.log(res, "response from back end")
         }).catch((exception) => {
@@ -16,10 +16,23 @@ export const createProjectAction = (project) => {
     //after adding to the data base the dispatcher continues his role.
 }
 
+
+//this action creator is used to fetch projects from the database. With thunk also
+export const fetchUserProjects = (userEmail) => {
+    return (dispatch, getState) => {
+        axios.get('http://localhost:3333/project/getUserProjects?userEmail=' + userEmail).then((res) => {
+            console.log(res.data, "in fetch projects action")
+            dispatch({ type: "SET_USER_PROJECTS", projects: res.data })
+        }).catch((exception) => {
+            console.log(exception)
+        })
+    }
+}
+
 export const requestDeleteAction = (project) => {
     return(dispatch) => {
         console.log(project)
-        axios.post('http://localhost:3333/deleteproject', {project}).then((res) => {
+        axios.post('http://localhost:3333/project/deleteproject', {project}).then((res) => {
             dispatch({ type: "REQUEST_DELETE", project})
             console.log(res)
         }).catch((exception) => {
@@ -36,7 +49,7 @@ export const requestToDeleteProject = (project, userInfo) =>{
             project, 
             userInfo
         }
-        axios.post('http://localhost:3333/requestDeleteProject', {project, userInfo}).then((res)=>{
+        axios.post('http://localhost:3333/project/requestDeleteProject', {project, userInfo}).then((res)=>{
             dispatch({ type: "REQUEST_TO_DELETE_PROJECT", payload})  
         console.log(res)
         }).catch((exception)=>{
@@ -48,23 +61,12 @@ export const requestToDeleteProject = (project, userInfo) =>{
 
 
 
-//this action creator is used to fetch projects from the database. With thunk also
-export const fetchUserProjects = (userEmail) => {
-    return (dispatch, getState) => {
-        axios.get('http://localhost:3333/getUserProjects?userEmail=' + userEmail).then((res) => {
-            console.log(res.data, "in fetch projects action")
-            dispatch({ type: "SET_USER_PROJECTS", projects: res.data })
-        }).catch((exception) => {
-            console.log(exception)
-        })
-    }
-}
 
 export const leaveProject = (project, userInfo) => {
     return (dispatch, getState) => {
         console.log('in action')
         const payload = { project, userInfo }
-        axios.post('http://localhost:3333/leaveProject', { project, userInfo }).then((res) => {
+        axios.post('http://localhost:3333/project/leaveProject', { project, userInfo }).then((res) => {
             dispatch({ type: "LEAVE_PROJECT", payload })
             console.log(res)
         })
@@ -75,7 +77,7 @@ export const removeTeamMember = (project, member) => {
     console.log("remove action here")
     return (dispatch, getState) => {
         const payload = { project, member}
-        axios.post('http://localhost:3333/removeTeamMember', { project, member}).then((res) => {
+        axios.post('http://localhost:3333/project/removeTeamMember', { project, member}).then((res) => {
             dispatch({ type: "REMOVE_TEAM_MEMBER", payload })
             console.log(res)
         })
@@ -83,10 +85,10 @@ export const removeTeamMember = (project, member) => {
 }
 
 export const handleInvite = (project, userInfo, notification) => {
-    console.log("in store")
+    console.log(userInfo)
     return (dispatch) => {
         const payload = { project, userInfo, notification }
-        axios.post('http://localhost:3333/handleInvite', { project, userInfo, notification }).then((res) => {
+        axios.post('http://localhost:3333/project/handleInvite', { project, userInfo, notification }).then((res) => {
             console.log(res)
             dispatch({ type: "ACCEPT_INVITE", payload })
         }).catch((exception) => {
@@ -95,11 +97,12 @@ export const handleInvite = (project, userInfo, notification) => {
     }
 }
 export const handleNotificationDelete = (projectId, userInfo, notification)=>{
-    console.log('in store')
+    console.log(userInfo)
     return (dispatch) =>{
         const payload = {projectId, userInfo, notification}
-        axios.post('http://localhost:3333/handleNotificationDelete', {projectId, userInfo, notification}).then((res)=>{
+        axios.post('http://localhost:3333/project/handleNotificationDelete', {projectId, userInfo, notification}).then((res)=>{
             dispatch({type : "DELETE_NOTIFICATION", payload})
+            console.log(res)
         }).catch((exception)=>{
             console.log(exception)
         })
@@ -112,7 +115,7 @@ export const handleNotificationDelete = (projectId, userInfo, notification)=>{
 export const handleVoting = (payload) => {
     console.log(payload, "IN ACTION")
     return (dispatch) => {
-        axios.post("http://localhost:3333/handleVoting", {payload}).then((res) => {
+        axios.post("http://localhost:3333/project/handleVoting", {payload}).then((res) => {
             console.log(res)
             //dispatch({ type: "REQUEST_TO_DELETE_PROJECT", payload})
             console.log("DISPATCHED")
@@ -122,3 +125,13 @@ export const handleVoting = (payload) => {
     }
 }
 
+export const setAuthority = (payload) => {
+return (dispatch)=>{
+    axios.post('http://localhost:3333/project/setAuthority', {payload}).then((res)=>{
+        console.log(res)
+        dispatch({type : "SET_AUTHORITY", payload})
+    }).catch((exception)=>{
+        console.log(exception)
+    })
+}
+}

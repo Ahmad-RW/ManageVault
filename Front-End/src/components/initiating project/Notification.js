@@ -20,18 +20,20 @@ class Notification extends Component {
     //         this.props.history.push("/")
     //     }
     // }
-    handleAccept = (project, notification) => {
-        console.log(project, "howdy")
+    handleAccept = (project, notification) => {// handles accepting project invitation
+        console.log(this.state.userInfo, "howdy")
         this.props.handleInvite(project, this.state.userInfo, notification)
+        this.props.handleNotificationDelete(project, this.props.userInfo, notification)
+
         // window.location.reload()
         // this.props.history.push('/home');
         // window.location.reload()
     }
-    handleDelete = (notification, projectId) =>{
-        this.props.handleNotificationDelete(projectId, this.state.userInfo, notification)
+    handleDelete = (notification, projectId) =>{// deletes a notification from the store and database. my very own baby.
+        this.props.handleNotificationDelete(projectId, this.props.userInfo, notification)
 
     }
-    handleClick = (e, projectId, notification, userInfo) => {
+    handleClick = (e, projectId, notification, userInfo) => {// delete Request
         let payload = {
             projectId,
             notification,
@@ -52,6 +54,7 @@ class Notification extends Component {
             }
         }
         this.props.handleRequest(payload)
+        this.props.handleNotificationDelete(projectId, userInfo, notification)
     }
     render() {
         
@@ -73,17 +76,18 @@ class Notification extends Component {
                                     <div className="alert alert-primary">
                                         <h4 className="notiHead">Project Invitation</h4>
 
-                                        <button className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleDelete(Notification, Notification.data.projectId) }}>
-                                        <i className="material-icons Xicon">highlight_off</i>
+                                        <button className="close" data-dismiss="alert" aria-label="Close"  onClick={() => { this.handleDelete(Notification, Notification.data.projectId) }}>
+                                        <i className="material-icons">highlight_off</i>
                                         </button>
                                     </div>
                                     <div class="card-body">
                                         <p class="card-text">You have been invited to {Notification.data.title} by {Notification.data.creator} do you accept?</p>
                                         <button onClick={() => { this.handleAccept(Notification.data.projectId, Notification) }} class="btn btn-primary">Accept invite </button>
                                     </div>
-                                    <div className="pt-2">{Notification.date}</div>
                                 </div>
+                                <div className="pt-2">{date[0]} {time}</div>
                             </div>
+                            
                         </div>
                     ) : (
                         <div className="container pt-3" key={Notification._id}>
@@ -98,10 +102,9 @@ class Notification extends Component {
                                         <button value="yes" onClick={(e) => {this.handleClick(e, Notification.data.projectId, Notification, this.props.userInfo)}} class="btn btn-danger">Accept delete</button>
                                         <button value="no" onClick={(e) => {this.handleClick(e, Notification.data.projectId, Notification, this.props.userInfo)}} class="btn btn-primary">Decline delete </button>
                                     </div>
-                                    <div className="pt-2">{Notification.date}</div>
                                 </div>
+                                <div className="pt-2">{date[0]} {time}</div>
                             </div>
-                            <div className="pt-2">{date[0]} {time}</div>
                         </div>
                     )
 

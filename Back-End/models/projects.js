@@ -16,17 +16,22 @@ const projectsSchema = new schema({
         required : true
     },
     votes: {
-        type: Number
+        yes : Number,
+        no : Number
     },
     displayStyle: {
         type : String,
         enum : ['TABLE', 'TIMELINE']
     },
+    roles :{
+        TeamManager : {type : Array, default: ["INVITE_USERS", "REMOVE_TEAM_MEMBERS", "PUBLISH_PROJECT", "UNPUBLISH_PROJECT"]},
+        TaskManager : {type : Array, default:  ["CREATE_TASK", "CONFIRM_SUBMISSION", "DELETE_TASK", "ASSIGN_TASK", "UN-ASSIGN_TASK", "MODIFY_TASK"]},
+    },
     members : [{
         email : String,
         teamLeader : Boolean,
         kind : String,
-        authorities : [] //roles : {task mng: true, team mng: false}
+        authorities : [],//roles : {task mng: true, team mng: false}
     }],
     files : [{
         name : {type : String},
