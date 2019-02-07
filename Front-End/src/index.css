@@ -26,3 +26,11 @@ code {
 .btn-primary {
   margin-left: 10px;
 }
+
+.btn-danger {
+  margin-left: 10px;
+}
+
+.label {
+padding-right: 100px;
+}

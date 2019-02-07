@@ -76,13 +76,14 @@ class Notification extends Component {
                                     <div className="alert alert-primary">
                                         <h4 className="notiHead">Project Invitation</h4>
 
-                                        <button className="close" data-dismiss="alert" aria-label="Close"  onClick={() => { this.handleDelete(Notification, Notification.data.projectId) }}>
+                                        <button className="close" data-dismiss="alert" aria-label="Close"  onClick={() => { this.handleDelete(Notification, Notification.data.projectId) }} hidden>
                                         <i className="material-icons">highlight_off</i>
                                         </button>
                                     </div>
                                     <div class="card-body">
                                         <p class="card-text">You have been invited to {Notification.data.title} by {Notification.data.creator} do you accept?</p>
-                                        <button onClick={() => { this.handleAccept(Notification.data.projectId, Notification) }} class="btn btn-primary">Accept invite </button>
+                                        <button onClick={() => { this.handleAccept(Notification.data.projectId, Notification) }} class="btn btn-primary">Yes </button>
+                                        <button value="no" onClick={() => { this.handleDelete(Notification, Notification.data.projectId) }} class="btn btn-danger">No</button>
                                     </div>
                                 </div>
                                 <div className="pt-2">{date[0]} {time}</div>
@@ -99,8 +100,8 @@ class Notification extends Component {
                                     </div>
                                     <div class="card-body">
                                         <p class="card-text">The team leader requested to delete {Notification.data.title}, do you accept?</p>
-                                        <button value="yes" onClick={(e) => {this.handleClick(e, Notification.data.projectId, Notification, this.props.userInfo)}} class="btn btn-danger">Accept delete</button>
-                                        <button value="no" onClick={(e) => {this.handleClick(e, Notification.data.projectId, Notification, this.props.userInfo)}} class="btn btn-primary">Decline delete </button>
+                                        <button value="no" onClick={(e) => {this.handleClick(e, Notification.data.projectId, Notification, this.props.userInfo)}} class="btn btn-primary">Yes </button>
+                                        <button value="yes" onClick={(e) => {this.handleClick(e, Notification.data.projectId, Notification, this.props.userInfo)}} class="btn btn-danger">No</button>
                                     </div>
                                 </div>
                                 <div className="pt-2">{date[0]} {time}</div>

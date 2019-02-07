@@ -13,6 +13,7 @@ import CreateProject from './components/initiating project/createProject';
 import {authenticate, fetchUserInfo} from './store/actionCreators/authAction'
 import { fetchUserProjects } from './store/actionCreators/projectActions';
 import Notification from './components/initiating project/Notification'
+import WorkSpace from './components/Task/Workspace'
 
 class App extends Component {
   componentWillMount() {
@@ -36,6 +37,7 @@ class App extends Component {
             <Route path='/home' component={RequireAuth(Home)} />
             <Route path='/newproject' component={RequireAuth(CreateProject)} />
             <Route path='/projectSettings' component={RequireAuth(ProjectSettings)} />
+            <Route path='/projectWorkSpace' component={RequireAuth(WorkSpace)} />
             <Route path='/notification' component={RequireAuth(Notification)} />
           </Switch>
           

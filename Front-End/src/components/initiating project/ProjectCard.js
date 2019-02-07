@@ -24,7 +24,7 @@ class ProjectCard extends Component {
                     <div className="card-body">
                         <h4 className="card-title">{project.title}</h4>
                         <p className="card-text"> velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                        <Link to="#" className="card-link">Open Project</Link>
+                        <Link to={{ pathname:"/projectWorkSpace", state:{project}}} className="card-link">Open Project</Link>
                         
                     </div>
                 </div>
