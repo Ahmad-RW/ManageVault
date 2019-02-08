@@ -29,6 +29,7 @@ const projectsSchema = new schema({
     },
     members : [{
         email : String,
+        name : String,
         teamLeader : Boolean,
         kind : String,
         authorities : [],//roles : {task mng: true, team mng: false}

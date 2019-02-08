@@ -26,6 +26,7 @@ const rootReducer = (state = initState, action) => {
     if (action.type === "CREATE_PROJECT") {
         // let newProjects = state.projects creates a pointer only
         // newProjects.push(action.project)
+        console.log(action.project)
         let newProjects = [...state.projects, action.project]
         state = {
             ...state,
@@ -83,6 +84,7 @@ const rootReducer = (state = initState, action) => {
             ...state.userInfo,
             notifications: newNotifications
         }
+        
         state = {
             ...state,
             userInfo: newUserInfo

@@ -103,7 +103,7 @@ class ProjectSettings extends Component {
                     </button>
 
                 }
-                if (!member.teamLeader) return (<li class="list-group-item" key={member.email}>{member.email} {removeButton} {grantAuthority} </li>)
+                if (!member.teamLeader) return (<li class="list-group-item" key={member.email}>{member.name} {removeButton} {grantAuthority} </li>)
             })
         ) : (<li class="list-group-item">project has no members</li>)
         return (
@@ -117,7 +117,7 @@ class ProjectSettings extends Component {
                         </div>
                         <div className="row">
                             <ul class="list-group">
-                                <li class="list-group-item list-group-item-primary">{teamLeader.email}</li>
+                                <li class="list-group-item list-group-item-primary">{teamLeader.name}</li>
                             </ul>
                         </div>
                         <hr />

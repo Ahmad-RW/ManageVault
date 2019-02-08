@@ -1,11 +1,9 @@
 import axios from 'axios'
-export const createProjectAction = (project) => {
+export const createProjectAction = (project, userInfo) => {
     return (dispatch, getState) => {
-        console.log(project)
         //async call to database. after that the dispatcher is sent 
-        axios.post('http://localhost:3333/project/newproject', { project: project }).then((res) => {
-            dispatch({ type: "CREATE_PROJECT", project })
-            console.log(res, "response from back end")
+        axios.post('http://localhost:3333/project/newproject', { project, userInfo }).then((res) => {
+            dispatch({ type: "CREATE_PROJECT", project : res.data })
         }).catch((exception) => {
             console.log(exception)
         })
@@ -85,7 +83,6 @@ export const removeTeamMember = (project, member) => {
 }
 
 export const handleInvite = (project, userInfo, notification) => {
-    console.log(userInfo)
     return (dispatch) => {
         const payload = { project, userInfo, notification }
         axios.post('http://localhost:3333/project/handleInvite', { project, userInfo, notification }).then((res) => {

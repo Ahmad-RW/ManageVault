@@ -48,10 +48,11 @@ class CreateProject extends Component {
                 invitedMembers: this.state.invitedMembers,
                 members: [{
                     email: this.props.userInfo.email,
+                    name : this.props.userInfo.name,
                     teamLeader: true
                 }]
             }
-            this.props.createProject(project)
+            this.props.createProject(project, this.props.userInfo)
           
             this.props.history.push('/home')
         }
@@ -103,7 +104,7 @@ class CreateProject extends Component {
 }
 const mapDispatchToProps = (dispatch) => {
     return {
-        createProject: (project) => dispatch(createProjectAction(project))
+        createProject: (project, userInfo) => dispatch(createProjectAction(project, userInfo))
     }
 }
 const mapStateToProps = (state) => {

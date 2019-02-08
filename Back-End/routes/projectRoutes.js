@@ -4,6 +4,7 @@ const projects = require('../models/projects')
 const mongoose = require('../dbConfig/databaseCon')
 
 projectRoute.post('/newproject', function (req, res) {
+    console.log(req.body, "REQUEST")
     let project = {
         title: req.body.project.title,
         creator: req.body.project.creator,
@@ -17,6 +18,9 @@ projectRoute.post('/newproject', function (req, res) {
     }
     let invitedMembers = req.body.project.invitedMembers.replace(/\s/g,'')//remove all spaces so when we match names we don't include spaces (e.g. test@test.com,test2@test.com)
     invitedMembers = invitedMembers.split(',')//basically split the string at the commas and return each section as an element in an array.
+    console.log(invitedMembers, "INVITED MEMBERS")
+    invitedMembers = invitedMembers.filter(function(member) { return member !== req.body.userInfo.email})
+  console.log(invitedMembers, "INVITED MEMBERS AFTER FILTERING")
     projects.create(project).then(function (project) {
         res.status(200).send(project)
         handleInvite(invitedMembers, project)
@@ -131,6 +135,7 @@ projectRoute.post('/handleInvite', function (req, res) {
     console.log(req.body.project)
     const member = {
         email : req.body.userInfo.email,
+        name : req.body.userInfo.name,
         teamLeader : false,
         kind : "ACTIVE",
         authorities : []
@@ -168,9 +173,7 @@ projectRoute.post('/setAuthority', function(req, res){
 
 //helper functions
 function handleInvite(invitedMembers, project) {//basically this function sends a notification to the users who are invited to a project. It's been refactored due to size.
-    console.log("inside helper function")
     const obj = {kind : "PROJECT_INVITE", date : new Date, data : { title : project.title , creator : project.creator, projectId :  project._id}}
-    console.log(obj, "single notification")
     invitedMembers.forEach(member => {
         console.log(member)
         mongoose.model('users').findOneAndUpdate({email : member}, {$push :{"notifications" : obj}}).then(function(record){
