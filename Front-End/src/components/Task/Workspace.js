@@ -14,11 +14,6 @@ class Task extends Component {
         project: this.props.location.state.project
     }
 
-    handleCreateTask = (e) => {
-        e.preventDefault()
-        console.log(e)
-    }
-
     render() {
         return (
                 <div>

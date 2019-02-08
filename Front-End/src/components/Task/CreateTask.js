@@ -3,6 +3,12 @@ import { connect } from 'react-redux'
 import DatePicker from './DatePicker'
 
 class CreateTask extends Component {
+
+    handleCreateTask = (e) => {
+        e.preventDefault()
+        console.log(e)
+    }
+
     render() {
         return (
             <div>
