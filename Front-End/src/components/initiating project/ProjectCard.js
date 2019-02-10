@@ -5,6 +5,23 @@ import { connect } from 'react-redux'
 
 class ProjectCard extends Component {
 
+
+    isTeamLeader = (project) => {
+        let result = false
+        project.members.forEach(member => {
+            console.log(member, "EACH MEMBER")
+            if (member.email === this.props.userInfo.email && member.teamLeader) {
+                result = true
+            }
+        });
+        return result
+    }
+    renderTeamLeaderStar = (project) => {
+        let flag = this.isTeamLeader(project)
+        if (flag) {
+            return (<span data-toggle="tooltip" title="you are a leader in this project !"><i class="material-icons">supervised_user_circle</i></span>)
+        }
+    }
     render() {
         const projects = this.props.projects
         const projectsList = projects.length ? (
@@ -18,6 +35,9 @@ class ProjectCard extends Component {
                                 </li>
                                 <li className="nav-item ml-2 ">
                                     <span >{project.status}</span>
+                                </li>
+                                <li>
+                                    {this.renderTeamLeaderStar(project)}
                                 </li>
                             </ul>
                         </div>
@@ -39,9 +59,10 @@ class ProjectCard extends Component {
     }
 }
 
-const mapStateToProps = (state) =>{
+const mapStateToProps = (state) => {
     return {
-        projects : state.projects
+        projects: state.projects,
+        userInfo: state.userInfo
     }
 }
 export default connect(mapStateToProps)(ProjectCard)

@@ -92,7 +92,7 @@ class CreateProject extends Component {
                         <div className="form-group">
                             <label>Invite Members</label>
                             <input type="text" className="form-control" onChange={this.handleChange} id="invitedMembers" />
-                            <small className='form-text text-muted'>Enter each name seperated by commas</small>
+                            <small className='form-text text-muted'>Enter each email seperated by commas</small>
                         </div>
                     </div>
                     <button type="submit" className="btn btn-primary " >Create Project</button>

@@ -132,3 +132,19 @@ return (dispatch)=>{
     })
 }
 }
+
+export const inviteMoreMembers = (invitedUsers, project, userInfo) =>{
+    return(dispatch) =>{
+        const payload = {
+            project,
+            invitedUsers,
+            userInfo
+        }
+        axios.post('http://localhost:3333/project/inviteUsers', {payload}).then((res)=>{
+            console.log(res)
+            //redux has no role here
+        }).catch((exception)=>{
+            console.log(exception)
+        })
+    }
+}

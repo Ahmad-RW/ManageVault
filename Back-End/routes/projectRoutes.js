@@ -140,6 +140,11 @@ projectRoute.post('/handleInvite', function (req, res) {
         kind : "ACTIVE",
         authorities : []
     }
+    // mongoose.model("projects").findById(req.body.project).then(function(record){
+        
+    // }).catch(function(exception){
+
+    // })
     mongoose.model("projects").findByIdAndUpdate(req.body.project, {$push :{"members" : member}}).then(function(record){//handles accepting invite. First it pushess themmeber in the project then removes the notification from his mailbox
         mongoose.model("users").findByIdAndUpdate(req.body.userInfo._id, {$pull : {"notifications" : {_id : req.body.notification._id}}}).then(function(record){
             // console.log(record)
@@ -171,13 +176,21 @@ projectRoute.post('/setAuthority', function(req, res){
         })
 })
 
+projectRoute.post('/inviteUsers', function(req, res){
+    let invitedMembers = req.body.payload.invitedUsers.replace(/\s/g,'')//remove all spaces so when we match names we don't include spaces (e.g. test@test.com,test2@test.com)
+    invitedMembers = invitedMembers.split(',')//basically split the string at the commas and return each section as an element in an array.
+    invitedMembers = invitedMembers.filter(function(member) { return member !== req.body.payload.userInfo.email})
+    const record = handleInvite(invitedMembers, req.body.payload.project)
+    res.status(200).send(record)
+})
+
 //helper functions
 function handleInvite(invitedMembers, project) {//basically this function sends a notification to the users who are invited to a project. It's been refactored due to size.
     const obj = {kind : "PROJECT_INVITE", date : new Date, data : { title : project.title , creator : project.creator, projectId :  project._id}}
     invitedMembers.forEach(member => {
-        console.log(member)
         mongoose.model('users').findOneAndUpdate({email : member}, {$push :{"notifications" : obj}}).then(function(record){
-            console.log(record, "record")
+            //console.log(record, "record")
+            return record
         }).catch(function(error){
             console.log(error)
         })

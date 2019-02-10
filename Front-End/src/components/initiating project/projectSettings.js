@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import InviteMembers from './inviteMembers'
 import { leaveProject, requestToDeleteProject, removeTeamMember, requestDeleteAction } from '../../store/actionCreators/projectActions'
+import inviteMembers from './inviteMembers';
 class ProjectSettings extends Component {
     constructor(props) {
         super(props)
@@ -13,13 +15,14 @@ class ProjectSettings extends Component {
         teamLeader: "",
         members: {},
         requestDeleteButton: false,
-        renderMessageFlag: false
+        renderMessageFlag: false,
+        invitedMembers : ""
     }
 
 
     renderMessage = () => {
         console.log(document.getElementById('deletebtn'))
-        if (this.state.renderMessageFlag && document.getElementById('deletebtn')!==null ) {
+        if (this.state.renderMessageFlag && document.getElementById('deletebtn') !== null) {
             document.getElementById('deletebtn').className = "d-none";
             return (
                 <div className="container">
@@ -58,13 +61,13 @@ class ProjectSettings extends Component {
         this.props.history.push('/home')
         alert("Team member has been removed")
     }
-    checkAuthority =(member)=>{
+    checkAuthority = (member) => {
         console.log(member)
         const authorities = member.authorities
         let result = false
         authorities.forEach(element => {
             console.log(element.includes("REMOVE_TEAM_MEMBERS"))
-            if(element.includes("REMOVE_TEAM_MEMBERS")){
+            if (element.includes("REMOVE_TEAM_MEMBERS")) {
                 result = true
             }
         });
@@ -87,20 +90,23 @@ class ProjectSettings extends Component {
 
         let removeButton = <span></span>
         let grantAuthority = <span></span>
+        let InvitedMembers = <span></span>
         const members = project.members.length ? (
             project.members.map(member => {
-               const isAuthorized = this.checkAuthority(member)
+                const isAuthorized = this.checkAuthority(member)
                 console.log(isAuthorized)
-                if (teamLeader.email === this.props.userInfo.email ) {
+                if (teamLeader.email === this.props.userInfo.email) {
                     removeButton = <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleRemove(member) }}>
                         <i className="material-icons ">highlight_off</i>
                     </button>
-                    grantAuthority = <Link to={{ pathname:"/grantAuthority", state:{project, member}}}>Grant Authority</Link>
+                    grantAuthority = <Link to={{ pathname: "/grantAuthority", state: { project, member } }}>Grant Authority</Link>
+                    InvitedMembers =  <InviteMembers project = {this.state.project} />
                 }
-                if(isAuthorized){
+                if (isAuthorized) {
                     removeButton = <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleRemove(member) }}>
                         <i className="material-icons ">highlight_off</i>
                     </button>
+                    InvitedMembers =  <InviteMembers project = {this.state.project} />
 
                 }
                 if (!member.teamLeader) return (<li class="list-group-item" key={member.email}>{member.name} {removeButton} {grantAuthority} </li>)
@@ -142,6 +148,14 @@ class ProjectSettings extends Component {
                         </div>
                     </div>
                 </div>
+                <div className="row">
+                <div className="col-4">
+                    <form>
+                       {InvitedMembers}
+                    </form>
+                </div>
+                </div>
+
             </div>
 
 
