@@ -28,8 +28,8 @@ class CreateTask extends Component {
             startDate: this.state.startDate,
             deadLine: this.state.endDate,
         }
-        console.log(this.props.project._id,"نل ولا مو نل؟")
-        this.props.createTask(this.props.project._id, task)
+        console.log(this.props.project,"نل ولا مو نل؟")
+        this.props.createTask(this.props.project, task)
     }
 
     render() {
