@@ -6,6 +6,7 @@ import CreateTask from './CreateTask'
 class Board extends Component {
 
     displayTasks = () => {
+        console.log(this.props.project)
         var { tasks } = this.props.project
         if (typeof tasks === "undefined") {
             tasks = []
@@ -26,7 +27,8 @@ class Board extends Component {
         return (
             <div>
                 {this.displayTasks()}
-                <CreateTask />
+                {console.log(this.props.project._id,"هذا ايش؟")}
+                <CreateTask project={this.props.project}/>
             </div>
         )
     }

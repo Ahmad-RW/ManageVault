@@ -130,6 +130,12 @@ const rootReducer = (state = initState, action) => {
         
     }
 
+    if(action.type === "CREATE_TASK"){
+        console.log("in reducer CREATE_TASK")
+        console.log(action.payload)
+        
+    }
+
     return state
 }
 
