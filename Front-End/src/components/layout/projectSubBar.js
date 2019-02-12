@@ -8,16 +8,17 @@ class ProjectSubBar extends Component{
     }
 
     render() {
+        const project = this.props.project
         return (
             <div>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-                <Link className="navbar-brand" to="/">Board</Link>
+                <Link className="navbar-brand" to="#">Board</Link>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div className="navbar-nav">
-                        <Link className="nav-item nav-link" to='#'>Board</Link>
+                        <Link className="nav-item nav-link" to={{ pathname: "/board", state: { project} }}>Board</Link>
                         <Link className="nav-item nav-link" to='#'>Storage</Link>
                     </div>
                 </div>
@@ -26,4 +27,12 @@ class ProjectSubBar extends Component{
         )
     }
 }
-export default ProjectSubBar;
+const mapStateToProps = (state) => {
+    return {
+        isAuthenticated: state.isAuthenticated,
+        userInfo: state.userInfo,
+        project : state.projectInContext
+
+    }
+}
+export default connect(mapStateToProps)(ProjectSubBar);

@@ -1,7 +1,8 @@
 const initState = {
     isAuthenticated: false,
     projects: [],
-    userInfo: {}
+    userInfo: {},
+    projectInContext : {}
 }
 
 const rootReducer = (state = initState, action) => {
@@ -129,6 +130,54 @@ const rootReducer = (state = initState, action) => {
         console.log(action.payload)
         // const newAuthorities = payload.newAuthorities
         // let projects = state.projects.slice()
+        
+    }
+
+    if(action.type === "SET_PROJECT"){
+        return state = {
+            ...state,
+            projectInContext: action.project
+        }
+    }
+
+    if(action.type === "CREATE_TASK"){
+        console.log("in reducer CREATE_TASK")
+        console.log(action.payload)
+        let newProject = null
+        let arrayProject = state.projects.filter(project => {
+            if (action.payload.project._id === project._id ) {
+                newProject = {
+                    ...project
+                }
+            }
+            return action.payload.project._id === project._id
+        })
+
+        let newProjects = state.projects.filter(project => {
+            return action.payload.project._id !== project._id
+        })
+        console.log(newProjects)
+        console.log(newProject)
+        let newTasks = newProject.tasks.slice()
+        newTasks = [// add the new task into the prject tasks array
+            ...newTasks,
+            action.payload.task
+        ]
+        console.log(newTasks)
+        newProject = { // make the new tasks array the tasks array in the project
+            ...newProject,
+            tasks : newTasks
+        }
+        console.log(newProject)
+        newProjects = [ // add the modefied project to the projects array
+            ...newProjects,
+            newProject
+        ]
+        console.log(newProjects)
+        return state = {
+            ...state,
+            projects: newProjects
+        }
         
     }
 

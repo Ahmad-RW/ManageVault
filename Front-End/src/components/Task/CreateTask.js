@@ -1,15 +1,39 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import DatePicker from './DatePicker'
+import { createTask } from '../../store/actionCreators/taskActions'
 
 class CreateTask extends Component {
+    state = {
+        task_Name: "",
+        task_Description: "",
+        startDate: "",
+        endDate: "",
+        redirect: false
+    }
 
-    handleCreateTask = (e) => {
+    handleChange = (e) => {
+        console.log(e.target.value)
+        this.setState({
+            [e.target.id]: e.target.value
+        })
+    }
+
+    handleSubmit = (e) => {
         e.preventDefault()
-        console.log(e)
+        console.log("in submit")
+        let task = {
+            name: this.state.task_Name,
+            task_Description: this.state.task_Description,
+            startDate: this.state.startDate,
+            deadLine: this.state.endDate,
+        }
+        console.log(this.props.project,"نل ولا مو نل؟")
+        this.props.createTask(this.props.project, task)
     }
 
     render() {
+        
         return (
             <div>
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
@@ -25,19 +49,19 @@ class CreateTask extends Component {
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form onSubmit={this.handleCreateTask}>
+                                <form onSubmit={this.handleSubmit}>
                                     <div class="form-group">
-                                        <label for="Task name">Task name</label>
-                                        <input class="form-control" id="Task name" placeholder="Task name" />
+                                        <label for="task_Name">Task name</label>
+                                        <input class="form-control" id="task_Name" placeholder="Task name" onChange={this.handleChange} required/>
 
-                                        <label for="Task description">Task description</label>
-                                        <textarea class="form-control" id="Task description" rows="3" placeholder="Task description"></textarea><br />
+                                        <label for="task_Description">Task description</label>
+                                        <textarea class="form-control" id="task_Description" rows="3" placeholder="Task description" onChange={this.handleChange}></textarea><br />
                                         <div className="centered">
-                                            <label className="label" htmlFor="Start date">Start Date: </label>
-                                            <DatePicker id="Start date" /><br /><br />
+                                            <label className="label" htmlFor="startDate">Start Date: </label>
+                                            <DatePicker id="startDate" onChange={this.handleChange}/><br /><br />
                                         </div>
-                                        <label className="label" htmlFor="End date">End date: </label>
-                                        <DatePicker id="End date" />
+                                        <label className="label" htmlFor="endDate">End date: </label>
+                                        <DatePicker id="endDate" onChange={this.handleChange}/>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -53,4 +77,10 @@ class CreateTask extends Component {
     }
 }
 
-export default CreateTask;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        createTask: (project, task) => { dispatch(createTask(project, task)) },
+    }
+}
+
+export default connect(null,mapDispatchToProps)(CreateTask);

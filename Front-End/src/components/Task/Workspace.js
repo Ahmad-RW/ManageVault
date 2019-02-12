@@ -11,15 +11,15 @@ class Task extends Component {
 
     state = {
         userInfo: this.props.userInfo,
-        project: this.props.location.state.project
+        project: this.props.project
     }
 
     render() {
         return (
                 <div>
-                    <ProjectSubBar/>
+                    <ProjectSubBar />
                     <h1>this is the workspace of {this.state.project.title}</h1>
-                    <Board project={this.state.project}/>
+                    
                 </div>
         )
     }
@@ -29,6 +29,7 @@ const mapStateToProps = (state) => {
     return {
         isAuthenticated: state.isAuthenticated,
         userInfo: state.userInfo,
+        project : state.projectInContext
 
     }
 }

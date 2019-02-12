@@ -159,3 +159,9 @@ export const inviteMoreMembers = (invitedUsers, project, userInfo) =>{
         })
     }
 }
+
+export const setProject = (project) =>{
+    return(dispatch)=>{
+        dispatch({type : "SET_PROJECT", project})
+    }
+}

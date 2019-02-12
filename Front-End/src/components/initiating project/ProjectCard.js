@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import {setProject} from '../../store/actionCreators/projectActions'
 
 
 class ProjectCard extends Component {
@@ -44,7 +45,7 @@ class ProjectCard extends Component {
                         <div className="card-body">
                             <h4 className="card-title">{project.title}</h4>
                             <p className="card-text"> velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                            <Link to={{ pathname: "/projectWorkSpace", state: { project } }} className="card-link">Open Project</Link>
+                            <Link onClick={this.props.setProject(project)} to={{ pathname: "/projectWorkSpace", state: { project } }} className="card-link">Open Project</Link>
 
                         </div>
                     </div>
@@ -65,4 +66,10 @@ const mapStateToProps = (state) => {
         userInfo: state.userInfo
     }
 }
-export default connect(mapStateToProps)(ProjectCard)
+
+const mapDispatchToProps = (dispatch) =>{
+    return{
+    setProject : (project) => dispatch(setProject(project))
+}
+}
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectCard)
