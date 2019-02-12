@@ -31,7 +31,7 @@ const projectsSchema = new schema({
         email : String,
         teamLeader : Boolean,
         kind : String,
-        authorities : [],//roles : {task mng: true, team mng: false}
+        authorities : [], //roles : {task mng: true, team mng: false}
     }],
     files : [{
         name : {type : String},

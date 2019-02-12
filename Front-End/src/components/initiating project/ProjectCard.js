@@ -29,7 +29,7 @@ class ProjectCard extends Component {
                     </div>
                 </div>
             )
-        })) : (<div className="col-sm">You Have No Running Projects</div>)
+        })) : ( <div className="col-sm">You Have No Running Projects</div>)
 
     return (
         <div className="row">
