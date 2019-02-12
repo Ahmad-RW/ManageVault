@@ -167,14 +167,29 @@ projectRoute.post('/handleNotificationDelete', function (req, res) {
 })
 
 projectRoute.post('/setAuthority', function (req, res) {
-    console.log(req.body.payload)
+    console.log(req.body.payload.role)
     console.log("inside first if")
-    mongoose.model('projects').findOneAndUpdate(req.body.payload.project, { $set: { "members.$[elem].authorities": req.body.payload.newAuthorities } }, { arrayFilters: [{ "elem.email": req.body.payload.member.email }] }).then(function (record) {
+    mongoose.model('projects').findByIdAndUpdate(req.body.payload.project._id, 
+        { $push: { "members.$[elem].roles": req.body.payload.role } }, 
+        { arrayFilters: [{ "elem.email": req.body.payload.member.email }] }).then(function (record) {
+        console.log(record)
         res.status(200).send(record)
     }).catch(function (exception) {
         console.log(exception)
         res.status(500).send()
     })
+})
+
+projectRoute.post('/revokeAuthority', function(req, res){
+    console.log(req.body)
+    mongoose.model('projects').findByIdAndUpdate(req.body.payload.project._id, 
+        { $set: { "members.$[elem].roles":[] } }   ,
+        { arrayFilters: [{ "elem.email": req.body.payload.member.email }] } ).then(function(record){
+            console.log(record)
+            res.status(200).send(record)
+        }).catch(function(exception){
+            console.log(exception)
+        })
 })
 
 projectRoute.post('/inviteUsers', function (req, res) {
@@ -184,6 +199,8 @@ projectRoute.post('/inviteUsers', function (req, res) {
     const record = handleInvite(invitedMembers, req.body.payload.project)
     res.status(200).send(record)
 })
+
+
 
 //helper functions
 function handleInvite(invitedMembers, project) {//basically this function sends a notification to the users who are invited to a project. It's been refactored due to size.
