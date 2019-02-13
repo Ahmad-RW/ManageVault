@@ -61,13 +61,14 @@ class ProjectSettings extends Component {
         this.props.history.push('/home')
         alert("Team member has been removed")
     }
-    checkAuthority = (member) => {
+    checkAuthority = (project) => {
+        console.log(project)
+        const member = project.members.find(member =>  member.email === this.props.userInfo.email )
         console.log(member)
-        const authorities = member.authorities
+        console.log(member.roles)
         let result = false
-        authorities.forEach(element => {
-            console.log(element.includes("REMOVE_TEAM_MEMBERS"))
-            if (element.includes("REMOVE_TEAM_MEMBERS")) {
+        member.roles.forEach(element => {
+            if (element.authorities.includes("REMOVE_TEAM_MEMBERS") && element.authorities.includes("INVITE_USERS")) {
                 result = true
             }
         });
@@ -93,7 +94,7 @@ class ProjectSettings extends Component {
         let InvitedMembers = <span></span>
         const members = project.members.length ? (
             project.members.map(member => {
-                const isAuthorized = this.checkAuthority(member)
+                const isAuthorized = this.checkAuthority(this.state.project)
                 console.log(isAuthorized)
                 if (teamLeader.email === this.props.userInfo.email) {
                     removeButton = <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleRemove(member) }}>

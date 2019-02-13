@@ -124,6 +124,7 @@ export const handleVoting = (payload) => {
 
 export const setAuthority = (payload) => {
 return (dispatch)=>{
+    console.log(payload)
     axios.post('http://localhost:3333/project/setAuthority', {payload}).then((res)=>{
         console.log(res)
         dispatch({type : "SET_AUTHORITY", payload})
@@ -131,6 +132,16 @@ return (dispatch)=>{
         console.log(exception)
     })
 }
+}
+
+export const revokeAuthorities = (payload) =>{
+    return (dispatch) =>{
+        axios.post('http://localhost:3333/project/revokeAuthority', {payload}).then((res)=>{
+            console.log(res)
+        }).catch((exception)=>{
+            console.log(exception)
+        })
+    }
 }
 
 export const inviteMoreMembers = (invitedUsers, project, userInfo) =>{

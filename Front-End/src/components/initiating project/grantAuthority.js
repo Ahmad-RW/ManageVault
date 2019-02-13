@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { setAuthority } from '../../store/actionCreators/projectActions'
+import { setAuthority, revokeAuthorities } from '../../store/actionCreators/projectActions'
 class GrantAuthorities extends Component {
     constructor(props) {
         super(props)
@@ -23,25 +23,45 @@ class GrantAuthorities extends Component {
         e.preventDefault()
         if (this.state.teamManager || this.state.taskManager) {
             const project = this.props.projects.find(project => project._id === this.state.projectId)
-            let newAuthorities = this.state.member.authorities.slice()
-            console.log(project.roles.TaskManager)
+            let role;
             if (this.state.teamManager) {
-                newAuthorities = [...newAuthorities, project.roles.TeamManager]
+                 role = {
+                    name : "TEAM MANAGER",
+                    authorities :  ["INVITE_USERS", "REMOVE_TEAM_MEMBERS", "PUBLISH_PROJECT", "UNPUBLISH_PROJECT"] 
+                }
             }
-            if (this.state.taskManager) {
-                newAuthorities = [...newAuthorities, project.roles.TaskManager]
+            if(this.state.taskManager){
+                role = {
+                    name : "TASK MANAGER",
+                    authorities :  [ "CREATE_TASK", "CONFIRM_SUBMISSION", "DELETE_TASK",
+                    "ASSIGN_TASK", "UN-ASSIGN_TASK", "MODIFY_TASK"] 
+                }
             }
-            console.log(newAuthorities, "New Authoritiees")
+            if(this.state.taskManager && this.state.teamManager){
+                role = {
+                    name : "TEAM AND TASK MANAGER",
+                    authorities : [ "CREATE_TASK", "CONFIRM_SUBMISSION", "DELETE_TASK",
+                    "ASSIGN_TASK", "UN-ASSIGN_TASK", "MODIFY_TASK", "INVITE_USERS", "REMOVE_TEAM_MEMBERS", "PUBLISH_PROJECT", "UNPUBLISH_PROJECT" ]
+                }
+            }
             const payload = {
                 project,
                 member: this.state.member,
                 teamManager: this.state.teamManager,
                 taskManager: this.state.taskManager,
-                newAuthorities
+                role : role
             }
             this.props.setAuthority(payload)
             this.props.history.goBack()
         }
+    }
+
+    handleRevoke = () =>{
+        const payload = {
+            project : this.props.location.state.project,
+            member : this.state.member
+        }
+        this.props.revokeAuthority(payload)
     }
     render() {
         return (
@@ -71,8 +91,13 @@ class GrantAuthorities extends Component {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-lg-6">
+                    <div className="col-lg-4">
                         <button type="submit" className="btn btn-primary" onClick={this.handleSubmit}>Submit</button>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-lg-4">
+                        <button type="submit" className="btn btn-danger" onClick={this.handleRevoke}>Revoke Authorities</button>
                     </div>
                 </div>
             </div>
@@ -86,7 +111,8 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
     return {
-        setAuthority: (payload) => dispatch(setAuthority(payload))
+        setAuthority: (payload) => dispatch(setAuthority(payload)),
+        revokeAuthority : (payload) => dispatch(revokeAuthorities(payload))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(GrantAuthorities)
