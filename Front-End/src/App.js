@@ -15,6 +15,7 @@ import { fetchUserProjects } from './store/actionCreators/projectActions';
 import Notification from './components/initiating project/Notification'
 import WorkSpace from './components/Task/Workspace'
 import GrantAuthorities from './components/initiating project/grantAuthority';
+import Board from './components/Task/Board';
 
 class App extends Component {
   componentWillMount() {
@@ -41,6 +42,7 @@ class App extends Component {
             <Route path='/projectWorkSpace' component={RequireAuth(WorkSpace)} />
             <Route path='/notification' component={RequireAuth(Notification)} />
             <Route path='/grantAuthority' component={RequireAuth(GrantAuthorities)} />
+            <Route path='/board' component={RequireAuth(Board)} />
           </Switch>
           
         </div>

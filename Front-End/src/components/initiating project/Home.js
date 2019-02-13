@@ -3,16 +3,13 @@ import { connect } from 'react-redux'
 import ProjectCard from './ProjectCard'
 import CreateProjectCard from './createProjectCard'
 class Home extends Component {
-    // componentDidMount(){
-    //     this.setState()
-    // }
     state = {
         projects : this.props.projects
     }
     render() {
         return (
             <div className="container">
-                <ProjectCard projects = {this.props.projects} />
+                <ProjectCard />
                 <div className="row">
                         <CreateProjectCard />
                 </div>

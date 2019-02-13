@@ -48,10 +48,11 @@ class CreateProject extends Component {
                 invitedMembers: this.state.invitedMembers,
                 members: [{
                     email: this.props.userInfo.email,
+                    name : this.props.userInfo.name,
                     teamLeader: true
                 }]
             }
-            this.props.createProject(project)
+            this.props.createProject(project, this.props.userInfo)
           
             this.props.history.push('/home')
         }
@@ -91,7 +92,7 @@ class CreateProject extends Component {
                         <div className="form-group">
                             <label>Invite Members</label>
                             <input type="text" className="form-control" onChange={this.handleChange} id="invitedMembers" />
-                            <small className='form-text text-muted'>Enter each name seperated by commas</small>
+                            <small className='form-text text-muted'>Enter each email seperated by commas</small>
                         </div>
                     </div>
                     <button type="submit" className="btn btn-primary " >Create Project</button>
@@ -103,7 +104,7 @@ class CreateProject extends Component {
 }
 const mapDispatchToProps = (dispatch) => {
     return {
-        createProject: (project) => dispatch(createProjectAction(project))
+        createProject: (project, userInfo) => dispatch(createProjectAction(project, userInfo))
     }
 }
 const mapStateToProps = (state) => {
