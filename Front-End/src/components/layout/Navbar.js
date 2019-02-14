@@ -9,12 +9,17 @@ class NavBar extends Component {
     handleSignOut = (e) => {
         console.log(e)
         fb.auth().signOut().then((e) => {
-            console.log(e, 'signed out')
+           try { 
             this.props.removeAuth()
+            //this.props.history.push('/')
             localStorage.removeItem('token')
-            
+
+           }
+           catch(e){
+               console.log(e)
+           }
         }).catch((e) => {
-            console.log(e, 'exception')
+            console.log(e, 'exception') 
         })
     }
     render() {//if he is signed in we render different Navbar

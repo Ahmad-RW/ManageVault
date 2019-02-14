@@ -4,6 +4,8 @@ import DatePicker from './DatePicker'
 import CreateTask from './CreateTask'
 import ProjectSubBar from '../layout/projectSubBar';
 import TaskTableHeader from './TaskTableHeader';
+import {setProject} from '../../store/actionCreators/projectActions'
+
 class Board extends Component {
     constructor(props) {
         super(props)
@@ -12,31 +14,15 @@ class Board extends Component {
         }
     }
     render() {
-      //  window.onbeforeunload = function() {return false}
-        console.log(this.props.location.state.project)
-        let project
-        this.props.projects.forEach(element => {
-            if(this.state.currentProject === element._id){
-                project = {...element}
-            }
-            }) 
-        var { tasks } = project//lvnejfbnvofebvfenbv
+      
+        var tasks = this.props.projectInContext.tasks//lvnejfbnvofebvfenbv
         if (typeof tasks === "undefined") {
             this.props.history.push('/')
         }
         const taskList = tasks.length ? (
             tasks.map(task => {
                 return (
-                    <div className="container-fluid-full">
-                    <table class="table table-hover table-dark">
-                        <tbody>
-                            <tr>
-                                <th>1</th>
-                                <td>{task.name}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    </div>
+                    <h4>{task.name}</h4>
                 )
             })
         ) : (
@@ -49,7 +35,7 @@ class Board extends Component {
                 <TaskTableHeader />
                 {taskList}
                 {console.log(this.state.project, "هذا ايش؟")}
-                <CreateTask project={this.state.project} />
+                <CreateTask project={this.props.projectInContext} />
             </div>
         )
     }
@@ -57,8 +43,15 @@ class Board extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        project: state.projectInContext,
+        projectInContext: state.projectInContext,
         projects: state.projects
+
     }
 }
-export default connect(mapStateToProps)(Board)
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getCurrentProject: (projectId) => dispatch({ type: "GET_CURRENT_PROJECT", projectId }),
+        setProject : (project) => dispatch(setProject(project))
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Board)

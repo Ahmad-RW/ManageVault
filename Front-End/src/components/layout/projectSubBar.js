@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-
+import {setProject} from '../../store/actionCreators/projectActions'
 class ProjectSubBar extends Component{
     constructor(props) {
         super(props)
     }
-
+    
+    
     render() {
         const project = this.props.project
         return (
@@ -35,4 +36,10 @@ const mapStateToProps = (state) => {
 
     }
 }
-export default connect(mapStateToProps)(ProjectSubBar);
+
+const mapDispatchToProps = (dispatch) =>{
+    return{
+    setProject : (project) => dispatch(setProject(project))
+}
+}
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectSubBar);
