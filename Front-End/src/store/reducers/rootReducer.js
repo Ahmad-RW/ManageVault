@@ -139,13 +139,21 @@ const rootReducer = (state = initState, action) => {
         //     ...state,
         //     projectInContext: action.project
         // } // if entire project is passed
-
-        let tmp = state.projects.find(project => {return project._id === action.project})
-        const currentProject = {...tmp}
-        return state = {
+        console.log("SETTING PROJECT")
+        let newProjectInContext = {}
+        state.projects.forEach(project => {
+            if(project._id === action.project){
+                newProjectInContext = {...project}
+            }
+        })
+        console.log(state, "OLD STATE")
+        console.log(newProjectInContext)
+        state={
             ...state,
-            projectInContext : currentProject
+            projectInContext : newProjectInContext
         }
+        console.log(state)
+        return state
     }
 
     if (action.type === "CREATE_TASK") {

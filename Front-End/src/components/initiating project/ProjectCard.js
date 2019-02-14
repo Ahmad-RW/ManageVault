@@ -24,8 +24,8 @@ class ProjectCard extends Component {
         }
     }
     setProjectCookie = (project ,projectId) =>  {
-        localStorage.setItem('currentProject', JSON.stringify(project))
-        this.props.setProject(project)
+        localStorage.setItem("currentProject", projectId)
+        this.props.setProject(projectId)
     }
     render() {
         const projects = this.props.projects
@@ -49,7 +49,8 @@ class ProjectCard extends Component {
                         <div className="card-body">
                             <h4 className="card-title">{project.title}</h4>
                             <p className="card-text"> velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                            <Link onClick={this.setProjectCookie(project, project._id)} to={{ pathname: "/projectWorkSpace", state: { project } }} className="card-link">Open Project</Link>
+                 
+                            <Link onClick= {() => this.setProjectCookie(project, project._id)} to={{ pathname: "/projectWorkSpace", state: { project } }} className="card-link">Open Project</Link>
 
                         </div>
                     </div>
@@ -67,7 +68,8 @@ class ProjectCard extends Component {
 const mapStateToProps = (state) => {
     return {
         projects: state.projects,
-        userInfo: state.userInfo
+        userInfo: state.userInfo,
+      
     }
 }
 

@@ -24,11 +24,13 @@ class App extends Component {
       this.props.fetchUserInfo(token)
       this.props.fetchUserProjects(token)
       this.props.authenticate()
-      console.log(localStorage.getItem('currentProject'), "APPPPP")
-      this.props.setProject(localStorage.getItem('currentProject'))
+      
     }
+  
   }
+  
   render() {
+   
     return (
       <BrowserRouter>
         <div className="App">
@@ -52,6 +54,8 @@ class App extends Component {
     );
   }
 }
+
+
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {

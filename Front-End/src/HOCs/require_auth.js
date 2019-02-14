@@ -31,7 +31,8 @@ export default function (ComposedComponent) {
   }
 
   function mapStateToProps(state) {
-    return { authenticated: state.isAuthenticated };
+    return { authenticated: state.isAuthenticated,
+    projectInContext : state.projectInContext };
   }
 
   return connect(mapStateToProps)(Authentication);
