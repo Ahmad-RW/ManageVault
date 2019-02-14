@@ -24,7 +24,7 @@ class Login extends Component {
         e.preventDefault();
         fb.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((res)=>{
             console.log(res)
-            localStorage.setItem('token', this.state.email);// change this.
+            localStorage.setItem('token', this.state.email)
             this.props.authenticate()
             this.props.fetchUserInfo(this.state.email)
             this.props.fetchUserProjects(this.state.email)

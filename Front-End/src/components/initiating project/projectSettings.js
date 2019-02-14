@@ -18,7 +18,7 @@ class ProjectSettings extends Component {
         renderMessageFlag: false,
         invitedMembers : ""
     }
-
+    
 
     renderMessage = () => {
         console.log(document.getElementById('deletebtn'))

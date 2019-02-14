@@ -11,7 +11,7 @@ import RequireAuth from './HOCs/require_auth';
 import { connect } from 'react-redux'
 import CreateProject from './components/initiating project/createProject';
 import {authenticate, fetchUserInfo} from './store/actionCreators/authAction'
-import { fetchUserProjects } from './store/actionCreators/projectActions';
+import { fetchUserProjects, setProject } from './store/actionCreators/projectActions';
 import Notification from './components/initiating project/Notification'
 import WorkSpace from './components/Task/Workspace'
 import GrantAuthorities from './components/initiating project/grantAuthority';
@@ -24,6 +24,8 @@ class App extends Component {
       this.props.fetchUserInfo(token)
       this.props.fetchUserProjects(token)
       this.props.authenticate()
+      console.log(localStorage.getItem('currentProject'), "APPPPP")
+      this.props.setProject(localStorage.getItem('currentProject'))
     }
   }
   render() {
@@ -57,7 +59,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch({ type: "AUTHENTICATE_THE_USER" })
     },
     fetchUserInfo : (userEmail) => dispatch(fetchUserInfo(userEmail)),
-    fetchUserProjects : (userEmail) => dispatch(fetchUserProjects(userEmail))
+    fetchUserProjects : (userEmail) => dispatch(fetchUserProjects(userEmail)),
+    setProject : (project) => dispatch(setProject(project))
   }
 }
 

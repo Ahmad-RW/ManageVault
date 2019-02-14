@@ -6,7 +6,7 @@ class ProjectSubBar extends Component{
     constructor(props) {
         super(props)
     }
-
+    
     render() {
         const project = this.props.project
         return (

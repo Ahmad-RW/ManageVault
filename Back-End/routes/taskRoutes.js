@@ -9,8 +9,8 @@ taskRoute.post('/newTask', function (req, res) {
     let task = {
         name: req.body.payload.task.name,
     }
-    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project, {$push :{"tasks" : task}}).then(function(record){
-        // console.log(record)
+    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project, {$push :{"tasks" : task}}, {new: true}).then(function(record){
+        console.log(record)
         res.status(200).send(record)
     }).catch(function(err){
         console.log(err)

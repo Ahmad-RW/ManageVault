@@ -23,6 +23,10 @@ class ProjectCard extends Component {
             return (<span data-toggle="tooltip" title="you are a leader in this project !"><i class="material-icons">supervised_user_circle</i></span>)
         }
     }
+    setProjectCookie = (project ,projectId) =>  {
+        localStorage.setItem('currentProject', JSON.stringify(project))
+        this.props.setProject(project)
+    }
     render() {
         const projects = this.props.projects
         const projectsList = projects.length ? (
@@ -45,7 +49,7 @@ class ProjectCard extends Component {
                         <div className="card-body">
                             <h4 className="card-title">{project.title}</h4>
                             <p className="card-text"> velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                            <Link onClick={this.props.setProject(project)} to={{ pathname: "/projectWorkSpace", state: { project } }} className="card-link">Open Project</Link>
+                            <Link onClick={this.setProjectCookie(project, project._id)} to={{ pathname: "/projectWorkSpace", state: { project } }} className="card-link">Open Project</Link>
 
                         </div>
                     </div>

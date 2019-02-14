@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import ProjectSubBar from '../layout/projectSubBar'
 import Board from './Board'
 
-class Task extends Component {
+class Workspace extends Component {
     constructor(props) {
         super(props)
         console.log(this.props.location.state.project)
@@ -40,4 +40,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(Task)
+export default connect(mapStateToProps,mapDispatchToProps)(Workspace)
