@@ -3,6 +3,7 @@ const initState = {
     isAuthenticated: false,
     projects: [],
     userInfo: {},
+    projectInContext: {}
 }
 
 const rootReducer = (state = initState, action) => {
@@ -133,29 +134,29 @@ const rootReducer = (state = initState, action) => {
 
     }
 
-    // if (action.type === "SET_PROJECT") {
-    //     // return state = {
-    //     //     ...state,
-    //     //     projectInContext: action.project
-    //     // } // if entire project is passed
-    //     console.log("SETTING PROJECT")
-    //     let newProjectInContext = {}
-    //     state.projects.forEach(project => {
-    //         if(project._id === action.project){
-    //             newProjectInContext = {...project}
-    //         }
-    //     })
-    //     console.log(state, "OLD STATE")
-    //     console.log(newProjectInContext)
-    //     state={
-    //         ...state,
-    //         projectInContext : newProjectInContext
-    //     }
-    //     console.log(state)
-    //     return state
-    // }
+    if (action.type === "SET_PROJECT") {
+        // return state = {
+        //     ...state,
+        //     projectInContext: action.project
+        // } // if entire project is passed
+        console.log("SETTING PROJECT")
+        let newProjectInContext = {}
+        state.projects.forEach(project => {
+            if(project._id === action.project){
+                newProjectInContext = {...project}
+            }
+        })
+        console.log(state, "OLD STATE")
+        console.log(newProjectInContext)
+        state={
+            ...state,
+            projectInContext : newProjectInContext
+        }
+        console.log(state)
+        return state
+    }
 
-  //  if (action.type === "CREATE_TASK") {
+    if (action.type === "CREATE_TASK") {
         // console.log("in reducer CREATE_TASK")
         // console.log(action.payload)
         // let newProject = null
@@ -195,27 +196,27 @@ const rootReducer = (state = initState, action) => {
         //     projects: newProjects
         // }
 
-        // console.log(action.payload)
-        // const oldProjects = state.projects.filter(project => project.id !== action.payload.project._id)
-        // const newProjects = [...oldProjects, action.payload.res.data]
-        // return state = {
-        //     ...state,
-        //     projectInContext : action.payload.res.data,
-        //     projects : newProjects
-        // }
-    //}
+        console.log(action.payload)
+        const oldProjects = state.projects.filter(project => project.id !== action.payload.project._id)
+        const newProjects = [...oldProjects, action.payload.res.data]
+        return state = {
+            ...state,
+            projectInContext : action.payload.res.data,
+            projects : newProjects
+        }
+    }
 
-    // if(action.type === "GET_CURRENT_PROJECT"){
-    //     console.log(action.projectId,"action.projectId")
-    //     const arrayProject = state.projects.filter(project => project.id !== action.projectId)
-    //     console.log(arrayProject,"arrayProject")
-    //     const currentProject = arrayProject.pop()
-    //     console.log(currentProject,"currentProject")
-    //     return state = {
-    //         ...state,
-    //         projectInContext : currentProject
-    //     }
-    // }
+    if(action.type === "GET_CURRENT_PROJECT"){
+        console.log(action.projectId,"action.projectId")
+        const arrayProject = state.projects.filter(project => project.id !== action.projectId)
+        console.log(arrayProject,"arrayProject")
+        const currentProject = arrayProject.pop()
+        console.log(currentProject,"currentProject")
+        return state = {
+            ...state,
+            projectInContext : currentProject
+        }
+    }
 
     return state
 }
