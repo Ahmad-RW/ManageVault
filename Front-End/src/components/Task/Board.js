@@ -3,37 +3,25 @@ import { connect } from 'react-redux'
 import DatePicker from './DatePicker'
 import CreateTask from './CreateTask'
 import ProjectSubBar from '../layout/projectSubBar';
+import {setProject} from '../../store/actionCreators/projectActions'
 
 class Board extends Component {
-    constructor(props){
+    constructor(props) {
         super(props)
-        this.state = {
-            currentProject : this.props.projectInContext,
-            currentProjectUsingCookies : this.getProject()
-        }
+        console.log(this.props.projectInContext)
         console.log(localStorage.getItem("currentProject"))
     }
-    // static getDerivedStateFromProps(nextProps, prevState){
-    //     console.log("STATIC")
-    //     console.log(prevState)
-    //     console.log(nextProps)
-    //      if(nextProps.currentProject.tasks.length !== prevState.currentProject.tasks.length){
-    //          console.log(prevState, "YEEEEEEEES BIH")
-    //      }
-    // }
-    // componentDidUpdate(prevProps, prevState){
-    //     if(prevState.currentProjectUsingCookies.tasks.length =)
-    // }
 
-    getProject = () =>{
-        let tmp = this.props.projects.find(project => {return project._id === localStorage.getItem("currentProject")})
-        const currentProject = {...tmp}
+
+    getProject = () => {
+        let tmp = this.props.projects.find(project => { return project._id === localStorage.getItem("currentProject") })
+        const currentProject = { ...tmp }
         console.log(currentProject)
         return currentProject
     }
     render() {
-        console.log(this.props.projectInContext)
-        var  tasks  = this.props.projectInContext.tasks//lvnejfbnvofebvfenbv
+      
+        var tasks = this.props.projectInContext.tasks//lvnejfbnvofebvfenbv
         if (typeof tasks === "undefined") {
             this.props.history.push('/')
         }
@@ -66,7 +54,8 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
     return {
-        getCurrentProject: (projectId) => dispatch({ type: "GET_CURRENT_PROJECT", projectId })
+        getCurrentProject: (projectId) => dispatch({ type: "GET_CURRENT_PROJECT", projectId }),
+        setProject : (project) => dispatch(setProject(project))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Board)
