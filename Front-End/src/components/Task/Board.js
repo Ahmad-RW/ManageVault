@@ -3,38 +3,53 @@ import { connect } from 'react-redux'
 import DatePicker from './DatePicker'
 import CreateTask from './CreateTask'
 import ProjectSubBar from '../layout/projectSubBar';
+import TaskTableHeader from './TaskTableHeader';
 class Board extends Component {
-    constructor(props){
+    constructor(props) {
         super(props)
-      this.state = {
-          project : this.props.location.state.project
-      }
+        this.state = {
+            currentProject: this.props.location.state.project
+        }
     }
     render() {
-        
-        
-            console.log(this.props.location.state.project)
-    
-            var { tasks } = this.state.project//lvnejfbnvofebvfenbv
-            if (typeof tasks === "undefined") {
-                this.props.history.push('/')
+      //  window.onbeforeunload = function() {return false}
+        console.log(this.props.location.state.project)
+        let project
+        this.props.projects.forEach(element => {
+            if(this.state.currentProject === element._id){
+                project = {...element}
             }
-            const taskList = tasks.length ? (
-                tasks.map(task => {
-                    return (
-                        <h4>{task.name}</h4>
-                    )
-                })
-            ) : (
-                    <h4>There is no tasks  yet</h4>
+            }) 
+        var { tasks } = project//lvnejfbnvofebvfenbv
+        if (typeof tasks === "undefined") {
+            this.props.history.push('/')
+        }
+        const taskList = tasks.length ? (
+            tasks.map(task => {
+                return (
+                    <div className="container-fluid-full">
+                    <table class="table table-hover table-dark">
+                        <tbody>
+                            <tr>
+                                <th>1</th>
+                                <td>{task.name}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
                 )
-        
+            })
+        ) : (
+                <h4>There is no tasks  yet</h4>
+            )
+
         return (
             <div>
-            <ProjectSubBar />
+                <ProjectSubBar />
+                <TaskTableHeader />
                 {taskList}
-                {console.log(this.state.project,"هذا ايش؟")}
-                <CreateTask project={this.state.project}/>
+                {console.log(this.state.project, "هذا ايش؟")}
+                <CreateTask project={this.state.project} />
             </div>
         )
     }
@@ -43,7 +58,7 @@ class Board extends Component {
 const mapStateToProps = (state) => {
     return {
         project: state.projectInContext,
-
+        projects: state.projects
     }
 }
 export default connect(mapStateToProps)(Board)

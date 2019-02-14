@@ -18,7 +18,16 @@ import GrantAuthorities from './components/initiating project/grantAuthority';
 import Board from './components/Task/Board';
 
 class App extends Component {
-  componentWillMount() {
+  // componentWillMount() {
+  //   const token = localStorage.getItem('token');
+  //   if (token) {
+  //     this.props.fetchUserInfo(token)
+  //     this.props.fetchUserProjects(token)
+  //     this.props.authenticate()
+  //   }
+  // }
+
+  componentDidMount(){
     const token = localStorage.getItem('token');
     if (token) {
       this.props.fetchUserInfo(token)
