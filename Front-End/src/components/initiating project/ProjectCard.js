@@ -24,7 +24,7 @@ class ProjectCard extends Component {
         }
     }
     setProjectCookie = (project ,projectId) =>  {
-        
+        //localStorage.setItem("currentProject", projectId)
         this.props.setProject(projectId)
     }
     render() {
