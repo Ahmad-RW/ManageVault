@@ -40,6 +40,7 @@ class Board extends Component {
         }
         else{
             var tasks = currentProject.tasks//lvnejfbnvofebvfenbv
+            console.log(currentProject)
             if (typeof tasks === "undefined") {
                 tasks = []
             }
