@@ -17,17 +17,17 @@ class Board extends Component {
     render() {
         let taskList
         let currentProject
-        this.props.projects.forEach(project => {
-            if(project._id === localStorage.getItem("currentProject")){
-                currentProject = {...project}
-            }
-        });
-        console.log(currentProject)
-        if (typeof currentProject === "undefined") {
+        // this.props.projects.forEach(project => {
+        //     if(project._id === localStorage.getItem("currentProject")){
+        //         currentProject = {...project}
+        //     }
+        // });
+        // console.log(currentProject)
+       // if (typeof currentProject === "undefined") {
             var tasks = this.props.projectInContext.tasks//lvnejfbnvofebvfenbv
-            if (typeof tasks === "undefined") {
-                tasks = []
-            }
+            // if (typeof tasks === "undefined") {
+            //     tasks = []
+            // }
             taskList = tasks.length ? (
                 tasks.map(task => {
                     return (
@@ -37,28 +37,28 @@ class Board extends Component {
             ) : (
                     <h4>There is no tasks  yet</h4>
                 )
-        }
-        else{
-            var tasks = currentProject.tasks//lvnejfbnvofebvfenbv
-            console.log(currentProject)
-            if (typeof tasks === "undefined") {
-                tasks = []
-            }
-            taskList = tasks.length ? (
-                tasks.map(task => {
-                    return (
-                        <h4>{task.name}</h4>
-                    )
-                })
-            ) : (
-                    <h4>There is no tasks  yet</h4>
-                )
-        }
+       // }
+       // else{
+            // var tasks = currentProject.tasks//lvnejfbnvofebvfenbv
+            // console.log(currentProject)
+            // if (typeof tasks === "undefined") {
+            //     tasks = []
+            // }
+            // taskList = tasks.length ? (
+            //     tasks.map(task => {
+            //         return (
+            //             <h4>{task.name}</h4>
+            //         )
+            //     })
+            // ) : (
+            //         <h4>There is no tasks  yet</h4>
+            //     )
+       // }
         return (
             <div>
                 <ProjectSubBar />
                 {taskList}
-                <CreateTask project={currentProject} />
+                <CreateTask project={this.props.projectInContext} />
             </div>
         )
     }
