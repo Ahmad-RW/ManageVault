@@ -24,7 +24,8 @@ class Board extends Component {
         });
         console.log(currentProject)
         if (typeof currentProject === "undefined") {
-            var tasks = this.props.projectInContext.tasks//lvnejfbnvofebvfenbv
+            var tasks = this.props.projectInContext.tasks//use project in context
+            console.log("projectInContext")
             if (typeof tasks === "undefined") {
                 tasks = []
             }
@@ -39,8 +40,8 @@ class Board extends Component {
                 )
         }
         else{
-            var tasks = currentProject.tasks//lvnejfbnvofebvfenbv
-            console.log(currentProject)
+            var tasks = currentProject.tasks//use of the cookies currentProject
+            console.log("currentProject")
             if (typeof tasks === "undefined") {
                 tasks = []
             }

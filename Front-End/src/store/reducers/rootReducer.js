@@ -197,13 +197,17 @@ const rootReducer = (state = initState, action) => {
         // }
 
         console.log(action.payload)
-        const oldProjects = state.projects.filter(project => project.id !== action.payload.project._id)
+        const oldProjects = state.projects.filter(project => project._id !== action.payload.project._id)
+        console.log(oldProjects)
         const newProjects = [...oldProjects, action.payload.res.data]
-        return state = {
+        console.log(newProjects)
+         state = {
             ...state,
             projectInContext : action.payload.res.data,
             projects : newProjects
         }
+        console.log(state)
+        return state
     }
 
     if(action.type === "GET_CURRENT_PROJECT"){
