@@ -171,7 +171,7 @@ projectRoute.post('/setAuthority', function (req, res) {
     console.log("inside first if")
     mongoose.model('projects').findByIdAndUpdate(req.body.payload.project._id, 
         { $push: { "members.$[elem].roles": req.body.payload.role } }, 
-        { arrayFilters: [{ "elem.email": req.body.payload.member.email }] }).then(function (record) {
+        { arrayFilters: [{ "elem.email": req.body.payload.member.email }], new:true}).then(function(record) {
         console.log(record)
         res.status(200).send(record)
     }).catch(function (exception) {
