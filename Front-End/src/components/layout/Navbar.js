@@ -2,11 +2,13 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import fb from '../../FirebaseConfig/authConfig'
+import {withRouter} from 'react-router-dom'
 class NavBar extends Component {
     constructor(props) {
         super(props)
     }
     handleSignOut = (e) => {
+        this.props.history.push('/')//temp solution
         console.log(e)
         fb.auth().signOut().then((e) => {
            try { 
@@ -77,4 +79,5 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavBar)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(NavBar))
+

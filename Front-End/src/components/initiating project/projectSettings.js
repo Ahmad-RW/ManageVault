@@ -61,14 +61,17 @@ class ProjectSettings extends Component {
         this.props.history.push('/home')
         alert("Team member has been removed")
     }
-    checkAuthority = (project) => {
+    checkAuthority = (project, authority) => {
         console.log(project)
         const member = project.members.find(member =>  member.email === this.props.userInfo.email )
         console.log(member)
         console.log(member.roles)
         let result = false
         member.roles.forEach(element => {
-            if (element.authorities.includes("REMOVE_TEAM_MEMBERS") && element.authorities.includes("INVITE_USERS")) {
+            console.log(element.name)
+            console.log(element.authorities.length)
+            console.log( element.authorities.includes("INVITE_USERS"))
+            if (element.authorities.includes(authority)) {
                 result = true
             }
         });
@@ -103,12 +106,15 @@ class ProjectSettings extends Component {
                     grantAuthority = <Link to={{ pathname: "/grantAuthority", state: { project, member } }}>Grant Authority</Link>
                     InvitedMembers =  <InviteMembers project = {this.state.project} />
                 }
-                if (isAuthorized) {
+                if ( this.checkAuthority(this.state.project, "REMOVE_TEAM_MEMBERS")) {
                     removeButton = <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleRemove(member) }}>
                         <i className="material-icons ">highlight_off</i>
                     </button>
-                    InvitedMembers =  <InviteMembers project = {this.state.project} />
+                    
 
+                }
+                if(this.checkAuthority(this.state.project, "INVITE_USERS")){
+                    InvitedMembers =  <InviteMembers project = {this.state.project} />
                 }
                 if (!member.teamLeader) return (<li class="list-group-item" key={member.email}>{member.name} {removeButton} {grantAuthority} </li>)
             })

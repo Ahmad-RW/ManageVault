@@ -127,6 +127,7 @@ return (dispatch)=>{
     console.log(payload)
     axios.post('http://localhost:3333/project/setAuthority', {payload}).then((res)=>{
         console.log(res)
+        payload = {...payload, res}
         dispatch({type : "SET_AUTHORITY", payload})
     }).catch((exception)=>{
         console.log(exception)

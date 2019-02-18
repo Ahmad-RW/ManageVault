@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { setAuthority, revokeAuthorities } from '../../store/actionCreators/projectActions'
+import UserDefinedRoles from './userDefinedRoles';
 class GrantAuthorities extends Component {
     constructor(props) {
         super(props)
@@ -25,23 +26,23 @@ class GrantAuthorities extends Component {
             const project = this.props.projects.find(project => project._id === this.state.projectId)
             let role;
             if (this.state.teamManager) {
-                 role = {
-                    name : "TEAM MANAGER",
-                    authorities :  ["INVITE_USERS", "REMOVE_TEAM_MEMBERS", "PUBLISH_PROJECT", "UNPUBLISH_PROJECT"] 
+                role = {
+                    name: "TEAM MANAGER",
+                    authorities: ["INVITE_USERS", "REMOVE_TEAM_MEMBERS", "PUBLISH_PROJECT", "UNPUBLISH_PROJECT"]
                 }
             }
-            if(this.state.taskManager){
+            if (this.state.taskManager) {
                 role = {
-                    name : "TASK MANAGER",
-                    authorities :  [ "CREATE_TASK", "CONFIRM_SUBMISSION", "DELETE_TASK",
-                    "ASSIGN_TASK", "UN-ASSIGN_TASK", "MODIFY_TASK"] 
+                    name: "TASK MANAGER",
+                    authorities: ["CREATE_TASK", "CONFIRM_SUBMISSION", "DELETE_TASK",
+                        "ASSIGN_TASK", "UN-ASSIGN_TASK", "MODIFY_TASK"]
                 }
             }
-            if(this.state.taskManager && this.state.teamManager){
+            if (this.state.taskManager && this.state.teamManager) {
                 role = {
-                    name : "TEAM AND TASK MANAGER",
-                    authorities : [ "CREATE_TASK", "CONFIRM_SUBMISSION", "DELETE_TASK",
-                    "ASSIGN_TASK", "UN-ASSIGN_TASK", "MODIFY_TASK", "INVITE_USERS", "REMOVE_TEAM_MEMBERS", "PUBLISH_PROJECT", "UNPUBLISH_PROJECT" ]
+                    name: "TEAM AND TASK MANAGER",
+                    authorities: ["CREATE_TASK", "CONFIRM_SUBMISSION", "DELETE_TASK",
+                        "ASSIGN_TASK", "UN-ASSIGN_TASK", "MODIFY_TASK", "INVITE_USERS", "REMOVE_TEAM_MEMBERS", "PUBLISH_PROJECT", "UNPUBLISH_PROJECT"]
                 }
             }
             const payload = {
@@ -49,17 +50,17 @@ class GrantAuthorities extends Component {
                 member: this.state.member,
                 teamManager: this.state.teamManager,
                 taskManager: this.state.taskManager,
-                role : role
+                role: role
             }
             this.props.setAuthority(payload)
             this.props.history.goBack()
         }
     }
 
-    handleRevoke = () =>{
+    handleRevoke = () => {
         const payload = {
-            project : this.props.location.state.project,
-            member : this.state.member
+            project: this.props.location.state.project,
+            member: this.state.member
         }
         this.props.revokeAuthority(payload)
     }
@@ -69,7 +70,7 @@ class GrantAuthorities extends Component {
                 <div className="container-fluid">
                     <div className="jumbotron jumbotron-fluid">
                         <div className="container">
-                            <h1 className="display-1">{this.state.projectId}</h1>
+                            <h1 className="display-1">{this.props.location.state.project.title}</h1>
                         </div>
                     </div>
                 </div>
@@ -95,8 +96,10 @@ class GrantAuthorities extends Component {
                         <button type="submit" className="btn btn-primary" onClick={this.handleSubmit}>Submit</button>
                     </div>
                 </div>
+               <UserDefinedRoles member = {this.state.member} project = {this.props.location.state.project} setAuthority = {this.props.setAuthority} />
                 <div className="row">
                     <div className="col-lg-4">
+                        <hr />
                         <button type="submit" className="btn btn-danger" onClick={this.handleRevoke}>Revoke Authorities</button>
                     </div>
                 </div>
@@ -112,7 +115,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         setAuthority: (payload) => dispatch(setAuthority(payload)),
-        revokeAuthority : (payload) => dispatch(revokeAuthorities(payload))
+        revokeAuthority: (payload) => dispatch(revokeAuthorities(payload))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(GrantAuthorities)
