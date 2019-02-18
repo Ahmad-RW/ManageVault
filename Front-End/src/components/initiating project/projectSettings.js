@@ -167,7 +167,8 @@ class ProjectSettings extends Component {
 const mapStateToProps = (state) => {
     return {
         projects: state.projects,
-        userInfo: state.userInfo
+        userInfo: state.userInfo,
+        auth : state.isAuthenticated
     }
 }
 const mapDispatchToProps = (dispatch) => {
