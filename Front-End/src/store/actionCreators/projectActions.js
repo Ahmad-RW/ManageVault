@@ -122,6 +122,19 @@ export const handleVoting = (payload) => {
     }
 }
 
+export const newRole = (payload) =>{
+    return (dispatch) =>{
+
+        axios.post("http://localhost:3333/project/newRole", {payload}).then((res)=>{
+        console.log(res)    
+        payload = {...payload, res}
+        dispatch({type:"NEW_ROLE", payload})
+        }).catch((exception)=>{
+            console.log(exception)
+        })
+    }
+}
+
 export const setAuthority = (payload) => {
 return (dispatch)=>{
     console.log(payload)

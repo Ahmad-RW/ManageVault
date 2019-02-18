@@ -52,7 +52,7 @@ projectRoute.post('/deleteproject', function (req, res) {
 
 projectRoute.post('/requestDeleteProject', function (req, res) {
     console.log(req.body, "PROJECT")
-    mongoose.model("projects").findByIdAndUpdate(req.body.project._id, { $set: { "status": "PENDING" }, $inc: { "votes.yes": 1 } }).then(function (record) {
+    mongoose.model("projects").findByIdAndUpdate(req.body.project._id, { $set: { "status": "PENDING" }, $inc: { "votes.yes": 1 } }, {runValidators: true}).then(function (record) {
         console.log(record)
         handleRequest(req.body.project)
         res.status(200).send(record)
@@ -166,11 +166,21 @@ projectRoute.post('/handleNotificationDelete', function (req, res) {
     })
 })
 
+projectRoute.post('/newRole', function(req, res){
+    console.log(req.body)
+    mongoose.model('projects').findByIdAndUpdate(req.body.payload.project._id, {$push :{"definedRoles" : req.body.payload.role}}, {new : true, runValidators: true}).then((record)=>{
+        console.log(record)
+        res.status(200).send(record)
+    }).catch((exception)=>{
+        console.log(exception)
+    })
+})
+
+
 projectRoute.post('/setAuthority', function (req, res) {
-    console.log(req.body.payload.role)
-    console.log("inside first if")
+    console.log(req.body.payload)
     mongoose.model('projects').findByIdAndUpdate(req.body.payload.project._id, 
-        { $push: { "members.$[elem].roles": req.body.payload.role } }, 
+        { $set: { "members.$[elem].roles": req.body.payload.newRoles } }, 
         { arrayFilters: [{ "elem.email": req.body.payload.member.email }], new:true}).then(function(record) {
         console.log(record)
         res.status(200).send(record)

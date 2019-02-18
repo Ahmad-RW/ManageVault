@@ -16,9 +16,9 @@ class ProjectSettings extends Component {
         members: {},
         requestDeleteButton: false,
         renderMessageFlag: false,
-        invitedMembers : ""
+        invitedMembers: ""
     }
-    
+
 
     renderMessage = () => {
         console.log(document.getElementById('deletebtn'))
@@ -63,14 +63,14 @@ class ProjectSettings extends Component {
     }
     checkAuthority = (project, authority) => {
         console.log(project)
-        const member = project.members.find(member =>  member.email === this.props.userInfo.email )
+        const member = project.members.find(member => member.email === this.props.userInfo.email)
         console.log(member)
         console.log(member.roles)
         let result = false
         member.roles.forEach(element => {
             console.log(element.name)
             console.log(element.authorities.length)
-            console.log( element.authorities.includes("INVITE_USERS"))
+            console.log(element.authorities.includes("INVITE_USERS"))
             if (element.authorities.includes(authority)) {
                 result = true
             }
@@ -95,6 +95,7 @@ class ProjectSettings extends Component {
         let removeButton = <span></span>
         let grantAuthority = <span></span>
         let InvitedMembers = <span></span>
+        let defineRoles = <span></span>
         const members = project.members.length ? (
             project.members.map(member => {
                 const isAuthorized = this.checkAuthority(this.state.project)
@@ -103,18 +104,19 @@ class ProjectSettings extends Component {
                     removeButton = <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleRemove(member) }}>
                         <i className="material-icons ">highlight_off</i>
                     </button>
-                    grantAuthority = <Link to={{ pathname: "/grantAuthority", state: { project, member } }}>Grant Authority</Link>
-                    InvitedMembers =  <InviteMembers project = {this.state.project} />
+                    grantAuthority = <Link to={{ pathname: "/grantAuthority", state: { project, member } }}>Assign a Role</Link>
+                    InvitedMembers = <InviteMembers project={this.state.project} />
+                    defineRoles = <Link to={{pathname : "/newRole", state : {project}}} className="btn btn-info" role="button"> Define New Roles </Link> 
                 }
-                if ( this.checkAuthority(this.state.project, "REMOVE_TEAM_MEMBERS")) {
+                if (this.checkAuthority(this.state.project, "REMOVE_TEAM_MEMBERS")) {
                     removeButton = <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleRemove(member) }}>
                         <i className="material-icons ">highlight_off</i>
                     </button>
-                    
+
 
                 }
-                if(this.checkAuthority(this.state.project, "INVITE_USERS")){
-                    InvitedMembers =  <InviteMembers project = {this.state.project} />
+                if (this.checkAuthority(this.state.project, "INVITE_USERS")) {
+                    InvitedMembers = <InviteMembers project={this.state.project} />
                 }
                 if (!member.teamLeader) return (<li class="list-group-item" key={member.email}>{member.name} {removeButton} {grantAuthority} </li>)
             })
@@ -152,15 +154,18 @@ class ProjectSettings extends Component {
                             <div className="col-4">
                                 {deleteButton}
                             </div>
+                            <div className="col-4">
+                            {defineRoles}
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div className="row">
-                <div className="col-4">
-                    <form>
-                       {InvitedMembers}
-                    </form>
-                </div>
+                    <div className="col-4">
+                        <form>
+                            {InvitedMembers}
+                        </form>
+                    </div>
                 </div>
 
             </div>
@@ -174,7 +179,7 @@ const mapStateToProps = (state) => {
     return {
         projects: state.projects,
         userInfo: state.userInfo,
-        auth : state.isAuthenticated
+        auth: state.isAuthenticated
     }
 }
 const mapDispatchToProps = (dispatch) => {
