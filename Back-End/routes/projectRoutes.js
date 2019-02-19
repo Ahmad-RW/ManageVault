@@ -202,6 +202,27 @@ projectRoute.post('/revokeAuthority', function(req, res){
         })
 })
 
+
+projectRoute.post('/assignNewTeamLeader', function(req, res){
+    console.log(req.body)
+    mongoose.model('projects').findByIdAndUpdate(req.body.payload.project._id, 
+     {$set:{"members.$[elem].teamLeader" : false}},
+     {arrayFilters :[{"elem.teamLeader" : true}]}).then(function(){
+         mongoose.model('projects').findByIdAndUpdate(req.body.payload.project._id, 
+            {$set :{"members.$[elem].teamLeader" : true}},
+          {arrayFilters : [{"elem.email" : req.body.payload.memberEmail}], new: true}
+         ).then(function(record){
+             console.log(record)
+             res.status(200).send(record)
+         }).catch(function(exception){
+            console.log(exception)
+            res.status(500).send(exception)
+         })
+     }).catch(function(exception){
+         console.log(exception)
+         res.status(500).send(exception)
+     })
+})
 projectRoute.post('/inviteUsers', function (req, res) {
     let invitedMembers = req.body.payload.invitedUsers.replace(/\s/g, '')//remove all spaces so when we match names we don't include spaces (e.g. test@test.com,test2@test.com)
     invitedMembers = invitedMembers.split(',')//basically split the string at the commas and return each section as an element in an array.

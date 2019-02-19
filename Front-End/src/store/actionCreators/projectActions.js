@@ -158,6 +158,20 @@ export const revokeAuthorities = (payload) =>{
     }
 }
 
+export const assignNewTeamLeader = (memberEmail, project) =>{
+    return(dispatch) => {
+        console.log(memberEmail, project)
+        let payload = {memberEmail,
+        project}
+        axios.post("http://localhost:3333/project/assignNewTeamLeader", {payload} ).then((res)=>{
+            payload = {...payload, res}
+            dispatch({type:"ASSIGN_NEW_TEAM_LEADER", payload })
+        }).catch((exception)=>{
+            console.log(exception)
+        })
+    }
+}
+
 export const inviteMoreMembers = (invitedUsers, project, userInfo) =>{
     return(dispatch) =>{
         const payload = {
