@@ -183,6 +183,21 @@ const rootReducer = (state = initState, action) => {
             projects: newProjects
         }
     }
+
+    if (action.type === "DELETE_TASK") {
+        let newProjects = state.projects.filter(project => project._id !== action.payload.PID)
+        const newProject = action.payload.res.data
+        newProjects = [
+            ...state.projects,
+            newProject
+        ]
+        
+        return state = {
+            ...state,
+            projects : newProjects,
+            projectInContext: newProject
+        }
+    }
     if(action.type ==="NEW_COMMENT"){
         const oldProjects = state.projects.filter(project => project._id !== action.payload.project._id)
         const newProjects = [...oldProjects, action.payload.res.data]

@@ -15,6 +15,24 @@ export const createTask = (project, task) => {
 
     }
 }
+<<<<<<< HEAD
+
+export const deleteTask = (task_id, PID) => {
+    return(dispatch) => {
+        console.log(task_id, ", Task ID")
+        console.log(PID,", Project ID")
+        const payload = { task_id, PID }
+        axios.post('http://localhost:3333/task/deleteTask', {payload}).then((res) => {
+            const payload = {task_id, PID, res}
+            dispatch({ type: "DELETE_TASK", payload })
+            console.log(res, "Response")
+        }).catch((exception) => {
+            console.log(exception)
+        })
+    }
+}
+||||||| merged common ancestors
+=======
 
 
 export const newComment = (comment, task, project) => {
@@ -28,3 +46,4 @@ export const newComment = (comment, task, project) => {
         })
     }
 }
+>>>>>>> c974c1c86f9b8c643c0597a54232a42de4af7a3c
