@@ -15,7 +15,6 @@ export const createTask = (project, task) => {
 
     }
 }
-<<<<<<< HEAD
 
 export const deleteTask = (task_id, PID) => {
     return(dispatch) => {
@@ -31,8 +30,6 @@ export const deleteTask = (task_id, PID) => {
         })
     }
 }
-||||||| merged common ancestors
-=======
 
 
 export const newComment = (comment, task, project) => {
@@ -46,4 +43,3 @@ export const newComment = (comment, task, project) => {
         })
     }
 }
->>>>>>> c974c1c86f9b8c643c0597a54232a42de4af7a3c

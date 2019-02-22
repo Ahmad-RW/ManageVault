@@ -52,7 +52,7 @@ class Board extends Component {
                 )
             })
         ) : (
-                <h4>There is no tasks  yet</h4>
+                <h4>There are no tasks  yet</h4>
             )
         return taskList
 
