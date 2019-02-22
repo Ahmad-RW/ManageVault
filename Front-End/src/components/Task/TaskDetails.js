@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import CommentsBlock from 'simple-react-comments';
-import ReactDisqusComments from 'react-disqus-comments'
 import { connect } from 'react-redux'
 import { newComment } from '../../store/actionCreators/taskActions'
 
