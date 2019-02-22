@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import InviteMembers from './inviteMembers'
-import { leaveProject, requestToDeleteProject, removeTeamMember, requestDeleteAction } from '../../store/actionCreators/projectActions'
+import { leaveProject, requestToDeleteProject, removeTeamMember, requestDeleteAction, assignNewTeamLeader } from '../../store/actionCreators/projectActions'
 import inviteMembers from './inviteMembers';
 class ProjectSettings extends Component {
     constructor(props) {
@@ -16,9 +16,10 @@ class ProjectSettings extends Component {
         members: {},
         requestDeleteButton: false,
         renderMessageFlag: false,
-        invitedMembers : ""
+        invitedMembers: "",
+        renderMembers: false
     }
-    
+
 
     renderMessage = () => {
         console.log(document.getElementById('deletebtn'))
@@ -44,6 +45,57 @@ class ProjectSettings extends Component {
         this.props.leaveProject(this.state.project, this.props.userInfo)
         this.props.history.push('/home')
     }
+
+    handleTeamLeaderStepDown = (e) => {
+        this.props.assignNewTeamLeader(e.target.id, this.state.project)
+        this.props.history.goBack()
+    }
+    setRenderMembers = () => {
+        this.setState({
+            ...this.state,
+            renderMembers: true
+        })
+    }
+    renderMembers = () => {
+        if (this.state.renderMembers) {
+            const project = this.state.project
+            const membersList = project.members.map((member) => {
+                if (!member.teamLeader) {
+                    return(
+                    <li>
+                        <button onClick={(e) => { this.handleTeamLeaderStepDown(e) }} className="btn btn-secondary" key={member.email} id={member.email}>{member.name}</button>
+                    </li>
+                    )}
+            })
+            console.log(membersList)
+            return (
+                <div>
+                    <h5>Select A New Leader</h5>
+                    {membersList}
+                </div>
+            )
+        }
+
+
+    }
+    renderLeaveButton = () => {
+        if(this.state.project.members.length ===1 ){
+            return
+        }
+        const currentMember = this.state.project.members.find(member => {
+            return member.email === this.props.userInfo.email
+        })
+        if (currentMember.teamLeader) {
+            return (
+                <button className="btn btn-secondary" onClick={this.setRenderMembers}>Step Down as Team Leader</button>
+            )
+        }
+        else {
+            return (
+                <button className="btn btn-secondary" onClick={this.handleLeave}>Leave Project</button>
+            )
+        }
+    }
     handleDelete = () => {
         console.log(this.state)
         if (this.state.project.members.length === 1) {
@@ -63,14 +115,14 @@ class ProjectSettings extends Component {
     }
     checkAuthority = (project, authority) => {
         console.log(project)
-        const member = project.members.find(member =>  member.email === this.props.userInfo.email )
+        const member = project.members.find(member => member.email === this.props.userInfo.email)
         console.log(member)
         console.log(member.roles)
         let result = false
         member.roles.forEach(element => {
             console.log(element.name)
             console.log(element.authorities.length)
-            console.log( element.authorities.includes("INVITE_USERS"))
+            console.log(element.authorities.includes("INVITE_USERS"))
             if (element.authorities.includes(authority)) {
                 result = true
             }
@@ -95,6 +147,7 @@ class ProjectSettings extends Component {
         let removeButton = <span></span>
         let grantAuthority = <span></span>
         let InvitedMembers = <span></span>
+        let defineRoles = <span></span>
         const members = project.members.length ? (
             project.members.map(member => {
                 const isAuthorized = this.checkAuthority(this.state.project)
@@ -103,18 +156,19 @@ class ProjectSettings extends Component {
                     removeButton = <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleRemove(member) }}>
                         <i className="material-icons ">highlight_off</i>
                     </button>
-                    grantAuthority = <Link to={{ pathname: "/grantAuthority", state: { project, member } }}>Grant Authority</Link>
-                    InvitedMembers =  <InviteMembers project = {this.state.project} />
+                    grantAuthority = <Link to={{ pathname: "/grantAuthority", state: { project, member } }}>Assign a Role</Link>
+                    InvitedMembers = <InviteMembers project={this.state.project} />
+                    defineRoles = <Link to={{ pathname: "/newRole", state: { project } }} className="btn btn-info" role="button"> Define New Roles </Link>
                 }
-                if ( this.checkAuthority(this.state.project, "REMOVE_TEAM_MEMBERS")) {
+                if (this.checkAuthority(this.state.project, "REMOVE_TEAM_MEMBERS")) {
                     removeButton = <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleRemove(member) }}>
                         <i className="material-icons ">highlight_off</i>
                     </button>
-                    
+
 
                 }
-                if(this.checkAuthority(this.state.project, "INVITE_USERS")){
-                    InvitedMembers =  <InviteMembers project = {this.state.project} />
+                if (this.checkAuthority(this.state.project, "INVITE_USERS")) {
+                    InvitedMembers = <InviteMembers project={this.state.project} />
                 }
                 if (!member.teamLeader) return (<li class="list-group-item" key={member.email}>{member.name} {removeButton} {grantAuthority} </li>)
             })
@@ -147,20 +201,31 @@ class ProjectSettings extends Component {
                         <hr />
                         <div className="row">
                             <div className="col-4">
-                                <button className="btn btn-secondary" onClick={this.handleLeave}>Leave Project</button>
+                                {this.renderLeaveButton()}
                             </div>
                             <div className="col-4">
                                 {deleteButton}
                             </div>
+                            <div className="col-4">
+                                {defineRoles}
+                            </div>
+                        </div>
+                        <div className="row mt-3">
+                            <div className="col-4">
+                                <ol>
+                                    {this.renderMembers()}
+                                </ol>
+                            </div>
+
                         </div>
                     </div>
                 </div>
                 <div className="row">
-                <div className="col-4">
-                    <form>
-                       {InvitedMembers}
-                    </form>
-                </div>
+                    <div className="col-4">
+                        <form>
+                            {InvitedMembers}
+                        </form>
+                    </div>
                 </div>
 
             </div>
@@ -174,7 +239,7 @@ const mapStateToProps = (state) => {
     return {
         projects: state.projects,
         userInfo: state.userInfo,
-        auth : state.isAuthenticated
+        auth: state.isAuthenticated
     }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -182,7 +247,9 @@ const mapDispatchToProps = (dispatch) => {
         leaveProject: (project, userInfo) => dispatch(leaveProject(project, userInfo)),
         deleteProject: (project, userInfo) => dispatch(requestToDeleteProject(project, userInfo)),
         removeTeamMember: (project, member) => dispatch(removeTeamMember(project, member)),
-        requestDelete: (project) => { dispatch(requestDeleteAction(project)) }
+        requestDelete: (project) => { dispatch(requestDeleteAction(project)) },
+        assignNewTeamLeader: (memberEmail, project) => { dispatch(assignNewTeamLeader(memberEmail, project)) }
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectSettings)
+

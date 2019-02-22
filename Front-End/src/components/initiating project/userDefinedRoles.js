@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import {newRole} from '../../store/actionCreators/projectActions'
 class UserDefinedRoles extends Component {
 
     constructor(props) {
@@ -32,23 +33,23 @@ class UserDefinedRoles extends Component {
 
         }
         const payload = {
-            project: this.props.project,
+            project: this.props.location.state.project,
             member: this.props.member,
             role,
             userDefined: true,
         }
-        this.props.setAuthority(payload)
+        this.props.newRole(payload)
+        this.props.history.goBack()
     }
     render() {
         return (
             <div>
                 <div className="row">
-                    <div className="col-sm-4">
-                        <hr />
-                        <h6>Or define your own roles</h6>
+                    <div className="col-sm-6">
+                        <h6>Name the role and assign authorities</h6>
                         <input type="text" id="roleName" onChange={this.handleRoleName} />
                     </div>
-                    <div className="col-sm-2">
+                    <div className="col-sm-4">
                         <ul class="checkbox-grid">
                             <li><input onClick={this.handleRoleSelect} id="" type="checkbox" name="text1" value="INVITE_USERS" /><label for="text1">Invite Users</label></li>
                             <li><input onClick={this.handleRoleSelect} id="" type="checkbox" name="text2" value="REMOVE_TEAM_MEMBERS" /><label for="text2">Remove Team Members</label></li>
@@ -64,7 +65,7 @@ class UserDefinedRoles extends Component {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-sm-4">
+                    <div className="col-sm-6">
                         <button className="btn btn-primary" onClick={this.handleSubmit}>Submit Role</button>
                     </div>
                 </div>
@@ -75,6 +76,10 @@ class UserDefinedRoles extends Component {
     }
 }
 
+const mapDispatchToProps = (dispatch) =>{
+    return {
+        newRole : (payload) => dispatch(newRole(payload))
+    }
+}
 
-
-export default UserDefinedRoles
+export default connect(null, mapDispatchToProps)(UserDefinedRoles)

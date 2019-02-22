@@ -16,6 +16,7 @@ import Notification from './components/initiating project/Notification'
 import WorkSpace from './components/Task/Workspace'
 import GrantAuthorities from './components/initiating project/grantAuthority';
 import Board from './components/Task/Board';
+import userDefinedRoles from './components/initiating project/userDefinedRoles';
 
 class App extends Component {
   
@@ -48,6 +49,7 @@ class App extends Component {
             <Route path='/notification' component={RequireAuth(Notification)} />
             <Route path='/grantAuthority' component={RequireAuth(GrantAuthorities)} />
             <Route path='/board' component={RequireAuth(Board)} />
+            <Route path='/newRole' component={RequireAuth(userDefinedRoles)} />
           </Switch>
           
         </div>
