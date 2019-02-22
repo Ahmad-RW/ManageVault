@@ -24,6 +24,8 @@ class CreateTask extends Component {
         console.log("in submit")
         let task = {
             name: this.state.task_Name,
+            status : "TO_DO",
+            duration : this.state.duration,
             task_Description: this.state.task_Description,
             startDate: this.state.startDate,
             deadLine: this.state.endDate,
@@ -40,10 +42,10 @@ class CreateTask extends Component {
         
         return (
             <div>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createTask">
                     Create task
                     </button>
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="createTask" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">

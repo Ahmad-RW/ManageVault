@@ -4,6 +4,7 @@ import DatePicker from './DatePicker'
 import CreateTask from './CreateTask'
 import ProjectSubBar from '../layout/projectSubBar';
 import { setProject } from '../../store/actionCreators/projectActions'
+import TaskDetails from './TaskDetails';
 
 class Board extends Component {
     constructor(props) {
@@ -11,7 +12,7 @@ class Board extends Component {
     }
     handleDelete = (e) => {
         console.log(e, ", Click recorded")
-        
+
     }
     renderTasks = () => {
         let number = 0
@@ -20,21 +21,25 @@ class Board extends Component {
         taskList = tasks.length ? (
             tasks.map(task => {
                 return (
-                <tr>
-                    <th scope="row">{++number}</th>
-                    <td>{task.name}</td>
-                    <td>
-                            <button className="close" data-dismiss="alert" aria-label="Close"  onClick={() => {this.handleDelete()}}>
+                    <tr>
+                        <th scope="row">{++number}</th>
+                        <td>{task.name}</td>
+                        <td>
+                            <TaskDetails />
+                        </td>
+                        <td>
+                            <button className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleDelete() }}>
                                 <i className="material-icons">highlight_off</i>
                             </button>
-                    </td>
-                </tr>
+                        </td>
+
+                    </tr>
                 )
             })
         ) : (
                 <h4>There is no tasks  yet</h4>
             )
-            return taskList
+        return taskList
 
     }
     render() {
@@ -43,7 +48,7 @@ class Board extends Component {
         return (
             <div>
                 <ProjectSubBar />
-               
+
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>
