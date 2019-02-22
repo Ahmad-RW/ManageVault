@@ -20,4 +20,32 @@ taskRoute.post('/newTask', function (req, res) {
     })
 });
 
+taskRoute.post('/newComment', function(req, res){
+    console.log(req.body)
+    newComments = [...req.body.payload.task.comments, req.body.payload.comment]
+    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, 
+        {$set : {"tasks.$[elem].comments": newComments }},
+          {arrayFilters :[{"elem._id" : mongoose.Types.ObjectId(req.body.payload.task._id)}], new : true }).then(function(record){
+              console.log(record)
+              res.status(200).send(record)
+          }).catch(function(exception){
+              console.log(exception)
+          })
+   
+   
+   
+   
+   
+   
+   
+   
+   
+    
+    // mongoose.model('projects').findByIdAndUpdate({"_id" : req.body.payload.project._id, "tasks._id" : req.body.payload.task._id}, {$push :{"tasks.$.comments":req.body.payload.comment}}).then(function(record){
+    //     console.log(record)
+    // }).catch(function(exception){
+    //     console.log(exception)
+    // })
+})
+
 module.exports = taskRoute

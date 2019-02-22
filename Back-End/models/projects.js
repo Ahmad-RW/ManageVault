@@ -57,6 +57,7 @@ const projectsSchema = new schema({
         creator: String,
     }],
     tasks : [{
+        
         name : String,
         status : String,
         startDate : Date, //we calculate the deadline given startdate and duration
@@ -66,7 +67,7 @@ const projectsSchema = new schema({
             Date : Date,
             predecessor : String,
             successor : String
-         }]
+         }],
     //     channel : {
     //         name : String,
     //         messages :[{
@@ -81,11 +82,11 @@ const projectsSchema = new schema({
     //         startDate : Date,
     //         endDate : Date
     //     },
-    //     comments : [{
-    //         date : Date,
-    //         content : String,
-    //         author : String
-    //     }],
+        comments : [{
+            date : Date,
+            content : String,
+            author : String
+        }],
     //     activity : [{
     //         name : String,
     //         status : {type : String, enum :['CHECKED', 'UNCHECKED']},

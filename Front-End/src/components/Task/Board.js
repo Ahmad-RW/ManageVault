@@ -25,7 +25,7 @@ class Board extends Component {
                         <th scope="row">{++number}</th>
                         <td>{task.name}</td>
                         <td>
-                            <TaskDetails />
+                            <TaskDetails task = {task} number={number}/>
                         </td>
                         <td>
                             <button className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleDelete() }}>
