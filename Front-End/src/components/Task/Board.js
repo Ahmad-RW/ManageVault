@@ -3,12 +3,15 @@ import { connect } from 'react-redux'
 import DatePicker from './DatePicker'
 import CreateTask from './CreateTask'
 import ProjectSubBar from '../layout/projectSubBar';
-
 import { setProject } from '../../store/actionCreators/projectActions'
 
 class Board extends Component {
     constructor(props) {
         super(props)
+    }
+    handleDelete = (e) => {
+        console.log(e, ", Click recorded")
+        
     }
     renderTasks = () => {
         let number = 0
@@ -17,11 +20,14 @@ class Board extends Component {
         taskList = tasks.length ? (
             tasks.map(task => {
                 return (
-                    <tr>
+                <tr>
                     <th scope="row">{++number}</th>
                     <td>{task.name}</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
+                    <td>
+                            <button className="close" data-dismiss="alert" aria-label="Close"  onClick={() => {this.handleDelete()}}>
+                                <i className="material-icons">highlight_off</i>
+                            </button>
+                    </td>
                 </tr>
                 )
             })
@@ -38,13 +44,11 @@ class Board extends Component {
             <div>
                 <ProjectSubBar />
                
-                <table class="table table-striped">
+                <table class="table table-striped table-hover">
                     <thead>
                         <tr>
                             <th scope="col">Task Number</th>
-                            <th scope="col">First</th>
-                            <th scope="col">Last</th>
-                            <th scope="col">Handle</th>
+                            <th scope="col">Task Number</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -15,7 +15,7 @@ class CreateTask extends Component {
     handleChange = (e) => {
         console.log(e.target.value)
         this.setState({
-            [e.target.id]: e.target.value
+            [e.target.id]: e.target.value,
         })
     }
 
@@ -28,6 +28,10 @@ class CreateTask extends Component {
             startDate: this.state.startDate,
             deadLine: this.state.endDate,
         }
+        // this.setState({
+        //     task_Name: '',
+        //     task_Description: '',
+        // })
         console.log(this.props.project,"نل ولا مو نل؟")
         this.props.createTask(this.props.project, task)
     }
