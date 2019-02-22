@@ -1,11 +1,8 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-
-import { createTask } from '../../store/actionCreators/taskActions'
 
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-class CreateTask extends Component {
+
+class ModifyTask extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -31,37 +28,23 @@ class CreateTask extends Component {
         })
     }
 
-    handleSubmit = (e) => {
-        e.preventDefault()
-        console.log("in submit")
-        let task = {
-            name: this.state.task_Name,
-            status : "TO_DO",
-            duration : this.state.duration,
-            task_Description: this.state.task_Description,
-            startDate: this.state.startDate,
-        }
-        // this.setState({
-        //     task_Name: '',
-        //     task_Description: '',
-        // })
-        console.log(this.props.project)
-        console.log(task)
-        this.props.createTask(this.props.project, task)
+    handleSubmit() {
+
     }
 
     render() {
-        
+        console.log(this.props.tasks,"tasks")
+        console.log(this.props.task)
         return (
             <div>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createTask">
-                    Create task
-                    </button>
-                <div class="modal fade" id="createTask" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
+                <button className="close"  aria-label="Close" data-toggle="modal" data-target="#modifyTask">
+                    <i class="material-icons">edit</i>
+                </button>
+                <div class="modal fade" id="modifyTask" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Create task</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">{this.props.task.name}</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -70,15 +53,15 @@ class CreateTask extends Component {
                                 <form onSubmit={this.handleSubmit}>
                                     <div class="form-group">
                                         <label for="task_Name">Task name</label>
-                                        <input class="form-control" id="task_Name" placeholder="Task name" onChange={this.handleChanges} required/>
+                                        <input class="form-control" id="task_Name" value={this.props.task.name} onChange={this.handleChanges} required/>
 
                                         <label for="task_Description">Task description</label>
-                                        <textarea class="form-control" id="task_Description" rows="3" placeholder="Task description" onChange={this.handleChanges}></textarea><br />
+                                        <textarea class="form-control" id="task_Description" rows="3" value={this.props.task.description} onChange={this.handleChanges}></textarea><br />
                                         <div className="centered">
                                             <label className="label" htmlFor="startDate">Start Date: </label>
                                             <DatePicker className="form-control" selected={this.state.startDate} onChange={this.handleChange} /><br /><br />
                                         </div>
-                                        <label className="label" htmlFor="Duration">Duration: </label>
+                                        <label className="label" htmlFor="Duration" value={this.props.task.duration}>Duration: </label>
                                         <input id="duration" onChange={this.handleChanges}/>
                                     </div>
                                     <div class="modal-footer">
@@ -95,10 +78,4 @@ class CreateTask extends Component {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        createTask: (project, task) => { dispatch(createTask(project, task)) },
-    }
-}
-
-export default connect(null,mapDispatchToProps)(CreateTask);
+export default ModifyTask

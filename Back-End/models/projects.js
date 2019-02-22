@@ -61,7 +61,6 @@ const projectsSchema = new schema({
         status : String,
         startDate : Date, //we calculate the deadline given startdate and duration
         duration : Number, // we need to find integers in react OR handle entering floats as days. 
-        deadline : Date, //String or Date ? 
         dependencies : [{
             Date : Date,
             predecessor : String,

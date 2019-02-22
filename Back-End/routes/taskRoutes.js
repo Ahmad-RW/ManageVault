@@ -9,6 +9,7 @@ taskRoute.post('/newTask', function (req, res) {
     let task = {
         name: req.body.payload.task.name,
         status : req.body.payload.task.status,
+        startDate : req.body.payload.task.startDate,
         duration : req.body.payload.task.duration,
         
     }

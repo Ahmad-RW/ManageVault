@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import DatePicker from './DatePicker'
 import CreateTask from './CreateTask'
 import ProjectSubBar from '../layout/projectSubBar';
 import { setProject } from '../../store/actionCreators/projectActions'
 import TaskDetails from './TaskDetails';
+import ModifyTask from './ModifyTask'
 
 class Board extends Component {
     constructor(props) {
@@ -31,6 +31,7 @@ class Board extends Component {
                             <button className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleDelete() }}>
                                 <i className="material-icons">highlight_off</i>
                             </button>
+                            <ModifyTask tasks={tasks} task={task}/>
                         </td>
 
                     </tr>
@@ -53,7 +54,7 @@ class Board extends Component {
                     <thead>
                         <tr>
                             <th scope="col">Task Number</th>
-                            <th scope="col">Task Number</th>
+                            <th scope="col">Task Name</th>
                         </tr>
                     </thead>
                     <tbody>
