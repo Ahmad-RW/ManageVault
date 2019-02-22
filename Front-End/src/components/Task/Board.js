@@ -6,6 +6,7 @@ import ProjectSubBar from '../layout/projectSubBar';
 import { setProject } from '../../store/actionCreators/projectActions'
 import { deleteTask } from '../../store/actionCreators/taskActions'
 import { checkAuthority } from '../../helper' 
+import TaskDetails from './TaskDetails';
 
 class Board extends Component {
     constructor(props) {
@@ -42,6 +43,9 @@ class Board extends Component {
                     <th scope="row">{++number}</th>
                     <td>{task.name}</td>
                     <td>
+                            <TaskDetails task = {task} number={number}/>
+                        </td>
+                    <td>
                             {this.renderDeleteTask(task)}
                     </td>
                 </tr>
@@ -50,7 +54,7 @@ class Board extends Component {
         ) : (
                 <h4>There is no tasks  yet</h4>
             )
-            return taskList
+        return taskList
 
     }
     render() {
@@ -59,7 +63,7 @@ class Board extends Component {
         return (
             <div>
                 <ProjectSubBar />
-               
+
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>
