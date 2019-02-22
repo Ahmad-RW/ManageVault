@@ -3,73 +3,59 @@ import { connect } from 'react-redux'
 import DatePicker from './DatePicker'
 import CreateTask from './CreateTask'
 import ProjectSubBar from '../layout/projectSubBar';
-import TaskTableHeader from './TaskTableHeader';
 import { setProject } from '../../store/actionCreators/projectActions'
 
 class Board extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-            currentProject: localStorage.getItem("currentProject")
-        }
-        console.log(this.props.projectInContext)
-        console.log(localStorage.getItem("currentProject"))
+    }
+    handleDelete = (e) => {
+        console.log(e, ", Click recorded")
+        
+    }
+    renderTasks = () => {
+        let number = 0
+        let taskList
+        var tasks = this.props.projectInContext.tasks
+        taskList = tasks.length ? (
+            tasks.map(task => {
+                return (
+                <tr>
+                    <th scope="row">{++number}</th>
+                    <td>{task.name}</td>
+                    <td>
+                            <button className="close" data-dismiss="alert" aria-label="Close"  onClick={() => {this.handleDelete()}}>
+                                <i className="material-icons">highlight_off</i>
+                            </button>
+                    </td>
+                </tr>
+                )
+            })
+        ) : (
+                <h4>There is no tasks  yet</h4>
+            )
+            return taskList
+
     }
     render() {
-        let taskList
-        let currentProject
-        this.props.projects.forEach(project => {
-            if (project._id === localStorage.getItem("currentProject")) {
-                currentProject = { ...project }
-            }
-        });
-        console.log(currentProject)
-        if (typeof currentProject === "undefined") {
-            var tasks = this.props.projectInContext.tasks//lvnejfbnvofebvfenbv
-            if (typeof tasks === "undefined") {
-                tasks = []
-            }
-            taskList = tasks.length ? (
-                tasks.map(task => {
-                    return (
-                        <h4>{task.name}</h4>
-                    )
-                })
-            ) : (
-                    <h4>There is no tasks  yet</h4>
-                )
-        }
-        else {
-            var tasks = currentProject.tasks//lvnejfbnvofebvfenbv
-            console.log(currentProject)
-            if (typeof tasks === "undefined") {
-                tasks = []
-            }
-            taskList = tasks.length ? (
-                tasks.map(task => {
-                    return (
-                        <div className="container-fluid-full">
-                        <table className="table table-hover table-dark">
-                        <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>{task.name}</td>
-                                </tr>
-                        </tbody>
-                        </table>
-                        </div>
-                    )
-                })
-            ) : (
-                    <h4>There is no tasks  yet</h4>
-                )
-        }
+
+
         return (
             <div>
                 <ProjectSubBar />
-                <TaskTableHeader />
-                {taskList}
-                <CreateTask project={currentProject} />
+               
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Task Number</th>
+                            <th scope="col">Task Number</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.renderTasks()}
+                    </tbody>
+                </table>
+                <CreateTask project={this.props.projectInContext} />
             </div>
         )
     }

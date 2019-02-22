@@ -16,10 +16,9 @@ const rolesSchema = new schema({
         type: String,
         enum: ["INVITE_USERS", "REMOVE_TEAM_MEMBERS", "PUBLISH_PROJECT", "UNPUBLISH_PROJECT",
             "CREATE_TASK", "CONFIRM_SUBMISSION", "DELETE_TASK",
-            "ASSIGN_TASK", "UN-ASSIGN_TASK", "MODIFY_TASK"]
+            "ASSIGN_TASK", "UNASSIGN_TASK", "MODIFY_TASK"]
     }]
-}, 
-{ _id: false })
+})
 const projectsSchema = new schema({
     title: {
         type: String,
@@ -42,6 +41,7 @@ const projectsSchema = new schema({
         type: String,
         enum: ['TABLE', 'TIMELINE']
     },
+    definedRoles : [rolesSchema],
     members: [{
         email: String,
         name: String,

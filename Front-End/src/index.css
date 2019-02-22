@@ -34,3 +34,8 @@ code {
 .label {
 padding-right: 100px;
 }
+
+.checkbox-grid {
+  list-style: none;
+}
+

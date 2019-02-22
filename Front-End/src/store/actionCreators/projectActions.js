@@ -122,11 +122,25 @@ export const handleVoting = (payload) => {
     }
 }
 
+export const newRole = (payload) =>{
+    return (dispatch) =>{
+
+        axios.post("http://localhost:3333/project/newRole", {payload}).then((res)=>{
+        console.log(res)    
+        payload = {...payload, res}
+        dispatch({type:"NEW_ROLE", payload})
+        }).catch((exception)=>{
+            console.log(exception)
+        })
+    }
+}
+
 export const setAuthority = (payload) => {
 return (dispatch)=>{
     console.log(payload)
     axios.post('http://localhost:3333/project/setAuthority', {payload}).then((res)=>{
         console.log(res)
+        payload = {...payload, res}
         dispatch({type : "SET_AUTHORITY", payload})
     }).catch((exception)=>{
         console.log(exception)
@@ -138,6 +152,20 @@ export const revokeAuthorities = (payload) =>{
     return (dispatch) =>{
         axios.post('http://localhost:3333/project/revokeAuthority', {payload}).then((res)=>{
             console.log(res)
+        }).catch((exception)=>{
+            console.log(exception)
+        })
+    }
+}
+
+export const assignNewTeamLeader = (memberEmail, project) =>{
+    return(dispatch) => {
+        console.log(memberEmail, project)
+        let payload = {memberEmail,
+        project}
+        axios.post("http://localhost:3333/project/assignNewTeamLeader", {payload} ).then((res)=>{
+            payload = {...payload, res}
+            dispatch({type:"ASSIGN_NEW_TEAM_LEADER", payload })
         }).catch((exception)=>{
             console.log(exception)
         })
