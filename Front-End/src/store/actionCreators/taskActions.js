@@ -15,3 +15,18 @@ export const createTask = (project, task) => {
 
     }
 }
+
+export const deleteTask = (task_id, PID) => {
+    return(dispatch) => {
+        console.log(task_id, ", Task ID")
+        console.log(PID,", Project ID")
+        const payload = { task_id, PID }
+        axios.post('http://localhost:3333/task/deleteTask', {payload}).then((res) => {
+            const payload = {task_id, PID, res}
+            dispatch({ type: "DELETE_TASK", payload })
+            console.log(res, "Response")
+        }).catch((exception) => {
+            console.log(exception)
+        })
+    }
+}

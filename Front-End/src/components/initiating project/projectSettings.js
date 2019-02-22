@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import InviteMembers from './inviteMembers'
 import { leaveProject, requestToDeleteProject, removeTeamMember, requestDeleteAction, assignNewTeamLeader } from '../../store/actionCreators/projectActions'
 import inviteMembers from './inviteMembers';
+import { checkAuthority } from '../../helper'
 class ProjectSettings extends Component {
     constructor(props) {
         super(props)
@@ -22,7 +23,6 @@ class ProjectSettings extends Component {
 
 
     renderMessage = () => {
-        console.log(document.getElementById('deletebtn'))
         if (this.state.renderMessageFlag && document.getElementById('deletebtn') !== null) {
             document.getElementById('deletebtn').className = "d-none";
             return (
@@ -113,22 +113,22 @@ class ProjectSettings extends Component {
         this.props.history.push('/home')
         alert("Team member has been removed")
     }
-    checkAuthority = (project, authority) => {
-        console.log(project)
-        const member = project.members.find(member => member.email === this.props.userInfo.email)
-        console.log(member)
-        console.log(member.roles)
-        let result = false
-        member.roles.forEach(element => {
-            console.log(element.name)
-            console.log(element.authorities.length)
-            console.log(element.authorities.includes("INVITE_USERS"))
-            if (element.authorities.includes(authority)) {
-                result = true
-            }
-        });
-        return result
-    }
+    // checkAuthority = (project, authority) => {
+    //     console.log(project)
+    //     const member = project.members.find(member => member.email === this.props.userInfo.email)
+    //     console.log(member)
+    //     console.log(member.roles)
+    //     let result = false
+    //     member.roles.forEach(element => {
+    //         console.log(element.name)
+    //         console.log(element.authorities.length)
+    //         console.log(element.authorities.includes("INVITE_USERS"))
+    //         if (element.authorities.includes(authority)) {
+    //             result = true
+    //         }
+    //     });
+    //     return result
+    // }
     render() {
         const project = this.state.project
         const teamLeader = project.members.find(member => {
@@ -150,8 +150,6 @@ class ProjectSettings extends Component {
         let defineRoles = <span></span>
         const members = project.members.length ? (
             project.members.map(member => {
-                const isAuthorized = this.checkAuthority(this.state.project)
-                console.log(isAuthorized)
                 if (teamLeader.email === this.props.userInfo.email) {
                     removeButton = <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleRemove(member) }}>
                         <i className="material-icons ">highlight_off</i>
@@ -160,14 +158,14 @@ class ProjectSettings extends Component {
                     InvitedMembers = <InviteMembers project={this.state.project} />
                     defineRoles = <Link to={{ pathname: "/newRole", state: { project } }} className="btn btn-info" role="button"> Define New Roles </Link>
                 }
-                if (this.checkAuthority(this.state.project, "REMOVE_TEAM_MEMBERS")) {
+                if (checkAuthority(this.state.project, "REMOVE_TEAM_MEMBERS", this.props.userInfo)) {
                     removeButton = <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleRemove(member) }}>
                         <i className="material-icons ">highlight_off</i>
                     </button>
 
 
                 }
-                if (this.checkAuthority(this.state.project, "INVITE_USERS")) {
+                if (checkAuthority(this.state.project, "INVITE_USERS", this.props.userInfo)) {
                     InvitedMembers = <InviteMembers project={this.state.project} />
                 }
                 if (!member.teamLeader) return (<li class="list-group-item" key={member.email}>{member.name} {removeButton} {grantAuthority} </li>)
