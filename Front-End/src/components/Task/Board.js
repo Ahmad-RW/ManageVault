@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import CreateTask from './CreateTask'
 import ProjectSubBar from '../layout/projectSubBar';
 import { setProject } from '../../store/actionCreators/projectActions'
+import {deleteTask} from '../../store/actionCreators/taskActions'
+import { checkAuthority } from '../../helper' 
 import TaskDetails from './TaskDetails';
 import ModifyTask from './ModifyTask'
 
@@ -10,9 +12,25 @@ class Board extends Component {
     constructor(props) {
         super(props)
     }
-    handleDelete = (e) => {
-        console.log(e, ", Click recorded")
-
+    handleDelete = (task_id) => {
+        console.log(task_id)
+        this.props.deleteTask(task_id, this.props.projectInContext._id)
+    }
+    renderDeleteTask = (task) => {
+        if(checkAuthority(this.props.projectInContext,"DELETE_TASK",this.props.userInfo)){
+           return ( 
+                <button className="close" data-dismiss="alert" aria-label="Close"  onClick={() => {this.handleDelete(task._id, this.props.projectInContext._id)}} key={task._id}>
+                    <i className="material-icons">highlight_off</i>
+                </button>
+           )
+        }
+    }
+    renderCreateTaskButton = (task) => {
+        if(checkAuthority(this.props.projectInContext,"DELETE_TASK",this.props.userInfo)){
+            return ( 
+                <CreateTask project={this.props.projectInContext} />
+            )
+         } 
     }
     renderTasks = () => {
         let number = 0
@@ -21,16 +39,14 @@ class Board extends Component {
         taskList = tasks.length ? (
             tasks.map(task => {
                 return (
-                    <tr>
-                        <th scope="row">{++number}</th>
-                        <td>{task.name}</td>
-                        <td>
-                            <TaskDetails />
+                <tr>
+                    <th scope="row">{++number}</th>
+                    <td>{task.name}</td>
+                    <td>
+                            <TaskDetails task = {task} number={number}/>
                         </td>
                         <td>
-                            <button className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleDelete() }}>
-                                <i className="material-icons">highlight_off</i>
-                            </button>
+                        {this.renderDeleteTask(task)}
                             <ModifyTask tasks={tasks} task={task}/>
                         </td>
 
@@ -61,7 +77,7 @@ class Board extends Component {
                         {this.renderTasks()}
                     </tbody>
                 </table>
-                <CreateTask project={this.props.projectInContext} />
+                    {this.renderCreateTaskButton()}
             </div>
         )
     }
@@ -70,14 +86,15 @@ class Board extends Component {
 const mapStateToProps = (state) => {
     return {
         projectInContext: state.projectInContext,
-        projects: state.projects
-
+        projects: state.projects,
+        userInfo: state.userInfo
     }
 }
 const mapDispatchToProps = (dispatch) => {
     return {
         getCurrentProject: (projectId) => dispatch({ type: "GET_CURRENT_PROJECT", projectId }),
-        setProject: (project) => dispatch(setProject(project))
+        setProject: (project) => dispatch(setProject(project)),
+        deleteTask: (task_id,PID) => dispatch(deleteTask(task_id,PID))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Board)

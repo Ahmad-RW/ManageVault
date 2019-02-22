@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import { makeid } from '../../helper'
 import DatePicker from "react-datepicker";
 
 class ModifyTask extends Component {
@@ -33,14 +33,13 @@ class ModifyTask extends Component {
     }
 
     render() {
-        console.log(this.props.tasks,"tasks")
-        console.log(this.props.task)
+        let text = makeid()
         return (
             <div>
-                <button className="close"  aria-label="Close" data-toggle="modal" data-target="#modifyTask">
+                <button className="close"  aria-label="Close" data-toggle="modal" data-target={ "#" + text}>
                     <i class="material-icons">edit</i>
                 </button>
-                <div class="modal fade" id="modifyTask" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id={text} tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -56,13 +55,14 @@ class ModifyTask extends Component {
                                         <input class="form-control" id="task_Name" value={this.props.task.name} onChange={this.handleChanges} required/>
 
                                         <label for="task_Description">Task description</label>
+                                        {console.log(this.props.task.description)}
                                         <textarea class="form-control" id="task_Description" rows="3" value={this.props.task.description} onChange={this.handleChanges}></textarea><br />
                                         <div className="centered">
                                             <label className="label" htmlFor="startDate">Start Date: </label>
                                             <DatePicker className="form-control" selected={this.state.startDate} onChange={this.handleChange} /><br /><br />
                                         </div>
-                                        <label className="label" htmlFor="Duration" value={this.props.task.duration}>Duration: </label>
-                                        <input id="duration" onChange={this.handleChanges}/>
+                                        <label className="label" htmlFor="Duration" >Duration: </label>
+                                        <input id="duration" onChange={this.handleChanges} value={this.props.task.duration} />
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

@@ -10,7 +10,7 @@ class CreateTask extends Component {
         super(props);
         this.state = {
             task_Name: "",
-            task_Description: "",
+            Description: "",
             startDate: new Date(),
             duration: "",
             redirect: false
@@ -29,6 +29,7 @@ class CreateTask extends Component {
         this.setState({
             [e.target.id]: e.target.value,
         })
+        console.log(this.state)
     }
 
     handleSubmit = (e) => {
@@ -38,7 +39,7 @@ class CreateTask extends Component {
             name: this.state.task_Name,
             status : "TO_DO",
             duration : this.state.duration,
-            task_Description: this.state.task_Description,
+            Description: this.state.Description,
             startDate: this.state.startDate,
         }
         // this.setState({
@@ -72,8 +73,8 @@ class CreateTask extends Component {
                                         <label for="task_Name">Task name</label>
                                         <input class="form-control" id="task_Name" placeholder="Task name" onChange={this.handleChanges} required/>
 
-                                        <label for="task_Description">Task description</label>
-                                        <textarea class="form-control" id="task_Description" rows="3" placeholder="Task description" onChange={this.handleChanges}></textarea><br />
+                                        <label for="Description">Task description</label>
+                                        <textarea class="form-control" id="Description" rows="3" placeholder="Task description" onChange={this.handleChanges}></textarea><br /><br />
                                         <div className="centered">
                                             <label className="label" htmlFor="startDate">Start Date: </label>
                                             <DatePicker className="form-control" selected={this.state.startDate} onChange={this.handleChange} /><br /><br />
