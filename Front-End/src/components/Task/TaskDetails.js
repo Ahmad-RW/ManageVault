@@ -75,7 +75,9 @@ class TaskDetails extends Component {
                                     </div>
                                 </div>
                                 <hr />
-                                {this.renderComments()}
+                                
+                                    {this.renderComments()}
+                                
                                 <div className="container">
                                     <div className="row">
                                         <div className="col-12">
