@@ -190,7 +190,6 @@ const rootReducer = (state = initState, action) => {
     if (action.type === "DELETE_TASK") {
         const oldProjects = state.projects.filter(project => project._id !== action.payload.PID)
         const newProjects = [...oldProjects, action.payload.res.data]
-        
         console.log(newProjects)
         return state = {
             ...state,
