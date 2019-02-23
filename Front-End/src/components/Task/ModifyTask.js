@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { makeid } from '../../helper'
 import DatePicker from "react-datepicker";
-import { element } from 'prop-types';
-
+import {connect } from 'react-redux'
+import {setDependancy} from '../../store/actionCreators/taskActions'
 class ModifyTask extends Component {
     constructor(props) {
         super(props);
@@ -50,7 +50,16 @@ class ModifyTask extends Component {
         })
         return tmp
     }
-    render() {
+    setDependancy = () =>{
+        const payload = {
+            predecessors : this.state.predecessor,
+            successor  : this.state.successor,
+            task : this.props.task,
+            project : this.props.projectInContext
+        }
+        this.props.setDependancy(payload)
+    }
+     render() {
         let text = makeid()
         return (
             <div>
@@ -96,7 +105,7 @@ class ModifyTask extends Component {
                                 </div>
                                 <div className="row">
                                     <div className="col align-self-end">
-                                        <button className="btn btn-primary btn-sm">Set Dependencies</button>
+                                        <button className="btn btn-primary btn-sm" onClick={this.setDependancy}>Set Dependencies</button>
                                     </div>
                                 </div>
                                 <hr />
@@ -110,4 +119,16 @@ class ModifyTask extends Component {
     }
 }
 
-export default ModifyTask
+const mapDispatchToProps = (dispatch) =>{
+    return {
+        setDependancy : (payload) =>{dispatch(setDependancy(payload))}
+    }
+}
+
+const mapStateToProps = (state) =>{
+    return{
+        projectInContext : state.projectInContext
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ModifyTask)

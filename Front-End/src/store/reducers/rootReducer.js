@@ -210,6 +210,15 @@ const rootReducer = (state = initState, action) => {
             projects : newProjects
         }
     }
+    if(action.type==="MODIFY_TASK"){
+        const oldProjects = state.projects.filter(project => project._id !== action.payload.project._id)
+        const newProjects = [...oldProjects, action.payload.res.data]
+        return state ={
+            ...state,
+            projectInContext : action.payload.res.data,
+            projects : newProjects
+        }
+    }
     return state
 }
 

@@ -43,3 +43,38 @@ export const newComment = (comment, task, project) => {
         })
     }
 }
+
+export const setDependancy = (payload) =>{
+    return (dispatch)=>{
+        axios.post('http://localhost:3333/task/setDependancy', {payload}).then((res)=>{
+            console.log(res)
+            payload = {...payload, res}
+            dispatch({type: "MODIFY_TASK", payload })
+        }).catch((exception)=>{
+            console.log(exception)
+        })
+    }
+}
+
+export const submitTask = (payload) =>{
+    return (dispatch)=>{
+        axios.post("http://localhost:3333/task/submitTask", {payload}).then((res)=>{
+            payload = {...payload, res}
+            dispatch({type:"MODIFY_TASK", payload})
+        }).catch((exception)=>{
+            console.log(exception)
+        })
+    }
+}
+
+export const confirmTaskSubmission = (payload)=>{
+    return(dispatch)=>{
+        axios.post('http://localhost:3333/task/confirmTaskSubmission', {payload}).then((res)=>{
+            console.log(res)
+            payload = {...payload, res}
+            dispatch({type:"MODIFY_TASK", payload})
+        }).catch((exception)=>{
+            console.log(exception)
+        })
+    }
+}
