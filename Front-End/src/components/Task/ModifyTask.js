@@ -1,23 +1,20 @@
 import React, { Component } from 'react'
 import { makeid } from '../../helper'
 import DatePicker from "react-datepicker";
-import { element } from 'prop-types';
-
+import {connect } from 'react-redux'
+import {setDependancy , editTask} from '../../store/actionCreators/taskActions'
 class ModifyTask extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            task_Name: "",
-            task_Description: "",
-            startDate: new Date(),
+            name: "",
+            description: "",
+            startDate: this.props.task.startDate,
             duration: "",
             predecessor : "",
             successor : "",
-
             redirect: false,
-
         }
-
     }
 
     handleDateChange = (date) => {//for DATEPICKER
@@ -27,14 +24,22 @@ class ModifyTask extends Component {
     }
 
     handleChange = (e) => {
-        console.log(e.target.value)
         this.setState({
             [e.target.id]: e.target.value,
         })
     }
 
-    handleSubmit() {
-
+    handleEdit = () => {
+        const payload = {
+            name: this.state.name,
+            description: this.state.description,
+            startDate: this.state.startDate,
+            duration: this.state.duration,
+            project: this.props.projectInContext,
+            task : this.props.task,
+        }
+        console.log(payload)
+        this.props.editTask(payload)
     }
     renderPredecessorList = () => {
         let tmp = ""
@@ -50,7 +55,16 @@ class ModifyTask extends Component {
         })
         return tmp
     }
-    render() {
+    setDependancy = () =>{
+        const payload = {
+            predecessors : this.state.predecessor,
+            successor  : this.state.successor,
+            task : this.props.task,
+            project : this.props.projectInContext
+        }
+        this.props.setDependancy(payload)
+    }
+     render() {
         let text = makeid()
         return (
             <div>
@@ -67,20 +81,23 @@ class ModifyTask extends Component {
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <div className="row">
-                                    <div className="col-3">
-                                        <label>Name: {this.props.task.name}</label>
+                                <div class="form-group">
+                                    <label for="name">Task name</label>
+                                    <input type="text" class="form-control" id="name" placeholder={this.props.task.name} onChange={this.handleChange} required/>
+
+                                    <label for="Description">Task description</label>
+                                    <textarea class="form-control" id="Description" rows="3" placeholder={this.props.task.description} onChange={this.handleChange}></textarea><br /><br />
+
+                                    <div className="centered">
+                                        <label className="label" htmlFor="startDate">Start Date: </label>
+                                        <DatePicker className="form-control" selected={this.state.startDate} onChange={this.handleDateChange} /><br /><br />
+                                        <label className="label" htmlFor="Duration">Duration: </label>
+                                        <input id="duration" onChange={this.handleChange}/>
                                     </div>
                                 </div>
                                 <div className="row">
-                                    <div className="col-3">
-                                        <label>Description: </label>
-                                        <input type="text" value={this.props.task.description} readOnly/>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-3">
-                                        <label>Duration: {this.props.task.duration}</label>
+                                    <div className="col align-self-end">
+                                        <button className="btn btn-primary btn-sm" onClick={this.handleEdit}>edit task</button>
                                     </div>
                                 </div>
                                 <hr />
@@ -107,7 +124,7 @@ class ModifyTask extends Component {
                                 </div>
                                 <div className="row">
                                     <div className="col align-self-end">
-                                        <button className="btn btn-primary btn-sm">Set Dependencies</button>
+                                        <button className="btn btn-primary btn-sm" onClick={this.setDependancy}>Set Dependencies</button>
                                     </div>
                                 </div>
                                 <hr />
@@ -121,4 +138,17 @@ class ModifyTask extends Component {
     }
 }
 
-export default ModifyTask
+const mapDispatchToProps = (dispatch) =>{
+    return {
+        setDependancy : (payload) =>{dispatch(setDependancy(payload))},
+        editTask : (payload) => {dispatch(editTask(payload))}
+    }
+}
+
+const mapStateToProps = (state) =>{
+    return{
+        projectInContext : state.projectInContext
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ModifyTask)

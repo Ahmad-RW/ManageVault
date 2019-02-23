@@ -58,7 +58,10 @@ const projectsSchema = new schema({
     }],
     tasks : [{
         name : String,
-        status : String,
+        status : {
+            type :String,
+            enum : ["TO_DO", "PENDING_FOR_CONFIRMATION", "SUBMITTED"]
+        },
         field: String,
         description : String,
         startDate : Date, //we calculate the deadline given startdate and duration
