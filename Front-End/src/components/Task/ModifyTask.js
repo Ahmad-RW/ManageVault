@@ -59,7 +59,7 @@ class ModifyTask extends Component {
                                         <textarea class="form-control" id="task_Description" rows="3" value={this.props.task.description} onChange={this.handleChanges}></textarea><br />
                                         <div className="centered">
                                             <label className="label" htmlFor="startDate">Start Date: </label>
-                                            <DatePicker className="form-control" selected={this.state.startDate} onChange={this.handleChange} /><br /><br />
+                                            <DatePicker className="form-control" selected={this.props.task.startDate} onChange={this.handleChange} /><br /><br />
                                         </div>
                                         <label className="label" htmlFor="Duration" >Duration: </label>
                                         <input id="duration" onChange={this.handleChanges} value={this.props.task.duration} />
