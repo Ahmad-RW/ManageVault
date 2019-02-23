@@ -47,9 +47,13 @@ padding-right: 100px;
   resize: none;
 }
 
+.task-details-list ul  {
+  list-style: none;
+}
 .task-details-list {
   list-style: none;
 }
 .scrollDown {
-overflow-y: scroll;
+overflow: scroll;
+background-color: lightblue;
 }
