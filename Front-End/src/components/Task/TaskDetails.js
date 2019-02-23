@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {connect } from 'react-redux'
+import { connect } from 'react-redux'
 import { newComment } from '../../store/actionCreators/taskActions'
 
 class TaskDetails extends Component {
@@ -10,29 +10,31 @@ class TaskDetails extends Component {
     handleComment = (e) => {
         console.log(e.target.value)
         this.setState({
-            [e.target.id] : e.target.value
+            [e.target.id]: e.target.value
         })
     }
-    handelCommentSubmit = () =>{
+    handelCommentSubmit = () => {
         const comment = {
-            content : this.state.comment,
-            author : this.props.userInfo.name,
-            date : new Date()
+            content: this.state.comment,
+            author: this.props.userInfo.name,
+            date: new Date()
         }
         console.log(comment)
         this.props.newComment(comment, this.props.task, this.props.projectInContext)
 
     }
-    renderComments = () =>{
-        const commentsList = this.props.task.comments.map(comment=>{
-            return(<div>
-                <span>{comment.author}</span>
-                <p>
-                    {comment.content}
-                </p>
-                <span>
-                    {comment.date}
-                </span>
+    renderComments = () => {
+        const commentsList = this.props.task.comments.map(comment => {
+            return (<div class="container border" >
+                <div>
+                    <span>{comment.author}</span>
+                    <p>
+                        {comment.content}
+                    </p>
+                    <span>
+                        {comment.date}
+                    </span>
+                </div>
             </div>)
         })
         return commentsList
@@ -41,12 +43,12 @@ class TaskDetails extends Component {
         var text = "";
         var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         for (var i = 0; i < 5; i++)
-          text += possible.charAt(Math.floor(Math.random() * possible.length));
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
         console.log(text)
         return text;
-      }
+    }
     render() {
-        let text = this.makeid() 
+        let text = this.makeid()
         console.log(this.props.task)
         return (
             <div>
@@ -62,13 +64,29 @@ class TaskDetails extends Component {
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <div class="modal-body">
-                                rest goes in here
-                            <hr />
-                            {this.renderComments()}
-                                <div>
-                                    <textarea id="comment" onChange={(e) => {this.handleComment(e)}}></textarea>
-                                    <button onClick={this.handelCommentSubmit} className="btn btn-primary btn-sm">Submit Comment</button>
+                            <div class="modal-body container">
+                                <div className="row">
+                                    <div className="col-3">
+                                        <ul className="task-details-list">
+                                            <li>
+                                                Duration: {this.props.task.duration}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <hr />
+                                {this.renderComments()}
+                                <div className="container">
+                                    <div className="row">
+                                        <div className="col-12">
+                                            <textarea placeholder="write your comment here..." className="comment-textarea" id="comment" onChange={(e) => { this.handleComment(e) }}></textarea>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-12">
+                                            <button onClick={this.handelCommentSubmit} className="btn btn-primary btn-sm">Submit Comment</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -83,15 +101,15 @@ class TaskDetails extends Component {
     }
 }
 
-const mapStateToProps = (state) =>{
+const mapStateToProps = (state) => {
     return {
-        userInfo : state.userInfo,
-        projectInContext : state.projectInContext
+        userInfo: state.userInfo,
+        projectInContext: state.projectInContext
     }
 }
-const mapDispatchToProps = (dispatch) =>{
+const mapDispatchToProps = (dispatch) => {
     return {
-        newComment : (comment, task, project) => dispatch(newComment(comment, task, project))
+        newComment: (comment, task, project) => dispatch(newComment(comment, task, project))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TaskDetails)

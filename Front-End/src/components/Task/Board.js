@@ -4,7 +4,7 @@ import DatePicker from './DatePicker'
 import CreateTask from './CreateTask'
 import ProjectSubBar from '../layout/projectSubBar';
 import { setProject } from '../../store/actionCreators/projectActions'
-import { deleteTask } from '../../store/actionCreators/taskActions'
+import {deleteTask} from '../../store/actionCreators/taskActions'
 import { checkAuthority } from '../../helper' 
 import TaskDetails from './TaskDetails';
 
@@ -25,7 +25,7 @@ class Board extends Component {
            )
         }
     }
-    renderCreateTaskButton = (task) => {
+    renderCreateTaskButton = () => {
         if(checkAuthority(this.props.projectInContext,"DELETE_TASK",this.props.userInfo)){
             return ( 
                 <CreateTask project={this.props.projectInContext} />
