@@ -24,6 +24,20 @@ class TaskDetails extends Component {
         this.props.newComment(comment, this.props.task, this.props.projectInContext)
 
     }
+    renderPredecessorList = () => {
+        let tmp = ""
+        this.props.task.dependencies.predecessor.forEach(element => {
+            tmp = tmp.concat(" ", element, ",")
+        })
+        return tmp
+    }
+    renderSuccessorList = () => {
+        let tmp = ""
+        this.props.task.dependencies.successor.forEach(element => {
+            tmp = tmp.concat(" ", element, ",")
+        })
+        return tmp
+    }
     renderComments = () => {
         const commentsList = this.props.task.comments.map(comment => {
             return (<div class="container border" >
@@ -53,7 +67,7 @@ class TaskDetails extends Component {
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">{this.props.task.name}</h5>
+                                <h4 class="modal-title" id="exampleModalLabel">{this.props.task.name}</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -61,17 +75,35 @@ class TaskDetails extends Component {
                             <div class="modal-body container">
                                 <div className="row">
                                     <div className="col-3">
-                                        <ul className="task-details-list">
-                                            <li>
-                                                Duration: {this.props.task.duration}
-                                            </li>
-                                        </ul>
+                                        <label>Duration: {this.props.task.duration}</label>
                                     </div>
                                 </div>
                                 <hr />
-                                
-                                    {this.renderComments()}
-                                
+                                <div className="row">
+                                    <div className="col-12">
+                                     <h5>Dependencies</h5>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-4">
+                                        <label>Predecessor Tasks :</label>
+                                    </div>
+                                    <div className="col">
+                                        {this.renderPredecessorList()}
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-4">
+                                        <label>Successor Tasks :</label>
+                                    </div>
+                                    <div className="col">
+                                        {this.renderSuccessorList()}
+                                    </div>
+                                </div>
+                                <hr />
+
+                                {this.renderComments()}
+
                                 <div className="container">
                                     <div className="row">
                                         <div className="col-12">

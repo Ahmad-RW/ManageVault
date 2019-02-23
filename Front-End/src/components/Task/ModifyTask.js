@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { makeid } from '../../helper'
 import DatePicker from "react-datepicker";
+import { element } from 'prop-types';
 
 class ModifyTask extends Component {
     constructor(props) {
@@ -10,18 +11,22 @@ class ModifyTask extends Component {
             task_Description: "",
             startDate: new Date(),
             duration: "",
-            redirect: false
-        };
-        this.handleChange = this.handleChange.bind(this);
-      }
+            predecessor : "",
+            successor : "",
 
-    handleChange(date) {
+            redirect: false,
+
+        }
+
+    }
+
+    handleDateChange = (date) => {//for DATEPICKER
         this.setState({
-          startDate: date
+            startDate: date
         });
     }
 
-    handleChanges = (e) => {
+    handleChange = (e) => {
         console.log(e.target.value)
         this.setState({
             [e.target.id]: e.target.value,
@@ -31,16 +36,29 @@ class ModifyTask extends Component {
     handleSubmit() {
 
     }
-
+    renderPredecessorList = () => {
+        let tmp = ""
+        this.props.task.dependencies.predecessor.forEach(element => {
+            tmp = tmp.concat(" ", element, ",")
+        })
+        return tmp
+    }
+    renderSuccessorList = () => {
+        let tmp = ""
+        this.props.task.dependencies.successor.forEach(element => {
+            tmp = tmp.concat(" ", element, ",")
+        })
+        return tmp
+    }
     render() {
         let text = makeid()
         return (
             <div>
-                <button className="close"  aria-label="Close" data-toggle="modal" data-target={ "#" + text}>
+                <button className="close" aria-label="Close" data-toggle="modal" data-target={"#" + text}>
                     <i class="material-icons">edit</i>
                 </button>
                 <div class="modal fade" id={text} tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
+                    <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">{this.props.task.name}</h5>
@@ -49,26 +67,40 @@ class ModifyTask extends Component {
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form onSubmit={this.handleSubmit}>
-                                    <div class="form-group">
-                                        <label for="task_Name">Task name</label>
-                                        <input class="form-control" id="task_Name" value={this.props.task.name} onChange={this.handleChanges} required/>
-
-                                        <label for="task_Description">Task description</label>
-                                        {console.log(this.props.task.description)}
-                                        <textarea class="form-control" id="task_Description" rows="3" value={this.props.task.description} onChange={this.handleChanges}></textarea><br />
-                                        <div className="centered">
-                                            <label className="label" htmlFor="startDate">Start Date: </label>
-                                            <DatePicker className="form-control" selected={this.state.startDate} onChange={this.handleChange} /><br /><br />
-                                        </div>
-                                        <label className="label" htmlFor="Duration" >Duration: </label>
-                                        <input id="duration" onChange={this.handleChanges} value={this.props.task.duration} />
+                                <div className="row">
+                                    <div className="col-3">
+                                        <label>Duration: {this.props.task.duration}</label>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary">Create</button>
+                                </div>
+                                <hr />
+                                <div className="row">
+                                    <div className="col-12">
+                                        <h5>Dependencies</h5>
                                     </div>
-                                </form>
+                                </div>
+                                <div className="row">
+                                    <div className="col-4">
+                                        <label>Predecessor Tasks :</label>
+                                    </div>
+                                    <div className="col">
+                                        <input type="text" onChange={this.handleChange} id="predecessor" placeholder={this.renderPredecessorList()} />
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-4">
+                                        <label>Successor Tasks :</label>
+                                    </div>
+                                    <div className="col">
+                                        <input type="text" id="successor" onChange={this.handleChange} placeholder={this.renderSuccessorList()} />
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col align-self-end">
+                                        <button className="btn btn-primary btn-sm">Set Dependencies</button>
+                                    </div>
+                                </div>
+                                <hr />
+                                ...
                             </div>
                         </div>
                     </div>

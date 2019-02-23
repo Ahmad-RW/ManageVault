@@ -15,7 +15,7 @@ class NavBar extends Component {
             this.props.removeAuth()
             //this.props.history.push('/')
             localStorage.removeItem('perState')
-
+            localStorage.removeItem('token')
            }
            catch(e){
                console.log(e)
