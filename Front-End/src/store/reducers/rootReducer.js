@@ -153,11 +153,14 @@ const rootReducer = (state = initState, action) => {
     if(action.type === "ASSIGN_NEW_TEAM_LEADER"){
         const oldProjects = state.projects.filter(project => project._id !== action.payload.project._id)
         const newProjects = [...oldProjects, action.payload.res.data]
-        return state = {
+        console.log(newProjects)
+         state = {
             ...state,
             projectInContext: action.payload.res.data,
             projects: newProjects
         }
+        console.log(state)
+        return state
     }
 
     if (action.type === "SET_PROJECT") {

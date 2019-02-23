@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import DatePicker from './DatePicker'
 import CreateTask from './CreateTask'
 import ProjectSubBar from '../layout/projectSubBar';
 import { setProject } from '../../store/actionCreators/projectActions'
 import {deleteTask} from '../../store/actionCreators/taskActions'
 import { checkAuthority } from '../../helper' 
 import TaskDetails from './TaskDetails';
+import ModifyTask from './ModifyTask'
 
 class Board extends Component {
     constructor(props) {
@@ -45,10 +45,12 @@ class Board extends Component {
                     <td>
                             <TaskDetails task = {task} number={number}/>
                         </td>
-                    <td>
-                            {this.renderDeleteTask(task)}
-                    </td>
-                </tr>
+                        <td>
+                        {this.renderDeleteTask(task)}
+                            <ModifyTask tasks={tasks} task={task}/>
+                        </td>
+
+                    </tr>
                 )
             })
         ) : (
@@ -68,7 +70,7 @@ class Board extends Component {
                     <thead>
                         <tr>
                             <th scope="col">Task Number</th>
-                            <th scope="col">Task Number</th>
+                            <th scope="col">Task Name</th>
                         </tr>
                     </thead>
                     <tbody>

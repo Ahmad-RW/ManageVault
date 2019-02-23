@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { newComment } from '../../store/actionCreators/taskActions'
+import { makeid } from '../../helper'
 
 class TaskDetails extends Component {
     state = {
@@ -39,16 +40,9 @@ class TaskDetails extends Component {
         })
         return commentsList
     }
-    makeid = () => {
-        var text = "";
-        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-        for (var i = 0; i < 5; i++)
-            text += possible.charAt(Math.floor(Math.random() * possible.length));
-        console.log(text)
-        return text;
-    }
+
     render() {
-        let text = this.makeid()
+        let text = makeid()
         console.log(this.props.task)
         return (
             <div>
