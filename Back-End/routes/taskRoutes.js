@@ -102,10 +102,29 @@ taskRoute.post('/editTask', function (req, res) {
         console.log(record,"edit task")
         res.status(200).send(record)
     }).catch(function (err) {
-        console.log(err)
+        res.status(500).send(err)
     })
 });
 
+taskRoute.post('/newActivity', function(req, res){
+    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, {$push : {"tasks.$[elem].activities":req.body.payload.activity}}, 
+    {arrayFilters:[{"elem._id":mongoose.Types.ObjectId(req.body.payload.task._id)}], new:true}).then(function(record){
+        console.log(record)
+        res.status(200).send(record)
+    }).catch(function(exception){
+        res.status(500).send(exception)
+    })
+})
+taskRoute.post('/checkActivity', function(req, res){
+    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, {$set:{"tasks.$[elem].activities.$[activity].status":req.body.payload.status}},
+    {arrayFilters : [{"elem._id" : mongoose.Types.ObjectId(req.body.payload.task._id)}, 
+    {"activity._id" : mongoose.Types.ObjectId(req.body.payload.activity._id)}], new:true}).then(function(record){
+        res.status(200).send(record)
+    }).catch(function(exception){
+        console.log(exception)
+        res.status(500).send(exception)
+    })
+})
 //helper function
 function normalize(text) {
     text = text.replace(/\s/g, '');

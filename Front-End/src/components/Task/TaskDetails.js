@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { newComment } from '../../store/actionCreators/taskActions'
-import { makeid } from '../../helper'
+import { newComment, checkActivity } from '../../store/actionCreators/taskActions'
+import { makeid, normalizeDate } from '../../helper'
 
 class TaskDetails extends Component {
     state = {
@@ -54,10 +54,56 @@ class TaskDetails extends Component {
         })
         return commentsList
     }
+    handleActivityCheck = (e, activity) =>{
+        console.log(e.target.checked)
+        let payload
+        if(!e.target.checked){
+             payload = {
+                task : this.props.task,
+                activity,
+                project : this.props.projectInContext,
+                status : "UNCHECKED"
+            }
+        }
+        else{
+             payload = {
+                task : this.props.task,
+                activity,
+                project : this.props.projectInContext,
+                status : "CHECKED"
+            }
+        }
+        this.props.checkActivity(payload)
+    }
+    renderActivities = () => {
+        if(this.props.task.activities.length===0){
+            return <span>No Activities Made</span>
+        }
+        const activities = this.props.task.activities.map(activity => {
+            if (activity.status === "CHECKED") {
+                return (
+                    <li>
+                        <strike>{activity.name}</strike>
+                        <input type="checkbox" checked onClick={(e)=>{this.handleActivityCheck(e,activity)}} />
+                    </li>
 
+                )
+            }
+            else {
+                return (
+                    <li>{activity.name}
+                    <input type="checkbox" onClick={(e)=>{this.handleActivityCheck(e, activity)}} />
+                    </li>
+                )
+            }
+        })
+        return activities
+    }
     render() {
         let text = makeid()
         console.log(this.props.task)
+        var date = this.props.task.startDate.split("T")
+        var time = date[1].split(":")[0] + ":" + date[1].split(":")[1]
         return (
             <div>
                 <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target={"#" + text} >
@@ -74,14 +120,26 @@ class TaskDetails extends Component {
                             </div>
                             <div class="modal-body container">
                                 <div className="row">
-                                    <div className="col-3">
-                                        <label>Duration: {this.props.task.duration}</label>
+                                    <div className="col-6">
+                                        <label>Start Date : {date[0]} {time} </label>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-4">
+                                        <label>Duration: {this.props.task.duration} Days</label>
                                     </div>
                                 </div>
                                 <hr />
                                 <div className="row">
                                     <div className="col-12">
-                                     <h5>Dependencies</h5>
+                                        <h5>Description</h5>
+                                        <p>{this.props.task.description}</p>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div className="row">
+                                    <div className="col-12">
+                                        <h5>Dependencies</h5>
                                     </div>
                                 </div>
                                 <div className="row">
@@ -98,6 +156,19 @@ class TaskDetails extends Component {
                                     </div>
                                     <div className="col">
                                         {this.renderSuccessorList()}
+                                    </div>
+                                </div>
+                                <hr />
+                                <div className="row">
+                                    <div className="col">
+                                        <h5>Task Sub-Activities</h5>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-6">
+                                        <ol>
+                                            {this.renderActivities()}
+                                        </ol>
                                     </div>
                                 </div>
                                 <hr />
@@ -137,7 +208,8 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
     return {
-        newComment: (comment, task, project) => dispatch(newComment(comment, task, project))
+        newComment: (comment, task, project) => dispatch(newComment(comment, task, project)),
+        checkActivity : payload => dispatch(checkActivity(payload))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TaskDetails)

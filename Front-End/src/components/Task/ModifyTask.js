@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { makeid } from '../../helper'
 import DatePicker from "react-datepicker";
-import {connect } from 'react-redux'
-import {setDependancy , editTask} from '../../store/actionCreators/taskActions'
+import { connect } from 'react-redux'
+import { setDependancy, editTask, newActivity } from '../../store/actionCreators/taskActions'
 class ModifyTask extends Component {
     constructor(props) {
         super(props);
@@ -11,9 +11,10 @@ class ModifyTask extends Component {
             description: "",
             startDate: this.props.task.startDate,
             duration: "",
-            predecessor : "",
-            successor : "",
+            predecessor: "",
+            successor: "",
             redirect: false,
+            activity : ""
         }
     }
 
@@ -36,7 +37,7 @@ class ModifyTask extends Component {
             startDate: this.state.startDate,
             duration: this.state.duration,
             project: this.props.projectInContext,
-            task : this.props.task,
+            task: this.props.task,
         }
         console.log(payload)
         this.props.editTask(payload)
@@ -55,16 +56,54 @@ class ModifyTask extends Component {
         })
         return tmp
     }
-    setDependancy = () =>{
+    setDependancy = () => {
         const payload = {
-            predecessors : this.state.predecessor,
-            successor  : this.state.successor,
-            task : this.props.task,
-            project : this.props.projectInContext
+            predecessors: this.state.predecessor,
+            successor: this.state.successor,
+            task: this.props.task,
+            project: this.props.projectInContext
         }
         this.props.setDependancy(payload)
     }
-     render() {
+    handleActivityChange = (e) =>{
+        this.setState({
+            [e.target.id] : e.target.value
+        })
+    }
+    renderActivities = () => {
+        console.log(this.props.task)
+        const activites = this.props.task.activities.map(activity => {
+            if (activity.status === "CHECKED") {
+                return (
+                    <li >
+                        <strike>{activity.name}</strike>
+                    </li>
+                )
+            }
+            else {
+                return (
+                    <li>
+                        {activity.name}
+                    </li>
+                )
+            }
+        })
+        return activites
+    }
+    handleNewActivity = () =>{
+        const activity = {
+            name : this.state.activity,
+            status : "UNCHECKED",
+            date : new Date()
+        }
+        const payload = {
+            activity : activity,
+            task : this.props.task,
+            project: this.props.projectInContext
+        }
+        this.props.newActivity(payload)
+    }
+    render() {
         let text = makeid()
         return (
             <div>
@@ -83,7 +122,7 @@ class ModifyTask extends Component {
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="name">Task name</label>
-                                    <input type="text" class="form-control" id="name" placeholder={this.props.task.name} onChange={this.handleChange} required/>
+                                    <input type="text" class="form-control" id="name" placeholder={this.props.task.name} onChange={this.handleChange} required />
 
                                     <label for="Description">Task description</label>
                                     <textarea class="form-control" id="Description" rows="3" placeholder={this.props.task.description} onChange={this.handleChange}></textarea><br /><br />
@@ -92,7 +131,7 @@ class ModifyTask extends Component {
                                         <label className="label" htmlFor="startDate">Start Date: </label>
                                         <DatePicker className="form-control" selected={this.state.startDate} onChange={this.handleDateChange} /><br /><br />
                                         <label className="label" htmlFor="Duration">Duration: </label>
-                                        <input id="duration" onChange={this.handleChange}/>
+                                        <input id="duration" onChange={this.handleChange} />
                                     </div>
                                 </div>
                                 <div className="row">
@@ -128,7 +167,26 @@ class ModifyTask extends Component {
                                     </div>
                                 </div>
                                 <hr />
-                                ...
+                                <div className="row">
+                                    <div className="col-12">
+                                        <h5>Task Sub-Activities</h5>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-3">
+                                        <ol className="list-group">
+                                            {this.renderActivities()}
+                                        </ol>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col">
+                                        <input onChange={this.handleActivityChange} id="activity" type="text" placeholder="activity" />
+                                    </div>
+                                    <div className="col">
+                                        <button className="btn btn-primary btn-sm" onClick={this.handleNewActivity}>Add Activity</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -138,16 +196,17 @@ class ModifyTask extends Component {
     }
 }
 
-const mapDispatchToProps = (dispatch) =>{
+const mapDispatchToProps = (dispatch) => {
     return {
-        setDependancy : (payload) =>{dispatch(setDependancy(payload))},
-        editTask : (payload) => {dispatch(editTask(payload))}
+        setDependancy: (payload) => { dispatch(setDependancy(payload)) },
+        editTask: (payload) => { dispatch(editTask(payload)) },
+        newActivity : (payload) => {dispatch(newActivity(payload))}
     }
 }
 
-const mapStateToProps = (state) =>{
-    return{
-        projectInContext : state.projectInContext
+const mapStateToProps = (state) => {
+    return {
+        projectInContext: state.projectInContext
     }
 }
 
