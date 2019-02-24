@@ -1,22 +1,35 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import DatePicker from './DatePicker'
+
 import { createTask } from '../../store/actionCreators/taskActions'
 
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 class CreateTask extends Component {
-    state = {
-        task_Name: "",
-        task_Description: "",
-        startDate: "",
-        endDate: "",
-        redirect: false
+    constructor(props) {
+        super(props);
+        this.state = {
+            task_Name: "",
+            Description: "",
+            startDate: new Date(),
+            duration: "",
+            redirect: false
+        };
+        this.handleChange = this.handleChange.bind(this);
+      }
+
+    handleChange(date) {
+        this.setState({
+          startDate: date
+        });
     }
 
-    handleChange = (e) => {
+    handleChanges = (e) => {
         console.log(e.target.value)
         this.setState({
             [e.target.id]: e.target.value,
         })
+        console.log(this.state)
     }
 
     handleSubmit = (e) => {
@@ -26,15 +39,15 @@ class CreateTask extends Component {
             name: this.state.task_Name,
             status : "TO_DO",
             duration : this.state.duration,
-            task_Description: this.state.task_Description,
+            Description: this.state.Description,
             startDate: this.state.startDate,
-            deadLine: this.state.endDate,
         }
         // this.setState({
         //     task_Name: '',
         //     task_Description: '',
         // })
-        console.log(this.props.project,"نل ولا مو نل؟")
+        console.log(this.props.project)
+        console.log(task)
         this.props.createTask(this.props.project, task)
     }
 
@@ -58,16 +71,16 @@ class CreateTask extends Component {
                                 <form onSubmit={this.handleSubmit}>
                                     <div class="form-group">
                                         <label for="task_Name">Task name</label>
-                                        <input class="form-control" id="task_Name" placeholder="Task name" onChange={this.handleChange} required/>
+                                        <input class="form-control" id="task_Name" placeholder="Task name" onChange={this.handleChanges} required/>
 
-                                        <label for="task_Description">Task description</label>
-                                        <textarea class="form-control" id="task_Description" rows="3" placeholder="Task description" onChange={this.handleChange}></textarea><br />
+                                        <label for="Description">Task description</label>
+                                        <textarea class="form-control" id="Description" rows="3" placeholder="Task description" onChange={this.handleChanges}></textarea><br /><br />
                                         <div className="centered">
                                             <label className="label" htmlFor="startDate">Start Date: </label>
-                                            <DatePicker id="startDate" onChange={this.handleChange}/><br /><br />
+                                            <DatePicker className="form-control" selected={this.state.startDate} onChange={this.handleChange} /><br /><br />
                                         </div>
-                                        <label className="label" htmlFor="endDate">End date: </label>
-                                        <DatePicker id="endDate" onChange={this.handleChange}/>
+                                        <label className="label" htmlFor="Duration">Duration: </label>
+                                        <input id="duration" onChange={this.handleChanges}/>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

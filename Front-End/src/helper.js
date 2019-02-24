@@ -12,3 +12,11 @@ export const checkAuthority = (project, authority, userInfo) => {
     });
     return result
 }
+
+export const makeid = () => {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    for (var i = 0; i < 5; i++)
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    return text;
+}

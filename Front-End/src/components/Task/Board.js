@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import DatePicker from './DatePicker'
 import CreateTask from './CreateTask'
 import ProjectSubBar from '../layout/projectSubBar';
 import { setProject } from '../../store/actionCreators/projectActions'
-import {deleteTask} from '../../store/actionCreators/taskActions'
-import { checkAuthority } from '../../helper' 
+import { deleteTask, submitTask, confirmTaskSubmission } from '../../store/actionCreators/taskActions'
+import { checkAuthority } from '../../helper'
 import TaskDetails from './TaskDetails';
+import ModifyTask from './ModifyTask'
 
 class Board extends Component {
     constructor(props) {
@@ -17,20 +17,61 @@ class Board extends Component {
         this.props.deleteTask(task_id, this.props.projectInContext._id)
     }
     renderDeleteTask = (task) => {
-        if(checkAuthority(this.props.projectInContext,"DELETE_TASK",this.props.userInfo)){
-           return ( 
-                <button className="close" data-dismiss="alert" aria-label="Close"  onClick={() => {this.handleDelete(task._id, this.props.projectInContext._id)}} key={task._id}>
+        if (checkAuthority(this.props.projectInContext, "DELETE_TASK", this.props.userInfo)) {
+            return (
+                <button className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleDelete(task._id, this.props.projectInContext._id) }} key={task._id}>
                     <i className="material-icons">highlight_off</i>
                 </button>
-           )
+            )
         }
     }
     renderCreateTaskButton = () => {
-        if(checkAuthority(this.props.projectInContext,"DELETE_TASK",this.props.userInfo)){
+        if(checkAuthority(this.props.projectInContext,"DELETE_TASK",this.props.userInfo)){ // "DELETE_TASK"?
             return ( 
                 <CreateTask project={this.props.projectInContext} />
             )
-         } 
+        }
+    }
+    renderConfirmSubmissionButton = (task) => {
+        if (checkAuthority(this.props.projectInContext, "CONFIRM_TASK_SUBMISSION", this.props.userInfo) && task.status === "PENDING_FOR_CONFIRMATION") {
+            console.log(this.props.userInfo, "USER_INFO")
+            const member = this.props.projectInContext.members.find(member => this.props.userInfo.email === member.email)
+            if(member.teamLeader){
+                return;
+            }
+            return (
+                <td>
+                    <button className="btn btn-success btn-sm" onClick={() => { this.confirmTaskSubmission(task) }}>Confirm Submission</button>
+                </td>
+                // <td>
+                //     <button className="btn btn-danger btn-sm"></button>
+                // </td>
+            )
+        }
+    }
+    renderSubmissionButton = (task) => {
+        if (task.status !== "SUBMITTED") {
+            return (
+                <button className="btn btn-success btn-sm" onClick={() => { this.handleTaskSubmission(task) }}>Submit Task</button>
+            )
+        }
+    }
+    handleTaskSubmission = (task) => {
+        console.log(task)
+        const payload = {
+            task,
+            project: this.props.projectInContext
+        }
+        console.log(payload)
+        this.props.confirmTaskSubmission(payload)
+        this.props.submitTask(payload)
+    }
+    confirmTaskSubmission = (task) => {
+        const payload = {
+            task,
+            project: this.props.projectInContext
+        }
+        this.props.confirmTaskSubmission(payload)
     }
     renderTasks = () => {
         let number = 0
@@ -39,16 +80,27 @@ class Board extends Component {
         taskList = tasks.length ? (
             tasks.map(task => {
                 return (
-                <tr>
-                    <th scope="row">{++number}</th>
-                    <td>{task.name}</td>
-                    <td>
-                            <TaskDetails task = {task} number={number}/>
+                    <tr>
+                        <th scope="row">{++number}</th>
+                        <td>
+                            {task.name}
                         </td>
-                    <td>
+                        <td>
+                            {task.status}
+                        </td>
+                        <td>
+                            {this.renderSubmissionButton(task)}
+                        </td>
+                        {this.renderConfirmSubmissionButton(task)}
+                        <td>
+                            <TaskDetails task={task} number={number} />
+                        </td>
+                        <td>
                             {this.renderDeleteTask(task)}
-                    </td>
-                </tr>
+                            <ModifyTask tasks={tasks} task={task} />
+                        </td>
+
+                    </tr>
                 )
             })
         ) : (
@@ -58,8 +110,6 @@ class Board extends Component {
 
     }
     render() {
-
-
         return (
             <div>
                 <ProjectSubBar />
@@ -68,14 +118,15 @@ class Board extends Component {
                     <thead>
                         <tr>
                             <th scope="col">Task Number</th>
-                            <th scope="col">Task Number</th>
+                            <th scope="col">Task Name</th>
+                            <th scope="col">Status</th>
                         </tr>
                     </thead>
                     <tbody>
                         {this.renderTasks()}
                     </tbody>
                 </table>
-                    {this.renderCreateTaskButton()}
+                {this.renderCreateTaskButton()}
             </div>
         )
     }
@@ -90,9 +141,9 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
     return {
-        getCurrentProject: (projectId) => dispatch({ type: "GET_CURRENT_PROJECT", projectId }),
-        setProject: (project) => dispatch(setProject(project)),
-        deleteTask: (task_id,PID) => dispatch(deleteTask(task_id,PID))
+        deleteTask: (task_id, PID) => dispatch(deleteTask(task_id, PID)),
+        submitTask: (payload) => dispatch(submitTask(payload)),
+        confirmTaskSubmission: (payload) => dispatch(confirmTaskSubmission(payload))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Board)

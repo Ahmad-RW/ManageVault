@@ -57,17 +57,20 @@ const projectsSchema = new schema({
         creator: String,
     }],
     tasks : [{
-        
         name : String,
-        status : String,
+        status : {
+            type :String,
+            enum : ["TO_DO", "PENDING_FOR_CONFIRMATION", "SUBMITTED"]
+        },
+        field: String,
+        description : String,
         startDate : Date, //we calculate the deadline given startdate and duration
         duration : Number, // we need to find integers in react OR handle entering floats as days. 
-        deadline : Date, //String or Date ? 
-        dependencies : [{
+        dependencies : {
             Date : Date,
-            predecessor : String,
-            successor : String
-         }],
+            predecessor : [String],
+            successor : [String]
+         },
     //     channel : {
     //         name : String,
     //         messages :[{
