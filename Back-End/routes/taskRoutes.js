@@ -83,6 +83,28 @@ taskRoute.post('/confirmTaskSubmission', function(req, res){
     })
 })
 
+taskRoute.post('/editTask', function (req, res) {
+    const modifiedTask = {
+        name: req.body.payload.name,
+        description: req.body.payload.description,
+        startDate: req.body.payload.startDate,
+        duration: req.body.payload.duration,
+    }
+    console.log(modifiedTask, "+++++++++++++++++++++++++++++++++++++++")
+    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, {
+        $set:{
+        "tasks.$[elem].name" : modifiedTask.name,
+        "tasks.$[elem].description" : modifiedTask.description,
+        "tasks.$[elem].startDate" : modifiedTask.startDate,
+        "tasks.$[elem].duration" : modifiedTask.duration
+        }
+    },{arrayFilters :[{"elem._id" :mongoose.Types.ObjectId(req.body.payload.task._id)}] , new: true }).then(function (record) {
+        console.log(record,"edit task")
+        res.status(200).send(record)
+    }).catch(function (err) {
+        console.log(err)
+    })
+});
 
 //helper function
 function normalize(text) {

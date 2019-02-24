@@ -78,3 +78,15 @@ export const confirmTaskSubmission = (payload)=>{
         })
     }
 }
+
+export const editTask = (payload) =>{
+    return(dispatch)=>{
+        axios.post('http://localhost:3333/task/editTask', {payload}).then((res)=>{
+            console.log(res)
+            payload = {...payload, res}
+            dispatch({type:"MODIFY_TASK", payload})
+        }).catch((exception)=>{
+            console.log(exception)
+        })
+    }
+}
