@@ -79,12 +79,13 @@ const projectsSchema = new schema({
     //             author : String
     //         }]
     //     },
-    //     assignment : {
-    //         assigner : String,
-    //         assignedMembers : [{name : String}],
-    //         startDate : Date,
-    //         endDate : Date
-    //     },
+    assignedMembers : [{name : String}],//msg for me: return everything to what it was before here then re create the asssigntask routes
+        // assignment : {
+        //     assigner : String,
+        //     assignedMembers : [{name : String}],
+        //     startDate : Date,
+        //     endDate : Date
+        // },
         comments : [{
             date : Date,
             content : String,

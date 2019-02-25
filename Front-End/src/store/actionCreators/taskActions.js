@@ -90,3 +90,15 @@ export const editTask = (payload) =>{
         })
     }
 }
+
+export const assignTask = (payload) =>{
+    return(dispatch)=>{
+        axios.post('http://localhost:3333/task/assignTask', {payload}).then((res)=>{
+            console.log(res)
+            payload = {...payload, res}
+            dispatch({type:"ASSIGN_TASK", payload})
+        }).catch((exception)=>{
+            console.log(exception)
+        })
+    }
+}
