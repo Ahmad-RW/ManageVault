@@ -101,11 +101,11 @@ taskRoute.post('/editTask', function (req, res) {
 
 taskRoute.post('/assignTask', function (req, res) {
     console.log(req.body.payload.member.name, "§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§")
-    console.log(req.body.payload.task.assignedMembers, "((((((((((((((()))))))))))))")
-    newAssignedMembers = [...req.body.payload.task.assignedMembers, req.body.payload.member.name]
+    console.log(req.body.payload.task.assignment.assignedMembers, "((((((((((((((()))))))))))))")
+    newAssignedMembers = [...req.body.payload.task.assignment.assignedMembers, req.body.payload.member.name]
     // const newAssignement = {...req.body.payload.task.assignement, assignedMembers : newAssignedMembers}
     console.log(newAssignedMembers, "+++++++++++++++++++++++++++++++++++++++++++++")
-    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id,{ $set: { "tasks.$[elem].assignedMembers": newAssignedMembers } }
+    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id,{ $set: { "tasks.$[elem].assignment.assignedMembers": newAssignedMembers } }
     ,{arrayFilters :[{"elem._id" :mongoose.Types.ObjectId(req.body.payload.task._id)}] , new: true }).then(function (record) {
         console.log(record,"assign task")
         res.status(200).send(record)

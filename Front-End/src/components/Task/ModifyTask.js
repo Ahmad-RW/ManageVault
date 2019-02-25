@@ -3,7 +3,6 @@ import { makeid } from '../../helper'
 import DatePicker from "react-datepicker";
 import {connect } from 'react-redux'
 import {setDependancy , editTask, assignTask, newActivity} from '../../store/actionCreators/taskActions'
-import { connect } from 'react-redux'
 
 class ModifyTask extends Component {
     constructor(props) {
@@ -85,7 +84,7 @@ class ModifyTask extends Component {
         this.props.assignTask(payload)
     }
     renderAssignedMembers = () => {
-        const assignedMembers = this.props.task.assignedMembers.map(name => {
+        const assignedMembers = this.props.task.assignment.assignedMembers.map(name => {
             return(
                 <div className="col">
                     <p>{name}</p>

@@ -35,10 +35,6 @@ class Board extends Component {
     renderConfirmSubmissionButton = (task) => {
         if (checkAuthority(this.props.projectInContext, "CONFIRM_TASK_SUBMISSION", this.props.userInfo) && task.status === "PENDING_FOR_CONFIRMATION") {
             console.log(this.props.userInfo, "USER_INFO")
-            const member = this.props.projectInContext.members.find(member => this.props.userInfo.email === member.email)
-            if(member.teamLeader){
-                return;
-            }
             return (
                 <td>
                     <button className="btn btn-success btn-sm" onClick={() => { this.confirmTaskSubmission(task) }}>Confirm Submission</button>
@@ -63,7 +59,6 @@ class Board extends Component {
             project: this.props.projectInContext
         }
         console.log(payload)
-        this.props.confirmTaskSubmission(payload)
         this.props.submitTask(payload)
     }
     confirmTaskSubmission = (task) => {
