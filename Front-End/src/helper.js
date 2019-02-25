@@ -20,3 +20,13 @@ export const makeid = () => {
         text += possible.charAt(Math.floor(Math.random() * possible.length));
     return text;
 }
+
+export const normalizeDate = (date) =>{
+     var date = date.split("T")
+     var time = date[1].split(":")[0] + ":" + date[1].split(":")[1]
+     const normalizedDate = {
+         date,
+         time
+     }
+     return normalizedDate
+}

@@ -8,10 +8,10 @@ const authoritySchema = new schema({
             "CREATE_TASK", "CONFIRM_SUBMISSION", "DELETE_TASK",
             "ASSIGN_TASK", "UN-ASSIGN_TASK", "MODIFY_TASK"]
     }
-}, 
-{ _id: false });
+},
+    { _id: false });
 const rolesSchema = new schema({
-    name : String,
+    name: String,
     authorities: [{
         type: String,
         enum: ["INVITE_USERS", "REMOVE_TEAM_MEMBERS", "PUBLISH_PROJECT", "UNPUBLISH_PROJECT",
@@ -41,7 +41,7 @@ const projectsSchema = new schema({
         type: String,
         enum: ['TABLE', 'TIMELINE']
     },
-    definedRoles : [rolesSchema],
+    definedRoles: [rolesSchema],
     members: [{
         email: String,
         name: String,
@@ -56,50 +56,49 @@ const projectsSchema = new schema({
         lasModified: String,
         creator: String,
     }],
-    tasks : [{
-        name : String,
-        status : {
-            type :String,
-            enum : ["TO_DO", "PENDING_FOR_CONFIRMATION", "SUBMITTED"]
+    tasks: [{
+        name: String,
+        status: {
+            type: String,
+            enum: ["TO_DO", "PENDING_FOR_CONFIRMATION", "SUBMITTED"]
         },
         field: String,
-        description : String,
-        startDate : Date, //we calculate the deadline given startdate and duration
-        duration : Number, // we need to find integers in react OR handle entering floats as days. 
-        dependencies : {
-            Date : Date,
-            predecessor : [String],
-            successor : [String]
-         },
-    //     channel : {
-    //         name : String,
-    //         messages :[{
-    //             date : Date,
-    //             content : Object,   //handle if its a only a string in the back end. if thats the case convert it using JSON.parse
-    //             author : String
-    //         }]
-    //     },
-    assignedMembers : [{name : String}],//msg for me: return everything to what it was before here then re create the asssigntask routes
-        // assignment : {
-        //     assigner : String,
-        //     assignedMembers : [{name : String}],
-        //     startDate : Date,
-        //     endDate : Date
-        // },
-        comments : [{
-            date : Date,
-            content : String,
-            author : String
+        description: String,
+        startDate: Date, //we calculate the deadline given startdate and duration
+        duration: Number, // we need to find integers in react OR handle entering floats as days. 
+        dependencies: {
+            Date: Date,
+            predecessor: [String],
+            successor: [String]
+        },
+        //     channel : {
+        //         name : String,
+        //         messages :[{
+        //             date : Date,
+        //             content : Object,   //handle if its a only a string in the back end. if thats the case convert it using JSON.parse
+        //             author : String
+        //         }]
+        //     },
+        //     assignment : {
+        //         assigner : String,
+        //         assignedMembers : [{name : String}],
+        //         startDate : Date,
+        //         endDate : Date
+        //     },
+        comments: [{
+            date: Date,
+            content: String,
+            author: String
         }],
-    //     activity : [{
-    //         name : String,
-    //         status : {type : String, enum :['CHECKED', 'UNCHECKED']},
-    //         date : Date
-    //     }],
-    //     inputFiles: [{name : String}],
-    //     outputFiles: [{name : String}],
-    //     attachments : [{name : String}]
-    // }]
+        activities: [{
+            name: String,
+            status: { type: String, enum: ['CHECKED', 'UNCHECKED'] },
+            date: Date
+        }],
+        //     inputFiles: [{name : String}],
+        //     outputFiles: [{name : String}],
+        //     attachments : [{name : String}]
+        // }]
     }]
 })
 
