@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { makeid } from '../../helper'
 import DatePicker from "react-datepicker";
-import { connect } from 'react-redux'
-import { setDependancy, editTask, newActivity } from '../../store/actionCreators/taskActions'
+import {connect } from 'react-redux'
+import {setDependancy , editTask, assignTask, newActivity} from '../../store/actionCreators/taskActions'
+
 class ModifyTask extends Component {
     constructor(props) {
         super(props);
@@ -64,6 +65,33 @@ class ModifyTask extends Component {
             project: this.props.projectInContext
         }
         this.props.setDependancy(payload)
+    }
+    renderTeamMembers  = () => {
+        const members = this.props.projectInContext.members.map(member => {
+            return(
+                <a class="dropdown-item" onClick={() => {this.handleAssign(member)}}>{member.name}</a>
+            )
+        })
+        return members
+    }
+    handleAssign = (member) => {
+        console.log(member,"member")
+        const payload = {
+            member : member,
+            task : this.props.task,
+            project : this.props.projectInContext
+        }
+        this.props.assignTask(payload)
+    }
+    renderAssignedMembers = () => {
+        const assignedMembers = this.props.task.assignment.assignedMembers.map(name => {
+            return(
+                <div className="col">
+                    <p>{name}</p>
+                </div>
+            )
+        })
+        return assignedMembers
     }
     handleActivityChange = (e) =>{
         this.setState({
@@ -142,6 +170,23 @@ class ModifyTask extends Component {
                                 <hr />
                                 <div className="row">
                                     <div className="col-12">
+                                        <h5>Assign members</h5>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div class="dropdown">
+                                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                            Assign member
+                                        </button>
+                                        <div class="dropdown-menu">
+                                        {this.renderTeamMembers()}
+                                        </div>
+                                        {this.renderAssignedMembers()}
+                                    </div>
+                                </div>
+                                <hr />
+                                <div className="row">
+                                    <div className="col-12">
                                         <h5>Dependencies</h5>
                                     </div>
                                 </div>
@@ -198,6 +243,9 @@ class ModifyTask extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        setDependancy : (payload) =>{dispatch(setDependancy(payload))},
+        editTask : (payload) => {dispatch(editTask(payload))},
+        assignTask : (payload) => {dispatch(assignTask(payload))},
         setDependancy: (payload) => { dispatch(setDependancy(payload)) },
         editTask: (payload) => { dispatch(editTask(payload)) },
         newActivity : (payload) => {dispatch(newActivity(payload))}

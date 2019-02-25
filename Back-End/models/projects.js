@@ -79,12 +79,12 @@ const projectsSchema = new schema({
         //             author : String
         //         }]
         //     },
-        //     assignment : {
-        //         assigner : String,
-        //         assignedMembers : [{name : String}],
-        //         startDate : Date,
-        //         endDate : Date
-        //     },
+            assignment : {
+                assigner : String,
+                assignedMembers : [String],
+                startDate : Date,
+                endDate : Date
+            },
         comments: [{
             date: Date,
             content: String,
@@ -95,7 +95,7 @@ const projectsSchema = new schema({
             status: { type: String, enum: ['CHECKED', 'UNCHECKED'] },
             date: Date
         }],
-        //     inputFiles: [{name : String}],
+           inputFiles: [{name : String}],
         //     outputFiles: [{name : String}],
         //     attachments : [{name : String}]
         // }]
