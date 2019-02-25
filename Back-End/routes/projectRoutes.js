@@ -190,15 +190,16 @@ projectRoute.post('/setAuthority', function (req, res) {
     })
 })
 
-projectRoute.post('/revokeAuthority', function(req, res){
+projectRoute.post('/revokeAuthorities', function(req, res){
     console.log(req.body)
     mongoose.model('projects').findByIdAndUpdate(req.body.payload.project._id, 
-        { $set: { "members.$[elem].roles":[] } }   ,
-        { arrayFilters: [{ "elem.email": req.body.payload.member.email }] } ).then(function(record){
+        { $set: { "members.$[elem].roles":req.body.payload.newRoles } }   ,
+        { arrayFilters: [{ "elem.email": req.body.payload.member.email }], new:true } ).then(function(record){
             console.log(record)
             res.status(200).send(record)
         }).catch(function(exception){
             console.log(exception)
+            res.status(500).send(exception)
         })
 })
 

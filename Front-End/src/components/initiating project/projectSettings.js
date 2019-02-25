@@ -61,11 +61,12 @@ class ProjectSettings extends Component {
             const project = this.state.project
             const membersList = project.members.map((member) => {
                 if (!member.teamLeader) {
-                    return(
-                    <li>
-                        <button onClick={(e) => { this.handleTeamLeaderStepDown(e) }} className="btn btn-secondary" key={member.email} id={member.email}>{member.name}</button>
-                    </li>
-                    )}
+                    return (
+                        <li>
+                            <button onClick={(e) => { this.handleTeamLeaderStepDown(e) }} className="btn btn-secondary" key={member.email} id={member.email}>{member.name}</button>
+                        </li>
+                    )
+                }
             })
             console.log(membersList)
             return (
@@ -79,7 +80,7 @@ class ProjectSettings extends Component {
 
     }
     renderLeaveButton = () => {
-        if(this.state.project.members.length ===1 ){
+        if (this.state.project.members.length === 1) {
             return
         }
         const currentMember = this.state.project.members.find(member => {
@@ -108,27 +109,10 @@ class ProjectSettings extends Component {
     }
 
     handleRemove = (member) => {
-        // console.log(member.email,"TM email")
         this.props.removeTeamMember(this.state.project, member)
         this.props.history.push('/home')
         alert("Team member has been removed")
     }
-    // checkAuthority = (project, authority) => {
-    //     console.log(project)
-    //     const member = project.members.find(member => member.email === this.props.userInfo.email)
-    //     console.log(member)
-    //     console.log(member.roles)
-    //     let result = false
-    //     member.roles.forEach(element => {
-    //         console.log(element.name)
-    //         console.log(element.authorities.length)
-    //         console.log(element.authorities.includes("INVITE_USERS"))
-    //         if (element.authorities.includes(authority)) {
-    //             result = true
-    //         }
-    //     });
-    //     return result
-    // }
     render() {
         const project = this.state.project
         const teamLeader = project.members.find(member => {
@@ -154,9 +138,8 @@ class ProjectSettings extends Component {
                     removeButton = <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleRemove(member) }}>
                         <i className="material-icons ">highlight_off</i>
                     </button>
-                    grantAuthority = <Link to={{ pathname: "/grantAuthority", state: { project, member } }}>Assign a Role</Link>
                     InvitedMembers = <InviteMembers project={this.state.project} />
-                    defineRoles = <Link to={{ pathname: "/newRole", state: { project } }} className="btn btn-info" role="button"> Define New Roles </Link>
+                    defineRoles = <Link to={{ pathname: "/newRole", state: { project } }} className="btn btn-info" role="button"> Define New Role </Link>
                 }
                 if (checkAuthority(this.state.project, "REMOVE_TEAM_MEMBERS", this.props.userInfo)) {
                     removeButton = <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleRemove(member) }}>
@@ -198,13 +181,16 @@ class ProjectSettings extends Component {
                         </div>
                         <hr />
                         <div className="row">
-                            <div className="col-4">
+                            <div className="col-3">
+                                <Link to={{ pathname: "/grantAuthority", state: { project } }}>  <button className="btn btn-primary">Manage Roles</button></Link>
+                            </div>
+                            <div className="col-3">
                                 {this.renderLeaveButton()}
                             </div>
-                            <div className="col-4">
+                            <div className="col-3">
                                 {deleteButton}
                             </div>
-                            <div className="col-4">
+                            <div className="col-3">
                                 {defineRoles}
                             </div>
                         </div>

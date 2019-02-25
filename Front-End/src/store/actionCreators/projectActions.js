@@ -150,8 +150,10 @@ return (dispatch)=>{
 
 export const revokeAuthorities = (payload) =>{
     return (dispatch) =>{
-        axios.post('http://localhost:3333/project/revokeAuthority', {payload}).then((res)=>{
+        axios.post('http://localhost:3333/project/revokeAuthorities', {payload}).then((res)=>{
             console.log(res)
+            payload = {...payload, res}
+            dispatch({type:"SET_AUTHORITY", payload})
         }).catch((exception)=>{
             console.log(exception)
         })

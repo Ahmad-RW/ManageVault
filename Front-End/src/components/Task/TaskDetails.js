@@ -4,25 +4,22 @@ import { newComment, checkActivity } from '../../store/actionCreators/taskAction
 import { makeid, normalizeDate } from '../../helper'
 
 class TaskDetails extends Component {
-    state = {
-        comment: ""
-    }
 
-    handleComment = (e) => {
-        console.log(e.target.value)
-        this.setState({
-            [e.target.id]: e.target.value
-        })
-    }
-    handelCommentSubmit = () => {
-        const comment = {
-            content: this.state.comment,
-            author: this.props.userInfo.name,
-            date: new Date()
+    renderDescription = () => {
+        if (this.props.task.description === '') {
+            return
         }
-        console.log(comment)
-        this.props.newComment(comment, this.props.task, this.props.projectInContext)
-
+        return (
+            <div>
+                <div className="row">
+                    <div className="col-12">
+                        <h5>Description</h5>
+                        <p>{this.props.task.description}</p>
+                    </div>
+                </div>
+                <hr />
+            </div>
+        )
     }
     renderPredecessorList = () => {
         let tmp = ""
@@ -38,53 +35,68 @@ class TaskDetails extends Component {
         })
         return tmp
     }
-    renderComments = () => {
-        const commentsList = this.props.task.comments.map(comment => {
-            return (<div class="container border" >
-                <div>
-                    <span>{comment.author}</span>
-                    <p>
-                        {comment.content}
-                    </p>
-                    <span>
-                        {comment.date}
-                    </span>
+    renderDependencies = () => {
+        if (true) {
+            return
+        }
+        return (
+            <div>
+                <div className="row">
+                    <div className="col-12">
+                        <h5>Dependencies</h5>
+                    </div>
                 </div>
-            </div>)
-        })
-        return commentsList
+                <div className="row">
+                    <div className="col-4">
+                        <label>Predecessor Tasks :</label>
+                    </div>
+                    <div className="col">
+                        {this.renderPredecessorList()}
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-4">
+                        <label>Successor Tasks :</label>
+                    </div>
+                    <div className="col">
+                        {this.renderSuccessorList()}
+                    </div>
+                </div>
+                <hr />
+            </div>
+        )
     }
-    handleActivityCheck = (e, activity) =>{
+    handleActivityCheck = (e, activity) => {
         console.log(e.target.checked)
         let payload
-        if(!e.target.checked){
-             payload = {
-                task : this.props.task,
+        if (!e.target.checked) {
+            payload = {
+                task: this.props.task,
                 activity,
-                project : this.props.projectInContext,
-                status : "UNCHECKED"
+                project: this.props.projectInContext,
+                status: "UNCHECKED"
             }
         }
-        else{
-             payload = {
-                task : this.props.task,
+        else {
+            payload = {
+                task: this.props.task,
                 activity,
-                project : this.props.projectInContext,
-                status : "CHECKED"
+                project: this.props.projectInContext,
+                status: "CHECKED"
             }
         }
         this.props.checkActivity(payload)
     }
     renderActivities = () => {
-        if(this.props.task.activities.length===0){
-            return <span>No Activities Made</span>
+        if (this.props.task.activities.length === 0) {
+            return
         }
         const activities = this.props.task.activities.map(activity => {
             if (activity.status === "CHECKED") {
                 return (
                     <li>
                         <strike>{activity.name}</strike>
-                        <input type="checkbox" checked onClick={(e)=>{this.handleActivityCheck(e,activity)}} />
+                        <input type="checkbox" checked onClick={(e) => { this.handleActivityCheck(e, activity) }} />
                     </li>
 
                 )
@@ -92,12 +104,28 @@ class TaskDetails extends Component {
             else {
                 return (
                     <li>{activity.name}
-                    <input type="checkbox" onClick={(e)=>{this.handleActivityCheck(e, activity)}} />
+                        <input type="checkbox" onClick={(e) => { this.handleActivityCheck(e, activity) }} />
                     </li>
                 )
             }
         })
-        return activities
+        return (
+            <div>
+                <div className="row">
+                    <div className="col">
+                        <h5>Task Sub-Activities</h5>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-6">
+                        <ol>
+                            {activities}
+                        </ol>
+                    </div>
+                </div>
+                <hr />
+            </div>
+        )
     }
     render() {
         let text = makeid()
@@ -130,63 +158,10 @@ class TaskDetails extends Component {
                                     </div>
                                 </div>
                                 <hr />
-                                <div className="row">
-                                    <div className="col-12">
-                                        <h5>Description</h5>
-                                        <p>{this.props.task.description}</p>
-                                    </div>
-                                </div>
-                                <hr />
-                                <div className="row">
-                                    <div className="col-12">
-                                        <h5>Dependencies</h5>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-4">
-                                        <label>Predecessor Tasks :</label>
-                                    </div>
-                                    <div className="col">
-                                        {this.renderPredecessorList()}
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-4">
-                                        <label>Successor Tasks :</label>
-                                    </div>
-                                    <div className="col">
-                                        {this.renderSuccessorList()}
-                                    </div>
-                                </div>
-                                <hr />
-                                <div className="row">
-                                    <div className="col">
-                                        <h5>Task Sub-Activities</h5>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-6">
-                                        <ol>
-                                            {this.renderActivities()}
-                                        </ol>
-                                    </div>
-                                </div>
-                                <hr />
+                                {this.renderDescription()}
+                                {this.renderDependencies()}
+                                {this.renderActivities()}
 
-                                {this.renderComments()}
-
-                                <div className="container">
-                                    <div className="row">
-                                        <div className="col-12">
-                                            <textarea placeholder="write your comment here..." className="comment-textarea" id="comment" onChange={(e) => { this.handleComment(e) }}></textarea>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-12">
-                                            <button onClick={this.handelCommentSubmit} className="btn btn-primary btn-sm">Submit Comment</button>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -209,7 +184,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         newComment: (comment, task, project) => dispatch(newComment(comment, task, project)),
-        checkActivity : payload => dispatch(checkActivity(payload))
+        checkActivity: payload => dispatch(checkActivity(payload))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TaskDetails)

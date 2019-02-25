@@ -7,7 +7,7 @@ import { deleteTask, submitTask, confirmTaskSubmission } from '../../store/actio
 import { checkAuthority } from '../../helper'
 import TaskDetails from './TaskDetails';
 import ModifyTask from './ModifyTask'
-
+import CommentsModal from './CommentsModal'
 class Board extends Component {
     constructor(props) {
         super(props)
@@ -94,6 +94,9 @@ class Board extends Component {
                         {this.renderConfirmSubmissionButton(task)}
                         <td>
                             <TaskDetails task={task} number={number} />
+                        </td>
+                        <td>
+                            <CommentsModal task = {task} />
                         </td>
                         <td>
                             {this.renderDeleteTask(task)}

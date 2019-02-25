@@ -128,12 +128,11 @@ const rootReducer = (state = initState, action) => {
     }
     if (action.type === "SET_AUTHORITY") {
         console.log("in reducer set authority")
-        console.log(action.payload)
+        console.log(action.payload.res.data)
         const oldProjects = state.projects.filter(project => project._id !== action.payload.project._id)
         const newProjects = [...oldProjects, action.payload.res.data]
         return state = {
             ...state,
-            projectInContext: action.payload.res.data,
             projects: newProjects
         }
 
