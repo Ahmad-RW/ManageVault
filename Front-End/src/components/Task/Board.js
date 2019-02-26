@@ -96,6 +96,7 @@ class Board extends Component {
                         <td>
                             {this.renderDeleteTask(task)}
                             <ModifyTask tasks={tasks} task={task} />
+                            
                         </td>
 
                     </tr>

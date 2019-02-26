@@ -115,9 +115,21 @@ export const newActivity = payload =>{
     }
 }
 
-export const checkActivity= payload =>{
+export const checkActivity = payload =>{
     return(dispatch)=>{
         axios.post('http://localhost:3333/task/checkActivity', {payload}).then((res)=>{
+            console.log(res)
+            payload = {...payload, res}
+            dispatch({type:"MODIFY_TASK", payload})
+        }).catch((exception)=>{
+            console.log(exception)
+        })
+    }
+}
+
+export const unAssignTask = payload =>{
+    return(dispatch)=>{
+        axios.post('http://localhost:3333/task/unAssignTask', {payload}).then((res)=>{
             console.log(res)
             payload = {...payload, res}
             dispatch({type:"MODIFY_TASK", payload})

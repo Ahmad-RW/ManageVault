@@ -57,3 +57,4 @@ padding-right: 100px;
 overflow: scroll;
 background-color: lightblue;
 }
+.inline { float:left; }

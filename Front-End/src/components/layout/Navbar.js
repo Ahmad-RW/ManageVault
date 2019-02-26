@@ -39,7 +39,7 @@ class NavBar extends Component {
                             </div>
                         </div>
                         <div className="mx-auto welcome-badge"  >
-	                    <Link to="/notification"><i class="material-icons">notification_important</i></Link>
+	                    <Link class="btn my-2 my-sm-0" to="/notification"><i class="material-icons">notification_important</i></Link>
                             Welcome {this.props.userInfo.name}
                         </div>
                     </nav>
