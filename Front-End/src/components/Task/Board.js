@@ -4,7 +4,7 @@ import CreateTask from './CreateTask'
 import ProjectSubBar from '../layout/projectSubBar';
 import { setProject } from '../../store/actionCreators/projectActions'
 import { deleteTask, submitTask, confirmTaskSubmission } from '../../store/actionCreators/taskActions'
-import { checkAuthority, isMemberAssigned } from '../../helper'
+import { checkAuthority, isMemberAssigned, isUserTeamLeader } from '../../helper'
 import TaskDetails from './TaskDetails';
 import ModifyTask from './ModifyTask'
 import CommentsModal from './CommentsModal'
@@ -59,7 +59,10 @@ class Board extends Component {
             task,
             project: this.props.projectInContext
         }
-        console.log(payload)
+        if(isUserTeamLeader(this.props.userInfo, this.props.projectInContext)){
+            this.props.confirmTaskSubmission(payload)
+            return;
+        }
         this.props.submitTask(payload)
     }
     confirmTaskSubmission = (task) => {

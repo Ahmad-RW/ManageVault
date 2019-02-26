@@ -26,7 +26,7 @@ class GrantAuthorities extends Component {
         let currentProject = this.getCurrentProject()
         console.log(e.target.id)
         if (e.target.value === "Assign") {
-            let newRoles = this.state.member.roles
+            let newRoles = member.roles
             currentProject.definedRoles.forEach(element => {
                 if (element._id === e.target.id) {
                     newRoles = [
@@ -45,8 +45,8 @@ class GrantAuthorities extends Component {
             //window.location.reload()
         }
         if (e.target.value === "Revoke") {
-
-            let newRoles = this.state.member.roles.filter(role => { return (role._id === e.target._id) })
+            console.log(e.target.id)
+            let newRoles = member.roles.filter(role => { return (role._id !== e.target.id) })
             console.log(newRoles)
             const payload = {
                 project: currentProject,
@@ -84,7 +84,7 @@ class GrantAuthorities extends Component {
         })
         return result
     }
-    renderCheckBoxes = (member) => {
+    renderTableButtons = (member) => {
         let currentProject = this.getCurrentProject()
 
         const rolesCheckBox = currentProject.definedRoles.map(role => {
@@ -106,26 +106,28 @@ class GrantAuthorities extends Component {
     renderTeamMembers = () => {
         let currentProject = this.getCurrentProject()
         const memberList = currentProject.members.map(member => {
+            if(!member.teamLeader){
             return (
                 <tr>
                     <th scope="row">
                         {member.name}
                     </th>
-                    {this.renderCheckBoxes(member)}
+                    {this.renderTableButtons(member)}
                 </tr>
             )
+            }
         })
         return memberList
 
     }
     render() {
-        let currentProject = this.getCurrentProject()
+        let project = this.getCurrentProject()
         return (
             <div>
                 <div className="container-fluid">
                     <div className="jumbotron jumbotron-fluid">
                         <div className="container">
-                            <h1 className="display-1">{currentProject.title}</h1>
+                            <h1 className="display-1">{project.title}</h1>
                         </div>
                     </div>
                 </div>
@@ -153,7 +155,7 @@ class GrantAuthorities extends Component {
                 </div>
                 <div className="row">
                     <div className="col-lg-4">
-                        <Link to="/newRole"><button type="submit" className="btn btn-info" >Define New Role</button></Link>
+                        <Link to={{ pathname: "/newRole", state: { project } }}><button type="submit" className="btn btn-info" >Define New Role</button></Link>
                     </div>
                 </div>
                 <div className="row">

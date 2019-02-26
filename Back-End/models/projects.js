@@ -69,10 +69,7 @@ const projectsSchema = new schema({
         dependencies: {
             Date: Date,
             predecessor: [String],
-<<<<<<< HEAD
-=======
             predecessorTo :[String],
->>>>>>> testing-branch
             successor: [String]
         },
         //     channel : {

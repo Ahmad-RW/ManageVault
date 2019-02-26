@@ -72,7 +72,7 @@ class CreateTask extends Component {
                                             <DatePicker className="form-control" selected={this.state.startDate} onChange={this.handleDateChange} /><br /><br />
                                         </div>
                                         <label className="label" htmlFor="Duration">Duration: </label>
-                                        <input id="duration" onChange={this.handleChanges}/>
+                                        <input id="duration" onChange={this.handleChanges} required/>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

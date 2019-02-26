@@ -145,7 +145,6 @@ const rootReducer = (state = initState, action) => {
         const newProjects = [...oldProjects, action.payload.res.data]
         return state = {
             ...state,
-            projectInContext: action.payload.res.data,
             projects: newProjects
         }
     }

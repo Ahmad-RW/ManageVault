@@ -82,4 +82,10 @@ const mapDispatchToProps = (dispatch) =>{
     }
 }
 
-export default connect(null, mapDispatchToProps)(UserDefinedRoles)
+const mapStateToProps =(state) =>{
+    return {
+        projects : state.projects
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserDefinedRoles)
