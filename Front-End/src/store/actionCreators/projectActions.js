@@ -114,6 +114,7 @@ export const handleVoting = (payload) => {
     return (dispatch) => {
         axios.post("http://localhost:3333/project/handleVoting", {payload}).then((res) => {
             console.log(res)
+            payload={...payload, res}
             //dispatch({ type: "REQUEST_TO_DELETE_PROJECT", payload})
             console.log("DISPATCHED")
         }).catch((exception) => {

@@ -100,8 +100,8 @@ class Notification extends Component {
                                     </div>
                                     <div class="card-body">
                                         <p class="card-text">The team leader requested to delete {Notification.data.title}, do you accept?</p>
-                                        <button value="no" onClick={(e) => {this.handleClick(e, Notification.data.projectId, Notification, this.props.userInfo)}} className="btn btn-primary">Yes </button>
-                                        <button value="yes" onClick={(e) => {this.handleClick(e, Notification.data.projectId, Notification, this.props.userInfo)}} className="btn btn-danger">No</button>
+                                        <button value="yes" onClick={(e) => {this.handleClick(e, Notification.data.projectId, Notification, this.props.userInfo)}} className="btn btn-primary">Yes </button>
+                                        <button value="no" onClick={(e) => {this.handleClick(e, Notification.data.projectId, Notification, this.props.userInfo)}} className="btn btn-danger">No</button>
                                     </div>
                                 </div>
                                 <div className="pt-2">{date[0]} {time}</div>

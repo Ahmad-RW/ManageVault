@@ -65,7 +65,7 @@ projectRoute.post('/requestDeleteProject', function (req, res) {
 projectRoute.post('/handleVoting', function (req, res) {//payload
     mongoose.model("projects").findById(req.body.payload.projectId).then(function (record) {
         if (req.body.payload.yes) {
-            mongoose.model("projects").findByIdAndUpdate(record._id, { $inc: { "votes.yes": 1 } }).then(function (record) {//thiss is the record before changing
+            mongoose.model("projects").findByIdAndUpdate(record._id, { $inc: { "votes.yes": 1 } }, ).then(function (record) {//thiss is the record before changing
                 var Previousvotes = record.votes.yes;
                 Previousvotes++
                 console.log(Previousvotes)
@@ -92,7 +92,7 @@ projectRoute.post('/handleVoting', function (req, res) {//payload
                     mongoose.model("projects").findByIdAndUpdate(req.body.payload.projectId, { $set: { "status": "RUNNING" } }).then(function (record) {
                         console.log(record, "CHANGED STATUS")
                     })
-                    mongoose.model("users").findByIdAndDelete(req.body.payload.userInfo._id, { $pull: { "notifications": { _id: req.body.payload.notification._id } } }).then(function (record) {
+                    mongoose.model("users").findByIdAndUpdate(req.body.payload.userInfo._id, { $pull: { "notifications": { _id: req.body.payload.notification._id } } }).then(function (record) {
                         console.log(record, "deleted notification")
                     })
                 }

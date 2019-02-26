@@ -75,9 +75,17 @@ class ProjectSettings extends Component {
                     {membersList}
                 </div>
             )
+        }    
+    }
+    renderManageRolesButton = () =>{
+        const currentMember = this.state.project.members.find(member =>{
+            return member.email === this.props.userInfo.email
+        })
+        const project = this.props.location.state.project
+        if(currentMember.teamLeader){
+            return <Link to={{ pathname: "/grantAuthority", state: { project} }}>  <button className="btn btn-primary">Manage Roles</button></Link>
         }
-
-
+        return;
     }
     renderLeaveButton = () => {
         if (this.state.project.members.length === 1) {
@@ -182,7 +190,7 @@ class ProjectSettings extends Component {
                         <hr />
                         <div className="row">
                             <div className="col-3">
-                                <Link to={{ pathname: "/grantAuthority", state: { project } }}>  <button className="btn btn-primary">Manage Roles</button></Link>
+                                {this.renderManageRolesButton()}
                             </div>
                             <div className="col-3">
                                 {this.renderLeaveButton()}
