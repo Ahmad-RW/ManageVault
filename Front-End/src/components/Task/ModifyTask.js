@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { makeid, isMemberAssigned } from '../../helper'
 import DatePicker from "react-datepicker";
 import { connect } from 'react-redux'
-import { setDependancy, editTask, assignTask, newActivity } from '../../store/actionCreators/taskActions'
+import { setDependancy, editTask, assignTask, newActivity, unAssignTask } from '../../store/actionCreators/taskActions'
+import { checkAuthority } from '../../helper'
 
 class ModifyTask extends Component {
     constructor(props) {
@@ -75,11 +76,31 @@ class ModifyTask extends Component {
     }
     renderTeamMembers = () => {
         const members = this.props.projectInContext.members.map(member => {
-            return (
-                <a class="dropdown-item" onClick={() => { this.handleAssign(member) }}>{member.name}</a>
-            )
+            if(this.searchForAssignement(member)){
+                return(
+                    <a class="dropdown-item" onClick={() => {this.handleAssign(member)}}>{member.name}</a>
+                )
+            }
         })
         return members
+    }
+    searchForAssignement = (member) => {
+        const assigndeMembers = this.props.task.assignment.assignedMembers
+        if(assigndeMembers.find(aMember => {return aMember.email === member.email})){return false}
+        else {return true}
+    }
+    renderAssignButton = () => {
+        if (checkAuthority(this.props.projectInContext, "ASSIGN_TASK", this.props.userInfo)) {
+            return(
+                <div class="dropdown">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                        Assign member
+                    </button>
+                    <div class="dropdown-menu">
+                        {this.renderTeamMembers()}
+                    </div>
+                </div>
+        )}
     }
     handleAssign = (member) => {
         console.log(member, "member")
@@ -90,11 +111,28 @@ class ModifyTask extends Component {
         }
         this.props.assignTask(payload)
     }
+    renderUnAssignButton = (member) => {
+        if (checkAuthority(this.props.projectInContext, "UNASSIGN_TASK", this.props.userInfo)) {
+            return(
+                <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => {this.handleUnassign(member)}}>
+                    <i className="material-icons ">highlight_off</i>
+                </button>
+        )}
+    }
+    handleUnassign = (member) =>{
+        const payload = {
+            member : member,
+            task : this.props.task,
+            project : this.props.projectInContext
+        }
+        this.props.unAssignTask(payload)
+    }
     renderAssignedMembers = () => {
-        const assignedMembers = this.props.task.assignment.assignedMembers.map(name => {
-            return (
+        const assignedMembers = this.props.task.assignment.assignedMembers.map(member => {
+            return(
                 <div className="col">
-                    <p>{name}</p>
+                    <p className="inline" on>{member.name}</p>
+                    {this.renderUnAssignButton(member)}
                 </div>
             )
         })
@@ -208,15 +246,8 @@ class ModifyTask extends Component {
                                     </div>
                                 </div>
                                 <div className="row">
-                                    <div class="dropdown">
-                                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                            Assign member
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            {this.renderTeamMembers()}
-                                        </div>
-                                        {this.renderAssignedMembers()}
-                                    </div>
+                                    {this.renderAssignButton()}
+                                    {this.renderAssignedMembers()}
                                 </div>
                                 <hr />
                                 <div className="row">
@@ -255,13 +286,15 @@ const mapDispatchToProps = (dispatch) => {
         assignTask: (payload) => { dispatch(assignTask(payload)) },
         setDependancy: (payload) => { dispatch(setDependancy(payload)) },
         editTask: (payload) => { dispatch(editTask(payload)) },
-        newActivity: (payload) => { dispatch(newActivity(payload)) }
+        newActivity: (payload) => { dispatch(newActivity(payload)) },
+        unAssignTask : (payload) => {dispatch(unAssignTask(payload))}
     }
 }
 
 const mapStateToProps = (state) => {
     return {
-        projectInContext: state.projectInContext
+        projectInContext: state.projectInContext,
+        userInfo : state.userInfo
     }
 }
 
