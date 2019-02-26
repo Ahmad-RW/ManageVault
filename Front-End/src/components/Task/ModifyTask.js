@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { makeid } from '../../helper'
+import { makeid, isMemberAssigned } from '../../helper'
 import DatePicker from "react-datepicker";
-import {connect } from 'react-redux'
-import {setDependancy , editTask, assignTask, newActivity} from '../../store/actionCreators/taskActions'
+import { connect } from 'react-redux'
+import { setDependancy, editTask, assignTask, newActivity } from '../../store/actionCreators/taskActions'
 
 class ModifyTask extends Component {
     constructor(props) {
@@ -15,7 +15,7 @@ class ModifyTask extends Component {
             predecessor: "",
             successor: "",
             redirect: false,
-            activity : ""
+            activity: ""
         }
     }
 
@@ -57,35 +57,42 @@ class ModifyTask extends Component {
         })
         return tmp
     }
-    setDependancy = () => {
+    setDependancy = (task) => {
         const payload = {
-            predecessors: this.state.predecessor,
-            successor: this.state.successor,
-            task: this.props.task,
+            predecessorTask: task,
+            taskInContext: this.props.task,
             project: this.props.projectInContext
         }
         this.props.setDependancy(payload)
     }
-    renderTeamMembers  = () => {
+    renderTaskDropdown = () => {
+        const tasks = this.props.projectInContext.tasks.map(task => {
+            return (
+                <a className="dropdown-item" value={task.name} onClick={() => { this.setDependancy(task) }}>{task.name}</a>
+            )
+        })
+        return tasks
+    }
+    renderTeamMembers = () => {
         const members = this.props.projectInContext.members.map(member => {
-            return(
-                <a class="dropdown-item" onClick={() => {this.handleAssign(member)}}>{member.name}</a>
+            return (
+                <a class="dropdown-item" onClick={() => { this.handleAssign(member) }}>{member.name}</a>
             )
         })
         return members
     }
     handleAssign = (member) => {
-        console.log(member,"member")
+        console.log(member, "member")
         const payload = {
-            member : member,
-            task : this.props.task,
-            project : this.props.projectInContext
+            member: member,
+            task: this.props.task,
+            project: this.props.projectInContext
         }
         this.props.assignTask(payload)
     }
     renderAssignedMembers = () => {
         const assignedMembers = this.props.task.assignment.assignedMembers.map(name => {
-            return(
+            return (
                 <div className="col">
                     <p>{name}</p>
                 </div>
@@ -93,12 +100,16 @@ class ModifyTask extends Component {
         })
         return assignedMembers
     }
-    handleActivityChange = (e) =>{
+
+    handleActivityChange = (e) => {
         this.setState({
-            [e.target.id] : e.target.value
+            [e.target.id]: e.target.value
         })
     }
     renderActivities = () => {
+        // if(!isMemberAssigned(this.props.task, this.props.userInfo)){
+        //     return;
+        // }
         console.log(this.props.task)
         const activites = this.props.task.activities.map(activity => {
             if (activity.status === "CHECKED") {
@@ -116,17 +127,40 @@ class ModifyTask extends Component {
                 )
             }
         })
-        return activites
+        return (
+            <div>
+                <div className="row">
+                    <div className="col-12">
+                        <h5>Task Activities</h5>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-3">
+                        <ol className="list-group">
+                            {activites}
+                        </ol>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col">
+                        <input onChange={this.handleActivityChange} id="activity" type="text" placeholder="activity" />
+                    </div>
+                    <div className="col">
+                        <button className="btn btn-primary btn-sm" onClick={this.handleNewActivity}>Add Activity</button>
+                    </div>
+                </div>
+            </div>
+        )
     }
-    handleNewActivity = () =>{
+    handleNewActivity = () => {
         const activity = {
-            name : this.state.activity,
-            status : "UNCHECKED",
-            date : new Date()
+            name: this.state.activity,
+            status: "UNCHECKED",
+            date: new Date()
         }
         const payload = {
-            activity : activity,
-            task : this.props.task,
+            activity: activity,
+            task: this.props.task,
             project: this.props.projectInContext
         }
         this.props.newActivity(payload)
@@ -179,7 +213,7 @@ class ModifyTask extends Component {
                                             Assign member
                                         </button>
                                         <div class="dropdown-menu">
-                                        {this.renderTeamMembers()}
+                                            {this.renderTeamMembers()}
                                         </div>
                                         {this.renderAssignedMembers()}
                                     </div>
@@ -191,47 +225,20 @@ class ModifyTask extends Component {
                                     </div>
                                 </div>
                                 <div className="row">
-                                    <div className="col-4">
-                                        <label>Predecessor Tasks :</label>
+                                    <div className="col-12">
+                                        <div class="dropdown">
+                                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                                Tasks
+                                        </button>
+                                            <div className="dropdown-menu">
+                                                {this.renderTaskDropdown()}
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="col">
-                                        <input type="text" onChange={this.handleChange} id="predecessor" placeholder={this.renderPredecessorList()} />
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-4">
-                                        <label>Successor Tasks :</label>
-                                    </div>
-                                    <div className="col">
-                                        <input type="text" id="successor" onChange={this.handleChange} placeholder={this.renderSuccessorList()} />
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col align-self-end">
-                                        <button className="btn btn-primary btn-sm" onClick={this.setDependancy}>Set Dependencies</button>
-                                    </div>
+
                                 </div>
                                 <hr />
-                                <div className="row">
-                                    <div className="col-12">
-                                        <h5>Task Sub-Activities</h5>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-3">
-                                        <ol className="list-group">
-                                            {this.renderActivities()}
-                                        </ol>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col">
-                                        <input onChange={this.handleActivityChange} id="activity" type="text" placeholder="activity" />
-                                    </div>
-                                    <div className="col">
-                                        <button className="btn btn-primary btn-sm" onClick={this.handleNewActivity}>Add Activity</button>
-                                    </div>
-                                </div>
+                                {this.renderActivities()}
                             </div>
                         </div>
                     </div>
@@ -243,12 +250,12 @@ class ModifyTask extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setDependancy : (payload) =>{dispatch(setDependancy(payload))},
-        editTask : (payload) => {dispatch(editTask(payload))},
-        assignTask : (payload) => {dispatch(assignTask(payload))},
         setDependancy: (payload) => { dispatch(setDependancy(payload)) },
         editTask: (payload) => { dispatch(editTask(payload)) },
-        newActivity : (payload) => {dispatch(newActivity(payload))}
+        assignTask: (payload) => { dispatch(assignTask(payload)) },
+        setDependancy: (payload) => { dispatch(setDependancy(payload)) },
+        editTask: (payload) => { dispatch(editTask(payload)) },
+        newActivity: (payload) => { dispatch(newActivity(payload)) }
     }
 }
 

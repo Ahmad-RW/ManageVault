@@ -30,3 +30,13 @@ export const normalizeDate = (date) =>{
      }
      return normalizedDate
 }
+export const isMemberAssigned = (task, member) =>{
+    var result = false
+    const assignedMembers = task.assignment.assignedMembers
+    assignedMembers.forEach(assignedMember=>{
+        if(member.email === assignedMember.email){
+            result = true
+        }
+    })
+    return true//change this after D7M changes the scheama
+}
