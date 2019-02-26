@@ -4,7 +4,7 @@ import CreateTask from './CreateTask'
 import ProjectSubBar from '../layout/projectSubBar';
 import { setProject } from '../../store/actionCreators/projectActions'
 import { deleteTask, submitTask, confirmTaskSubmission } from '../../store/actionCreators/taskActions'
-import { checkAuthority } from '../../helper'
+import { checkAuthority, isMemberAssigned } from '../../helper'
 import TaskDetails from './TaskDetails';
 import ModifyTask from './ModifyTask'
 import CommentsModal from './CommentsModal'
@@ -45,8 +45,9 @@ class Board extends Component {
             )
         }
     }
+  
     renderSubmissionButton = (task) => {
-        if (task.status !== "SUBMITTED") {
+        if (task.status !== "SUBMITTED" && isMemberAssigned(task, this.props.userInfo)) {
             return (
                 <button className="btn btn-success btn-sm" onClick={() => { this.handleTaskSubmission(task) }}>Submit Task</button>
             )

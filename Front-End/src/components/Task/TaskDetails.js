@@ -30,15 +30,12 @@ class TaskDetails extends Component {
     }
     renderSuccessorList = () => {
         let tmp = ""
-        this.props.task.dependencies.successor.forEach(element => {
+        this.props.task.dependencies.predecessorTo.forEach(element => {
             tmp = tmp.concat(" ", element, ",")
         })
         return tmp
     }
     renderDependencies = () => {
-        if (true) {
-            return
-        }
         return (
             <div>
                 <div className="row">
@@ -50,15 +47,17 @@ class TaskDetails extends Component {
                     <div className="col-4">
                         <label>Predecessor Tasks :</label>
                     </div>
-                    <div className="col">
+                    <div className="col-3">
                         {this.renderPredecessorList()}
                     </div>
+                    <div className="col-3"></div>
+                    <div className="col-2"></div>
                 </div>
                 <div className="row">
                     <div className="col-4">
                         <label>Successor Tasks :</label>
                     </div>
-                    <div className="col">
+                    <div className="col-2">
                         {this.renderSuccessorList()}
                     </div>
                 </div>
@@ -113,7 +112,7 @@ class TaskDetails extends Component {
             <div>
                 <div className="row">
                     <div className="col">
-                        <h5>Task Sub-Activities</h5>
+                        <h5>Task Activities</h5>
                     </div>
                 </div>
                 <div className="row">
