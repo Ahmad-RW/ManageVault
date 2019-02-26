@@ -61,12 +61,13 @@ const rootReducer = (state = initState, action) => {
         return state
     }
     if (action.type === "REQUEST_TO_DELETE_PROJECT") {
-        let newProjects = state.projects;
-        let project = newProjects.find(project => project._id === action.payload.project._id)
-        project.status = 'PENDING';
-        newProjects = {
-            ...project
-        }
+        // const oldProjects = state.projects.filter(project => project._id !== action.payload.project._id)
+        // const newProjects = [...oldProjects, action.payload.res.data]
+        // return state ={
+        //     ...state,
+        //     projectInContext : action.payload.res.data,
+        //     projects : newProjects
+        // }
     }
     if (action.type === "LEAVE_PROJECT") {
         console.log("in reducer")
