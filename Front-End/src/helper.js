@@ -38,7 +38,7 @@ export const isMemberAssigned = (task, member) => {
             result = true
         }
     })
-    return true//change this after D7M changes the scheama
+    return result
 }
 
 export const isUserTeamLeader = (userInfo, project) => {
