@@ -196,3 +196,25 @@ export const setProject = (project) =>{
         dispatch({type : "SET_PROJECT", project})
     }
 }
+
+export const findUsers = (searchQuery) =>{
+    return(dispatch)=>{
+        axios.get('http://localhost:3333/project/findUsers?searchQuery=' + searchQuery).then((res) => {
+            console.log(res.data, "finding users")
+            dispatch({ type: "FIND_USERS", users: res.data })
+        }).catch((exception) => {
+            console.log(exception)
+        })
+    }
+}
+// export const unAssignTask = payload =>{
+//     return(dispatch)=>{
+//         axios.post('http://localhost:3333/task/unAssignTask', {payload}).then((res)=>{
+//             console.log(res)
+//             payload = {...payload, res}
+//             dispatch({type:"MODIFY_TASK", payload})
+//         }).catch((exception)=>{
+//             console.log(exception)
+//         })
+//     }
+// }

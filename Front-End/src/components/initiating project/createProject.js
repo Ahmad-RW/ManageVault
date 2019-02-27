@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { createProjectAction } from '../../store/actionCreators/projectActions'
+import { createProjectAction, findUsers } from '../../store/actionCreators/projectActions'
 
 class CreateProject extends Component {
     constructor(props) {
@@ -18,10 +18,11 @@ class CreateProject extends Component {
 
     handleChange = (e) => {
         this.handleNoneSelection(e)
+        if (e.target.id === "invitedMembers" ){this.props.findUsers(e.target.value)}//the other && e.target.value.length > 0
         this.setState({
             [e.target.id]: e.target.value
         })
-
+        console.log(e.target.value)
     }
 
     handleNoneSelection = (e) => {
@@ -57,6 +58,22 @@ class CreateProject extends Component {
             this.props.history.push('/home')
         }
     }
+    renderUsers = () => {
+        console.log(this.props.users)
+        // if(this.props.users.email === undefined){return}
+        const users = this.props.users.map(user => {//stuck here
+            return (
+                <div>
+                <li role="presentation"><a onClick={(e) => {this.handleSelectingUser(e)}}role="menuitem" tabindex="-1" href="#">{user.email}</a></li>
+                <div class="dropdown-divider"></div>
+                </div>
+        )}
+        )
+        return users
+    }
+    handleSelectingUser = (e) => {
+        console.log(e)
+    }
     render() {
         let textField;
         if (this.state.majorIsNone) {
@@ -67,7 +84,7 @@ class CreateProject extends Component {
         }
         return (
             <div className="container">
-                <form onSubmit={this.handleSubmit}>
+                <form className="dropdown" onSubmit={this.handleSubmit}>
                     <div className="form-group">
                         <label>Project Title</label>
                         {this.warningMessage}
@@ -91,7 +108,10 @@ class CreateProject extends Component {
                     <div>
                         <div className="form-group">
                             <label>Invite Members</label>
-                            <input type="text" className="form-control" onChange={this.handleChange} id="invitedMembers" />
+                            <input data-toggle="dropdown" type="text" className="form-control" onChange={this.handleChange} id="invitedMembers" />
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                            {this.renderUsers()}
+                            </ul>
                             <small className='form-text text-muted'>Enter each email seperated by commas</small>
                         </div>
                     </div>
@@ -104,12 +124,14 @@ class CreateProject extends Component {
 }
 const mapDispatchToProps = (dispatch) => {
     return {
-        createProject: (project, userInfo) => dispatch(createProjectAction(project, userInfo))
+        createProject: (project, userInfo) => dispatch(createProjectAction(project, userInfo)),
+        findUsers: (searchQuery) => dispatch(findUsers(searchQuery))
     }
 }
 const mapStateToProps = (state) => {
     return {
-        userInfo: state.userInfo
+        userInfo: state.userInfo,
+        users : state.users
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(CreateProject)
