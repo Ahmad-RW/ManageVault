@@ -60,9 +60,12 @@ taskRoute.post('/setDependancy', function (req, res) {
     //         }).catch(function(exception){
     //             res.status(500).send(exception)
     console.log(req.body.payload)
+  const   predecessorTask = {taskName :req.body.payload.predecessorTask.name,
+    taskId : req.body.payload.predecessorTask._id }
+   const  predecessorTo = { taskName : req.body.payload.taskInContext.name, taskId : req.body.payload.taskInContext._id } 
     mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id,
-        {$push:{"tasks.$[taskInContext].dependencies.predecessor" :req.body.payload.predecessorTask.name,
-        "tasks.$[predecessorTask].dependencies.predecessorTo":req.body.payload.taskInContext.name }},
+        {$push:{"tasks.$[taskInContext].dependencies.predecessor" :predecessorTask,
+        "tasks.$[predecessorTask].dependencies.predecessorTo":predecessorTo }},
         {arrayFilters : [{"taskInContext._id":mongoose.Types.ObjectId(req.body.payload.taskInContext._id)},
                          {"predecessorTask._id":mongoose.Types.ObjectId(req.body.payload.predecessorTask._id)}
                         ], new:true}

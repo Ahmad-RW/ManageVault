@@ -68,9 +68,15 @@ const projectsSchema = new schema({
         duration: Number, // we need to find integers in react OR handle entering floats as days. 
         dependencies: {
             Date: Date,
-            predecessor: [String],
-            predecessorTo :[String],
-            successor: [String]
+            predecessor: [{
+                taskName: String,
+                taskId : String
+            }],
+            predecessorTo :[{
+                taskName: String,
+                taskId : String
+            }],
+            //successor: [String]
         },
         //     channel : {
         //         name : String,
