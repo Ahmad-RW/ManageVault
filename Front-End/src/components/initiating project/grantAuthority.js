@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { setAuthority, revokeAuthorities } from '../../store/actionCreators/projectActions'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import UserDefinedRoles from './userDefinedRoles';
 
 
@@ -106,19 +106,38 @@ class GrantAuthorities extends Component {
     renderTeamMembers = () => {
         let currentProject = this.getCurrentProject()
         const memberList = currentProject.members.map(member => {
-            if(!member.teamLeader){
-            return (
-                <tr>
-                    <th scope="row">
-                        {member.name}
-                    </th>
-                    {this.renderTableButtons(member)}
-                </tr>
-            )
+            if (!member.teamLeader) {
+                return (
+                    <tr>
+                        <th scope="row">
+                            {member.name}
+                        </th>
+                        {this.renderTableButtons(member)}
+                    </tr>
+                )
             }
         })
         return memberList
 
+    }
+    renderRolesAndRespectiveAuthorities = () => {
+        const definedRoles = this.getCurrentProject().definedRoles
+        console.log(definedRoles)
+        const definedRolesList = definedRoles.map(role => {
+            const authoritiesList = role.authorities.map(authority => {
+                authority = authority.toLowerCase() 
+                authority = authority.replace("_", " ")
+                return (<li>{authority}</li>)
+            })
+            return (
+                <li>
+                    <ul key={role._id}>
+                        {role.name} : {authoritiesList}
+                    </ul>
+                </li>
+            )
+        })
+        return definedRolesList
     }
     render() {
         let project = this.getCurrentProject()
@@ -134,7 +153,7 @@ class GrantAuthorities extends Component {
                 <div className="row">
                     <div className="col-4"><h3>Grant or Revoke Roles</h3></div>
                     <div className="col-2">
-                       
+
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -159,9 +178,11 @@ class GrantAuthorities extends Component {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-lg-4">
+                    <div className="col-lg-6">
                         <hr />
-                      
+                        <ol>
+                            {this.renderRolesAndRespectiveAuthorities()} {/* thats what she said*/}
+                        </ol>
                     </div>
                 </div>
             </div>
