@@ -157,7 +157,7 @@ taskRoute.post('/checkActivity', function(req, res){
 
 taskRoute.post('/unAssignTask', function(req, res){
     const assignedMembers = req.body.payload.task.assignment.assignedMembers
-    const newAssignedMembers = assignedMembers.filter(member => {return member.name !== req.body.payload.member.name})
+    const newAssignedMembers = assignedMembers.filter(member => {return member.email !== req.body.payload.member.email})
     mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id,{ $set: { "tasks.$[elem].assignment.assignedMembers": newAssignedMembers } }
     ,{arrayFilters :[{"elem._id" :mongoose.Types.ObjectId(req.body.payload.task._id)}] , new: true }).then(function (record) {
         console.log(record,"Unassign task")
@@ -166,6 +166,30 @@ taskRoute.post('/unAssignTask', function(req, res){
         console.log(err)
     })
 })
+
+taskRoute.post('/watchTask', function(req, res){
+    const newWatchedMembers = [...req.body.payload.task.watchedBy, req.body.payload.member.email]
+    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id,{ $set: { "tasks.$[elem].watchedBy": newWatchedMembers } }
+    ,{arrayFilters :[{"elem._id" :mongoose.Types.ObjectId(req.body.payload.task._id)}] , new: true }).then(function (record) {
+        console.log(record,"watch task")
+        res.status(200).send(record)
+    }).catch(function (err) {
+        console.log(err)
+    })
+})
+
+taskRoute.post('/unWatchTask', function(req, res){
+    const watchedMembers = req.body.payload.task.watchedBy
+    const newWatchedMembers = watchedMembers.filter(email => {return email !== req.body.payload.member.email})
+    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id,{ $set: { "tasks.$[elem].watchedBy": newWatchedMembers } }
+    ,{arrayFilters :[{"elem._id" :mongoose.Types.ObjectId(req.body.payload.task._id)}] , new: true }).then(function (record) {
+        console.log(record,"unwatch task")
+        res.status(200).send(record)
+    }).catch(function (err) {
+        console.log(err)
+    })
+})
+
 //helper function
 function normalize(text) {
     text = text.replace(/\s/g, '');
