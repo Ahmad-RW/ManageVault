@@ -138,3 +138,27 @@ export const unAssignTask = payload =>{
         })
     }
 }
+
+export const watchTask = payload => {
+    return(dispatch)=>{
+        axios.post('http://localhost:3333/task/watchTask', {payload}).then((res)=>{
+            console.log(res)
+            payload = {...payload, res}
+            dispatch({type:"MODIFY_TASK", payload})
+        }).catch((exception)=>{
+            console.log(exception)
+        })
+    }
+}
+
+export const unWatchTask = payload => {
+    return(dispatch)=>{
+        axios.post('http://localhost:3333/task/unWatchTask', {payload}).then((res)=>{
+            console.log(res)
+            payload = {...payload, res}
+            dispatch({type:"MODIFY_TASK", payload})
+        }).catch((exception)=>{
+            console.log(exception)
+        })
+    }
+}

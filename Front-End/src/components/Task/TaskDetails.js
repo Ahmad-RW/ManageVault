@@ -147,7 +147,7 @@ class TaskDetails extends Component {
                             </div>
                             <div class="modal-body container">
                                 <div className="row">
-                                    <div className="col-6">
+                                    <div className="col-12">
                                         <label>Start Date : {date[0]} {time} </label>
                                     </div>
                                 </div>

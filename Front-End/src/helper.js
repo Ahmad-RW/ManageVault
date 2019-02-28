@@ -4,12 +4,16 @@ export const checkAuthority = (project, authority, userInfo) => {
     if (member.teamLeader) {
         return true
     }
+    console.log(member)
+    console.log("HEHE")
     let result = false
     member.roles.forEach(element => {
         if (element.authorities.includes(authority)) {
+            console.log(element, "ELEMENT")
             result = true
         }
     });
+    console.log(result, authority)
     return result
 }
 

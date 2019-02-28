@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import CreateTask from './CreateTask'
 import ProjectSubBar from '../layout/projectSubBar';
 import { setProject } from '../../store/actionCreators/projectActions'
-import { deleteTask, submitTask, confirmTaskSubmission } from '../../store/actionCreators/taskActions'
+import { deleteTask, submitTask, confirmTaskSubmission, watchTask, unWatchTask } from '../../store/actionCreators/taskActions'
 import { checkAuthority, isMemberAssigned, isUserTeamLeader } from '../../helper'
 import TaskDetails from './TaskDetails';
 import ModifyTask from './ModifyTask'
@@ -26,7 +26,7 @@ class Board extends Component {
         }
     }
     renderCreateTaskButton = () => {
-        if(checkAuthority(this.props.projectInContext,"DELETE_TASK",this.props.userInfo)){ // "DELETE_TASK"?
+        if(checkAuthority(this.props.projectInContext,"CREATE_TASK" ,this.props.userInfo)){
             return ( 
                 <CreateTask project={this.props.projectInContext} />
             )
@@ -100,7 +100,7 @@ class Board extends Component {
                         <td>
                             {this.renderDeleteTask(task)}
                             <ModifyTask tasks={tasks} task={task} />
-                            
+                            {this.renderWatchTask(task)}
                         </td>
 
                     </tr>
@@ -111,6 +111,39 @@ class Board extends Component {
             )
         return taskList
 
+    }
+    renderWatchTask = (task) => {
+        let found
+        task.watchedBy.forEach(email => {
+            if(this.props.userInfo.email === email){found = true}
+            else {found = false}
+        })
+        if(!found){
+            return (
+                <button className="close" onClick={() => {this.handleWatchTask(task)}}> <i className="material-icons">visibility</i> </button>
+            )
+        } else {
+            return (
+                <button className="close" onClick={() => {this.handleUnWatchTask(task)}}> <i class="material-icons">visibility_off</i> </button>
+            )
+        }
+        
+    }
+    handleWatchTask = (task) => {
+        const payload = {
+            task : task,
+            project : this.props.projectInContext,
+            member : this.props.userInfo
+        }
+        this.props.watchTask(payload)
+    }
+    handleUnWatchTask = (task) => {
+        const payload = {
+            task : task,
+            project : this.props.projectInContext,
+            member : this.props.userInfo
+        }
+        this.props.unWatchTask(payload)
     }
     render() {
         return (
@@ -146,7 +179,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         deleteTask: (task_id, PID) => dispatch(deleteTask(task_id, PID)),
         submitTask: (payload) => dispatch(submitTask(payload)),
-        confirmTaskSubmission: (payload) => dispatch(confirmTaskSubmission(payload))
+        confirmTaskSubmission: (payload) => dispatch(confirmTaskSubmission(payload)),
+        watchTask: (payload) => dispatch(watchTask(payload)),
+        unWatchTask: (payload) => dispatch(unWatchTask(payload))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Board)
