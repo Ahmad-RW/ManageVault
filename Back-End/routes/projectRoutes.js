@@ -2,6 +2,7 @@ const express = require('express');
 const projectRoute = express.Router()
 const projects = require('../models/projects')
 const mongoose = require('../dbConfig/databaseCon')
+const users = require('../models/users');
 
 projectRoute.post('/newproject', function (req, res) {
     console.log(req.body, "REQUEST")
@@ -156,6 +157,7 @@ projectRoute.post('/handleInvite', function (req, res) {
     })
 
 })
+
 projectRoute.post('/handleNotificationDelete', function (req, res) {
     console.log(req.body)
     mongoose.model('users').findByIdAndUpdate(req.body.userInfo._id, { $pull: { "notifications": { _id: req.body.notification._id } } }).then(function (record) {
@@ -175,7 +177,6 @@ projectRoute.post('/newRole', function(req, res){
         console.log(exception)
     })
 })
-
 
 projectRoute.post('/setAuthority', function (req, res) {
     console.log(req.body.payload)
@@ -203,7 +204,6 @@ projectRoute.post('/revokeAuthorities', function(req, res){
         })
 })
 
-
 projectRoute.post('/assignNewTeamLeader', function(req, res){
     console.log(req.body)
     mongoose.model('projects').findByIdAndUpdate(req.body.payload.project._id, 
@@ -224,6 +224,7 @@ projectRoute.post('/assignNewTeamLeader', function(req, res){
          res.status(500).send(exception)
      })
 })
+
 projectRoute.post('/inviteUsers', function (req, res) {
     let invitedMembers = req.body.payload.invitedUsers.replace(/\s/g, '')//remove all spaces so when we match names we don't include spaces (e.g. test@test.com,test2@test.com)
     invitedMembers = invitedMembers.split(',')//basically split the string at the commas and return each section as an element in an array.
@@ -232,7 +233,23 @@ projectRoute.post('/inviteUsers', function (req, res) {
     res.status(200).send(record)
 })
 
+projectRoute.get('/findUsers', function (req, res) {
+    console.log(req.query,"finding")
+    const query = req.query.searchQuery
+    console.log(query,"query")
+    queryE = new RegExp(query,"i")
+    console.log(queryE,"Regular expression")
+    mongoose.model('users').find( { email: queryE }).then(function (record) {
+        // console.log(record)
+        res.status(200).send(record)
+    }).catch(function (err) {
+        console.log(err)
+    })
+})
 
+function helper(){
+    return 0
+}
 
 //helper functions
 function handleInvite(invitedMembers, project) {//basically this function sends a notification to the users who are invited to a project. It's been refactored due to size.
@@ -267,5 +284,4 @@ function handleRequest(project) {  //Takes the members who will recieve the requ
         }
     })
 }
-
 module.exports = projectRoute

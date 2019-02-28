@@ -3,7 +3,8 @@ const initState = {
     isAuthenticated: false,
     projects: [],
     userInfo: {},
-    projectInContext: {}
+    projectInContext: {},
+    users : []
 }
 
 const rootReducer = (state = initState, action) => {
@@ -212,6 +213,13 @@ const rootReducer = (state = initState, action) => {
             ...state,
             projectInContext : action.payload.res.data,
             projects : newProjects
+        }
+    }
+    if(action.type==="FIND_USERS"){
+        console.log(action)
+        return state ={
+            ...state,
+            users : action.users
         }
     }
     return state
