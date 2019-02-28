@@ -66,3 +66,7 @@ background-color: lightblue;
   font-size: 40px; background-color: #F3F5F6; padding: 0 10px;
 }
 .inline { float:left; }
+
+.progress {
+  width: 15%;
+}
