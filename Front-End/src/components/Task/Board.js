@@ -26,7 +26,7 @@ class Board extends Component {
         }
     }
     renderCreateTaskButton = () => {
-        if(checkAuthority(this.props.projectInContext,"DELETE_TASK",this.props.userInfo)){ // "DELETE_TASK"?
+        if(checkAuthority(this.props.projectInContext,"CREATE_TASK" ,this.props.userInfo)){
             return ( 
                 <CreateTask project={this.props.projectInContext} />
             )
