@@ -162,3 +162,15 @@ export const unWatchTask = payload => {
         })
     }
 }
+
+export const handleOutput = payload => {
+    return(dispatch)=>{
+        axios.post('http://localhost:3333/task/handleOutput', {payload}).then((res)=>{
+            payload = {...payload, res}
+            // console.log(payload)
+            dispatch({type:"MODIFY_TASK", payload})
+        }).catch((exception)=>{
+            console.log(exception)
+        })
+    }   
+}

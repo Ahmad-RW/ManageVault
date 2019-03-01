@@ -187,6 +187,19 @@ taskRoute.post('/unWatchTask', function(req, res){
     })
 })
 
+taskRoute.post('/handleOutput', function(req, res){
+    const outputFile = req.body.payload.outputFile
+    console.log(outputFile,"ghghghhghgghh")
+    const newoutputFiles = [...req.body.payload.task.outputFiles, outputFile]
+    console.log(newoutputFiles,"newoutputFiles")
+    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id,{ $set: { "tasks.$[elem].outputFiles": newoutputFiles } }
+    ,{arrayFilters :[{"elem._id" :mongoose.Types.ObjectId(req.body.payload.task._id)}] , new: true }).then(function (record) {
+        // console.log(record,"output file")
+        res.status(200).send(record)
+    }).catch(function (err) {
+        console.log(err)
+    })
+})
 //helper function
 function normalize(text) {
     text = text.replace(/\s/g, '');
