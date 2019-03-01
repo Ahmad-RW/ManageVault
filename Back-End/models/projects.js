@@ -49,12 +49,13 @@ const projectsSchema = new schema({
         kind: String,
         roles: [rolesSchema],//roles : {task mng: true, team mng: false}
     }],
-    files: [{
+    documents: [{
         name: { type: String },
         extension: String,
         size: String,
         lasModified: String,
         creator: String,
+        file: String //Uniform Resource Locator
     }],
     tasks: [{
         name: String,

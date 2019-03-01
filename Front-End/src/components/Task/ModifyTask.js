@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import { makeid, isMemberAssigned } from '../../helper'
 import DatePicker from "react-datepicker";
 import { connect } from 'react-redux'
-import { setDependancy, editTask, assignTask, newActivity, unAssignTask } from '../../store/actionCreators/taskActions'
+import { setDependancy, editTask, assignTask, newActivity, unAssignTask, removeDependency } from '../../store/actionCreators/taskActions'
 import { checkAuthority } from '../../helper'
+import UploadFile from './uploadFile';
 
 class ModifyTask extends Component {
     constructor(props) {
@@ -53,8 +54,17 @@ class ModifyTask extends Component {
         this.props.setDependancy(payload)
     }
     renderTaskDropdown = () => {
+        let flag = false
         const tasks = this.props.projectInContext.tasks.map(task => {
-            if (this.props.task.dependencies.predecessor.includes(task.name)) {
+            this.props.task.dependencies.predecessor.forEach(element => {
+                if (element.taskId === task._id) {
+                    flag = true
+                }
+            })
+            if(flag){
+                return
+            }
+            if (this.props.task._id === task._id) {
                 return
             }
             return (
@@ -63,31 +73,42 @@ class ModifyTask extends Component {
         })
         return tasks
     }
-    renderRemoveDepenedencyButton = (task) =>{
-        return(
+    handelRemoveDependency = task => {
+        const payload = {
+            taskInContext: this.props.task,
+            targetTask: task,
+            project: this.props.projectInContext
+        }
+        this.props.removeDependency(payload)
+    }
+    renderRemoveDepenedencyButton = (task) => {
+        return (
             <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handelRemoveDependency(task) }}>
-                        <i className="material-icons ">highlight_off</i>
-                    </button>
+                <i className="material-icons ">highlight_off</i>
+            </button>
         )
     }
     renderPredecessorList = () => {
-        // let tmp = ""
-        // this.props.task.dependencies.predecessor.forEach(element => {
-        //     tmp = tmp.concat(" ", element, ",")
-        // })
-        // return tmp
-        const predecessorList = this.props.task.dependencies.predecessor.map(task =>{
-            return(
+        const predecessorList = this.props.task.dependencies.predecessor.map(task => {
+            if (this.props.task.name === task.taskName) {
+                return
+            }
+            return (
                 <li>{task.taskName} {this.renderRemoveDepenedencyButton(task)}</li>
             )
         })
+        return predecessorList
     }
     renderSuccessorList = () => {
-        let tmp = ""
-        this.props.task.dependencies.predecessorTo.forEach(element => {
-            tmp = tmp.concat(" ", element, ",")
+        const successorList = this.props.task.dependencies.predecessorTo.map(task => {
+            if (this.props.task.name === task.taskName) {
+                return
+            }
+            return (
+                <li>{task.taskName}</li>
+            )
         })
-        return tmp
+        return successorList
     }
     renderDependencies = () => {
         return (
@@ -314,6 +335,11 @@ class ModifyTask extends Component {
                                 </div>
                                 <hr />
                                 {this.renderActivities()}
+                                <div className="row">
+                                    <div className="col-4">
+                                        <UploadFile />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -333,7 +359,8 @@ const mapDispatchToProps = (dispatch) => {
         setDependancy: (payload) => { dispatch(setDependancy(payload)) },
         editTask: (payload) => { dispatch(editTask(payload)) },
         newActivity: (payload) => { dispatch(newActivity(payload)) },
-        unAssignTask: (payload) => { dispatch(unAssignTask(payload)) }
+        unAssignTask: (payload) => { dispatch(unAssignTask(payload)) },
+        removeDependency: payload => { dispatch(removeDependency(payload)) }
     }
 }
 

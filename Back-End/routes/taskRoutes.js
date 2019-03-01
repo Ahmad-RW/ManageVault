@@ -190,6 +190,57 @@ taskRoute.post('/unWatchTask', function (req, res) {
         })
 })
 
+
+
+
+taskRoute.post('/removeDependency', function(req, res){
+    console.log(req.body)
+    const newPredeccessorList = req.body.payload.taskInContext.dependencies.predecessor.filter(element=>{
+        return element.taskId !== req.body.payload.targetTask.taskId
+    })
+  
+    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, {
+        $set: {
+            "tasks.$[taskInContext].dependencies.predecessor": newPredeccessorList
+        },
+        $pull:{
+            "tasks.$[predecessorTask].dependencies.predecessorTo" : {taskId : req.body.payload.taskInContext._id}
+        }
+    },
+    {
+        arrayFilters: [{ "taskInContext._id": mongoose.Types.ObjectId(req.body.payload.taskInContext._id) },
+         { "predecessorTask._id": mongoose.Types.ObjectId(req.body.payload.targetTask.taskId) }
+        ], new: true
+    }).then(function(record){
+        console.log(record)
+        res.status(200).send(record)
+    }).catch(function(exception){
+        console.log(exception)
+        res.status(500).send(exception)
+    })
+    
+})
+
+
+
+taskRoute.post('/fileUpload', function(req, res){
+    console.log(req.body)
+    const document = {
+        name : req.body.payload.metaData.name,
+        size : req.body.payload.metaData.size,
+        extension : req.body.payload.metaData.type,
+        lastModified : req.body.payload.metaData.updated,
+        file : req.body.payload.url
+    }
+    console.log(document)
+    mongoose.model("projects").findByIdAndUpdate(req.body.payload.projectInContext._id, {$push :{"documents" : document}}, {new:true}).then(function(record){
+        console.log(record)
+        res.status(200).send(record)
+    }).catch(function(exception){
+        res.status(500).send(exception)
+    })
+})
+
 //helper function
 function normalize(text) {
     text = text.replace(/\s/g, '');
