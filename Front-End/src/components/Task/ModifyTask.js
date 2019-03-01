@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import { makeid, isMemberAssigned } from '../../helper'
 import DatePicker from "react-datepicker";
 import { connect } from 'react-redux'
-import { setDependancy, editTask, assignTask, newActivity, unAssignTask } from '../../store/actionCreators/taskActions'
+import { setDependancy, editTask, assignTask, newActivity, unAssignTask, removeDependency } from '../../store/actionCreators/taskActions'
 import { checkAuthority } from '../../helper'
+import UploadFile from './uploadFile';
 
 class ModifyTask extends Component {
     constructor(props) {
@@ -44,20 +45,6 @@ class ModifyTask extends Component {
         console.log(payload)
         this.props.editTask(payload)
     }
-    renderPredecessorList = () => {
-        let tmp = ""
-        this.props.task.dependencies.predecessor.forEach(element => {
-            tmp = tmp.concat(" ", element, ",")
-        })
-        return tmp
-    }
-    renderSuccessorList = () => {
-        let tmp = ""
-        this.props.task.dependencies.successor.forEach(element => {
-            tmp = tmp.concat(" ", element, ",")
-        })
-        return tmp
-    }
     setDependancy = (task) => {
         const payload = {
             predecessorTask: task,
@@ -67,18 +54,96 @@ class ModifyTask extends Component {
         this.props.setDependancy(payload)
     }
     renderTaskDropdown = () => {
+        let flag = false
         const tasks = this.props.projectInContext.tasks.map(task => {
+            this.props.task.dependencies.predecessor.forEach(element => {
+                if (element.taskId === task._id) {
+                    flag = true
+                }
+            })
+            if(flag){
+                return
+            }
+            if (this.props.task._id === task._id) {
+                return
+            }
             return (
                 <a className="dropdown-item" value={task.name} onClick={() => { this.setDependancy(task) }}>{task.name}</a>
             )
         })
         return tasks
     }
+    handelRemoveDependency = task => {
+        const payload = {
+            taskInContext: this.props.task,
+            targetTask: task,
+            project: this.props.projectInContext
+        }
+        this.props.removeDependency(payload)
+    }
+    renderRemoveDepenedencyButton = (task) => {
+        return (
+            <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handelRemoveDependency(task) }}>
+                <i className="material-icons ">highlight_off</i>
+            </button>
+        )
+    }
+    renderPredecessorList = () => {
+        const predecessorList = this.props.task.dependencies.predecessor.map(task => {
+            if (this.props.task.name === task.taskName) {
+                return
+            }
+            return (
+                <li>{task.taskName} {this.renderRemoveDepenedencyButton(task)}</li>
+            )
+        })
+        return predecessorList
+    }
+    renderSuccessorList = () => {
+        const successorList = this.props.task.dependencies.predecessorTo.map(task => {
+            if (this.props.task.name === task.taskName) {
+                return
+            }
+            return (
+                <li>{task.taskName}</li>
+            )
+        })
+        return successorList
+    }
+    renderDependencies = () => {
+        return (
+            <div>
+                <div className="row">
+                    <div className="col-12">
+                        <h5>Dependencies</h5>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-4">
+                        <label>Predecessor Tasks :</label>
+                    </div>
+                    <div className="col-3">
+                        {this.renderPredecessorList()}
+                    </div>
+                    <div className="col-3"></div>
+                    <div className="col-2"></div>
+                </div>
+                <div className="row">
+                    <div className="col-4">
+                        <label>Successor Tasks :</label>
+                    </div>
+                    <div className="col-2">
+                        {this.renderSuccessorList()}
+                    </div>
+                </div>
+            </div>
+        )
+    }
     renderTeamMembers = () => {
         const members = this.props.projectInContext.members.map(member => {
-            if(this.searchForAssignement(member)){
-                return(
-                    <a class="dropdown-item" onClick={() => {this.handleAssign(member)}}>{member.name}</a>
+            if (this.searchForAssignement(member)) {
+                return (
+                    <a class="dropdown-item" onClick={() => { this.handleAssign(member) }}>{member.name}</a>
                 )
             }
         })
@@ -86,12 +151,12 @@ class ModifyTask extends Component {
     }
     searchForAssignement = (member) => {
         const assigndeMembers = this.props.task.assignment.assignedMembers
-        if(assigndeMembers.find(aMember => {return aMember.email === member.email})){return false}
-        else {return true}
+        if (assigndeMembers.find(aMember => { return aMember.email === member.email })) { return false }
+        else { return true }
     }
     renderAssignButton = () => {
         if (checkAuthority(this.props.projectInContext, "ASSIGN_TASK", this.props.userInfo)) {
-            return(
+            return (
                 <div class="dropdown">
                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                         Assign member
@@ -100,7 +165,8 @@ class ModifyTask extends Component {
                         {this.renderTeamMembers()}
                     </div>
                 </div>
-        )}
+            )
+        }
     }
     handleAssign = (member) => {
         console.log(member, "member")
@@ -113,23 +179,24 @@ class ModifyTask extends Component {
     }
     renderUnAssignButton = (member) => {
         if (checkAuthority(this.props.projectInContext, "UNASSIGN_TASK", this.props.userInfo)) {
-            return(
-                <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => {this.handleUnassign(member)}}>
+            return (
+                <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleUnassign(member) }}>
                     <i className="material-icons ">highlight_off</i>
                 </button>
-        )}
+            )
+        }
     }
-    handleUnassign = (member) =>{
+    handleUnassign = (member) => {
         const payload = {
-            member : member,
-            task : this.props.task,
-            project : this.props.projectInContext
+            member: member,
+            task: this.props.task,
+            project: this.props.projectInContext
         }
         this.props.unAssignTask(payload)
     }
     renderAssignedMembers = () => {
         const assignedMembers = this.props.task.assignment.assignedMembers.map(member => {
-            return(
+            return (
                 <div className="col">
                     <p className="inline" on>{member.name}</p>
                     {this.renderUnAssignButton(member)}
@@ -250,11 +317,10 @@ class ModifyTask extends Component {
                                     {this.renderAssignedMembers()}
                                 </div>
                                 <hr />
-                                <div className="row">
-                                    <div className="col-12">
-                                        <h5>Dependencies</h5>
-                                    </div>
-                                </div>
+
+                                {this.renderDependencies()}
+
+
                                 <div className="row">
                                     <div className="col-12">
                                         <div class="dropdown">
@@ -266,10 +332,14 @@ class ModifyTask extends Component {
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                                 <hr />
                                 {this.renderActivities()}
+                                <div className="row">
+                                    <div className="col-4">
+                                        <UploadFile />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -277,7 +347,9 @@ class ModifyTask extends Component {
             </div>
         )
     }
+
 }
+
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -287,14 +359,15 @@ const mapDispatchToProps = (dispatch) => {
         setDependancy: (payload) => { dispatch(setDependancy(payload)) },
         editTask: (payload) => { dispatch(editTask(payload)) },
         newActivity: (payload) => { dispatch(newActivity(payload)) },
-        unAssignTask : (payload) => {dispatch(unAssignTask(payload))}
+        unAssignTask: (payload) => { dispatch(unAssignTask(payload)) },
+        removeDependency: payload => { dispatch(removeDependency(payload)) }
     }
 }
 
 const mapStateToProps = (state) => {
     return {
         projectInContext: state.projectInContext,
-        userInfo : state.userInfo
+        userInfo: state.userInfo
     }
 }
 
