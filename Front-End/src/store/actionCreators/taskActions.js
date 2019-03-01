@@ -162,3 +162,15 @@ export const unWatchTask = payload => {
         })
     }
 }
+
+export const removeDependancy = payload =>{
+    return(dispatch)=>{
+        axios.post('http://localhost:3333/task/removeDependancy', {payload}).then((res)=>{
+            console.log(res)
+            payload = {...payload, res}
+           // dispatch({type:"MODIFY_TASK", payload})
+        }).catch((exception)=>{
+            console.log(exception)
+        })
+    }
+}

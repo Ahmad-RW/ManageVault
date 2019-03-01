@@ -46,38 +46,36 @@ taskRoute.post('/newComment', function (req, res) {
 })
 
 taskRoute.post('/setDependancy', function (req, res) {
-    //     console.log(req.body)
-    //     const predecessorTasks = normalize(req.body.payload.predecessors)
-    //     const successorTasks = normalize(req.body.payload.successor)
-    //     const newPredTasks = req.body.payload.task.dependencies.predecessor.concat(predecessorTasks)
-    //     const newSuccTasks = req.body.payload.task.dependencies.successor.concat(successorTasks)
-    //     mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id,
-    //         {$set:{"tasks.$[elem].dependencies.predecessor": newPredTasks,
-    //         "tasks.$[elem].dependencies.successor" : newSuccTasks}},
-    //         {arrayFilters: [{"elem._id" : mongoose.Types.ObjectId(req.body.payload.task._id)}], new: true}).then(function(record){
-    //             console.log(record)
-    //             res.status(200).send(record)
-    //         }).catch(function(exception){
-    //             res.status(500).send(exception)
     console.log(req.body.payload)
-  const   predecessorTask = {taskName :req.body.payload.predecessorTask.name,
-    taskId : req.body.payload.predecessorTask._id }
-   const  predecessorTo = { taskName : req.body.payload.taskInContext.name, taskId : req.body.payload.taskInContext._id } 
+    const predecessorTask = {
+        taskName: req.body.payload.predecessorTask.name,
+        taskId: req.body.payload.predecessorTask._id
+    }
+    const predecessorTo = { taskName: req.body.payload.taskInContext.name, taskId: req.body.payload.taskInContext._id }
     mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id,
-        {$push:{"tasks.$[taskInContext].dependencies.predecessor" :predecessorTask,
-        "tasks.$[predecessorTask].dependencies.predecessorTo":predecessorTo }},
-        {arrayFilters : [{"taskInContext._id":mongoose.Types.ObjectId(req.body.payload.taskInContext._id)},
-                         {"predecessorTask._id":mongoose.Types.ObjectId(req.body.payload.predecessorTask._id)}
-                        ], new:true}
-        ).then(function(record){
-            console.log(record)
-            res.status(200).send(record)
-        }).catch(function(exception){
-            console.log(exception)
-            res.status(500).send(exception)
-        })
+        {
+            $push: {
+                "tasks.$[taskInContext].dependencies.predecessor": predecessorTask,
+                "tasks.$[predecessorTask].dependencies.predecessorTo": predecessorTo
+            }
+        },
+        {
+            arrayFilters: [{ "taskInContext._id": mongoose.Types.ObjectId(req.body.payload.taskInContext._id) },
+            { "predecessorTask._id": mongoose.Types.ObjectId(req.body.payload.predecessorTask._id) }
+            ], new: true
+        }
+    ).then(function (record) {
+        console.log(record, "HI")
+        res.status(200).send(record)
+    }).catch(function (exception) {
+        console.log(exception)
+        res.status(500).send(exception)
+    })
+})
 
-
+taskRoute.post('/removeDependancy', function(req, res){
+    console.log(req.body)
+    res.status(200).send("STILL WORKING ON IT ")
 })
 
 
@@ -120,18 +118,18 @@ taskRoute.post('/editTask', function (req, res) {
 
 taskRoute.post('/assignTask', function (req, res) {
     assignedMember = {
-        name : req.body.payload.member.name,
-        email : req.body.payload.member.email
+        name: req.body.payload.member.name,
+        email: req.body.payload.member.email
     }
-    console.log(assignedMember,"here")
+    console.log(assignedMember, "here")
     newAssignedMembers = [...req.body.payload.task.assignment.assignedMembers, assignedMember]
-    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id,{ $set: { "tasks.$[elem].assignment.assignedMembers": newAssignedMembers } }
-    ,{arrayFilters :[{"elem._id" :mongoose.Types.ObjectId(req.body.payload.task._id)}] , new: true }).then(function (record) {
-        console.log(record,"assign task")
-        res.status(200).send(record)
-    }).catch(function (err) {
-        console.log(err)
-    })
+    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, { $set: { "tasks.$[elem].assignment.assignedMembers": newAssignedMembers } }
+        , { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
+            console.log(record, "assign task")
+            res.status(200).send(record)
+        }).catch(function (err) {
+            console.log(err)
+        })
 });
 
 taskRoute.post('/newActivity', function (req, res) {
@@ -144,50 +142,52 @@ taskRoute.post('/newActivity', function (req, res) {
         })
 })
 
-taskRoute.post('/checkActivity', function(req, res){
-    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, {$set:{"tasks.$[elem].activities.$[activity].status":req.body.payload.status}},
-    {arrayFilters : [{"elem._id" : mongoose.Types.ObjectId(req.body.payload.task._id)}, 
-    {"activity._id" : mongoose.Types.ObjectId(req.body.payload.activity._id)}], new:true}).then(function(record){
-        res.status(200).send(record)
-    }).catch(function(exception){
-        console.log(exception)
-        res.status(500).send(exception)
-    })
+taskRoute.post('/checkActivity', function (req, res) {
+    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, { $set: { "tasks.$[elem].activities.$[activity].status": req.body.payload.status } },
+        {
+            arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) },
+            { "activity._id": mongoose.Types.ObjectId(req.body.payload.activity._id) }], new: true
+        }).then(function (record) {
+            res.status(200).send(record)
+        }).catch(function (exception) {
+            console.log(exception)
+            res.status(500).send(exception)
+        })
 })
 
-taskRoute.post('/unAssignTask', function(req, res){
+taskRoute.post('/unAssignTask', function (req, res) {
     const assignedMembers = req.body.payload.task.assignment.assignedMembers
-    const newAssignedMembers = assignedMembers.filter(member => {return member.email !== req.body.payload.member.email})
-    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id,{ $set: { "tasks.$[elem].assignment.assignedMembers": newAssignedMembers } }
-    ,{arrayFilters :[{"elem._id" :mongoose.Types.ObjectId(req.body.payload.task._id)}] , new: true }).then(function (record) {
-        console.log(record,"Unassign task")
-        res.status(200).send(record)
-    }).catch(function (err) {
-        console.log(err)
-    })
+    const newAssignedMembers = assignedMembers.filter(member => { return member.email !== req.body.payload.member.email })
+    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, { $set: { "tasks.$[elem].assignment.assignedMembers": newAssignedMembers } }
+        , { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
+            console.log(record, "Unassign task")
+            res.status(200).send(record)
+        }).catch(function (err) {
+            console.log(err)
+        })
 })
 
-taskRoute.post('/watchTask', function(req, res){
+taskRoute.post('/watchTask', function (req, res) {
     const newWatchedMembers = [...req.body.payload.task.watchedBy, req.body.payload.member.email]
-    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id,{ $set: { "tasks.$[elem].watchedBy": newWatchedMembers } }
-    ,{arrayFilters :[{"elem._id" :mongoose.Types.ObjectId(req.body.payload.task._id)}] , new: true }).then(function (record) {
-        console.log(record,"watch task")
-        res.status(200).send(record)
-    }).catch(function (err) {
-        console.log(err)
-    })
+    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, { $set: { "tasks.$[elem].watchedBy": newWatchedMembers } }
+        , { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
+            console.log(record, "watch task")
+            res.status(200).send(record)
+        }).catch(function (err) {
+            console.log(err)
+        })
 })
 
-taskRoute.post('/unWatchTask', function(req, res){
+taskRoute.post('/unWatchTask', function (req, res) {
     const watchedMembers = req.body.payload.task.watchedBy
-    const newWatchedMembers = watchedMembers.filter(email => {return email !== req.body.payload.member.email})
-    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id,{ $set: { "tasks.$[elem].watchedBy": newWatchedMembers } }
-    ,{arrayFilters :[{"elem._id" :mongoose.Types.ObjectId(req.body.payload.task._id)}] , new: true }).then(function (record) {
-        console.log(record,"unwatch task")
-        res.status(200).send(record)
-    }).catch(function (err) {
-        console.log(err)
-    })
+    const newWatchedMembers = watchedMembers.filter(email => { return email !== req.body.payload.member.email })
+    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, { $set: { "tasks.$[elem].watchedBy": newWatchedMembers } }
+        , { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
+            console.log(record, "unwatch task")
+            res.status(200).send(record)
+        }).catch(function (err) {
+            console.log(err)
+        })
 })
 
 //helper function

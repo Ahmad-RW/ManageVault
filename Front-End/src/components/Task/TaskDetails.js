@@ -22,18 +22,20 @@ class TaskDetails extends Component {
         )
     }
     renderPredecessorList = () => {
-        let tmp = ""
-        this.props.task.dependencies.predecessor.forEach(element => {
-            tmp = tmp.concat(" ", element, ",")
+        const predecessorList = this.props.task.dependencies.predecessor.map(task =>{
+            return(
+                <li>{task.taskName}</li>
+            )
         })
-        return tmp
+        return predecessorList
     }
     renderSuccessorList = () => {
-        let tmp = ""
-        this.props.task.dependencies.predecessorTo.forEach(element => {
-            tmp = tmp.concat(" ", element, ",")
+        const successorList = this.props.task.dependencies.predecessorTo.map(task =>{
+            return(
+                <li>{task.taskName}</li>
+            )
         })
-        return tmp
+        return successorList
     }
     renderDependencies = () => {
         return (
