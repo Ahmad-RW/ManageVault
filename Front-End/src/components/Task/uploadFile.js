@@ -20,19 +20,28 @@ class UploadFile extends Component {
             progress
         })
     }
+    renderProgressBar = () => {
+        if (this.state.isUploading) {
+            const style = {
+                width: "100%;"
+            }
+            return (
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style={style} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{this.state.progress}</div>
+                </div>
+            )
+        }
+    }
     handleUploadSuccess = (filename) => {
         console.log(filename, "FIIILLEEE NAME")
-        var tmp;
-        var tmp2;
         this.setState({ progress: 100, isUploading: false });
         var reference = firebase.storage().ref(this.props.projectInContext._id).child(filename)
         reference.getMetadata().then(metaData => {
             reference.getDownloadURL().then(url => {
-                const payload ={
+                const payload = {
                     metaData,
                     url,
-                    projectInContext : this.props.projectInContext,
-                    
+                    projectInContext: this.props.projectInContext,
                     //task
                 }
                 this.props.fileUpload(payload)
@@ -41,14 +50,16 @@ class UploadFile extends Component {
     }
     render() {
         return (
-            <FileUploader
-                storageRef={firebase.storage().ref(this.props.projectInContext._id)}
-                onUploadStart={this.handleUploadStart}
-                onUploadError={this.handleUploadError}
-                onUploadSuccess={this.handleUploadSuccess}
-                onProgress={this.handleProgress}
-
-            />
+            <div>
+                {this.renderProgressBar()}
+                <FileUploader
+                    storageRef={firebase.storage().ref(this.props.projectInContext._id)}
+                    onUploadStart={this.handleUploadStart}
+                    onUploadError={this.handleUploadError}
+                    onUploadSuccess={this.handleUploadSuccess}
+                    onProgress={this.handleProgress}
+                />
+            </div>
         )
     }
 }
