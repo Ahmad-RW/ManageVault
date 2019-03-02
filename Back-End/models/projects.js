@@ -71,11 +71,11 @@ const projectsSchema = new schema({
             Date: Date,
             predecessor: [{
                 taskName: String,
-                taskId : String
+                taskId: String
             }],
-            predecessorTo :[{
+            predecessorTo: [{
                 taskName: String,
-                taskId : String
+                taskId: String
             }],
             //successor: [String]
         },
@@ -87,16 +87,16 @@ const projectsSchema = new schema({
         //             author : String
         //         }]
         //     },
-        assignment : {
-            assigner : String,
-            assignedMembers : [{
-                name : String,
-                email : String
+        assignment: {
+            assigner: String,
+            assignedMembers: [{
+                name: String,
+                email: String
             }],
-            startDate : Date,
-            endDate : Date
+            startDate: Date,
+            endDate: Date
         },
-        watchedBy : [String],
+        watchedBy: [String],
         comments: [{
             date: Date,
             content: String,
@@ -107,8 +107,11 @@ const projectsSchema = new schema({
             status: { type: String, enum: ['CHECKED', 'UNCHECKED'] },
             date: Date
         }],
-            inputFiles: [String],
-            outputFiles: [String],
+        inputDocuments: [{
+            fileName: String,
+            file: String
+        }],
+        outputFiles: [String],
         //     attachments : [{name : String}]
         // }]
     }]

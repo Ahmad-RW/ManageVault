@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import {makeid} from '../../helper'
+import { makeid } from '../../helper'
 import { handleOutput } from '../../store/actionCreators/taskActions'
+import UploadFile from './uploadFile';
 
 class TaskDocumentModal extends Component {
     state = {
@@ -15,10 +16,10 @@ class TaskDocumentModal extends Component {
     renderInputDocuments = () => {
         console.log("here")
         const inputFiles = this.props.projectInContext.tasks.map(task => {
-            return(
+            return (
                 <div>
-                <label htmlFor="inputFile">{task.outputFiles}</label>
-                <input id ="inputFile"type="checkbox" /> 
+                    <label htmlFor="inputFile">{task.outputFiles}</label>
+                    <input id="inputFile" type="checkbox" />
                 </div>
             )
         })
@@ -27,17 +28,17 @@ class TaskDocumentModal extends Component {
     handleSubmitOutput = (e) => {
         e.preventDefault()
         const payload = {
-            task:this.props.task,
-            project:this.props.projectInContext,
+            task: this.props.task,
+            project: this.props.projectInContext,
             outputFile: this.state.outputFiles
         }
-        console.log(payload,"payload")
+        console.log(payload, "payload")
         this.props.handleOutput(payload)
     }
-    render(){
+    render() {
         const text = makeid()
         return (
-             <div>
+            <div>
                 <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target={"#" + text} >
                     Task document
                 </button>
@@ -48,19 +49,30 @@ class TaskDocumentModal extends Component {
                                 <h4 class="modal-title" id="exampleModalLabel">{this.props.task.name}</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
-                                </button>v 
+                                </button>v
                             </div>
                             <div class="modal-body container">
                                 <form >
-                                {this.renderInputDocuments()}
+                                    {this.renderInputDocuments()}
                                 </form>
-                                <hr/>
+                                <hr />
                                 <form onSubmit={this.handleSubmitOutput}>
-                                    <input className="form-control" onChange={this.handleChange} placeholder={this.props.task.outputFiles} id="outputFiles" type="text"/>
-                                    <button className="btn btn-primary"type="submit"> submit</button>
+                                    <input className="form-control" onChange={this.handleChange} placeholder={this.props.task.outputFiles} id="outputFiles" type="text" />
+                                    <button className="btn btn-primary" type="submit"> submit</button>
                                 </form>
-                                
+
                                 {/* ahmad */}
+                                <hr />
+                                <div className="row">
+                                    <div className="col-12">
+                                        <h5>Upload Input File</h5>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-12">
+                                        <UploadFile task = {this.props.task} />
+                                    </div>
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -87,4 +99,4 @@ const mapDispatchToProps = (dispatch) => {
 
     }
 }
-export default connect(mapStateToProps,mapDispatchToProps)(TaskDocumentModal)
+export default connect(mapStateToProps, mapDispatchToProps)(TaskDocumentModal)

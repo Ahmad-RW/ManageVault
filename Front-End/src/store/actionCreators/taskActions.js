@@ -190,7 +190,11 @@ export const removeDependency = payload => {
 export const fileUpload = payload => {
     return (dispatch) => {
         axios.post("http://localhost:3333/task/fileUpload", { payload }).then((res) => {
-            
+            console.log(res)
+            payload = {...payload,
+                project : payload.projectInContext,//dont mind this
+                res}
+            dispatch({type:"MODIFY_TASK" ,payload})
         }).catch((exception) => [
             console.log(exception)
         ])

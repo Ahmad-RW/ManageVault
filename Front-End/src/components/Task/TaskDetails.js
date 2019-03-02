@@ -22,16 +22,16 @@ class TaskDetails extends Component {
         )
     }
     renderPredecessorList = () => {
-        const predecessorList = this.props.task.dependencies.predecessor.map(task =>{
-            return(
+        const predecessorList = this.props.task.dependencies.predecessor.map(task => {
+            return (
                 <li>{task.taskName}</li>
             )
         })
         return predecessorList
     }
     renderSuccessorList = () => {
-        const successorList = this.props.task.dependencies.predecessorTo.map(task =>{
-            return(
+        const successorList = this.props.task.dependencies.predecessorTo.map(task => {
+            return (
                 <li>{task.taskName}</li>
             )
         })
@@ -128,6 +128,39 @@ class TaskDetails extends Component {
             </div>
         )
     }
+    renderInputDocuments = () => {
+        console.log(this.props.task.inputDocuments)
+        const documentsList = this.props.task.inputDocuments.map(element => {
+            if(element.file !== null){
+            return (
+                <li>
+                    <a href={element.file}>{element.fileName}</a>
+                </li>
+            )
+            }
+            return(
+                <li>
+                    {element.fileName}
+                </li>
+            )
+        })
+        return (
+            <div>
+                <div className="row">
+                    <div className="col">
+                        <h5>Input Files</h5>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col">
+                        <ul>
+                            {documentsList}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        )
+    }
     render() {
         let text = makeid()
         console.log(this.props.task)
@@ -162,7 +195,7 @@ class TaskDetails extends Component {
                                 {this.renderDescription()}
                                 {this.renderDependencies()}
                                 {this.renderActivities()}
-
+                                {this.renderInputDocuments()}
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
