@@ -8,6 +8,8 @@ import { checkAuthority, isMemberAssigned, isUserTeamLeader } from '../../helper
 import TaskDetails from './TaskDetails';
 import ModifyTask from './ModifyTask'
 import CommentsModal from './CommentsModal'
+import TaskDocumentModal from './TaskDocumentModal'
+
 class Board extends Component {
     constructor(props) {
         super(props)
@@ -47,7 +49,10 @@ class Board extends Component {
     }
   
     renderSubmissionButton = (task) => {
-        if (task.status !== "SUBMITTED" && isMemberAssigned(task, this.props.userInfo)) {
+        if(task.status === "PENDING_FOR_CONFIRMATION"){
+            return
+        }
+        else if (task.status !== "SUBMITTED" && isMemberAssigned(task, this.props.userInfo)) {
             return (
                 <button className="btn btn-success btn-sm" onClick={() => { this.handleTaskSubmission(task) }}>Submit Task</button>
             )
@@ -96,6 +101,9 @@ class Board extends Component {
                         </td>
                         <td>
                             <CommentsModal task = {task} />
+                        </td>
+                        <td>
+                            <TaskDocumentModal task = {task} />
                         </td>
                         <td>
                             {this.renderDeleteTask(task)}

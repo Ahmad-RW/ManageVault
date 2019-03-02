@@ -107,8 +107,8 @@ const projectsSchema = new schema({
             status: { type: String, enum: ['CHECKED', 'UNCHECKED'] },
             date: Date
         }],
-        //     inputFiles: [{name : String}],
-        //     outputFiles: [{name : String}],
+            inputFiles: [String],
+            outputFiles: [String],
         //     attachments : [{name : String}]
         // }]
     }]
