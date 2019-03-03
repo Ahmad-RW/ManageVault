@@ -236,6 +236,33 @@ taskRoute.post('/fileUpload', function (req, res) {
         fbName : req.body.payload.fbName
         
     }
+    mongoose.model("projects").findByIdAndUpdate(req.body.payload.projectInContext._id,
+        {
+            $push: {
+                "documents": document
+            },
+        }, 
+        {  
+            new: true 
+        }).then(function (record) {
+            res.status(200).send(record)
+        }).catch(function (exception) {
+            res.status(500).send(exception)
+        })
+})
+
+taskRoute.post('/inputDocument', function(req,res){
+    console.log(req.body.payload.metaData)
+    const document = {
+        name: req.body.payload.metaData.name,
+        size: req.body.payload.metaData.size,
+        extension: req.body.payload.metaData.type,
+        contentType: req.body.payload.metaData.contentType,
+        lastModified: req.body.payload.metaData.updated,
+        file: req.body.payload.url,
+        fbName : req.body.payload.fbName
+        
+    }
     
     const inputDocument = {
         fileName: req.body.payload.metaData.name,

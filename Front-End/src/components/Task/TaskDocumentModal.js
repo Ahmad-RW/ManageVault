@@ -70,7 +70,7 @@ class TaskDocumentModal extends Component {
                                 </div>
                                 <div className="row">
                                     <div className="col-12">
-                                        <UploadFile task = {this.props.task} />
+                                        <UploadFile task = {this.props.task} inputDocument={true}/>
                                     </div>
                                 </div>
                             </div>
