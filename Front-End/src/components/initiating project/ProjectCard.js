@@ -31,6 +31,9 @@ class ProjectCard extends Component {
         const projects = this.props.projects
         const projectsList = projects.length ? (
             projects.map((project) => {
+                if(project.status === "STOPPED"){
+                    return
+                }
                 return (
                     <div className="card bg-light col-sm-3" key={project._id} >
                         <div>

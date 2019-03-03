@@ -40,10 +40,12 @@ class UploadFile extends Component {
         this.setState({ progress: 100, isUploading: false });
         var reference = firebase.storage().ref(this.props.projectInContext._id).child(filename)
         reference.getMetadata().then(metaData => {
+            console.log(metaData)
             reference.getDownloadURL().then(url => {
                 metaData = {
                     ...this.state.metaData,
-                    updated : metaData.updated
+                    updated : metaData.updated,
+                    contentType : metaData.contentType
                 }
                 console.log(metaData)
                 const payload = {
@@ -92,13 +94,6 @@ class UploadFile extends Component {
         return (
             <div>
                 {this.renderProgressBar()}
-                {/* <FileUploader
-                    storageRef={firebase.storage().ref(this.props.projectInContext._id)}
-                    onUploadStart={this.handleUploadStart}
-                    onUploadError={this.handleUploadError}
-                    onUploadSuccess={this.handleUploadSuccess}
-                    onProgress={this.handleProgress}
-                /> */}
                 <input type="file" onChange={this.handleChange} />
                 <button type="submit" onClick={this.handleUpload}>Upload File</button>
             </div>
@@ -106,13 +101,13 @@ class UploadFile extends Component {
     }
 }
 
-export const mapStateToProps = state => {
+const mapStateToProps = state => {
     return {
         projectInContext: state.projectInContext
     }
 }
 
-export const mapDispatchToProps = dispatch => {
+ const mapDispatchToProps = dispatch => {
     return {
         fileUpload: (payload) => dispatch(fileUpload(payload))
     }

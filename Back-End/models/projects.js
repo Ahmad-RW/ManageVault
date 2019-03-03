@@ -55,7 +55,8 @@ const projectsSchema = new schema({
         size: String,
         lasModified: String,
         creator: String,
-        file: String //Uniform Resource Locator
+        file: String ,//Uniform Resource Locator,
+        contentType : String,
     }],
     tasks: [{
         name: String,
@@ -67,6 +68,7 @@ const projectsSchema = new schema({
         description: String,
         startDate: Date, //we calculate the deadline given startdate and duration
         duration: Number, // we need to find integers in react OR handle entering floats as days. 
+        submissionCriteria : String,
         dependencies: {
             Date: Date,
             predecessor: [{

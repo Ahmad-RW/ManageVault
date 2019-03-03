@@ -17,7 +17,8 @@ class ModifyTask extends Component {
             predecessor: "",
             successor: "",
             redirect: false,
-            activity: ""
+            activity: "",
+            submissionCriteria: ""
         }
     }
 
@@ -39,8 +40,10 @@ class ModifyTask extends Component {
             description: this.state.description,
             startDate: this.state.startDate,
             duration: this.state.duration,
+            submissionCriteria : this.state.submissionCriteria,
             project: this.props.projectInContext,
             task: this.props.task,
+
         }
         console.log(payload)
         this.props.editTask(payload)
@@ -61,7 +64,7 @@ class ModifyTask extends Component {
                     flag = true
                 }
             })
-            if(flag){
+            if (flag) {
                 return
             }
             if (this.props.task._id === task._id) {
@@ -270,6 +273,11 @@ class ModifyTask extends Component {
         }
         this.props.newActivity(payload)
     }
+    handleCriteriaChange = (e) => {
+        this.setState({
+            [e.target.id]: e.target.value
+        })
+    }
     render() {
         let text = makeid()
         return (
@@ -299,6 +307,16 @@ class ModifyTask extends Component {
                                         <DatePicker className="form-control" selected={this.state.startDate} onChange={this.handleDateChange} /><br /><br />
                                         <label className="label" htmlFor="Duration">Duration: </label>
                                         <input id="duration" onChange={this.handleChange} />
+                                    </div>
+                                </div>
+                                <div className='row'>
+                                    <div className="col-12">
+                                    <label htmlFor="submissionCriteria">Task Submission Criteria</label>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-12">
+                                        <textarea class="form-control" id="submissionCriteria" rows="3" placeholder={this.props.task.submissionCriteria} onChange={this.handleCriteriaChange}></textarea><br /><br />
                                     </div>
                                 </div>
                                 <div className="row">
@@ -335,11 +353,6 @@ class ModifyTask extends Component {
                                 </div>
                                 <hr />
                                 {this.renderActivities()}
-                                <div className="row">
-                                    <div className="col-4">
-                                        <UploadFile />
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>

@@ -106,7 +106,8 @@ taskRoute.post('/editTask', function (req, res) {
             "tasks.$[elem].name": req.body.payload.name,
             "tasks.$[elem].description": req.body.payload.description,
             "tasks.$[elem].startDate": req.body.payload.startDate,
-            "tasks.$[elem].duration": req.body.payload.duration
+            "tasks.$[elem].duration": req.body.payload.duration,
+            "tasks.$[elem].submissionCriteria" : req.body.payload.submissionCriteria
         }
     }, { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
         console.log(record, "edit task")
@@ -224,15 +225,18 @@ taskRoute.post('/removeDependency', function (req, res) {
 
 
 taskRoute.post('/fileUpload', function (req, res) {
-    console.log(req.body.payload)
+    console.log(req.body.payload.metaData)
     const document = {
         name: req.body.payload.metaData.name,
         size: req.body.payload.metaData.size,
         extension: req.body.payload.metaData.type,
+        contentType: req.body.payload.metaData.contentType,
         lastModified: req.body.payload.metaData.updated,
         file: req.body.payload.url,
         fbName : req.body.payload.fbName
+        
     }
+    
     const inputDocument = {
         fileName: req.body.payload.metaData.name,
         file: req.body.payload.url,

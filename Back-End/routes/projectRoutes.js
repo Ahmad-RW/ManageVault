@@ -41,13 +41,11 @@ projectRoute.get('/getUserProjects', function (req, res) {
 });
 
 projectRoute.post('/deleteproject', function (req, res) {
-    console.log(req.body)
-    mongoose.model('projects').findByIdAndDelete(req.body.project._id).then(function (err, record) {
-        console.log(record)
+
+    mongoose.model("projects").findByIdAndUpdate(req.body.project._id, {"status" : "STOPPED"}).then(function(record){
         res.status(200).send(record)
-    }).catch(function (err) {
-        console.log(err)
-        res.status(500)
+    }).catch(function(exception){
+        res.status(500).send(exception)
     })
 })
 
