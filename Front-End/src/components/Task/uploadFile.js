@@ -47,23 +47,17 @@ class UploadFile extends Component {
                     updated: metaData.updated,
                     contentType: metaData.contentType
                 }
+                const payload = {
+                    metaData,
+                    url,
+                    projectInContext: this.props.projectInContext,
+                    task: this.props.task,
+                    fbName: filename
+                }
                 if(this.props.inputDocument){
-                    const payload = {
-                        metaData,
-                        url,
-                        projectInContext: this.props.projectInContext,
-                        task: this.props.task,
-                        fbName: filename
-                    }
                     this.props.uploadInput(payload)
                 }
                 else{
-                    const payload = {
-                        metaData,
-                        url,
-                        projectInContext: this.props.projectInContext,
-                        fbName: filename
-                    }
                     this.props.fileUpload(payload)
                 }
                 this.setState({
