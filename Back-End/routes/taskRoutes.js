@@ -107,7 +107,7 @@ taskRoute.post('/editTask', function (req, res) {
             "tasks.$[elem].description": req.body.payload.description,
             "tasks.$[elem].startDate": req.body.payload.startDate,
             "tasks.$[elem].duration": req.body.payload.duration,
-            "tasks.$[elem].submissionCriteria" : req.body.payload.submissionCriteria
+            "tasks.$[elem].submissionCriteria": req.body.payload.submissionCriteria
         }
     }, { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
         console.log(record, "edit task")
@@ -225,25 +225,25 @@ taskRoute.post('/removeDependency', function (req, res) {
 
 
 taskRoute.post('/fileUpload', function (req, res) {
-    console.log(req.body.payload.metaData)
+
     const document = {
-        name: req.body.payload.metaData.name,
+        name: req.body.payload.documentName,//logical name
         size: req.body.payload.metaData.size,
         extension: req.body.payload.metaData.type,
         contentType: req.body.payload.metaData.contentType,
         lastModified: req.body.payload.metaData.updated,
         file: req.body.payload.url,
-        fbName : req.body.payload.fbName
-        
+        fileName: req.body.payload.metaData.name,//physical name
+        storageReference: req.body.payload.storageReference
     }
     mongoose.model("projects").findByIdAndUpdate(req.body.payload.projectInContext._id,
         {
             $push: {
                 "documents": document
             },
-        }, 
-        {  
-            new: true 
+        },
+        {
+            new: true
         }).then(function (record) {
             res.status(200).send(record)
         }).catch(function (exception) {
@@ -251,23 +251,25 @@ taskRoute.post('/fileUpload', function (req, res) {
         })
 })
 
-taskRoute.post('/inputDocument', function(req,res){
-    console.log(req.body.payload.metaData)
+taskRoute.post('/inputDocument', function (req, res) {
     const document = {
-        name: req.body.payload.metaData.name,
+        name: req.body.payload.documentName,//logical name
         size: req.body.payload.metaData.size,
         extension: req.body.payload.metaData.type,
         contentType: req.body.payload.metaData.contentType,
         lastModified: req.body.payload.metaData.updated,
         file: req.body.payload.url,
-        fbName : req.body.payload.fbName
-        
+        fileName: req.body.payload.metaData.fileName,//physical name
+        storageReference: req.body.payload.storageReference
     }
-    
+
+    console.log(document)
+
     const inputDocument = {
-        fileName: req.body.payload.metaData.name,
+        name: req.body.payload.documentName,
+        fileName: req.body.payload.metaData.fileName,
         file: req.body.payload.url,
-        fbName : req.body.payload.fbName
+        storageReference: req.body.payload.storageReference
     }
     mongoose.model("projects").findByIdAndUpdate(req.body.payload.projectInContext._id,
         {
@@ -275,15 +277,35 @@ taskRoute.post('/inputDocument', function(req,res){
                 "documents": document,
                 "tasks.$[element].inputDocuments": inputDocument
             },
-        }, 
-        { 
-            arrayFilters :[{"element._id" :mongoose.Types.ObjectId(req.body.payload.task._id)}], 
-            new: true 
+        },
+        {
+            arrayFilters: [{ "element._id": mongoose.Types.ObjectId(req.body.payload.task._id) }],
+            new: true
         }).then(function (record) {
             res.status(200).send(record)
         }).catch(function (exception) {
             res.status(500).send(exception)
         })
+})
+
+taskRoute.post('/removeDocument', function (req, res) {
+    console.log(req.body)
+    if (req.body.payload.isInput) {
+        mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, { $pull: { "tasks.$[element].inputDocuments": { _id: req.body.payload.document._id } } },
+            { arrayFilters: [{ "element._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
+                res.status(200).send(record)
+            }).catch(function (exception) {
+                res.status(500).send(exception)
+            })
+    }
+    // else{
+    //     mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, { $pull: { "tasks.$[element].outputDocuments": { _id: req.body.payload.document._id } } },
+    //         { arrayFilters: [{ "element._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
+    //             res.status(200).send(record)
+    //         }).catch(function (exception) {
+    //             res.status(500).send(exception)
+    //         })
+    // }
 })
 
 taskRoute.post('/handleOutput', function (req, res) {

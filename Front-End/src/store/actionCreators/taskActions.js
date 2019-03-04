@@ -1,5 +1,6 @@
 import axios from 'axios'
 
+
 export const createTask = (project, task) => {
     return (dispatch) => {
         console.log(project, "this is project")
@@ -212,5 +213,17 @@ export const inputDocument = payload => {
         }).catch((exception) => [
             console.log(exception)
         ])
+    }
+}
+
+export const removeDocument = payload =>{
+    return(dispatch)=>{
+        axios.post("http://localhost:3333/task/removeDocument", {payload}).then((res) => {
+            console.log(res)
+            payload = {...payload, res}
+            dispatch({type:"MODIFY_TASK", payload})
+        }).catch((exception)=>{
+            console.log(exception)
+        })
     }
 }
