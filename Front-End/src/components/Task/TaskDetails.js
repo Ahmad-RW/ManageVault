@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { newComment, checkActivity } from '../../store/actionCreators/taskActions'
+import { newComment, checkActivity, removeDocument } from '../../store/actionCreators/taskActions'
 import { makeid, normalizeDate } from '../../helper'
-
+import FileSaver from 'file-saver';
 class TaskDetails extends Component {
 
     renderDescription = () => {
@@ -128,27 +128,57 @@ class TaskDetails extends Component {
             </div>
         )
     }
+    handleRemoveDocument = (document, isInput) => {
+        const payload = {
+            document,
+            isInput,
+            project: this.props.projectInContext,
+            task: this.props.task
+        }
+        this.props.removeDocument(payload)
+    }
+    renderRemoveDocumentButton = (document, isInput) => {
+        return (
+            <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleRemoveDocument(document, isInput) }}>
+                <i className="material-icons ">highlight_off</i>
+            </button>
+        )
+    }
     renderInputDocuments = () => {
         console.log(this.props.task.inputDocuments)
         const documentsList = this.props.task.inputDocuments.map(element => {
-            if(element.file !== null){
-            return (
-                <li>
-                    <a href={element.file}>{element.fileName}</a>
-                </li>
-            )
+            if (element.file !== null) {
+                if (typeof element.name !== "undefined") {
+                    return (
+                        <li>
+                            <a  href={element.file}>{element.name} {this.renderRemoveDocumentButton(element, true)}</a>
+                        </li>
+                    )
+                }
+                else {
+                    return (
+                        <li>
+                            <a href={element.file}>{element.fileName} {this.renderRemoveDocumentButton(element, true)}</a>
+                        </li>
+                    )
+                }
             }
-            return(
-                <li>
-                    {element.fileName}
-                </li>
-            )
+            else {
+                if (typeof element.name !== "undefined") {
+                    return (
+                        <li>{element.name} {this.renderRemoveDocumentButton(element, true)}</li>
+                    )
+                }
+                else {
+                    return (<li>{element.fileName} {this.renderRemoveDocumentButton(element, true)}</li>)
+                }
+            }
         })
         return (
             <div>
                 <div className="row">
                     <div className="col">
-                        <h5>Input Files</h5>
+                        <h5>Input Documents</h5>
                     </div>
                 </div>
                 <div className="row">
@@ -218,7 +248,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         newComment: (comment, task, project) => dispatch(newComment(comment, task, project)),
-        checkActivity: payload => dispatch(checkActivity(payload))
+        checkActivity: payload => dispatch(checkActivity(payload)),
+        removeDocument: payload => dispatch(removeDocument(payload))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TaskDetails)

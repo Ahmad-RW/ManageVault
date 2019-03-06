@@ -58,11 +58,21 @@ class GrantAuthorities extends Component {
 
 
     }
+    getAuthoritiesOfRole = (role) => {
+        let authorities = ""
+        role.authorities.forEach(authority => {
+            authority = authority.toLowerCase()
+            authority = authority.replace("_", " ")
+            authorities = authorities.concat(authority, ",")
+        })
+        return authorities
+    }
     renderRoleNames = () => {
         let currentProject = this.getCurrentProject()
         const roleNames = currentProject.definedRoles.map(role => {
+            let authorities = this.getAuthoritiesOfRole(role)
             return (
-                <th scope="col">{role.name}</th>
+                <th scope="col" data-toggle="tooltip" title={authorities}>{role.name}</th>
             )
         })
         return roleNames
@@ -91,12 +101,12 @@ class GrantAuthorities extends Component {
             if (this.checkRoles(member, role)) {
                 return (
 
-                    <td><button onClick={(e) => { this.handleRoleSelect(e, member) }} id={role._id} value="Revoke" className="btn btn-danger btn-sm">Revoke Role</button></td>
+                    <td><button onClick={(e) => { this.handleRoleSelect(e, member) }} id={role._id} value="Revoke" className="btn btn-primary btn-sm">Revoke Role</button></td>
                 )
             }
             else {
                 return (
-                    <td><button onClick={(e) => { this.handleRoleSelect(e, member) }} id={role._id} value="Assign" className="btn btn-primary btn-sm">Assign Role</button></td>
+                    <td><button onClick={(e) => { this.handleRoleSelect(e, member) }} id={role._id} value="Assign" className="btn btn-outline-primary btn-sm">Assign Role</button></td>
                 )
             }
 
@@ -120,25 +130,7 @@ class GrantAuthorities extends Component {
         return memberList
 
     }
-    renderRolesAndRespectiveAuthorities = () => {
-        const definedRoles = this.getCurrentProject().definedRoles
-        console.log(definedRoles)
-        const definedRolesList = definedRoles.map(role => {
-            const authoritiesList = role.authorities.map(authority => {
-                authority = authority.toLowerCase() 
-                authority = authority.replace("_", " ")
-                return (<li>{authority}</li>)
-            })
-            return (
-                <li>
-                    <ul key={role._id}>
-                        {role.name} : {authoritiesList}
-                    </ul>
-                </li>
-            )
-        })
-        return definedRolesList
-    }
+  
     render() {
         let project = this.getCurrentProject()
         return (
@@ -180,9 +172,6 @@ class GrantAuthorities extends Component {
                 <div className="row">
                     <div className="col-lg-6">
                         <hr />
-                        <ol>
-                            {this.renderRolesAndRespectiveAuthorities()} {/* thats what she said*/}
-                        </ol>
                     </div>
                 </div>
             </div>

@@ -16,7 +16,13 @@ class UploadFile extends Component {
             fileURL: "",
             file: {},
             metaData: {},
-            renderSuccessMessage: false
+            renderSuccessMessage: false,
+            documentName : ""
+        })
+    }
+    handleDocumentName = (e) =>{
+        this.setState({
+            [e.target.id] : e.target.value
         })
     }
     handleProgress = (progress) => {
@@ -52,14 +58,14 @@ class UploadFile extends Component {
                     url,
                     projectInContext: this.props.projectInContext,
                     task: this.props.task,
-                    fbName: filename
+                    storageReference: filename,
+                    documentName : this.state.documentName
                 }
-                if(this.props.inputDocument){
                     this.props.uploadInput(payload)
-                }
-                else{
-                    this.props.fileUpload(payload)
-                }
+                
+                // else{
+                //     this.props.fileUpload(payload)
+                // }
                 this.setState({
                     renderSuccessMessage: true
                 })
@@ -75,11 +81,11 @@ class UploadFile extends Component {
             )
         }
     }
-    handleChange = (e) => {
+    handleFileUpload = (e) => {
         console.log(e.target.files[0])
         this.setState({
             file: e.target.files[0],
-            metaData: { name: e.target.files[0].name, size: e.target.files[0].size, type: e.target.files[0].type }
+            metaData: { fileName: e.target.files[0].name, size: e.target.files[0].size, type: e.target.files[0].type }
         })
         this.handleUpload(e.target.files[0])
     }
@@ -126,7 +132,8 @@ class UploadFile extends Component {
             <div>
                 {this.renderProgressBar()}
                 {this.renderUploadCloud()}
-                <input type="file" id="file-upload" onChange={this.handleChange} />
+                <input type="text" onChange={this.handleDocumentName} id="documentName" />
+                <input type="file" id="file-upload" onChange={this.handleFileUpload} />
                 {this.renderSuccessMessage()}
             </div>
         )

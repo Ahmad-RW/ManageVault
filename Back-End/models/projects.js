@@ -50,13 +50,14 @@ const projectsSchema = new schema({
         roles: [rolesSchema],//roles : {task mng: true, team mng: false}
     }],
     documents: [{
-        name: { type: String },
+        name: { type: String },//logical
         extension: String,
         size: String,
         lasModified: String,
         creator: String,
         file: String ,//Uniform Resource Locator,
-        contentType : String,
+        fileName : String,//physical
+        storageReference : String//name in firebase storage. I put it as reference we might not even need it
     }],
     tasks: [{
         name: String,
@@ -110,8 +111,10 @@ const projectsSchema = new schema({
             date: Date
         }],
         inputDocuments: [{
+            name:String,
             fileName: String,
-            file: String
+            file: String,
+            storageReference : String
         }],
         outputFiles: [String],
         //     attachments : [{name : String}]
