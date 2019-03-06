@@ -214,3 +214,15 @@ export const inputDocument = payload => {
         ])
     }
 }
+
+export const removeOutputFile = payload => {
+    return (dispatch) => {
+        axios.post("http://localhost:3333/task/removeOutputFile", { payload }).then((res) => {
+            console.log(res)
+            payload = {...payload,res}
+            dispatch({type:"MODIFY_TASK" ,payload})
+        }).catch((exception) => [
+            console.log(exception)
+        ])
+    }
+}

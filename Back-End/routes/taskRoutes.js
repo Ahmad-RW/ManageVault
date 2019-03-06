@@ -288,10 +288,20 @@ taskRoute.post('/inputDocument', function(req,res){
 
 taskRoute.post('/handleOutput', function (req, res) {
     const outputFile = req.body.payload.outputFile
-    console.log(outputFile, "ghghghhghgghh")
     const newoutputFiles = [...req.body.payload.task.outputFiles, outputFile]
-    console.log(newoutputFiles, "newoutputFiles")
     mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, { $set: { "tasks.$[elem].outputFiles": newoutputFiles } }
+        , { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
+            // console.log(record,"output file")
+            res.status(200).send(record)
+        }).catch(function (err) {
+            console.log(err)
+        })
+})
+
+taskRoute.post('/removeOutputFile', function (req, res) {
+    const removedOutputFile = req.body.payload.file
+    const outputFile = req.body.payload.task.outputFiles.filter(file => {return file !== removedOutputFile})
+    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, { $set: { "tasks.$[elem].outputFiles": outputFile } }
         , { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
             // console.log(record,"output file")
             res.status(200).send(record)

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { makeid } from '../../helper'
-import { handleOutput } from '../../store/actionCreators/taskActions'
+import { handleOutput, removeOutputFile } from '../../store/actionCreators/taskActions'
 import UploadFile from './uploadFile';
 
 class TaskDocumentModal extends Component {
@@ -14,26 +14,98 @@ class TaskDocumentModal extends Component {
         })
     }
     renderInputDocuments = () => {
-        console.log("here")
         const inputFiles = this.props.projectInContext.tasks.map(task => {
-            return (
-                <div>
-                    <label htmlFor="inputFile">{task.outputFiles}</label>
-                    <input id="inputFile" type="checkbox" />
-                </div>
-            )
+            
+            if(this.props.task === task){return}
+            if(task.outputFiles.length === 0){
+                return
+            }else{
+                return (
+                    <div>
+                        <a class="dropdown-item">{task.outputFiles}</a>
+                    </div>
+                )
+            }
         })
         return inputFiles
     }
+    handleInputDocument = () => {
+        console.log("still working on it :)")
+    }
+    renderInputDocumentsButton = () => {
+        return (
+            <div class="dropdown">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                        Enter input documents
+                    </button>
+                    <div class="dropdown-menu">
+                        {this.renderInputDocuments()}
+                    </div>
+                </div>
+        )
+    }
+    // searchForOutputFile = (file) => {
+    //     const outputFiles = this.props.task.outputFiles
+    //     console.log(outputFiles.find(Ofile => { return Ofile === file }))
+    //     if (outputFiles.find(Ofile => { return Ofile === file })) { return false }
+    //     else { return true }
+    // }
     handleSubmitOutput = (e) => {
-        e.preventDefault()
+        if(document.getElementById("outputFiles").value === ""){
+            this.renderErrorMessage("null")
+            console.log("null","error")
+            return
+        }
+        // if(this.searchForOutputFile(this.state.outputFiles)){
+        //     this.renderErrorMessage("redundant")
+        //     console.log("redundant","error")
+        //     return
+        // }
+        // console.log("didnt work")
         const payload = {
             task: this.props.task,
             project: this.props.projectInContext,
             outputFile: this.state.outputFiles
         }
-        console.log(payload, "payload")
+        
         this.props.handleOutput(payload)
+    }
+    renderErrorMessage = (type) => {
+        let error
+        if(type === "null"){
+            console.log("errrrrrroorororo")
+            error = <div className="alert alert-danger" role="alert">Please type something!</div>
+        }
+        if(type === "redundant"){
+            error = <div className="alert alert-danger" role="alert">this outputfile is already exists!</div>
+        }
+        return error
+    }
+    renderOutput = () => {
+        const outputFiles = this.props.task.outputFiles.map(file => {
+            return(
+                <div>
+                    <p>{file}{this.renderRemoveOutputFile(file)}</p>
+                </div>
+            )
+        })
+        return outputFiles
+    }
+    renderRemoveOutputFile = (file) => {
+        return (
+            <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleRemoveOutputFile(file) }}>
+                <i className="material-icons ">highlight_off</i>
+            </button>
+        )
+    }
+    handleRemoveOutputFile = (file) => {
+        const payload = {
+            task: this.props.task,
+            project: this.props.projectInContext,
+            file: file
+        }
+        console.log(payload)
+        this.props.removeOutputFile(payload)
     }
     render() {
         const text = makeid()
@@ -49,18 +121,21 @@ class TaskDocumentModal extends Component {
                                 <h4 class="modal-title" id="exampleModalLabel">{this.props.task.name}</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
-                                </button>v
+                                </button>
                             </div>
                             <div class="modal-body container">
-                                <form >
-                                    {this.renderInputDocuments()}
-                                </form>
+                                <div>
+                                    <p>input files of this  task:</p>
+                                    {this.renderInputDocumentsButton()}
+                                </div>
                                 <hr />
-                                <form onSubmit={this.handleSubmitOutput}>
+                                    {() => {this.renderErrorMessage()}}
                                     <input className="form-control" onChange={this.handleChange} placeholder={this.props.task.outputFiles} id="outputFiles" type="text" />
-                                    <button className="btn btn-primary" type="submit"> submit</button>
-                                </form>
-
+                                    <button className="btn btn-primary" onClick={this.handleSubmitOutput}> submit</button>
+                                    <div>
+                                        <p>output files of this task:</p>
+                                        {this.renderOutput()}
+                                    </div>
                                 {/* ahmad */}
                                 <hr />
                                 <div className="row">
@@ -96,7 +171,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         handleOutput: (payload) => dispatch(handleOutput(payload)),
-
+        removeOutputFile: (payload) => dispatch(removeOutputFile(payload))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TaskDocumentModal)
