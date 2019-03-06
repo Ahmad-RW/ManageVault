@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { makeid } from '../../helper'
 import { handleOutput, removeOutputFile } from '../../store/actionCreators/taskActions'
-import UploadFile from './uploadFile';
+import UploadFile from './UploadFile';
+import UploadOutput from './UploadOutput';
 
 class TaskDocumentModal extends Component {
     state = {
@@ -21,9 +22,9 @@ class TaskDocumentModal extends Component {
                 return
             }else{
                 return (
-                    <div>
+                    
                         <a class="dropdown-item">{task.outputFiles}</a>
-                    </div>
+                   
                 )
             }
         })
@@ -85,7 +86,7 @@ class TaskDocumentModal extends Component {
         const outputFiles = this.props.task.outputFiles.map(file => {
             return(
                 <div>
-                    <p>{file}{this.renderRemoveOutputFile(file)}</p>
+                    <p>{file}{this.renderRemoveOutputFile(file)} <span><UploadOutput task ={this.props.task} isInput={false} documentName={file} /></span></p>
                 </div>
             )
         })
@@ -145,7 +146,7 @@ class TaskDocumentModal extends Component {
                                 </div>
                                 <div className="row">
                                     <div className="col-12">
-                                        <UploadFile task = {this.props.task} inputDocument={true}/>
+                                        <UploadFile task = {this.props.task} isInput={true}/>
                                     </div>
                                 </div>
                             </div>

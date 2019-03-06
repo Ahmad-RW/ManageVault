@@ -117,6 +117,12 @@ const projectsSchema = new schema({
             storageReference : String
         }],
         outputFiles: [String],
+        submittedDocuments :[{
+            name:String,
+            fileName: String,
+            file:String,
+            storageReference : String,
+        }]
         //     attachments : [{name : String}]
         // }]
     }]

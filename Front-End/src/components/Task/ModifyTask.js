@@ -4,7 +4,7 @@ import DatePicker from "react-datepicker";
 import { connect } from 'react-redux'
 import { setDependancy, editTask, assignTask, newActivity, unAssignTask, removeDependency } from '../../store/actionCreators/taskActions'
 import { checkAuthority } from '../../helper'
-import UploadFile from './uploadFile';
+
 
 class ModifyTask extends Component {
     constructor(props) {
