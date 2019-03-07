@@ -8,7 +8,7 @@ class UploadFile extends Component {
     state = {
         isUploading: false,
         progress: 0
-    };
+    }
     handleUploadStart = () => {
         this.setState({
             isUploading: true,
@@ -30,15 +30,12 @@ class UploadFile extends Component {
             progress
         })
     }
-    renderProgressBar = () => {
+    renderProgressBar = () => {     //PROBLEM: Progress is Zero, that causes a problem in the progress bar.
         if (this.state.isUploading) {
-            const style = {
-                width: "100%;"
-            }
             return (
-                <div class="progress">
-                    <div class="progress-bar" role="progressbar" style={style} aria-valuemin="0" aria-valuemax="100">{this.state.progress}</div>
-                </div>
+            <div className="progress"> 
+                <div className="progress-bar progress-bar-striped bg-success" role="progressbar" aria-valuenow='50' aria-valuemin='0' aria-valuemax="100" style={{width: 100+'%'}}>{this.state.progress}</div>
+            </div>
             )
         }
     }

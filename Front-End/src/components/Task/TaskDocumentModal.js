@@ -49,7 +49,7 @@ class TaskDocumentModal extends Component {
                                 <h4 class="modal-title" id="exampleModalLabel">{this.props.task.name}</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
-                                </button>v
+                                </button>
                             </div>
                             <div class="modal-body container">
                                 <form >

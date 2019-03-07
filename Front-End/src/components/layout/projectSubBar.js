@@ -21,19 +21,11 @@ class ProjectSubBar extends Component{
             percentage = 0  
           }
         let widthValue = percentage
-        if(widthValue === 100){
         return (
              <div className="progress">
-                <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow='50' aria-valuemin='0' aria-valuemax="100" style={{width: widthValue+'%'}}></div>
+                <div className="progress-bar progress-bar-striped bg-success" role="progressbar" aria-valuenow='50' aria-valuemin='0' aria-valuemax="100" style={{width: widthValue+'%'}}></div>
             </div>
         )
-    }else {
-            return (
-            <div className="progress">
-                <div className="progress-bar progress-bar-striped" role="progressbar" aria-valuenow='50' aria-valuemin='0' aria-valuemax="100" style={{width: widthValue+'%'}}></div>
-            </div>
-        )
-    }
 }
     render() {
         const project = this.props.project

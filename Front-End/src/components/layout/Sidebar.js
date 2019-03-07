@@ -10,7 +10,7 @@ class SideBar extends Component {
                     <div class="col-md-1 px-1 bg-dark position-fixed" id="sticky-sidebar">
                         <div className="row">
                             <div className="col">
-                                
+                              
                             </div>
                         </div>
                     </div>
