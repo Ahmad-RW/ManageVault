@@ -285,13 +285,38 @@ function handleOutputUpload(payload, res){
             arrayFilters: [{ "element._id": mongoose.Types.ObjectId(payload.task._id) }],
             new: true
         }).then(function (record) {
-            res.status(200).send(record)
+            // res.status(200).send(record)
+            checkOutputOf(payload, outputDocument, res)
         }).catch(function (exception) {
+            console.log(exception)
+            res.status(500).send(exception)
+        })
+}
+function checkOutputOf(payload, outputDocument, res){
+    outputDocument ={
+        ...outputDocument,
+        outputOf : payload.task._id
+    }
+    mongoose.model("projects").findByIdAndUpdate(payload.projectInContext._id,
+       {
+           $set:{
+               "tasks.$[].inputDocuments.$[doc]" : outputDocument
+           }
+       },
+       {
+           arrayFilters : [{"doc.outputOf" : payload.task._id}],
+           new : true, multi : true
+       }
+        ).then(function(record){
+            res.status(200).send(record)
+        }).catch(function(exception){
+            console.log(exception)
+
             res.status(500).send(exception)
         })
 }
 taskRoute.post('/fileUpload', function (req, res) {
-//console.log(req.body)
+console.log(req.body)
 console.log("AHMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD")
 if(req.body.payload.isInput){
     handleInputUpload(req.body.payload, res)
