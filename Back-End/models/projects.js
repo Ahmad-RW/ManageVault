@@ -117,13 +117,12 @@ const projectsSchema = new schema({
             storageReference : String,
             outputOf : String//task ID
         }],
-        outputFiles: [String],
-        submittedDocuments :[{
+        outputDocuments: [{
             name:String,
             fileName: String,
-            file:String,
-            storageReference : String,
-        }]
+            file: String,
+            storageReference : String
+        }],
         //     attachments : [{name : String}]
         // }]
     }]

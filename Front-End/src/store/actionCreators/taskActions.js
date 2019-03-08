@@ -231,9 +231,10 @@ export const outputDocument = payload =>{
         })
     }
 }
-export const removeOutputFile = payload => {
+
+export const removeOutputDocument = payload => {
     return (dispatch) => {
-        axios.post("http://localhost:3333/task/removeOutputFile", { payload }).then((res) => {
+        axios.post("http://localhost:3333/task/removeOutputDocument", { payload }).then((res) => {
             console.log(res)
             payload = {...payload,res}
             dispatch({type:"MODIFY_TASK" ,payload})
@@ -246,6 +247,30 @@ export const removeOutputFile = payload => {
 export const removeDocument = payload =>{
     return(dispatch)=>{
         axios.post("http://localhost:3333/task/removeDocument", {payload}).then((res) => {
+            console.log(res)
+            payload = {...payload, res}
+            dispatch({type:"MODIFY_TASK", payload})
+        }).catch((exception)=>{
+            console.log(exception)
+        })
+    }
+}
+
+export const handleInputDocument = payload => {
+    return(dispatch)=>{
+        axios.post("http://localhost:3333/task/handleInputDocument", {payload}).then((res) => {
+            console.log(res)
+            payload = {...payload, res}
+            dispatch({type:"MODIFY_TASK", payload})
+        }).catch((exception)=>{
+            console.log(exception)
+        })
+    }
+}
+
+export const  removeInputDocument = payload => {
+    return(dispatch)=>{
+        axios.post("http://localhost:3333/task/removeInputDocument", {payload}).then((res) => {
             console.log(res)
             payload = {...payload, res}
             dispatch({type:"MODIFY_TASK", payload})

@@ -1,38 +1,84 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { makeid } from '../../helper'
-import { handleOutput, removeOutputFile } from '../../store/actionCreators/taskActions'
-import UploadFile from './UploadFile';
-import UploadOutput from './UploadOutput';
+import { handleOutput, removeOutputDocument, handleInputDocument, removeInputDocument } from '../../store/actionCreators/taskActions'
+import UploadFile from './uploadFile';
+import UploadOutput from './UploadOutput'
 
 class TaskDocumentModal extends Component {
     state = {
-        outputFiles: ""
+        outputDocuments: null,
+        errorMSG: <div></div>,
     }
     handleChange = (e) => {
+        console.log(e.target.value)
         this.setState({
             [e.target.id]: e.target.value,
         })
         console.log(this.state)
     }
     renderInputDocuments = () => {
-        const inputFiles = this.props.projectInContext.tasks.map(task => {
+        let x = []
+        this.props.projectInContext.tasks.map(task => {
             
             if(this.props.task === task){return}
-            if(task.outputFiles.length === 0){
-                return
-            }else{
-                return (
-                    
-                        <a class="dropdown-item">{task.outputFiles}</a>
-                   
-                )
+            if(task.outputDocuments.length === 0){return}
+            else{
+                x = task.outputDocuments.map(outputDocument => {
+                    if(this.searchForInputDocument(outputDocument)){return}
+                    return (
+                        <div>
+                            <a class="dropdown-item" onClick={() =>{this.handleInputDocument(outputDocument)}}>{outputDocument.name}</a>
+                        </div>
+                    )
+                })
+
             }
         })
-        return inputFiles
+        return x
     }
-    handleInputDocument = () => {
-        console.log("still working on it :)")
+    searchForInputDocument = (Document) => {
+        // console.log(Document)
+        const inputDocuments = this.props.task.inputDocuments
+        if (inputDocuments.find(ODocument => { return ODocument.name === Document.name }) === undefined) { return false }
+        else { return true }
+    }
+    handleInputDocument = (outputDocument) => {
+        const payload = {
+            task: this.props.task,
+            project: this.props.projectInContext,
+            inputDocument: {
+                name:outputDocument.name,
+                fileName: outputDocument.fileName,
+                file: outputDocument.file,
+                storageReference : outputDocument.storageReference,
+            }
+        }
+        this.props.handleInputDocument(payload)
+    }
+    renderInputDocumentsList = () => {
+        const list = this.props.task.inputDocuments.map(Document => {
+            return(
+                <p>{Document.name}{this.renderRemoveInputDocument(Document)}</p>
+            )
+        })
+        return list
+    }
+    renderRemoveInputDocument = (Document) => {
+        return (
+            <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleRemoveInputDocument(Document) }}>
+                <i className="material-icons ">highlight_off</i>
+            </button>
+        )
+    }
+    handleRemoveInputDocument = (Document) => {
+        const payload = {
+            task: this.props.task,
+            project: this.props.projectInContext,
+            Document: Document
+        }
+        console.log(payload)
+        this.props.removeInputDocument(payload)
     }
     renderInputDocumentsButton = () => {
         return (
@@ -46,28 +92,34 @@ class TaskDocumentModal extends Component {
                 </div>
         )
     }
-    // searchForOutputFile = (file) => {
-    //     const outputFiles = this.props.task.outputFiles
-    //     console.log(outputFiles.find(Ofile => { return Ofile === file }))
-    //     if (outputFiles.find(Ofile => { return Ofile === file })) { return false }
-    //     else { return true }
-    // }
+    searchForOutputDocument = (Document) => {
+        const outputDocuments = this.props.task.outputDocuments
+        if (outputDocuments.find(ODocument => { return ODocument.name === Document}) === undefined) 
+        { return false }
+        else { return true }
+    }
     handleSubmitOutput = (e) => {
-        if(document.getElementById("outputFiles").value === ""){
+        if( this.state.outputDocuments === null || this.state.outputDocuments.trim() === ""){
             this.renderErrorMessage("null")
             console.log("null","error")
             return
         }
-        // if(this.searchForOutputFile(this.state.outputFiles)){
-        //     this.renderErrorMessage("redundant")
-        //     console.log("redundant","error")
-        //     return
-        // }
-        // console.log("didnt work")
+        console.log(this.searchForOutputDocument(this.state.outputDocuments))
+        if(this.searchForOutputDocument(this.state.outputDocuments)){
+            this.renderErrorMessage("redundant")
+            console.log("redundant","error")
+            return
+        }
+        
         const payload = {
             task: this.props.task,
             project: this.props.projectInContext,
-            outputFile: this.state.outputFiles
+            outputDocument: {
+                name:this.state.outputDocuments,
+                fileName: "",
+                file: "",
+                storageReference : ""
+            }
         }
         
         this.props.handleOutput(payload)
@@ -75,45 +127,61 @@ class TaskDocumentModal extends Component {
     renderErrorMessage = (type) => {
         let error
         if(type === "null"){
-            console.log("errrrrrroorororo")
-            error = <div className="alert alert-danger" role="alert">Please type something!</div>
+            error = <div className="alert alert-danger" role="alert">
+                Please type something!
+                <button type="button" className="close" aria-label="Close" onClick={this.closeAlert}>
+                    <i className="material-icons ">highlight_off</i>
+                </button>
+                </div>
         }
         if(type === "redundant"){
-            error = <div className="alert alert-danger" role="alert">this outputfile is already exists!</div>
+            error = <div className="alert alert-danger" role="alert">
+                this outputDocument is already exists!
+                <button type="button" className="close" aria-label="Close" onClick={this.closeAlert}>
+                    <i className="material-icons ">highlight_off</i>
+                </button>
+            </div>
         }
-        return error
+        this.setState({
+            errorMSG: error
+        })
+    }
+    closeAlert = () => {
+        this.setState({
+            errorMSG: <div></div>
+        })
     }
     renderOutput = () => {
-        const outputFiles = this.props.task.outputFiles.map(file => {
+        const outputDocuments = this.props.task.outputDocuments.map(Document => {
             return(
                 <div>
-                    <p>{file}{this.renderRemoveOutputFile(file)} <span><UploadOutput task ={this.props.task} isInput={false} documentName={file} /></span></p>
+                    <p>{Document.name}{this.renderRemoveOutputDocument(Document)} <span><UploadOutput task ={this.props.task} isInput={false} documentName={Document.name} /></span></p>
                 </div>
             )
         })
-        return outputFiles
+        return outputDocuments
     }
-    renderRemoveOutputFile = (file) => {
+    renderRemoveOutputDocument = (Document) => {
         return (
-            <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleRemoveOutputFile(file) }}>
+            <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleRemoveOutputDocument(Document) }}>
                 <i className="material-icons ">highlight_off</i>
             </button>
         )
     }
-    handleRemoveOutputFile = (file) => {
+    handleRemoveOutputDocument = (Document) => {
         const payload = {
             task: this.props.task,
             project: this.props.projectInContext,
-            file: file
+            Document: Document
         }
         console.log(payload)
-        this.props.removeOutputFile(payload)
+        this.props.removeOutputDocument(payload)
     }
     render() {
         const text = makeid()
         return (
             <div>
-                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target={"#" + text} >
+                <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target={"#" + text} >
                     Task document
                 </button>
                 <div class="modal fade" id={text} tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -127,22 +195,25 @@ class TaskDocumentModal extends Component {
                             </div>
                             <div class="modal-body container">
                                 <div>
-                                    <p>input files of this  task:</p>
+                                    <p>input Documents of this  task:</p>
                                     {this.renderInputDocumentsButton()}
                                 </div>
+                                <div>
+                                    {this.renderInputDocumentsList()}
+                                </div>
                                 <hr />
-                                    {() => {this.renderErrorMessage()}}
-                                    <input className="form-control" onChange={this.handleChange} placeholder={this.props.task.outputFiles} id="outputFiles" type="text" />
+                                    {this.state.errorMSG}
+                                    <input className="form-control" onChange={this.handleChange} placeholder={this.props.task.outputDocuments} id="outputDocuments" type="text" />
                                     <button className="btn btn-primary" onClick={this.handleSubmitOutput}> submit</button>
                                     <div>
-                                        <p>output files of this task:</p>
+                                        <p>output Documents of this task:</p>
                                         {this.renderOutput()}
                                     </div>
                                 {/* ahmad */}
                                 <hr />
                                 <div className="row">
                                     <div className="col-12">
-                                        <h5>Upload Input File</h5>
+                                        <h5>Upload Input Document</h5>
                                     </div>
                                 </div>
                                 <div className="row">
@@ -173,7 +244,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         handleOutput: (payload) => dispatch(handleOutput(payload)),
-        removeOutputFile: (payload) => dispatch(removeOutputFile(payload))
+        removeOutputDocument: (payload) => dispatch(removeOutputDocument(payload)),
+        handleInputDocument: (payload) => dispatch(handleInputDocument(payload)),
+        removeInputDocument: (payload) => dispatch(removeInputDocument(payload))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TaskDocumentModal)
