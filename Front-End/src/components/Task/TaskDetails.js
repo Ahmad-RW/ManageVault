@@ -147,31 +147,15 @@ class TaskDetails extends Component {
     renderInputDocuments = () => {
         console.log(this.props.task.inputDocuments)
         const documentsList = this.props.task.inputDocuments.map(element => {
-            if (element.file !== null) {
-                if (typeof element.name !== "undefined") {
-                    return (
-                        <li>
-                            <a  href={element.file}>{element.name} {this.renderRemoveDocumentButton(element, true)}</a>
-                        </li>
-                    )
-                }
-                else {
-                    return (
-                        <li>
-                            <a href={element.file}>{element.fileName} {this.renderRemoveDocumentButton(element, true)}</a>
-                        </li>
-                    )
-                }
+            if(element.file !==""){
+                return(
+                    <li><a target="_blank" href={element.file}>{element.name}</a></li>
+                )
             }
-            else {
-                if (typeof element.name !== "undefined") {
-                    return (
-                        <li>{element.name} {this.renderRemoveDocumentButton(element, true)}</li>
-                    )
-                }
-                else {
-                    return (<li>{element.fileName} {this.renderRemoveDocumentButton(element, true)}</li>)
-                }
+            else{
+                return (
+                    <li>{element.name}</li>
+                )
             }
         })
         return (
