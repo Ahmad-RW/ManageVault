@@ -222,36 +222,90 @@ taskRoute.post('/removeDependency', function (req, res) {
 
 })
 
-
-
-taskRoute.post('/fileUpload', function (req, res) {
-
+function handleInputUpload(payload, res){
     const document = {
-        name: req.body.payload.documentName,//logical name
-        size: req.body.payload.metaData.size,
-        extension: req.body.payload.metaData.type,
-        contentType: req.body.payload.metaData.contentType,
-        lastModified: req.body.payload.metaData.updated,
-        file: req.body.payload.url,
-        fileName: req.body.payload.metaData.name,//physical name
-        storageReference: req.body.payload.storageReference
+        name: payload.documentName,//logical name
+        size: payload.metaData.size,
+        extension: payload.metaData.type,
+        contentType: payload.metaData.contentType,
+        lastModified: payload.metaData.updated,
+        file: payload.url,
+        fileName: payload.metaData.name,//physical name
+        storageReference: payload.storageReference
     }
-    mongoose.model("projects").findByIdAndUpdate(req.body.payload.projectInContext._id,
+    const inputDocument = {
+        name: payload.documentName,
+        fileName: payload.metaData.fileName,
+        file: payload.url,
+        storageReference: payload.storageReference
+    }
+    mongoose.model("projects").findByIdAndUpdate(payload.projectInContext._id,
         {
             $push: {
-                "documents": document
+                "documents": document,
+                "tasks.$[element].inputDocuments": inputDocument
             },
         },
         {
+            arrayFilters: [{ "element._id": mongoose.Types.ObjectId(payload.task._id) }],
             new: true
         }).then(function (record) {
             res.status(200).send(record)
         }).catch(function (exception) {
             res.status(500).send(exception)
         })
+
+}
+function handleOutputUpload(payload, res){
+    console.log(payload.metaData.fileName)
+    const document = {
+        name: payload.documentName,//logical name
+        size: payload.metaData.size,
+        extension: payload.metaData.type,
+        contentType: payload.metaData.contentType,
+        lastModified: payload.metaData.updated,
+        file: payload.url,
+        fileName: payload.metaData.fileName,//physical name
+        storageReference: payload.storageReference
+    }
+    const outputDocument = {
+        name: payload.documentName,
+        fileName: payload.metaData.fileName,
+        file: payload.url,
+        storageReference: payload.storageReference
+    }
+    mongoose.model("projects").findByIdAndUpdate(payload.projectInContext._id,
+        {
+            $push: {
+                "documents": document,
+                "tasks.$[element].submittedDocuments": outputDocument
+            },
+        },
+        {
+            arrayFilters: [{ "element._id": mongoose.Types.ObjectId(payload.task._id) }],
+            new: true
+        }).then(function (record) {
+            res.status(200).send(record)
+        }).catch(function (exception) {
+            res.status(500).send(exception)
+        })
+}
+taskRoute.post('/fileUpload', function (req, res) {
+//console.log(req.body)
+console.log("AHMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD")
+if(req.body.payload.isInput){
+    handleInputUpload(req.body.payload, res)
+    
+}
+else{
+    console.log("ba")
+    handleOutputUpload(req.body.payload, res)
+}
+
 })
 
 taskRoute.post('/inputDocument', function (req, res) {
+    console.log(req.body)
     const document = {
         name: req.body.payload.documentName,//logical name
         size: req.body.payload.metaData.size,
