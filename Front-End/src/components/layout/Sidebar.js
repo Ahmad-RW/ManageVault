@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import UploadFile from '../Task/uploadFile';
+
 
 class SideBar extends Component {
     render() {

@@ -179,11 +179,13 @@ class ProjectSettings extends Component {
                         <hr />
                         <div className="row">
                             <h4>Team members :</h4>
-
                         </div>
                         <div className="row">
                             <ul class="list-group">
-                                {members}
+                                <div className="members">{members}</div>
+                                <div className="progress" id="progress">
+                                    <div className="progress-bar progress-bar-striped bg-success" role="progressbar" aria-valuenow='100' aria-valuemin='0' aria-valuemax="100" style={{width: 100+'%'}}></div>
+                                </div>
                             </ul>
 
                         </div>

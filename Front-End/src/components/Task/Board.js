@@ -159,7 +159,6 @@ class Board extends Component {
         return (
             <div>
                 <ProjectSubBar />
-
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>
@@ -173,7 +172,9 @@ class Board extends Component {
                     </tbody>
                 </table>
                 {this.renderCreateTaskButton()}
+                <div id="footer"></div>
             </div>
+            
         )
     }
 }

@@ -4,7 +4,7 @@ import firebase from "firebase";
 import { connect } from 'react-redux'
 import { fileUpload, inputDocument } from '../../store/actionCreators/taskActions'
 import uuid from 'uuid'
-class UploadFile extends Component {
+class UploadOutput extends Component {
     constructor(props) {
 
         super(props)
@@ -15,7 +15,6 @@ class UploadFile extends Component {
             file: {},
             metaData: {},
             renderSuccessMessage: false,
-            documentName: ""
         };
     }
 
@@ -36,38 +35,43 @@ class UploadFile extends Component {
             progress
         })
     }
-    renderProgressBar = () => {     //PROBLEM: Progress is Zero, that causes a problem in the progress bar.
+    renderProgressBar = () => {
         if (this.state.isUploading) {
+            const style = {
+                width: "100%;"
+            }
             return (
-            <div className="progress"> 
-                <div className="progress-bar progress-bar-striped bg-success" role="progressbar" aria-valuenow='50' aria-valuemin='0' aria-valuemax="100" style={{width: 100+'%'}}>{this.state.progress}</div>
-            </div>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style={style} aria-valuemin="0" aria-valuemax="100">{this.state.progress}</div>
+                </div>
             )
         }
     }
     handleUploadSuccess = (filename) => {
+
         console.log(this.state)
         console.log(filename, "FIIILLEEE NAME")
         this.setState({ progress: 100, isUploading: false });
         var reference = firebase.storage().ref(this.props.projectInContext._id).child(filename)
         reference.getMetadata().then(metaData => {
             reference.getDownloadURL().then(url => {
+                
                 metaData = {
-                    ...this.state.metaData,
-                    updated: metaData.updated,
+                    ...this.state.metaData,//name , type , size 
+                    updated: metaData.updated,// these are from firebase. supplemented by our meta data to form name, type, size , last modified and type/content type
                     contentType: metaData.contentType
                 }
-                   const  payload = {
-                        metaData,
-                        url,
-                        projectInContext: this.props.projectInContext,
-                        task: this.props.task,
-                        storageReference: filename,
-                        documentName: this.state.documentName,
-                        isInput: this.props.isInput
-                    }
-                
-               
+                console.log(metaData)
+                const payload = {
+                    metaData,
+                    url,
+                    projectInContext: this.props.projectInContext,
+                    task: this.props.task,
+                    storageReference: filename,
+                    documentName: this.props.documentName,
+                    isInput: this.props.isInput
+                }
+
                 console.log(payload)
                 this.props.fileUpload(payload)
                 this.setState({
@@ -85,7 +89,7 @@ class UploadFile extends Component {
             )
         }
     }
-    handleFileUpload = (e) => {
+    handleOutputUpload = (e) => {
         console.log(e.target.files[0])
         this.setState({
             file: e.target.files[0],
@@ -118,23 +122,16 @@ class UploadFile extends Component {
     renderUploadCloud = () => {
         if (this.props.dark) {
             return (
-                <label for="file-upload" className="btn">
+                <label for="output-upload" className="btn">
                     <i class="material-icons md-light">cloud_upload</i>
                 </label>
             )
         }
         else {
             return (
-                <label for="file-upload" className="btn">
+                <label for="output-upload" className="btn">
                     <i class="material-icons">cloud_upload</i>
                 </label>
-            )
-        }
-    }
-    renderTextField = () => {
-        if (this.props.isInput) {
-            return (
-                <input type="text" onChange={this.handleDocumentName} id="documentName" />
             )
         }
     }
@@ -143,9 +140,9 @@ class UploadFile extends Component {
             <div>
                 {this.renderProgressBar()}
                 {this.renderUploadCloud()}
-                {this.renderTextField()}
+               
                 {/* <input type="text" onChange={this.handleDocumentName} id="documentName" /> */}
-                <input type="file" id="file-upload" onChange={this.handleFileUpload} />
+                <input type="file" id="output-upload" onChange={this.handleOutputUpload} />
                 {this.renderSuccessMessage()}
             </div>
         )
@@ -165,4 +162,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UploadFile)
+export default connect(mapStateToProps, mapDispatchToProps)(UploadOutput)
