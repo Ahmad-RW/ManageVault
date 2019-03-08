@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { makeid } from '../../helper'
 import { handleOutput, removeOutputDocument, handleInputDocument, removeInputDocument } from '../../store/actionCreators/taskActions'
-import UploadFile from './uploadFile';
+import UploadFile from './UploadFile';
 import UploadOutput from './UploadOutput'
 
 class TaskDocumentModal extends Component {
@@ -28,7 +28,7 @@ class TaskDocumentModal extends Component {
                     if(this.searchForInputDocument(outputDocument)){return}
                     return (
                         <div>
-                            <a class="dropdown-item" onClick={() =>{this.handleInputDocument(outputDocument)}}>{outputDocument.name}</a>
+                            <a class="dropdown-item" onClick={() =>{this.handleInputDocument(outputDocument, outputDocument.name)}}>{outputDocument.name}</a>
                         </div>
                     )
                 })
@@ -43,7 +43,7 @@ class TaskDocumentModal extends Component {
         if (inputDocuments.find(ODocument => { return ODocument.name === Document.name }) === undefined) { return false }
         else { return true }
     }
-    handleInputDocument = (outputDocument) => {
+    handleInputDocument = (outputDocument, logicalName) => {
         const payload = {
             task: this.props.task,
             project: this.props.projectInContext,
@@ -52,6 +52,7 @@ class TaskDocumentModal extends Component {
                 fileName: outputDocument.fileName,
                 file: outputDocument.file,
                 storageReference : outputDocument.storageReference,
+                outputOf: logicalName
             }
         }
         this.props.handleInputDocument(payload)

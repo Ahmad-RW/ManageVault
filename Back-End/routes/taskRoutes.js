@@ -274,12 +274,20 @@ function handleOutputUpload(payload, res){
         file: payload.url,
         storageReference: payload.storageReference
     }
+    
+    let newOutputDocuments = payload.task.outputDocuments.filter(function(doc){
+        return doc.name !== payload.documentName
+    })
+    newOutputDocuments = [...newOutputDocuments, outputDocument]
     mongoose.model("projects").findByIdAndUpdate(payload.projectInContext._id,
         {
             $push: {
                 "documents": document,
-                "tasks.$[element].submittedDocuments": outputDocument
+               
             },
+            $set :{
+                "tasks.$[element].outputDocuments": newOutputDocuments
+            }
         },
         {
             arrayFilters: [{ "element._id": mongoose.Types.ObjectId(payload.task._id) }],
@@ -293,19 +301,16 @@ function handleOutputUpload(payload, res){
         })
 }
 function checkOutputOf(payload, outputDocument, res){
-    outputDocument ={
-        ...outputDocument,
-        outputOf : payload.task._id
-    }
+    console.log(payload)
     mongoose.model("projects").findByIdAndUpdate(payload.projectInContext._id,
        {
            $set:{
-               "tasks.$[].inputDocuments.$[doc]" : outputDocument
+               "tasks.$[].inputDocuments.$[doc]" : outputDocument,
            }
        },
        {
-           arrayFilters : [{"doc.outputOf" : payload.task._id}],
-           new : true, multi : true
+           arrayFilters : [{"doc.outputOf" : outputDocument.name}],
+           new : true
        }
         ).then(function(record){
             res.status(200).send(record)
