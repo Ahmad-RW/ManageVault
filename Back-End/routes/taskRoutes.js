@@ -223,18 +223,26 @@ taskRoute.post('/removeDependency', function (req, res) {
 })
 
 function handleInputUpload(payload, res){
+    console.log(payload)
+    console.log(payload.documentName)
+    let name = payload.metaData.fileName
+
+    if(payload.documentName){
+        console.log("inside if")
+        name = payload.documentName
+    }
     const document = {
-        name: payload.documentName,//logical name
+        name: name,//logical name
         size: payload.metaData.size,
         extension: payload.metaData.type,
         contentType: payload.metaData.contentType,
         lastModified: payload.metaData.updated,
         file: payload.url,
-        fileName: payload.metaData.name,//physical name
+        fileName: payload.metaData.fileName,//physical name
         storageReference: payload.storageReference
     }
     const inputDocument = {
-        name: payload.documentName,
+        name: name,
         fileName: payload.metaData.fileName,
         file: payload.url,
         storageReference: payload.storageReference
@@ -310,7 +318,7 @@ function checkOutputOf(payload, outputDocument, res){
        },
        {
            arrayFilters : [{"doc.outputOf" : outputDocument.name}],
-           new : true
+           new : true, multi : true
        }
         ).then(function(record){
             res.status(200).send(record)
@@ -321,8 +329,6 @@ function checkOutputOf(payload, outputDocument, res){
         })
 }
 taskRoute.post('/fileUpload', function (req, res) {
-console.log(req.body)
-console.log("AHMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD")
 if(req.body.payload.isInput){
     handleInputUpload(req.body.payload, res)
     
