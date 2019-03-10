@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { makeid, isMemberAssigned } from '../../helper'
-import { handleOutput, removeOutputDocument, handleInputDocument, removeInputDocument } from '../../store/actionCreators/taskActions'
-import UploadFile from './UploadFile';
+import { makeid, isMemberAssigned, isUserTeamLeader, checkAuthority } from '../../helper'
+import { handleOutput, removeOutputDocument, handleInputDocument, removeInputDocument, checkActivity } from '../../store/actionCreators/taskActions'
+import UploadFile from './UploadInput';
 import UploadOutput from './UploadOutput'
 
 class TaskDocumentModal extends Component {
@@ -66,11 +66,13 @@ class TaskDocumentModal extends Component {
         return list
     }
     renderRemoveInputDocument = (Document) => {
+        if(isUserTeamLeader(this.props.userInfo, this.props.projectInContext)|| checkAuthority(this.props.projectInContext, "MODIFY_TASK", this.props.userInfo)){
         return (
             <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleRemoveInputDocument(Document) }}>
                 <i className="material-icons ">highlight_off</i>
             </button>
         )
+        }
     }
     handleRemoveInputDocument = (Document) => {
         const payload = {
@@ -169,7 +171,7 @@ class TaskDocumentModal extends Component {
         return outputDocuments
     }
     renderRemoveOutputDocument = (Document) => {
-        if (isMemberAssigned(this.props.task, this.props.userInfo)) {
+        if (isMemberAssigned(this.props.task, this.props.userInfo)|| checkAuthority(this.props.projectInContext, "MODIFY_TASK", this.props.userInfo)) {
             return (
                 <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleRemoveOutputDocument(Document) }}>
                     <i className="material-icons ">highlight_off</i>

@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 const projectRoute = require('./routes/projectRoutes')
 const userRoute = require('./routes/userRoutes')
 const taskRoute = require('./routes/taskRoutes')
-
+const storageRoute = require('./routes/storageRoutes')
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -21,6 +21,7 @@ app.get('/', function (req, res) {
 app.use('/project', projectRoute );// any route starting with /project go to project route. which is exported from projectRoutes
 app.use('/user', userRoute );// same goes here
 app.use('/task', taskRoute );
+app.use('/storage', storageRoute)
 
 
 

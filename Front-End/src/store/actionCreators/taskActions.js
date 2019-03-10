@@ -199,11 +199,31 @@ export const fileUpload = payload => {
             }
             payload = {...payload, res}
             dispatch({type:"MODIFY_TASK" ,payload})
-        }).catch((exception) => [
+        }).catch((exception) => {
             console.log(exception)
-        ])
+        })
     }
 }
+
+export const StorageUpload = payload => {
+    return (dispatch) => {
+        axios.post("http://localhost:3333/storage/fileUpload", { payload }).then((res) => {
+            console.log(res)
+            payload = {
+                ...payload,
+                res,
+                project : payload.projectInContext // dont mind this please move on with your life 
+            }
+            payload = {...payload, res}
+            dispatch({type:"STORAGE_UPLOAD" ,payload})
+        }).catch((exception) => {
+            console.log(exception)
+        })
+    }
+}
+
+
+
 
 export const inputDocument = payload => {
     return (dispatch) => {

@@ -8,6 +8,8 @@
     "firebase": "^5.8.4",
     "js-file-download": "^0.4.4",
     "mongoose": "^5.4.1",
+    "primeicons": "^1.0.0",
+    "primereact": "^3.1.0",
     "react": "^16.7.0",
     "react-datepicker": "^2.1.0",
     "react-disqus-comments": "^1.4.0",

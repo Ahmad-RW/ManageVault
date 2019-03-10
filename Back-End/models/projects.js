@@ -1,15 +1,7 @@
 const mongoose = require('mongoose')
 const schema = mongoose.Schema;
 
-const authoritySchema = new schema({
-    authority: {
-        type: String,
-        enum: ["INVITE_USERS", "REMOVE_TEAM_MEMBERS", "PUBLISH_PROJECT", "UNPUBLISH_PROJECT",
-            "CREATE_TASK", "CONFIRM_SUBMISSION", "DELETE_TASK",
-            "ASSIGN_TASK", "UN-ASSIGN_TASK", "MODIFY_TASK"]
-    }
-},
-    { _id: false });
+
 const rolesSchema = new schema({
     name: String,
     authorities: [{
@@ -51,7 +43,7 @@ const projectsSchema = new schema({
     }],
     documents: [{
         name: { type: String },//logical
-        extension: String,
+        contentType: String,
         size: String,
         lasModified: String,
         creator: String,
