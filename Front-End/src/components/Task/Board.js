@@ -60,7 +60,7 @@ class Board extends Component {
     }
     handleTaskSubmission = (task) => {
         console.log(task)
-        var endDate = new Date().getDate()
+        var endDate = new Date()
         console.log(endDate, "SUBMISSON DATE")
         const payload = {
             task,

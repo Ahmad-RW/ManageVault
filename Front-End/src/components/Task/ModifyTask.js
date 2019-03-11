@@ -173,7 +173,7 @@ class ModifyTask extends Component {
     }
     handleAssign = (member) => {
         console.log(member, "member")
-        var startDate = new Date().getDate() //Retrieves the day (as a number) only.
+        var startDate = new Date() //Retrieves the day (as a number) only.
         console.log(startDate, "ASSIGNMENT DATE")
         const payload = {
             member: member,
