@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import FileViewer from 'react-file-viewer'
 import SideBar from '../layout/Sidebar';
 import ProjectSubBar from '../layout/projectSubBar'
+import DocumentCard from './DocumentCard';
 class Storage extends Component {
 
     render() {
@@ -10,7 +11,10 @@ class Storage extends Component {
             <div>
                 <ProjectSubBar />
                 <hr />
-               <SideBar />
+                <SideBar />
+                <div className="container">
+                    <DocumentCard />
+                </div>
             </div>
         )
     }

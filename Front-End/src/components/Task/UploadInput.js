@@ -25,8 +25,6 @@ class UploadFile extends Component {
         })
     }
     handleDocumentName = (e) => {
-        console.log(this.state)
-        console.log(this.props)
         this.setState({
             [e.target.id]: e.target.value
         })

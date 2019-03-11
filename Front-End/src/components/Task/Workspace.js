@@ -6,7 +6,6 @@ import Board from './Board'
 class Workspace extends Component {
     constructor(props) {
         super(props)
-        console.log(this.props.location.state.project)
     }
 
     state = {

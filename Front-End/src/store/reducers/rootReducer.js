@@ -215,6 +215,15 @@ const rootReducer = (state = initState, action) => {
             projects : newProjects
         }
     }
+    if(action.type==="STORAGE_UPLOAD"){
+        const oldProjects = state.projects.filter(project => project._id !== action.payload.project._id)
+        const newProjects = [...oldProjects, action.payload.res.data]
+        return state ={
+            ...state,
+            projectInContext : action.payload.res.data,
+            projects : newProjects
+        }
+    }
     if(action.type==="FIND_USERS"){
         console.log(action)
         return state ={

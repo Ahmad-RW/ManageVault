@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import UploadFile from '../storage/UploadFile';
 
 
 class SideBar extends Component {
@@ -10,7 +11,7 @@ class SideBar extends Component {
                     <div class="col-md-1 px-1 bg-dark position-fixed" id="sticky-sidebar">
                         <div className="row">
                             <div className="col">
-                              
+                                <UploadFile />
                             </div>
                         </div>
                     </div>
