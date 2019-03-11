@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
-import FileUploader from 'react-firebase-file-uploader'
 import firebase from "firebase";
 import { connect } from 'react-redux'
 import { fileUpload, inputDocument } from '../../store/actionCreators/taskActions'
 import uuid from 'uuid'
 class UploadFile extends Component {
     constructor(props) {
-
+        console.log(props, "INPUT CONS")
         super(props)
         this.state = {
             isUploading: false,
@@ -24,7 +23,7 @@ class UploadFile extends Component {
             isUploading: true,
         })
     }
-    handleDocumentName = (e) => {
+    handleDocumentNameChange = (e) => {
         this.setState({
             [e.target.id]: e.target.value
         })
@@ -46,7 +45,7 @@ class UploadFile extends Component {
             )
         }
     }
-    handleUploadSuccess = (filename) => {
+    handleSuccess = (filename) => {
         console.log(this.state)
         console.log(filename, "FIIILLEEE NAME")
         this.setState({ progress: 100, isUploading: false });
@@ -92,9 +91,9 @@ class UploadFile extends Component {
             file: e.target.files[0],
             metaData: { fileName: e.target.files[0].name, size: e.target.files[0].size, type: e.target.files[0].type }
         })
-        this.handleUpload(e.target.files[0])
+        this.uploadFileToStorage(e.target.files[0])
     }
-    handleUpload = (file) => {
+    uploadFileToStorage = (file) => {
         const tmpID = uuid()
         const uploadJob = firebase.storage().ref(`${this.props.projectInContext._id}/${tmpID}`).put(file, this.state.metaData)
         uploadJob.on('state_changed',
@@ -107,46 +106,39 @@ class UploadFile extends Component {
 
             },
             (error) => {
-                this.handleUploadError(error)
+                this.handleError(error)
             },
             () => {
-                this.handleUploadSuccess(tmpID)
+                this.handleSuccess(tmpID)
             })
     }
-    handleUploadError = error => {
+    handleError = error => {
         console.error(error)
     }
     renderUploadCloud = () => {
-        if (this.props.dark) {
+        
             return (
-                <label for="file-upload" className="btn">
-                    <i class="material-icons md-light">cloud_upload</i>
-                </label>
-            )
-        }
-        else {
-            return (
-                <label for="file-upload" className="btn">
+                <label for={this.props.task._id} className="btn">
                     <i class="material-icons">cloud_upload</i>
                 </label>
             )
-        }
+        
     }
     renderTextField = () => {
         if (this.props.isInput) {
             return (
-                <input type="text" onChange={this.handleDocumentName} id="documentName" />
+                <input type="text" onChange={this.handleDocumentNameChange} id="documentName" />
             )
         }
     }
     render() {
+        console.log(this.props.task, "INPUT RENDER")
         return (
             <div>
                 {this.renderProgressBar()}
                 {this.renderUploadCloud()}
                 {this.renderTextField()}
-                {/* <input type="text" onChange={this.handleDocumentName} id="documentName" /> */}
-                <input type="file" id="file-upload" onChange={this.handleFileUpload} />
+                <input type="file" id={this.props.task._id} onChange={this.handleFileUpload} />
                 {this.renderSuccessMessage()}
             </div>
         )
