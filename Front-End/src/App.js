@@ -18,6 +18,7 @@ import GrantAuthorities from './components/initiating project/grantAuthority';
 import Board from './components/Task/Board';
 import userDefinedRoles from './components/initiating project/userDefinedRoles';
 import Storage from './components/storage/storage'
+
 class App extends Component {
   
 
@@ -32,9 +33,11 @@ class App extends Component {
   }
   
   render() {
-   
+ 
     return (
+     
       <BrowserRouter>
+      
         <div className="App">
           <NavBar />
           

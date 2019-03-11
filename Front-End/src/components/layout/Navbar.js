@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import fb from '../../FirebaseConfig/authConfig'
 import { withRouter } from 'react-router-dom'
+
 class NavBar extends Component {
     constructor(props) {
         super(props)
@@ -27,6 +28,7 @@ class NavBar extends Component {
     render() {//if he is signed in we render different Navbar
         const navbar = this.props.authenticated ? (
             <div>
+             
                 <nav className="navbar navbar-expand-lg navbar-light bg-light">
                     <Link className="navbar-brand" to="/"><img src={require('../../favicon.ico')} width="30" height="30" alt="logo" /></Link>
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
