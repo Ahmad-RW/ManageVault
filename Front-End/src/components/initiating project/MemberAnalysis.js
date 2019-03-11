@@ -17,7 +17,7 @@ class MemberAnalysis extends Component {
     calculateOverallTasks = () => {
         let overallTask = 0
         this.props.projectInContext.tasks.map(task => {
-            task.assignment.assignedMembers.map(member => {
+            task.assignedMembers.map(member => {
                 if(member.email === this.props.member.email){
                     overallTask++
                 }
@@ -28,7 +28,7 @@ class MemberAnalysis extends Component {
     claculateSubmittedTasks = () => {
         let submittedTask = 0
         this.props.projectInContext.tasks.map(task => {
-            task.assignment.assignedMembers.map(member => {
+            task.assignedMembers.map(member => {
                 if(member.email === this.props.member.email && task.status === "SUBMITTED"){
                     submittedTask++
                 }

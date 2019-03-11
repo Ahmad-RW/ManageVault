@@ -120,11 +120,13 @@ taskRoute.post('/editTask', function (req, res) {
 taskRoute.post('/assignTask', function (req, res) {
     assignedMember = {
         name: req.body.payload.member.name,
-        email: req.body.payload.member.email
+        email: req.body.payload.member.email,
+        assigner:req.body.payload.assigner,
+        startDate:req.body.payload.startDate,
     }
     console.log(assignedMember, "here")
-    newAssignedMembers = [...req.body.payload.task.assignment.assignedMembers, assignedMember]
-    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, { $set: { "tasks.$[elem].assignment.assignedMembers": newAssignedMembers } }
+    newAssignedMembers = [...req.body.payload.task.assignedMembers, assignedMember]
+    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, { $set: { "tasks.$[elem].assignedMembers": newAssignedMembers } }
         , { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
             console.log(record, "assign task")
             res.status(200).send(record)
@@ -157,9 +159,9 @@ taskRoute.post('/checkActivity', function (req, res) {
 })
 
 taskRoute.post('/unAssignTask', function (req, res) {
-    const assignedMembers = req.body.payload.task.assignment.assignedMembers
+    const assignedMembers = req.body.payload.task.assignedMembers
     const newAssignedMembers = assignedMembers.filter(member => { return member.email !== req.body.payload.member.email })
-    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, { $set: { "tasks.$[elem].assignment.assignedMembers": newAssignedMembers } }
+    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, { $set: { "tasks.$[elem].assignedMembers": newAssignedMembers } }
         , { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
             console.log(record, "Unassign task")
             res.status(200).send(record)

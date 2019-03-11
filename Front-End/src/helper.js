@@ -36,7 +36,7 @@ export const normalizeDate = (date) => {
 }
 export const isMemberAssigned = (task, member) => {
     var result = false
-    const assignedMembers = task.assignment.assignedMembers
+    const assignedMembers = task.assignedMembers
     assignedMembers.forEach(assignedMember => {
         if (member.email === assignedMember.email) {
             result = true
