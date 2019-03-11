@@ -161,6 +161,7 @@ class Board extends Component {
         this.props.unWatchTask(payload)
     }
     render() {
+        console.log(this.props.history.location)
         return (
             <div>
                 <ProjectSubBar />

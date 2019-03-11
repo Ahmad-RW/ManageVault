@@ -85,7 +85,7 @@ class ProjectSettings extends Component {
         })
         const project = this.props.location.state.project
         if(currentMember.teamLeader){
-            return <Link to={{ pathname: "/grantAuthority", state: { project} }}>  <button className="btn btn-primary">Manage Roles</button></Link>
+            return <Link to={{ pathname: "/home/projectSettings/grantAuthority", state: { project} }}>  <button className="btn btn-primary">Manage Roles</button></Link>
         }
         return;
     }
@@ -149,7 +149,7 @@ class ProjectSettings extends Component {
                         <i className="material-icons ">highlight_off</i>
                     </button>
                     InvitedMembers = <InviteMembers project={this.state.project} />
-                    defineRoles = <Link to={{ pathname: "/newRole", state: { project } }} className="btn btn-info" role="button"> Define New Role </Link>
+                    defineRoles = <Link to={{ pathname: "/home/projectSettings/newRole", state: { project } }} className="btn btn-info" role="button"> Define New Role </Link>
                 }
                 if (checkAuthority(this.state.project, "REMOVE_TEAM_MEMBERS", this.props.userInfo)) {
                     removeButton = <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleRemove(member) }}>
