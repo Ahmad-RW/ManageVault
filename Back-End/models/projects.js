@@ -96,7 +96,7 @@ const projectsSchema = new schema({
                 name: String,
                 email: String
             }],
-            startDate: Date,
+            startDate: Date,   //Should we change it to 'Number'?
             endDate: Date
         },
         watchedBy: [String],
@@ -114,15 +114,15 @@ const projectsSchema = new schema({
             name:String,
             fileName: String,
             file: String,
-            storageReference : String
+            storageReference : String,
+            outputOf : String//task ID
         }],
-        outputFiles: [String],
-        submittedDocuments :[{
+        outputDocuments: [{
             name:String,
             fileName: String,
-            file:String,
-            storageReference : String,
-        }]
+            file: String,
+            storageReference : String
+        }],
         //     attachments : [{name : String}]
         // }]
     }]

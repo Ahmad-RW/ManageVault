@@ -57,7 +57,7 @@ export const setDependancy = (payload) => {
     }
 }
 
-export const submitTask = (payload) => {
+export const submitTask = (payload) => {  //1
     return (dispatch) => {
         axios.post("http://localhost:3333/task/submitTask", { payload }).then((res) => {
             payload = { ...payload, res }
@@ -68,7 +68,7 @@ export const submitTask = (payload) => {
     }
 }
 
-export const confirmTaskSubmission = (payload) => {
+export const confirmTaskSubmission = (payload) => { //2
     return (dispatch) => {
         axios.post('http://localhost:3333/task/confirmTaskSubmission', { payload }).then((res) => {
             console.log(res)
@@ -92,8 +92,8 @@ export const editTask = (payload) => {
     }
 }
 
-export const assignTask = (payload) => {
-    return (dispatch) => {
+export const assignTask = (payload) => {  //3
+    return (dispatch) => { 
         axios.post('http://localhost:3333/task/assignTask', { payload }).then((res) => {
             console.log(res)
             payload = { ...payload, res }
@@ -192,8 +192,13 @@ export const fileUpload = payload => {
     return (dispatch) => {
         axios.post("http://localhost:3333/task/fileUpload", { payload }).then((res) => {
             console.log(res)
+            payload = {
+                ...payload,
+                res,
+                project : payload.projectInContext // dont mind this please move on with your life 
+            }
             payload = {...payload, res}
-            //dispatch({type:"MODIFY_TASK" ,payload})
+            dispatch({type:"MODIFY_TASK" ,payload})
         }).catch((exception) => [
             console.log(exception)
         ])
@@ -226,9 +231,10 @@ export const outputDocument = payload =>{
         })
     }
 }
-export const removeOutputFile = payload => {
+
+export const removeOutputDocument = payload => {
     return (dispatch) => {
-        axios.post("http://localhost:3333/task/removeOutputFile", { payload }).then((res) => {
+        axios.post("http://localhost:3333/task/removeOutputDocument", { payload }).then((res) => {
             console.log(res)
             payload = {...payload,res}
             dispatch({type:"MODIFY_TASK" ,payload})
@@ -241,6 +247,30 @@ export const removeOutputFile = payload => {
 export const removeDocument = payload =>{
     return(dispatch)=>{
         axios.post("http://localhost:3333/task/removeDocument", {payload}).then((res) => {
+            console.log(res)
+            payload = {...payload, res}
+            dispatch({type:"MODIFY_TASK", payload})
+        }).catch((exception)=>{
+            console.log(exception)
+        })
+    }
+}
+
+export const handleInputDocument = payload => {
+    return(dispatch)=>{
+        axios.post("http://localhost:3333/task/handleInputDocument", {payload}).then((res) => {
+            console.log(res)
+            payload = {...payload, res}
+            dispatch({type:"MODIFY_TASK", payload})
+        }).catch((exception)=>{
+            console.log(exception)
+        })
+    }
+}
+
+export const  removeInputDocument = payload => {
+    return(dispatch)=>{
+        axios.post("http://localhost:3333/task/removeInputDocument", {payload}).then((res) => {
             console.log(res)
             payload = {...payload, res}
             dispatch({type:"MODIFY_TASK", payload})

@@ -173,10 +173,13 @@ class ModifyTask extends Component {
     }
     handleAssign = (member) => {
         console.log(member, "member")
+        var startDate = new Date().getDate() //Retrieves the day (as a number) only.
+        console.log(startDate, "ASSIGNMENT DATE")
         const payload = {
             member: member,
             task: this.props.task,
-            project: this.props.projectInContext
+            project: this.props.projectInContext,
+            startDate: startDate   //Assignment date
         }
         this.props.assignTask(payload)
     }
@@ -373,7 +376,7 @@ const mapDispatchToProps = (dispatch) => {
         editTask: (payload) => { dispatch(editTask(payload)) },
         newActivity: (payload) => { dispatch(newActivity(payload)) },
         unAssignTask: (payload) => { dispatch(unAssignTask(payload)) },
-        removeDependency: payload => { dispatch(removeDependency(payload)) }
+        removeDependency: payload => { dispatch(removeDependency(payload)) }  //No (payload)?
     }
 }
 

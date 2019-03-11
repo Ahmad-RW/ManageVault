@@ -5,6 +5,8 @@ import InviteMembers from './inviteMembers'
 import { leaveProject, requestToDeleteProject, removeTeamMember, requestDeleteAction, assignNewTeamLeader } from '../../store/actionCreators/projectActions'
 import inviteMembers from './inviteMembers';
 import { checkAuthority } from '../../helper'
+import MemberAnalysis from './MemberAnalysis'
+
 class ProjectSettings extends Component {
     constructor(props) {
         super(props)
@@ -159,7 +161,12 @@ class ProjectSettings extends Component {
                 if (checkAuthority(this.state.project, "INVITE_USERS", this.props.userInfo)) {
                     InvitedMembers = <InviteMembers project={this.state.project} />
                 }
-                if (!member.teamLeader) return (<li class="list-group-item" key={member.email}>{member.name} {removeButton} {grantAuthority} </li>)
+                if (!member.teamLeader) return (
+                    <div>
+                        <li className="list-group-item" key={member.email}>{member.name} {removeButton} {grantAuthority} </li>  
+                        <MemberAnalysis member={member}/>
+                    </div>
+                )//jhvkbgfjbhvjgebv
             })
         ) : (<li class="list-group-item">project has no members</li>)
         return (
@@ -174,6 +181,7 @@ class ProjectSettings extends Component {
                         <div className="row">
                             <ul class="list-group">
                                 <li class="list-group-item list-group-item-primary">{teamLeader.name}</li>
+                                <MemberAnalysis member={teamLeader}/>
                             </ul>
                         </div>
                         <hr />
@@ -182,10 +190,7 @@ class ProjectSettings extends Component {
                         </div>
                         <div className="row">
                             <ul class="list-group">
-                                <div className="members">{members}</div>
-                                <div className="progress" id="progress">
-                                    <div className="progress-bar progress-bar-striped bg-success" role="progressbar" aria-valuenow='100' aria-valuemin='0' aria-valuemax="100" style={{width: 100+'%'}}></div>
-                                </div>
+                                {members} 
                             </ul>
 
                         </div>
