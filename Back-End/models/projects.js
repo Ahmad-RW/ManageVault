@@ -82,15 +82,13 @@ const projectsSchema = new schema({
         //             author : String
         //         }]
         //     },
-        assignment: {
+        assignedMembers: [{
             assigner: String,
-            assignedMembers: [{
-                name: String,
-                email: String
-            }],
-            startDate: Date,
+            name: String,
+            email: String,
+            startDate: Date,   //Should we change it to 'Number'?. No we want it date (D7M)
             endDate: Date
-        },
+        }],
         watchedBy: [String],
         comments: [{
             date: Date,

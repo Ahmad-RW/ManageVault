@@ -153,7 +153,7 @@ class ModifyTask extends Component {
         return members
     }
     searchForAssignement = (member) => {
-        const assigndeMembers = this.props.task.assignment.assignedMembers
+        const assigndeMembers = this.props.task.assignedMembers
         if (assigndeMembers.find(aMember => { return aMember.email === member.email })) { return false }
         else { return true }
     }
@@ -173,10 +173,14 @@ class ModifyTask extends Component {
     }
     handleAssign = (member) => {
         console.log(member, "member")
+        var startDate = new Date() //Retrieves the date now like this Mon Mar 11 2019 17:39:55 GMT+0300 (Arabian Standard Time)
+        console.log(startDate, "ASSIGNMENT DATE")
         const payload = {
             member: member,
             task: this.props.task,
-            project: this.props.projectInContext
+            project: this.props.projectInContext,
+            startDate: startDate,   //Assignment date
+            assigner: this.props.userInfo.email
         }
         this.props.assignTask(payload)
     }
@@ -198,7 +202,7 @@ class ModifyTask extends Component {
         this.props.unAssignTask(payload)
     }
     renderAssignedMembers = () => {
-        const assignedMembers = this.props.task.assignment.assignedMembers.map(member => {
+        const assignedMembers = this.props.task.assignedMembers.map(member => {
             return (
                 <div className="col">
                     <p className="inline" on>{member.name}</p>
@@ -373,7 +377,7 @@ const mapDispatchToProps = (dispatch) => {
         editTask: (payload) => { dispatch(editTask(payload)) },
         newActivity: (payload) => { dispatch(newActivity(payload)) },
         unAssignTask: (payload) => { dispatch(unAssignTask(payload)) },
-        removeDependency: payload => { dispatch(removeDependency(payload)) }
+        removeDependency: payload => { dispatch(removeDependency(payload)) }  //No (payload)?
     }
 }
 

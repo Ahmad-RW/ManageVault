@@ -57,7 +57,7 @@ export const setDependancy = (payload) => {
     }
 }
 
-export const submitTask = (payload) => {
+export const submitTask = (payload) => {  //1
     return (dispatch) => {
         axios.post("http://localhost:3333/task/submitTask", { payload }).then((res) => {
             payload = { ...payload, res }
@@ -68,7 +68,7 @@ export const submitTask = (payload) => {
     }
 }
 
-export const confirmTaskSubmission = (payload) => {
+export const confirmTaskSubmission = (payload) => { //2
     return (dispatch) => {
         axios.post('http://localhost:3333/task/confirmTaskSubmission', { payload }).then((res) => {
             console.log(res)
@@ -92,8 +92,8 @@ export const editTask = (payload) => {
     }
 }
 
-export const assignTask = (payload) => {
-    return (dispatch) => {
+export const assignTask = (payload) => {  //3
+    return (dispatch) => { 
         axios.post('http://localhost:3333/task/assignTask', { payload }).then((res) => {
             console.log(res)
             payload = { ...payload, res }
