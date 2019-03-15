@@ -135,3 +135,19 @@ html {
   display: flex;
   align-items: center;
 }
+
+.storage-card {
+  display: block;
+  width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.download-cloud-storage{
+  text-decoration: none !important
+}
+
+.storage-upload-text-field {
+  overflow: auto
+}
