@@ -60,21 +60,21 @@ class Board extends Component {
     }
     handleTaskSubmission = (task) => {
         console.log(task)
-        var endDate = new Date()
-        console.log(endDate, "SUBMISSON DATE")
-        const payload = {
+        let payload = {
             task,
             project: this.props.projectInContext,
-            endDate: endDate
+            userInfo: this.props.userInfo
         }
         if(isUserTeamLeader(this.props.userInfo, this.props.projectInContext)){
+            payload = {...payload, endDate: new Date()}
             this.props.confirmTaskSubmission(payload)
             return;
         }
         this.props.submitTask(payload)
     }
     confirmTaskSubmission = (task) => {
-        var endDate = new Date().getDate()
+        var endDate = new Date()
+        console.log(endDate, "EEEENNND")
         const payload = {
             task,
             project: this.props.projectInContext,

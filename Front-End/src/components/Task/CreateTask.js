@@ -44,7 +44,6 @@ class CreateTask extends Component {
     }
 
     render() {
-        
         return (
             <div>
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createTask">
