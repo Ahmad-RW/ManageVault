@@ -224,9 +224,14 @@ class TaskDocumentModal extends Component {
                                     </div>
                                 </div>
                                 <hr />
+                                <div className="row">
+                                    <div className="col-12">
+                                        <h5>Upload Input Document</h5>
+                                    </div>
+                                </div>
                                 {this.state.errorMSG}
                                 <input className="form-control" onChange={this.handleChange} placeholder={this.props.task.outputDocuments} id="outputDocuments" type="text" />
-                                <button className="btn btn-primary" onClick={this.handleSubmitOutput}> submit</button>
+                                <button className="btn btn-primary" onClick={this.handleSubmitOutput}>Submit</button>
                                 <div>
                                     <p>output Documents of this task:</p>
                                     {this.renderOutput()}

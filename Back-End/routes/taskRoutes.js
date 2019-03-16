@@ -440,6 +440,16 @@ taskRoute.post('/removeInputDocument', function (req, res) {
             console.log(err)
         })
 })
+
+taskRoute.post('/declineTaskSubmission', function(req, res){
+    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, { $set: { "tasks.$[elem].status": "TO_DO" } },
+    { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
+        console.log(record)
+        res.status(200).send(record)
+    }).catch(function (exception) {
+        res.status(500).send(exception)
+    })
+})
 //helper function
 function normalize(text) {
     text = text.replace(/\s/g, '');

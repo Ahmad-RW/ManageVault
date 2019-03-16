@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import CreateTask from './CreateTask'
 import ProjectSubBar from '../layout/projectSubBar';
 import { setProject } from '../../store/actionCreators/projectActions'
-import { deleteTask, submitTask, confirmTaskSubmission, watchTask, unWatchTask } from '../../store/actionCreators/taskActions'
+import { deleteTask, submitTask, confirmTaskSubmission, watchTask, unWatchTask, declineTaskSubmission } from '../../store/actionCreators/taskActions'
 import { checkAuthority, isMemberAssigned, isUserTeamLeader } from '../../helper'
 import TaskDetails from './TaskDetails';
 import ModifyTask from './ModifyTask'
@@ -28,28 +28,33 @@ class Board extends Component {
         }
     }
     renderCreateTaskButton = () => {
-        if(checkAuthority(this.props.projectInContext,"CREATE_TASK" ,this.props.userInfo)){
-            return ( 
+        if (checkAuthority(this.props.projectInContext, "CREATE_TASK", this.props.userInfo)) {
+            return (
                 <CreateTask project={this.props.projectInContext} />
             )
         }
     }
     renderConfirmSubmissionButton = (task) => {
+        console.log("hey")
         if (checkAuthority(this.props.projectInContext, "CONFIRM_TASK_SUBMISSION", this.props.userInfo) && task.status === "PENDING_FOR_CONFIRMATION") {
             console.log(this.props.userInfo, "USER_INFO")
             return (
-                <td>
-                    <button className="btn btn-success btn-sm" onClick={() => { this.confirmTaskSubmission(task) }}>Confirm Submission</button>
-                </td>
-                // <td>
-                //     <button className="btn btn-danger btn-sm"></button>
-                // </td>
+                <div>
+                    <td >
+                        <button className="btn btn-success btn-sm" onClick={() => { this.confirmTaskSubmission(task) }}>Confirm Submission</button>
+                    </td>
+
+                    <td >
+                        <button className="btn btn-success btn-sm" onClick={() => { this.declineTaskSubmission(task) }}>Decline Submission</button>
+                    </td>
+                </div>
             )
         }
     }
-  
+
+ 
     renderSubmissionButton = (task) => {
-        if(task.status === "PENDING_FOR_CONFIRMATION"){
+        if (task.status === "PENDING_FOR_CONFIRMATION") {
             return
         }
         else if (task.status !== "SUBMITTED" && isMemberAssigned(task, this.props.userInfo)) {
@@ -67,7 +72,7 @@ class Board extends Component {
             project: this.props.projectInContext,
             endDate: endDate
         }
-        if(isUserTeamLeader(this.props.userInfo, this.props.projectInContext)){
+        if (isUserTeamLeader(this.props.userInfo, this.props.projectInContext)) {
             this.props.confirmTaskSubmission(payload)
             return;
         }
@@ -81,6 +86,13 @@ class Board extends Component {
             endDate: endDate
         }
         this.props.confirmTaskSubmission(payload)
+    }
+    declineTaskSubmission = task => {
+        const payload = {
+            task,
+            project: this.props.projectInContext,
+        }
+        this.props.declineTaskSubmission(payload)
     }
     renderTasks = () => {
         let number = 0
@@ -105,10 +117,10 @@ class Board extends Component {
                             <TaskDetails task={task} number={number} />
                         </td>
                         <td>
-                            <CommentsModal task = {task} />
+                            <CommentsModal task={task} />
                         </td>
                         <td>
-                            <TaskDocumentModal task = {task} />
+                            <TaskDocumentModal task={task} />
                         </td>
                         <td>
                             {this.renderDeleteTask(task)}
@@ -120,9 +132,9 @@ class Board extends Component {
                 )
             })
         ) : (
-            <div>
-                <h4>There are no tasks  yet</h4>
-            </div>
+                <div>
+                    <h4>There are no tasks  yet</h4>
+                </div>
             )
         return taskList
 
@@ -130,33 +142,33 @@ class Board extends Component {
     renderWatchTask = (task) => {
         let found
         task.watchedBy.forEach(email => {
-            if(this.props.userInfo.email === email){found = true}
-            else {found = false}
+            if (this.props.userInfo.email === email) { found = true }
+            else { found = false }
         })
-        if(!found){
+        if (!found) {
             return (
-                <button className="close" onClick={() => {this.handleWatchTask(task)}}> <i className="material-icons">visibility</i> </button>
+                <button className="close" onClick={() => { this.handleWatchTask(task) }}> <i className="material-icons">visibility</i> </button>
             )
         } else {
             return (
-                <button className="close" onClick={() => {this.handleUnWatchTask(task)}}> <i class="material-icons">visibility_off</i> </button>
+                <button className="close" onClick={() => { this.handleUnWatchTask(task) }}> <i class="material-icons">visibility_off</i> </button>
             )
         }
-        
+
     }
     handleWatchTask = (task) => {
         const payload = {
-            task : task,
-            project : this.props.projectInContext,
-            member : this.props.userInfo
+            task: task,
+            project: this.props.projectInContext,
+            member: this.props.userInfo
         }
         this.props.watchTask(payload)
     }
     handleUnWatchTask = (task) => {
         const payload = {
-            task : task,
-            project : this.props.projectInContext,
-            member : this.props.userInfo
+            task: task,
+            project: this.props.projectInContext,
+            member: this.props.userInfo
         }
         this.props.unWatchTask(payload)
     }
@@ -180,7 +192,7 @@ class Board extends Component {
                 {this.renderCreateTaskButton()}
                 <div id="footer"></div>
             </div>
-            
+
         )
     }
 }
@@ -198,7 +210,8 @@ const mapDispatchToProps = (dispatch) => {
         submitTask: (payload) => dispatch(submitTask(payload)),
         confirmTaskSubmission: (payload) => dispatch(confirmTaskSubmission(payload)),
         watchTask: (payload) => dispatch(watchTask(payload)),
-        unWatchTask: (payload) => dispatch(unWatchTask(payload))
+        unWatchTask: (payload) => dispatch(unWatchTask(payload)),
+        declineTaskSubmission: payload => dispatch(declineTaskSubmission(payload))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Board)

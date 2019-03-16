@@ -172,7 +172,7 @@ class UploadFile extends Component {
                 {this.renderUploadCloud()}
                 {this.renderTextField()}
                 <input type="file" id={this.props.task._id} onChange={this.setFile} />
-                <button onClick={this.handleFileUpload}>Submit</button>
+                <button className="btn btn-primary" onClick={this.handleFileUpload}>Submit</button>
                 {this.renderSuccessMessage()}
             </div>
         )
