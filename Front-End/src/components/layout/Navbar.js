@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import fb from '../../FirebaseConfig/authConfig'
 import { withRouter } from 'react-router-dom'
+import BC from './BC';
+
 class NavBar extends Component {
     constructor(props) {
         super(props)
@@ -27,6 +29,7 @@ class NavBar extends Component {
     render() {//if he is signed in we render different Navbar
         const navbar = this.props.authenticated ? (
             <div>
+             
                 <nav className="navbar navbar-expand-lg navbar-light bg-light">
                     <Link className="navbar-brand" to="/"><img src={require('../../favicon.ico')} width="30" height="30" alt="logo" /></Link>
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,6 +40,7 @@ class NavBar extends Component {
                             <Link className="nav-item nav-link" to='/home'>Home</Link>
                             <Link className="nav-item nav-link" onClick={this.handleSignOut} to='#'>Sign Out</Link>
                             <Link className="nav-item nav-link" onClick={this.props.history.goBack}to='#'><i class="material-icons">arrow_back</i></Link>
+                            <BC />
                         </div>
                     </div>
                     <div className="mx-auto welcome-badge"  >

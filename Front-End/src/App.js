@@ -18,6 +18,7 @@ import GrantAuthorities from './components/initiating project/grantAuthority';
 import Board from './components/Task/Board';
 import userDefinedRoles from './components/initiating project/userDefinedRoles';
 import Storage from './components/storage/storage'
+
 class App extends Component {
   
 
@@ -32,9 +33,11 @@ class App extends Component {
   }
   
   render() {
-   
+ 
     return (
+     
       <BrowserRouter>
+      
         <div className="App">
           <NavBar />
           
@@ -42,15 +45,15 @@ class App extends Component {
             <Route exact path='/' component={WelcomeScreen} />
             <Route path='/login' component={Login} />
             <Route path='/register' component={Register} />
-            <Route path='/home' component={RequireAuth(Home)} />
-            <Route path='/newproject' component={RequireAuth(CreateProject)} />
-            <Route path='/projectSettings' component={RequireAuth(ProjectSettings)} />
-            <Route path='/projectWorkSpace' component={RequireAuth(WorkSpace)} />
+            <Route exact path='/home' component={RequireAuth(Home)} />
             <Route path='/notification' component={RequireAuth(Notification)} />
-            <Route path='/grantAuthority' component={RequireAuth(GrantAuthorities)} />
-            <Route path='/board' component={RequireAuth(Board)} />
-            <Route path='/newRole' component={RequireAuth(userDefinedRoles)} />
-            <Route path='/storage' component={RequireAuth(Storage)} />
+            <Route path='/home/newproject' component={RequireAuth(CreateProject)} />
+            <Route exact path='/home/projectSettings' component={RequireAuth(ProjectSettings)} />
+            <Route path='/home/projectSettings/grantAuthority' component={RequireAuth(GrantAuthorities)} />
+            <Route path='/home/projectSettings/newRole' component={RequireAuth(userDefinedRoles)} />
+            <Route exact path='/home/projectWorkSpace' component={RequireAuth(WorkSpace)} />
+            <Route path='/home/projectWorkSpace/board' component={RequireAuth(Board)} />
+            <Route path='/home/projectWorkSpace/storage' component={RequireAuth(Storage)} />
 
           </Switch>
           

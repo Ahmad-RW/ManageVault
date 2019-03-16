@@ -39,7 +39,7 @@ class ProjectCard extends Component {
                         <div>
                             <ul className="nav nav-pills card-header-pills">
                                 <li className="nav-item">
-                                    <Link onClick={() => this.setProjectCookie(project, project._id)} to={{ pathname: "/projectSettings", state: { project } }} >Manage Project</Link>
+                                    <Link to={{ pathname: "/home/projectSettings", state: { project } }}>Manage Project</Link>
                                 </li>
                                 <li className="nav-item ml-2 ">
                                     <span >{project.status}</span>
@@ -53,7 +53,7 @@ class ProjectCard extends Component {
                             <h4 className="card-title">{project.title}</h4>
                             <p className="card-text"> velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                  
-                            <Link onClick= {() => this.setProjectCookie(project, project._id)} to={{ pathname: "/projectWorkSpace", state: { project } }} className="card-link">Open Project</Link>
+                            <Link onClick= {() => this.setProjectCookie(project, project._id)} to={{ pathname: "/home/projectWorkSpace", state: { project } }} className="card-link">Open Project</Link>
 
                         </div>
                     </div>

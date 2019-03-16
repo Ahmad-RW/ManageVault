@@ -47,7 +47,7 @@ class UploadOutput extends Component {
             )
         }
     }
-    handleUploadSuccess = (filename) => {
+    handleSuccess = (filename) => {
 
         console.log(this.state)
         console.log(filename, "FIIILLEEE NAME")
@@ -55,7 +55,7 @@ class UploadOutput extends Component {
         var reference = firebase.storage().ref(this.props.projectInContext._id).child(filename)
         reference.getMetadata().then(metaData => {
             reference.getDownloadURL().then(url => {
-                
+
                 metaData = {
                     ...this.state.metaData,//name , type , size 
                     updated: metaData.updated,// these are from firebase. supplemented by our meta data to form name, type, size , last modified and type/content type
@@ -95,9 +95,9 @@ class UploadOutput extends Component {
             file: e.target.files[0],
             metaData: { fileName: e.target.files[0].name, size: e.target.files[0].size, type: e.target.files[0].type }
         })
-        this.handleUpload(e.target.files[0])
+        this.uploadFileToStorage(e.target.files[0])
     }
-    handleUpload = (file) => {
+    uploadFileToStorage = (file) => {
         const tmpID = uuid()
         const uploadJob = firebase.storage().ref(`${this.props.projectInContext._id}/${tmpID}`).put(file, this.state.metaData)
         uploadJob.on('state_changed',
@@ -113,36 +113,28 @@ class UploadOutput extends Component {
                 this.handleUploadError(error)
             },
             () => {
-                this.handleUploadSuccess(tmpID)
+                this.handleSuccess(tmpID)
             })
     }
     handleUploadError = error => {
         console.error(error)
     }
     renderUploadCloud = () => {
-        if (this.props.dark) {
-            return (
-                <label for="output-upload" className="btn">
-                    <i class="material-icons md-light">cloud_upload</i>
-                </label>
-            )
-        }
-        else {
-            return (
-                <label for="output-upload" className="btn">
-                    <i class="material-icons">cloud_upload</i>
-                </label>
-            )
-        }
+        return (
+            <label for={this.props.task._id.concat("-output")} className="btn">
+                <i class="material-icons">cloud_upload</i>
+            </label>
+        )
     }
     render() {
+        console.log()
         return (
             <div>
                 {this.renderProgressBar()}
                 {this.renderUploadCloud()}
-               
+
                 {/* <input type="text" onChange={this.handleDocumentName} id="documentName" /> */}
-                <input type="file" id="output-upload" onChange={this.handleOutputUpload} />
+                <input type="file" id={this.props.task._id.concat("-output")} onChange={this.handleOutputUpload} />
                 {this.renderSuccessMessage()}
             </div>
         )

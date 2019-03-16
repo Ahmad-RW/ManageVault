@@ -21,7 +21,7 @@ class Board extends Component {
     renderDeleteTask = (task) => {
         if (checkAuthority(this.props.projectInContext, "DELETE_TASK", this.props.userInfo)) {
             return (
-                <button className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleDelete(task._id, this.props.projectInContext._id) }} key={task._id}>
+                <button className="close deleteTask" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleDelete(task._id, this.props.projectInContext._id) }} key={task._id}>
                     <i className="material-icons">highlight_off</i>
                 </button>
             )
@@ -37,10 +37,9 @@ class Board extends Component {
     renderConfirmSubmissionButton = (task) => {
         if (checkAuthority(this.props.projectInContext, "CONFIRM_TASK_SUBMISSION", this.props.userInfo) && task.status === "PENDING_FOR_CONFIRMATION") {
             console.log(this.props.userInfo, "USER_INFO")
-            return (
-                <td>
-                    <button className="btn btn-success btn-sm" onClick={() => { this.confirmTaskSubmission(task) }}>Confirm Submission</button>
-                </td>
+            return (<div>
+                    <button className="btn btn-info btn-sm" onClick={() => { this.confirmTaskSubmission(task) }}>Confirm Submission</button>
+                    </div>
                 // <td>
                 //     <button className="btn btn-danger btn-sm"></button>
                 // </td>
@@ -53,8 +52,9 @@ class Board extends Component {
             return
         }
         else if (task.status !== "SUBMITTED" && isMemberAssigned(task, this.props.userInfo)) {
-            return (
-                <button className="btn btn-success btn-sm" onClick={() => { this.handleTaskSubmission(task) }}>Submit Task</button>
+            return (<div>
+                <button className="btn btn-info btn-sm" onClick={() => { this.handleTaskSubmission(task) }}>Submit Task</button>
+                </div>
             )
         }
     }
@@ -82,25 +82,37 @@ class Board extends Component {
         }
         this.props.confirmTaskSubmission(payload)
     }
+    setTaskLength = () =>{
+        var tasks = this.props.projectInContext.tasks
+        this.setState({
+            taskLength:tasks.length
+        })
+    }
     renderTasks = () => {
         let number = 0
         let taskList
         var tasks = this.props.projectInContext.tasks
         taskList = tasks.length ? (
             tasks.map(task => {
+                let rowColor = ""
+                let taskStatus = ""
+                console.log(task.status,"STATUS")
+
+                if(task.status==="SUBMITTED"){rowColor="table-success";taskStatus = "Done"}
+                else if(task.status==="PENDING_FOR_CONFIRMATION"){rowColor="table-warning";taskStatus = "Waiting for Confirmation"}
+                else {rowColor="";taskStatus="To Do"}
                 return (
-                    <tr>
+                    <tr className={rowColor}>
                         <th scope="row">{++number}</th>
                         <td>
                             {task.name}
                         </td>
                         <td>
-                            {task.status}
+                            <div>{taskStatus}</div>
                         </td>
                         <td>
-                            {this.renderSubmissionButton(task)}
+                            {this.renderSubmissionButton(task)}{this.renderConfirmSubmissionButton(task)} 
                         </td>
-                        {this.renderConfirmSubmissionButton(task)}
                         <td>
                             <TaskDetails task={task} number={number} />
                         </td>
@@ -110,22 +122,26 @@ class Board extends Component {
                         <td>
                             <TaskDocumentModal task = {task} />
                         </td>
-                        <td>
-                            {this.renderDeleteTask(task)}
-                            <ModifyTask tasks={tasks} task={task} />
-                            {this.renderWatchTask(task)}
-                        </td>
+                        <td><ModifyTask tasks={tasks} task={task} /></td>
+                        <td>{this.renderWatchTask(task)}</td>
+                        <td>{this.renderDeleteTask(task)}</td>
 
                     </tr>
                 )
             })
         ) : (
             <div>
-                <h4>There are no tasks  yet</h4>
+                {/* <h4>There are no tasks  yet</h4> */}
+
             </div>
             )
         return taskList
 
+    }
+    renderEmptyState = () => {
+            return (
+                <img className="noTasks" src={require('../../No-Tasks.png')} width="350" height="350"/>
+            )
     }
     renderWatchTask = (task) => {
         let found
@@ -135,7 +151,7 @@ class Board extends Component {
         })
         if(!found){
             return (
-                <button className="close" onClick={() => {this.handleWatchTask(task)}}> <i className="material-icons">visibility</i> </button>
+                <button className="close watchTask" onClick={() => {this.handleWatchTask(task)}}> <i className="material-icons">visibility</i> </button>
             )
         } else {
             return (
@@ -161,10 +177,11 @@ class Board extends Component {
         this.props.unWatchTask(payload)
     }
     render() {
-        return (
-            <div>
+        let tasks = this.props.projectInContext.tasks.length ? (
+             <div>
                 <ProjectSubBar />
-                <table class="table table-striped table-hover">
+                <div className="table-responsive">
+                <table class="table table-hover table-sm ">
                     <thead>
                         <tr>
                             <th scope="col">Task Number</th>
@@ -172,14 +189,24 @@ class Board extends Component {
                             <th scope="col">Status</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="">
                         {this.renderTasks()}
                     </tbody>
                 </table>
+                </div>
                 {this.renderCreateTaskButton()}
                 <div id="footer"></div>
             </div>
             
+        ) : (
+            <div>
+            <ProjectSubBar />
+            {this.renderEmptyState()}
+            {this.renderCreateTaskButton()}
+            </div>
+        )
+        return (
+            tasks
         )
     }
 }

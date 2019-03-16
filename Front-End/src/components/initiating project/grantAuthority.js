@@ -166,7 +166,7 @@ class GrantAuthorities extends Component {
                 </div>
                 <div className="row">
                     <div className="col-lg-4">
-                        <Link to={{ pathname: "/newRole", state: { project } }}><button type="submit" className="btn btn-info" >Define New Role</button></Link>
+                        <Link to={{ pathname: "/home/projectSettings/newRole", state: { project } }}><button type="submit" className="btn btn-info" >Define New Role</button></Link>
                     </div>
                 </div>
                 <div className="row">

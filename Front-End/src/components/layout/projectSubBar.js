@@ -38,8 +38,8 @@ class ProjectSubBar extends Component{
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div className="navbar-nav">
-                        <Link className="nav-item nav-link" to={{ pathname: "/board", state: { project} }}>Board</Link>
-                        <Link className="nav-item nav-link" to='/storage'>Storage</Link>
+                        <Link className="nav-item nav-link" to={{ pathname: "/home/projectWorkSpace/board", state: { project} }}>Board</Link>
+                        <Link className="nav-item nav-link" to='/home/projectWorkSpace/storage'>Storage</Link>
                     </div>
                 </div>
                 {this.renderProgressBar()}

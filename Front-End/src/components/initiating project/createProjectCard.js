@@ -5,7 +5,7 @@ const createProjectCard = () =>{
         <div className="card m-auto">
             <div className="card-body">
             <h5 className="card-title">Create a Project</h5>
-            <Link to="/newproject">  <span className="card-title material-icons md-48"> add </span></Link>
+            <Link to="/home/newproject">  <span className="card-title material-icons md-48"> add </span></Link>
             <br />
             </div>
             

@@ -87,6 +87,82 @@ input[type="file"] {
 html {
   scroll-behavior: smooth;
 }
-.list-group-item .progress {
+.list-group-item .progress .gg{
   display: inline;
+}
+/* .TRcolor {
+  background-color: rgba(45, 189, 105, 0.911);
+  
+}
+.TRcolor:hover {
+  background-color: red
+} */
+.editTask .deleteTask .watchTask{
+  position: -ms-page;
+}
+.noTasks{
+    margin-left: auto;
+  margin-right: auto;
+}
+
+.app,
+.breadcrumbs,
+.bc,
+.content {
+  display: flex;
+}
+
+.app {
+  flex-direction: column;
+}
+
+.bc {
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.bc svg {
+  margin-right: 5px;
+  transition: opacity 0.2s linear;
+}
+
+.bc:last-child > svg {
+  opacity: 0;
+}
+
+.bc span {
+  display: flex;
+  align-items: center;
+}
+
+.menu {
+  background: #000;
+  color: #fff;
+  padding: 20px;
+}
+
+.menu ul {
+  padding-left: 10px;
+}
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+}
+
+.storage-card {
+  display: block;
+  width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.download-cloud-storage{
+  text-decoration: none !important
+}
+
+.storage-upload-text-field {
+  overflow: auto
 }

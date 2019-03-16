@@ -1,40 +1,81 @@
 import React, { Component } from 'react'
-import {connect} from 'react-redux'
-
+import { connect } from 'react-redux'
+var assets = require.context("../../assets", true)
 class DocumentCard extends Component {
     state = {
-        projectDocuments: this.props.projectInContext.documents
+        projectDocuments: this.props.projectInContext.documents//dont delete. ignore
     }
-    renderDocumentsCard = ()=>{
+    renderLogo = (contentType) => {
+        let imgSrc;
+        try {
+            let type = contentType.substring(contentType.indexOf("/") + 1);
+            console.log(type)
+            imgSrc = assets("./"+type+".png")
+        } catch (error) {
+            imgSrc = assets("./file.png")
+        }
         return(
-            this.props.projectInContext.documents.map(doc=>{
-                return (
-                    
-                    <div class="card border-secondary mb-3 col-sm-3" key={doc._id} >
-                        <div class="card-header bg-transparent border-primary">{doc.name}</div>
-                        <div class="card-body ">
-                            <h5 class="card-title">...</h5>
-                            <p class="card-text">{doc.contentType}</p>
+            <img src={imgSrc} />
+        )
+
+
+        // if (contentType.includes("image")) {
+        //     return (
+        //         <img src={require("../../assets/image.png")} />
+        //     )
+        // }
+        // if (contentType.includes("compressed")) {
+        //     return (
+        //         <img src={require("../../assets/compressed.png")} />
+        //     )
+        // }
+        // if (contentType.includes("pdf")) {
+        //     return (
+        //         <img src={require("../../assets/pdf.png")} />
+        //     )
+        // }
+        // else{
+        //     return (
+        //         <img src={require("../../assets/file.png")} />
+        //     )
+        // }
+
+    }
+    renderDocumentsCard = () => {
+        return (
+            this.props.projectInContext.documents.map(doc => {
+
+                if (doc.file !== "") {
+                    return (
+                        <div class="card border-secondary mb-3 col-sm-3" key={doc._id} >
+                            <div class="card-header bg-transparent border-primary"><span className="storage-card">{doc.name}</span></div>
+                            <div class="card-body ">
+                                <h5 class="card-title">
+                                    {this.renderLogo(doc.contentType)}
+                                </h5>
+                                <p class="card-text">
+                                    <label className="btn" href={doc.file} target="_blank"><i class="material-icons">cloud_download</i></label>
+                                </p>
+                            </div>
+                            <div class="card-footer bg-transparent border-primary">Footer</div>
                         </div>
-                        <div class="card-footer bg-transparent border-primary">Footer</div>
-                    </div>
-                
-                )
+                    )
+                }
             })
         )
     }
     render() {
         return (
             <div className="row">
-           { this.renderDocumentsCard()}
+                {this.renderDocumentsCard()}
             </div>
         )
     }
 
 }
-const mapStateToProps = (state) =>{
-    return{
-        projectInContext : state.projectInContext
+const mapStateToProps = (state) => {
+    return {
+        projectInContext: state.projectInContext
     }
 }
 export default connect(mapStateToProps)(DocumentCard)
