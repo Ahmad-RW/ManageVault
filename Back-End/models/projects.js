@@ -59,7 +59,8 @@ const projectsSchema = new schema({
         },
         field: String,
         description: String,
-        startDate: Date, //we calculate the deadline given startdate and duration
+        startDate: Date,
+        endDate: Date,
         duration: Number, // we need to find integers in react OR handle entering floats as days. 
         submissionCriteria : String,
         dependencies: {
@@ -86,8 +87,7 @@ const projectsSchema = new schema({
             assigner: String,
             name: String,
             email: String,
-            startDate: Date,   //Should we change it to 'Number'?. No we want it date (D7M)
-            endDate: Date
+            startDate: Date  //Should we change it to 'Number'?. No we want it date (D7M)
         }],
         watchedBy: [String],
         comments: [{

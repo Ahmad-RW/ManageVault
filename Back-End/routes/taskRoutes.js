@@ -80,7 +80,6 @@ taskRoute.post('/removeDependancy', function (req, res) {
 
 
 taskRoute.post('/submitTask', function (req, res) {
-    console.log(req.body)
     mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, { $set: { "tasks.$[elem].status": "PENDING_FOR_CONFIRMATION" } },
         { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
             console.log(record)
@@ -91,7 +90,8 @@ taskRoute.post('/submitTask', function (req, res) {
 })
 
 taskRoute.post('/confirmTaskSubmission', function (req, res) {
-    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, { $set: { "tasks.$[elem].status": "SUBMITTED" } },
+    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, { $set: { "tasks.$[elem].status": "SUBMITTED", 
+    "tasks.$[elem].endDate": req.body.payload.endDate} },
         { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
             console.log(record)
             res.status(200).send(record)

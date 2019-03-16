@@ -87,9 +87,24 @@ input[type="file"] {
 html {
   scroll-behavior: smooth;
 }
-.list-group-item .progress {
+.list-group-item .progress .gg{
   display: inline;
 }
+/* .TRcolor {
+  background-color: rgba(45, 189, 105, 0.911);
+  
+}
+.TRcolor:hover {
+  background-color: red
+} */
+.editTask .deleteTask .watchTask{
+  position: -ms-page;
+}
+.noTasks{
+    margin-left: auto;
+  margin-right: auto;
+}
+
 .app,
 .breadcrumbs,
 .bc,

@@ -1,6 +1,5 @@
 import axios from 'axios'
 
-
 export const createTask = (project, task) => {
     return (dispatch) => {
         console.log(project, "this is project")
@@ -97,6 +96,7 @@ export const assignTask = (payload) => {  //3
         axios.post('http://localhost:3333/task/assignTask', { payload }).then((res) => {
             console.log(res)
             payload = { ...payload, res }
+            console.log(payload, "CHECKING!")  
             dispatch({ type: "MODIFY_TASK", payload })
         }).catch((exception) => {
             console.log(exception)

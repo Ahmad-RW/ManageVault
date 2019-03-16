@@ -56,3 +56,9 @@ export const isUserTeamLeader = (userInfo, project) => {
     })
     return result
 }
+
+export const getAbsoluteValue = (number) => {  
+        if(number < 0)
+            return number * -1;
+        return number;
+}

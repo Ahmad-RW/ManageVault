@@ -173,7 +173,7 @@ class ModifyTask extends Component {
     }
     handleAssign = (member) => {
         console.log(member, "member")
-        var startDate = new Date() //Retrieves the date now like this Mon Mar 11 2019 17:39:55 GMT+0300 (Arabian Standard Time)
+        var startDate = new Date() //Retrieves the current date like this Mon Mar 11 2019 17:39:55 GMT+0300 (Arabian Standard Time)
         console.log(startDate, "ASSIGNMENT DATE")
         const payload = {
             member: member,
@@ -285,12 +285,12 @@ class ModifyTask extends Component {
     render() {
         let text = makeid()
         return (
-            <div>
+            <div className="editTask">
                 <button className="close" aria-label="Close" data-toggle="modal" data-target={"#" + text}>
                     <i class="material-icons">edit</i>
                 </button>
                 <div class="modal fade" id={text} tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
+                    <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">{this.props.task.name}</h5>

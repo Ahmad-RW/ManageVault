@@ -71,8 +71,7 @@ class ProjectCard extends Component {
 const mapStateToProps = (state) => {
     return {
         projects: state.projects,
-        userInfo: state.userInfo,
-      
+        userInfo: state.userInfo 
     }
 }
 
