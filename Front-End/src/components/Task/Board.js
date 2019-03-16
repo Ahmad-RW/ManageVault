@@ -52,15 +52,33 @@ class Board extends Component {
         }
     }
 
- 
+
+    arePredecessorsSubmitted = task => {
+        var result = true
+        this.props.projectInContext.tasks.forEach(element => {
+            task.dependencies.predecessor.forEach(pred => {
+                if (element._id === pred.taskId && element.status !=="SUBMITTED") {
+                    result = false
+                }
+            })
+        })
+        return result
+    }
     renderSubmissionButton = (task) => {
         if (task.status === "PENDING_FOR_CONFIRMATION") {
             return
         }
         else if (task.status !== "SUBMITTED" && isMemberAssigned(task, this.props.userInfo)) {
+            if (!this.arePredecessorsSubmitted(task)) {
+                return (
+                    <div>
+                        <button title="Not all predecessor tasks are submitted" className="btn btn-info btn-sm" onClick={() => { this.handleTaskSubmission(task) }} disabled>Submit Task</button>
+                    </div>
+                )
+            }
             return (<div>
                 <button className="btn btn-info btn-sm" onClick={() => { this.handleTaskSubmission(task) }}>Submit Task</button>
-                </div>
+            </div>
             )
         }
     }
@@ -71,8 +89,8 @@ class Board extends Component {
             project: this.props.projectInContext,
             userInfo: this.props.userInfo
         }
-        if(isUserTeamLeader(this.props.userInfo, this.props.projectInContext)){
-            payload = {...payload, endDate: new Date()}
+        if (isUserTeamLeader(this.props.userInfo, this.props.projectInContext)) {
+            payload = { ...payload, endDate: new Date() }
             this.props.confirmTaskSubmission(payload)
             return;
         }
@@ -95,10 +113,10 @@ class Board extends Component {
         }
         this.props.declineTaskSubmission(payload)
     }
-    setTaskLength = () =>{
+    setTaskLength = () => {
         var tasks = this.props.projectInContext.tasks
         this.setState({
-            taskLength:tasks.length
+            taskLength: tasks.length
         })
     }
     renderTasks = () => {
@@ -109,11 +127,11 @@ class Board extends Component {
             tasks.map(task => {
                 let rowColor = ""
                 let taskStatus = ""
-                console.log(task.status,"STATUS")
+                console.log(task.status, "STATUS")
 
-                if(task.status==="SUBMITTED"){rowColor="table-success";taskStatus = "Done"}
-                else if(task.status==="PENDING_FOR_CONFIRMATION"){rowColor="table-warning";taskStatus = "Waiting for Confirmation"}
-                else {rowColor="";taskStatus="To Do"}
+                if (task.status === "SUBMITTED") { rowColor = "table-success"; taskStatus = "Done" }
+                else if (task.status === "PENDING_FOR_CONFIRMATION") { rowColor = "table-warning"; taskStatus = "Waiting for Confirmation" }
+                else { rowColor = ""; taskStatus = "To Do" }
                 return (
                     <tr className={rowColor}>
                         <th scope="row">{++number}</th>
@@ -124,7 +142,7 @@ class Board extends Component {
                             <div>{taskStatus}</div>
                         </td>
                         <td>
-                            {this.renderSubmissionButton(task)}{this.renderConfirmSubmissionButton(task)} 
+                            {this.renderSubmissionButton(task)}{this.renderConfirmSubmissionButton(task)}
                         </td>
                         <td>
                             <TaskDetails task={task} number={number} />
@@ -143,18 +161,18 @@ class Board extends Component {
                 )
             })
         ) : (
-            <div>
-                {/* <h4>There are no tasks  yet</h4> */}
+                <div>
+                    {/* <h4>There are no tasks  yet</h4> */}
 
-            </div>
+                </div>
             )
         return taskList
 
     }
     renderEmptyState = () => {
-            return (
-                <img className="noTasks" src={require('../../No-Tasks.png')} width="350" height="350"/>
-            )
+        return (
+            <img className="noTasks" src={require('../../No-Tasks.png')} width="350" height="350" />
+        )
     }
     renderWatchTask = (task) => {
         let found
@@ -164,7 +182,7 @@ class Board extends Component {
         })
         if (!found) {
             return (
-                <button className="close watchTask" onClick={() => {this.handleWatchTask(task)}}> <i className="material-icons">visibility</i> </button>
+                <button className="close watchTask" onClick={() => { this.handleWatchTask(task) }}> <i className="material-icons">visibility</i> </button>
             )
         } else {
             return (
@@ -191,33 +209,33 @@ class Board extends Component {
     }
     render() {
         let tasks = this.props.projectInContext.tasks.length ? (
-             <div>
+            <div>
                 <ProjectSubBar />
                 <div className="table-responsive">
-                <table class="table table-hover table-sm ">
-                    <thead>
-                        <tr>
-                            <th scope="col">Task Number</th>
-                            <th scope="col">Task Name</th>
-                            <th scope="col">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody className="">
-                        {this.renderTasks()}
-                    </tbody>
-                </table>
+                    <table class="table table-hover table-sm ">
+                        <thead>
+                            <tr>
+                                <th scope="col">Task Number</th>
+                                <th scope="col">Task Name</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody className="">
+                            {this.renderTasks()}
+                        </tbody>
+                    </table>
                 </div>
                 {this.renderCreateTaskButton()}
                 <div id="footer"></div>
             </div>
-            
+
         ) : (
-            <div>
-            <ProjectSubBar />
-            {this.renderEmptyState()}
-            {this.renderCreateTaskButton()}
-            </div>
-        )
+                <div>
+                    <ProjectSubBar />
+                    {this.renderEmptyState()}
+                    {this.renderCreateTaskButton()}
+                </div>
+            )
         return (
             tasks
         )
