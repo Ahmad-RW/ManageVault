@@ -193,7 +193,7 @@ class TaskDocumentModal extends Component {
         return (
             <div>
                 <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target={"#" + text} >
-                    Task document
+                    Task Input/Output
                 </button>
                 <div class="modal fade" id={text} tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">

@@ -176,6 +176,7 @@ class TaskDetails extends Component {
         )
     }
     render() {
+        
         let text = makeid()
         console.log(this.props.task)
         var date = this.props.task.startDate.split("T")

@@ -11,7 +11,9 @@ class Storage extends Component {
             <div>
                 <ProjectSubBar />
                 <hr />
-                <SideBar />
+                <div className="container-fluid">
+                    <SideBar />
+                </div>
                 <div className="container">
                     <DocumentCard />
                 </div>
