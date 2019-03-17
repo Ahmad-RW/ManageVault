@@ -39,7 +39,7 @@ class ProjectCard extends Component {
                         <div>
                             <ul className="nav nav-pills card-header-pills">
                                 <li className="nav-item">
-                                    <Link to={{ pathname: "/home/projectSettings", state: { project } }}>Manage Project</Link>
+                                    <Link onClick= {() => this.setProjectCookie(project, project._id)} to={{ pathname: "/home/projectSettings", state: { project } }}>Manage Project</Link>
                                 </li>
                                 <li className="nav-item ml-2 ">
                                     <span >{project.status}</span>

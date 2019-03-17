@@ -21,7 +21,7 @@ class Board extends Component {
     renderDeleteTask = (task) => {
         if (checkAuthority(this.props.projectInContext, "DELETE_TASK", this.props.userInfo)) {
             return (
-                <button className="close deleteTask" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleDelete(task._id, this.props.projectInContext._id) }} key={task._id}>
+                <button title="Delete task"className="close deleteTask" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleDelete(task._id, this.props.projectInContext._id) }} key={task._id}>
                     <i className="material-icons">highlight_off</i>
                 </button>
             )
@@ -182,11 +182,11 @@ class Board extends Component {
         })
         if (!found) {
             return (
-                <button className="close watchTask" onClick={() => { this.handleWatchTask(task) }}> <i className="material-icons">visibility</i> </button>
+                <button title="Watch task"className="close watchTask" onClick={() => { this.handleWatchTask(task) }}> <i className="material-icons">visibility</i> </button>
             )
         } else {
             return (
-                <button className="close" onClick={() => { this.handleUnWatchTask(task) }}> <i class="material-icons">visibility_off</i> </button>
+                <button title="Unwatch task"className="close" onClick={() => { this.handleUnWatchTask(task) }}> <i class="material-icons">visibility_off</i> </button>
             )
         }
 
