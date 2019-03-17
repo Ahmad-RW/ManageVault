@@ -15,3 +15,26 @@ export const storageUpload = payload => {
         })
     }
 }
+
+export const publishProject = project =>{
+    return(dispatch)=>{
+        axios.post("http://localhost:3333/storage/publishProject", {project}).then(res=>{
+            let payload = {res, project}
+            dispatch({type:"CHANGE_PUBLIC_STATUS", payload})
+
+        }).then((exception)=>{
+            console.log(exception)
+        })
+    }
+}
+
+export const unpublishProject = project =>{
+    return(dispatch)=>{
+        axios.post("http://localhost:3333/storage/unpublishProject", {project}).then(res=>{
+            let payload = {res, project}
+            dispatch({type:"CHANGE_PUBLIC_STATUS", payload})
+        }).then((exception)=>{
+            console.log(exception)
+        })
+    }
+}

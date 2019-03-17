@@ -1,27 +1,27 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 var assets = require.context("../../assets", true)
-class DocumentCard extends Component {
-    state = {
-        projectDocuments: this.props.projectInContext.documents//dont delete. ignore
+class ViewPublicProject extends Component {
+    constructor(props) {
+        super(props)
+        console.log(props.location.state.project)
     }
     renderLogo = (contentType) => {
         let imgSrc;
         try {
             let type = contentType.substring(contentType.indexOf("/") + 1);
             console.log(type)
-            imgSrc = assets("./"+type+".png")
+            imgSrc = assets("./" + type + ".png")
         } catch (error) {
             imgSrc = assets("./file.png")
         }
-        return(
+        return (
             <img src={imgSrc} />
         )
 
     }
     renderDocumentsCard = () => {
         return (
-            this.props.projectInContext.documents.map(doc => {
+            this.props.location.state.project.documents.map(doc => {
 
                 if (doc.file !== "") {
                     return (
@@ -44,16 +44,13 @@ class DocumentCard extends Component {
     }
     render() {
         return (
-            <div className="row">
-                {this.renderDocumentsCard()}
+            <div className="container">
+                <div className="row">
+                    {this.renderDocumentsCard()}
+                </div>
             </div>
         )
     }
+}
 
-}
-const mapStateToProps = (state) => {
-    return {
-        projectInContext: state.projectInContext
-    }
-}
-export default connect(mapStateToProps)(DocumentCard)
+export default ViewPublicProject

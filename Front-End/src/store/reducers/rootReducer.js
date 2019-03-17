@@ -231,6 +231,15 @@ const rootReducer = (state = initState, action) => {
             users : action.users
         }
     }
+    if(action.type === "CHANGE_PUBLIC_STATUS"){
+        const oldProjects = state.projects.filter(project => project._id !== action.payload.project._id)
+        const newProjects = [...oldProjects, action.payload.res.data]
+        return state ={
+            ...state,
+            projectInContext : action.payload.res.data,
+            projects : newProjects
+        }
+    }
     return state
 }
 

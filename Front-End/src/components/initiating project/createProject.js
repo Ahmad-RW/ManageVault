@@ -93,6 +93,7 @@ class CreateProject extends Component {
                     <div className="form-group">
                         <label>Major/Course</label>
                         <select className="form-control" onChange={this.handleChange} id="major_course">
+                            <option value="">Not Specefied</option>
                             <option value="Information Technology">Information Technology</option>
                             <option value="Architecture and Planning">Architecture and Planning</option>
                             <option value="Law and Order">Law and Order</option>
