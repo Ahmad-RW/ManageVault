@@ -87,11 +87,6 @@ class MemberAnalysis extends Component {
         })
         return ToDoTask
     }
-    getAbsoluteValue = (x) => {     //Helper
-        if(x < 0)
-            return x*-1;
-        return x;
-    }
     chart = () => {
         let submittedTasks = this.claculateSubmittedTasks()
         let ToDoTasks = this.calculateToDoTasks()

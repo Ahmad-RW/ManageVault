@@ -171,7 +171,7 @@ class Board extends Component {
     }
     renderEmptyState = () => {
         return (
-            <img className="noTasks" src={require('../../No-Tasks.png')} width="350" height="350" />
+            <img className="noTasks" src={require('../../images/No-Tasks.png')} width="350" height="350" />
         )
     }
     renderWatchTask = (task) => {

@@ -112,7 +112,10 @@ class Notification extends Component {
                 )//return 
             })
         ) : (//parent predecate
-        <img src={require('../../No-Notifications.png')} width="350" height="350"/>
+        <div className="container">
+            <img src={require('../../images/silent.png')} width="350" height="350" style={{marginTop: 20 + "%"}} />
+            <p>You have no notifications at the moment :(</p>
+        </div>
         )
         return (
             NotificationsList
