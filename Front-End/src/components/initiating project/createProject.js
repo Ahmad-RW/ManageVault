@@ -59,17 +59,17 @@ class CreateProject extends Component {
         }
     }
      renderUsers = () => {
-    //     console.log(this.props.users)
-    //     // if(this.props.users.email === undefined){return}
-    //     const users = this.props.users.map(user => {//stuck here
-    //         return (
-    //             <div>
-    //             <li role="presentation"><a onClick={(e) => {this.handleSelectingUser(e)}}role="menuitem" tabindex="-1" href="#">{user.email}</a></li>
-    //             <div class="dropdown-divider"></div>
-    //             </div>
-    //     )}
-    //     )
-    //     return users
+         console.log(this.props.users)
+         // if(this.props.users.email === undefined){return}
+         const users = this.props.users.map(user => {//stuck here
+             return (
+                 <div>
+                 <li role="presentation"><a onClick={(e) => {this.handleSelectingUser(e)}}role="menuitem" tabindex="-1" href="#">{user.email}</a></li>
+                 <div class="dropdown-divider"></div>
+                 </div>
+         )}
+         )
+         return users
      }
     handleSelectingUser = (e) => {
         console.log(e)
