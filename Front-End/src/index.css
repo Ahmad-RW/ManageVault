@@ -169,3 +169,36 @@ html {
     height:         100%;
     width:          1px;       
 }
+/* For tasks display */
+.tasksTableContainer{
+  padding-left: 30px;
+  padding-right: 30px;
+}
+.taskTableRow{
+  border-radius: 25px;
+}
+tr.taskBorder td {
+  /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
+  border-bottom: 1px solid rgb(83, 83, 83);
+  border-top: 1px solid rgb(83, 83, 83);
+}
+/*submission button margin*/
+.SBM{
+  margin-right: 10px
+}
+table#albums 
+{
+    border-collapse:separate;
+    border-spacing:0 5px;
+}
+td#lastTB{
+  border-right: 1px solid rgb(83, 83, 83);
+  /* border-radius: 25px; */
+}
+th#taskNumber {
+  border: 1px solid rgb(83, 83, 83);
+  /* border-radius: 25px; */
+}
+table#tasksList{
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}

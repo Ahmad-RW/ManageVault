@@ -192,8 +192,8 @@ class TaskDocumentModal extends Component {
         const text = makeid()
         return (
             <div>
-                <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target={"#" + text} >
-                    Task Input/Output
+                <button title="Task Documents" type="button" class="close" data-toggle="modal" data-target={"#" + text} >
+                <i class="material-icons">folder</i>
                 </button>
                 <div class="modal fade" id={text} tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -226,7 +226,7 @@ class TaskDocumentModal extends Component {
                                 <hr />
                                 <div className="row">
                                     <div className="col-12">
-                                        <h5>Upload Input Document</h5>
+                                        <h5>Upload Output Document</h5>
                                     </div>
                                 </div>
                                 {this.state.errorMSG}
