@@ -15,21 +15,21 @@ taskRoute.post('/newTask', function (req, res) {
         hhhhhhhhhhhhh : ""
     }
     mongoose.model("projects").findByIdAndUpdate(req.body.payload.project, { $push: { "tasks": task } }, { new: true }).then(function (record) {
-        console.log(record)
+        
         res.status(200).send(record)
     }).catch(function (err) {
-        console.log(err)
+        res.status(500).send(err)
     })
 });
 
 
 taskRoute.post('/deleteTask', function (req, res) {
-    console.log(req.body.payload, ", ReqBody")
+    
     mongoose.model("projects").findByIdAndUpdate(req.body.payload.PID, { $pull: { "tasks": { "_id": req.body.payload.task_id } } }, { new: true }).then(function (record) {
-        console.log(record, "RECORD")
+       
         res.status(200).send(record)
     }).catch(function (err) {
-        console.log(err)
+        res.status(500).send(err)
     })
 });
 

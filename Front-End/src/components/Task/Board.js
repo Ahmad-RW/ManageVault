@@ -25,7 +25,7 @@ class Board extends Component {
         })
     }
     handleDelete = (task_id) => {
-        console.log(task_id)
+        
         this.props.deleteTask(task_id, this.props.projectInContext._id)
     }
     renderDeleteTask = (task) => {
@@ -45,9 +45,9 @@ class Board extends Component {
         }
     }
     renderConfirmSubmissionButton = (task) => {
-        console.log("hey")
+        
         if (checkAuthority(this.props.projectInContext, "CONFIRM_TASK_SUBMISSION", this.props.userInfo) && task.status === "PENDING_FOR_CONFIRMATION") {
-            console.log(this.props.userInfo, "USER_INFO")
+            
             return (
                 <div>
                     <td >
@@ -110,7 +110,7 @@ class Board extends Component {
         }
     }
     handleTaskSubmission = (task) => {
-        console.log(task)
+        
         let payload = {
             task,
             project: this.props.projectInContext,
@@ -125,7 +125,7 @@ class Board extends Component {
     }
     confirmTaskSubmission = (task) => {
         var endDate = new Date()
-        console.log(endDate, "EEEENNND")
+      
         const payload = {
             task,
             project: this.props.projectInContext,
@@ -154,7 +154,7 @@ class Board extends Component {
         })
     }
     renderFeedback = (task) => {
-        console.log(task.test)
+        
         if (task.feedback === "") {
             return
         }
@@ -172,7 +172,7 @@ class Board extends Component {
             tasks.map(task => {
                 let rowColor = ""
                 let taskStatus = ""
-                console.log(task.status, "STATUS")
+               
 
                 if (task.status === "SUBMITTED") { rowColor = "table-success"; taskStatus = "Done" }
                 else if (task.status === "PENDING_FOR_CONFIRMATION") { rowColor = "table-warning"; taskStatus = "Waiting for Confirmation" }

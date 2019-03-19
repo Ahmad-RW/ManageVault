@@ -24,7 +24,7 @@ class CommentsModal extends Component {
         return commentsList
     }
     handleComment = (e) => {
-        console.log(e.target.value)
+       
         this.setState({
             [e.target.id]: e.target.value
         })
@@ -35,7 +35,7 @@ class CommentsModal extends Component {
             author: this.props.userInfo.name,
             date: new Date()
         }
-        console.log(comment)
+       
         this.props.newComment(comment, this.props.task, this.props.projectInContext)
 
     }

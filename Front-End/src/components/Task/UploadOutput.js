@@ -24,8 +24,7 @@ class UploadOutput extends Component {
         })
     }
     handleDocumentName = (e) => {
-        console.log(this.state)
-        console.log(this.props)
+      
         this.setState({
             [e.target.id]: e.target.value
         })
@@ -49,8 +48,6 @@ class UploadOutput extends Component {
     }
     handleSuccess = (filename) => {
 
-        console.log(this.state)
-        console.log(filename, "FIIILLEEE NAME")
         this.setState({ progress: 100, isUploading: false });
         var reference = firebase.storage().ref(this.props.projectInContext._id).child(filename)
         reference.getMetadata().then(metaData => {
@@ -61,7 +58,7 @@ class UploadOutput extends Component {
                     updated: metaData.updated,// these are from firebase. supplemented by our meta data to form name, type, size , last modified and type/content type
                     contentType: metaData.contentType
                 }
-                console.log(metaData)
+               
                 const payload = {
                     metaData,
                     url,
@@ -72,7 +69,7 @@ class UploadOutput extends Component {
                     isInput: this.props.isInput
                 }
 
-                console.log(payload)
+               
                 this.props.fileUpload(payload)
                 this.setState({
                     renderSuccessMessage: true
@@ -90,7 +87,7 @@ class UploadOutput extends Component {
         }
     }
     handleOutputUpload = (e) => {
-        console.log(e.target.files[0])
+     
         this.setState({
             file: e.target.files[0],
             metaData: { fileName: e.target.files[0].name, size: e.target.files[0].size, type: e.target.files[0].type }
@@ -127,7 +124,7 @@ class UploadOutput extends Component {
         )
     }
     render() {
-        console.log()
+      
         return (
             <div>
                 {this.renderProgressBar()}

@@ -11,11 +11,9 @@ class TaskDocumentModal extends Component {
         errorMSG: <div></div>,
     }
     handleChange = (e) => {
-        console.log(e.target.value)
         this.setState({
             [e.target.id]: e.target.value,
         })
-        console.log(this.state)
     }
     renderInputDocuments = () => {
         let x = []
@@ -38,7 +36,6 @@ class TaskDocumentModal extends Component {
         return x
     }
     searchForInputDocument = (Document) => {
-        // console.log(Document)
         const inputDocuments = this.props.task.inputDocuments
         if (inputDocuments.find(ODocument => { return ODocument.name === Document.name }) === undefined) { return false }
         else { return true }
@@ -80,7 +77,6 @@ class TaskDocumentModal extends Component {
             project: this.props.projectInContext,
             Document: Document
         }
-        console.log(payload)
         this.props.removeInputDocument(payload)
     }
     renderInputDocumentsButton = () => {
@@ -103,13 +99,12 @@ class TaskDocumentModal extends Component {
     handleSubmitOutput = (e) => {
         if (this.state.outputDocuments === null || this.state.outputDocuments.trim() === "") {
             this.renderErrorMessage("null")
-            console.log("null", "error")
             return
         }
-        console.log(this.searchForOutputDocument(this.state.outputDocuments))
+      
         if (this.searchForOutputDocument(this.state.outputDocuments)) {
             this.renderErrorMessage("redundant")
-            console.log("redundant", "error")
+           
             return
         }
 
@@ -185,7 +180,7 @@ class TaskDocumentModal extends Component {
             project: this.props.projectInContext,
             Document: Document
         }
-        console.log(payload)
+       
         this.props.removeOutputDocument(payload)
     }
     render() {
