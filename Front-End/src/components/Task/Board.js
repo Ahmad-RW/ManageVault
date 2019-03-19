@@ -11,8 +11,18 @@ import CommentsModal from './CommentsModal'
 import TaskDocumentModal from './TaskDocumentModal'
 
 class Board extends Component {
+    state = {
+        feedback: ""
+    }
     constructor(props) {
+
         super(props)
+    }
+    handleChange = (e) => {
+        this.setState({
+            [e.target.id]: e.target.value
+
+        })
     }
     handleDelete = (task_id) => {
         console.log(task_id)
@@ -21,7 +31,7 @@ class Board extends Component {
     renderDeleteTask = (task) => {
         if (checkAuthority(this.props.projectInContext, "DELETE_TASK", this.props.userInfo)) {
             return (
-                <button title="Delete task"className="close deleteTask" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleDelete(task._id, this.props.projectInContext._id) }} key={task._id}>
+                <button title="Delete task" className="close deleteTask" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleDelete(task._id, this.props.projectInContext._id) }} key={task._id}>
                     <i className="material-icons">highlight_off</i>
                 </button>
             )
@@ -39,15 +49,37 @@ class Board extends Component {
         if (checkAuthority(this.props.projectInContext, "CONFIRM_TASK_SUBMISSION", this.props.userInfo) && task.status === "PENDING_FOR_CONFIRMATION") {
             // console.log(this.props.userInfo, "USER_INFO")
             return (
-                <button className="btn btn-outline-info btn-sm SBM" onClick={() => { this.confirmTaskSubmission(task) }}>Confirm Submission</button>
+                <button className="btn btn-outline-info btn-sm SBM" onClick={() => { this.confirmTaskSubmission(task) }}>Accept Submission</button>
             )
         }
     }
+
     renderRejectSubmissionButton = (task) => {
         if (checkAuthority(this.props.projectInContext, "CONFIRM_TASK_SUBMISSION", this.props.userInfo) && task.status === "PENDING_FOR_CONFIRMATION") {
             // console.log(this.props.userInfo, "USER_INFO")
             return (
-            <button className="btn btn-outline-danger btn-sm" onClick={() => { this.declineTaskSubmission(task) }}>Decline Submission</button>
+                    <td >
+                        <button data-toggle="modal" data-target=".bd-example-modal-sm" className="btn btn-info btn-sm" className="btn btn-success btn-sm" >Reject Submission</button>
+                        {/*code below is a modal (which is triggered by the button above) for entering a feed back from the team leader */}
+                        <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-sm">
+                            <div class="modal-content">
+                                <div className="modal-header">
+                                    <div className="modal-title"><h5>Please Provide Feedback</h5></div>
+                                </div>
+                                <div clas="modal-body">
+                                    <input type="text" onChange={this.handleChange} id="feedback" />
+                                </div>
+                                <div className="modal-footer">
+                                    <button className="btn btn-primary btn-sm" data-dismiss="modal" onClick={() => { this.declineTaskSubmission(task) }}>Reject Task</button>
+                                    <button className="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </td>
+                    
+                    
             )
         }
     }
@@ -57,7 +89,7 @@ class Board extends Component {
         var result = true
         this.props.projectInContext.tasks.forEach(element => {
             task.dependencies.predecessor.forEach(pred => {
-                if (element._id === pred.taskId && element.status !=="SUBMITTED") {
+                if (element._id === pred.taskId && element.status !== "SUBMITTED") {
                     result = false
                 }
             })
@@ -106,11 +138,18 @@ class Board extends Component {
         }
         this.props.confirmTaskSubmission(payload)
     }
+
     declineTaskSubmission = task => {
+        if (this.state.feedback === "") {
+            alert("feedback is required")
+            return
+        }
         const payload = {
             task,
             project: this.props.projectInContext,
+            feedback: this.state.feedback
         }
+
         this.props.declineTaskSubmission(payload)
     }
     setTaskLength = () => {
@@ -118,6 +157,17 @@ class Board extends Component {
         this.setState({
             taskLength: tasks.length
         })
+    }
+    renderFeedback = (task) => {
+        console.log(task.test)
+        if (task.feedback === "") {
+            return
+        }
+        return (
+            <i class="material-icons" title={task.feedback}>
+                feedback
+            </i>
+        )
     }
     renderTasks = () => {
         let number = 0
@@ -143,6 +193,9 @@ class Board extends Component {
                         </td>
                         <td>
                             {this.renderSubmissionButton(task)}{this.renderConfirmSubmissionButton(task)}{this.renderRejectSubmissionButton(task)}
+                        </td>
+                        <td>
+                            {this.renderFeedback(task)}
                         </td>
                         <td>
                             <TaskDetails task={task} number={number} />
@@ -182,11 +235,11 @@ class Board extends Component {
         })
         if (!found) {
             return (
-                <button title="Watch task"className="close watchTask" onClick={() => { this.handleWatchTask(task) }}> <i className="material-icons">visibility</i> </button>
+                <button title="Watch task" className="close watchTask" onClick={() => { this.handleWatchTask(task) }}> <i className="material-icons">visibility</i> </button>
             )
         } else {
             return (
-                <button title="Unwatch task"className="close" onClick={() => { this.handleUnWatchTask(task) }}> <i class="material-icons">visibility_off</i> </button>
+                <button title="Unwatch task" className="close" onClick={() => { this.handleUnWatchTask(task) }}> <i class="material-icons">visibility_off</i> </button>
             )
         }
 

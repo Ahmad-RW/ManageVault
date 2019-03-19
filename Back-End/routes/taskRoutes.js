@@ -4,14 +4,15 @@ const projects = require('../models/projects')
 const mongoose = require('../dbConfig/databaseCon')
 
 taskRoute.post('/newTask', function (req, res) {
-    console.log(req.body.payload.project, "this is the project")
-    console.log(req.body.payload.task, "i am in  task routes")
     let task = {
         name: req.body.payload.task.name,
         description: req.body.payload.task.Description,
         status: req.body.payload.task.status,
         startDate: req.body.payload.task.startDate,
         duration: req.body.payload.task.duration,
+        feedback : "",
+        t : "",
+        hhhhhhhhhhhhh : ""
     }
     mongoose.model("projects").findByIdAndUpdate(req.body.payload.project, { $push: { "tasks": task } }, { new: true }).then(function (record) {
         console.log(record)
@@ -90,8 +91,12 @@ taskRoute.post('/submitTask', function (req, res) {
 })
 
 taskRoute.post('/confirmTaskSubmission', function (req, res) {
-    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, { $set: { "tasks.$[elem].status": "SUBMITTED", 
-    "tasks.$[elem].endDate": req.body.payload.endDate} },
+    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, {
+        $set: {
+            "tasks.$[elem].status": "SUBMITTED",
+            "tasks.$[elem].endDate": req.body.payload.endDate
+        }
+    },
         { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
             console.log(record)
             res.status(200).send(record)
@@ -121,8 +126,8 @@ taskRoute.post('/assignTask', function (req, res) {
     assignedMember = {
         name: req.body.payload.member.name,
         email: req.body.payload.member.email,
-        assigner:req.body.payload.assigner,
-        startDate:req.body.payload.startDate,
+        assigner: req.body.payload.assigner,
+        startDate: req.body.payload.startDate,
     }
     console.log(assignedMember, "here")
     newAssignedMembers = [...req.body.payload.task.assignedMembers, assignedMember]
@@ -231,7 +236,7 @@ function handleInputUpload(payload, document, res) {
     }
     document = {
         ...document,
-        name : name,
+        name: name,
     }
     const inputDocument = {
         name: name,
@@ -441,14 +446,14 @@ taskRoute.post('/removeInputDocument', function (req, res) {
         })
 })
 
-taskRoute.post('/declineTaskSubmission', function(req, res){
-    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, { $set: { "tasks.$[elem].status": "TO_DO" } },
-    { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
-        console.log(record)
-        res.status(200).send(record)
-    }).catch(function (exception) {
-        res.status(500).send(exception)
-    })
+taskRoute.post('/declineTaskSubmission', function (req, res) {
+    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, { $set: { "tasks.$[elem].status": "TO_DO", "tasks.$[elem].feedback": req.body.payload.feedback } },
+        { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
+            console.log(record)
+            res.status(200).send(record)
+        }).catch(function (exception) {
+            res.status(500).send(exception)
+        })
 })
 //helper function
 function normalize(text) {
