@@ -1,9 +1,11 @@
+//we used props.location.state.project and props.projectInContext to get current project
+
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import InviteMembers from './inviteMembers'
 import { leaveProject, requestToDeleteProject, removeTeamMember, requestDeleteAction, assignNewTeamLeader } from '../../store/actionCreators/projectActions'
-import inviteMembers from './inviteMembers';
+import { publishProject, unpublishProject } from '../../store/actionCreators/storageActions'
 import { checkAuthority } from '../../helper'
 import MemberAnalysis from './MemberAnalysis'
 
@@ -43,7 +45,6 @@ class ProjectSettings extends Component {
         })
     }
     handleLeave = () => {
-        console.log(this.state)
         this.props.leaveProject(this.state.project, this.props.userInfo)
         this.props.history.push('/home')
     }
@@ -77,15 +78,15 @@ class ProjectSettings extends Component {
                     {membersList}
                 </div>
             )
-        }    
+        }
     }
-    renderManageRolesButton = () =>{
-        const currentMember = this.state.project.members.find(member =>{
+    renderManageRolesButton = () => {
+        const currentMember = this.state.project.members.find(member => {
             return member.email === this.props.userInfo.email
         })
         const project = this.props.location.state.project
-        if(currentMember.teamLeader){
-            return <Link to={{ pathname: "/home/projectSettings/grantAuthority", state: { project} }}>  <button className="btn btn-primary">Manage Roles</button></Link>
+        if (currentMember.teamLeader) {
+            return <Link to={{ pathname: "/home/projectSettings/grantAuthority", state: { project } }}>  <button className="btn btn-primary">Manage Roles</button></Link>
         }
         return;
     }
@@ -163,8 +164,8 @@ class ProjectSettings extends Component {
                 }
                 if (!member.teamLeader) return (
                     <div>
-                        <li className="list-group-item" key={member.email}>{member.name} {removeButton} {grantAuthority} </li>  
-                        <MemberAnalysis member={member}/>
+                        <li className="list-group-item" key={member.email}>{member.name} {removeButton} {grantAuthority} </li>
+                        <MemberAnalysis member={member} />
                     </div>
                 )//jhvkbgfjbhvjgebv
             })
@@ -181,7 +182,7 @@ class ProjectSettings extends Component {
                         <div className="row">
                             <ul class="list-group">
                                 <li class="list-group-item list-group-item-primary">{teamLeader.name}</li>
-                                <MemberAnalysis member={teamLeader}/>
+                                <MemberAnalysis member={teamLeader} />
                             </ul>
                         </div>
                         <hr />
@@ -190,7 +191,7 @@ class ProjectSettings extends Component {
                         </div>
                         <div className="row">
                             <ul class="list-group">
-                                {members} 
+                                {members}
                             </ul>
 
                         </div>
@@ -225,6 +226,13 @@ class ProjectSettings extends Component {
                             {InvitedMembers}
                         </form>
                     </div>
+                    <div className="col-1">
+                        <hr className="vertical-line" />
+                    </div>
+                    <div className="col-4">
+
+                        {this.renderPublishButtons()}
+                    </div>
                 </div>
 
             </div>
@@ -232,10 +240,30 @@ class ProjectSettings extends Component {
 
         )
     }
+    renderPublishButtons = () => {
+        if(!checkAuthority(this.props.projectInContext, "PUBLISH_PROJECT", this.props.userInfo)){
+            return
+        }
+        let btn;
+        if (this.props.projectInContext.status !== "PUBLISHED") {
+            btn = <button onClick={() => { this.props.publishProject(this.props.projectInContext) }} type="button" class="btn btn-outline-success">Publish</button>
+        }
+        else {
+            btn = <button onClick={() => { this.props.unpublishProject(this.props.projectInContext) }} type="button" class="btn btn-outline-success">Unpublish</button>
+        }
+        return (
+            <div>
+                <h5>Publish Project</h5>
+                <p>If you wish to publish this project it's storage will be visiable in a view-only manner to all registered users</p>
+                {btn}
+            </div>
+        )
+    }
 }
 
 const mapStateToProps = (state) => {
     return {
+        projectInContext: state.projectInContext,
         projects: state.projects,
         userInfo: state.userInfo,
         auth: state.isAuthenticated
@@ -247,7 +275,9 @@ const mapDispatchToProps = (dispatch) => {
         deleteProject: (project, userInfo) => dispatch(requestToDeleteProject(project, userInfo)),
         removeTeamMember: (project, member) => dispatch(removeTeamMember(project, member)),
         requestDelete: (project) => { dispatch(requestDeleteAction(project)) },
-        assignNewTeamLeader: (memberEmail, project) => { dispatch(assignNewTeamLeader(memberEmail, project)) }
+        assignNewTeamLeader: (memberEmail, project) => { dispatch(assignNewTeamLeader(memberEmail, project)) },
+        publishProject: project => dispatch(publishProject(project)),
+        unpublishProject: project => dispatch(unpublishProject(project))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectSettings)

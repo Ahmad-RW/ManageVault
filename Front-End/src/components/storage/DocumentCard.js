@@ -18,28 +18,6 @@ class DocumentCard extends Component {
             <img src={imgSrc} />
         )
 
-
-        // if (contentType.includes("image")) {
-        //     return (
-        //         <img src={require("../../assets/image.png")} />
-        //     )
-        // }
-        // if (contentType.includes("compressed")) {
-        //     return (
-        //         <img src={require("../../assets/compressed.png")} />
-        //     )
-        // }
-        // if (contentType.includes("pdf")) {
-        //     return (
-        //         <img src={require("../../assets/pdf.png")} />
-        //     )
-        // }
-        // else{
-        //     return (
-        //         <img src={require("../../assets/file.png")} />
-        //     )
-        // }
-
     }
     renderDocumentsCard = () => {
         return (
@@ -54,7 +32,7 @@ class DocumentCard extends Component {
                                     {this.renderLogo(doc.contentType)}
                                 </h5>
                                 <p class="card-text">
-                                    <label className="btn" href={doc.file} target="_blank"><i class="material-icons">cloud_download</i></label>
+                                    <a className="text-dark" href={doc.file} target="_blank"><i class="material-icons">cloud_download</i></a>
                                 </p>
                             </div>
                             <div class="card-footer bg-transparent border-primary">Footer</div>

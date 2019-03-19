@@ -18,6 +18,8 @@ import GrantAuthorities from './components/initiating project/grantAuthority';
 import Board from './components/Task/Board';
 import userDefinedRoles from './components/initiating project/userDefinedRoles';
 import Storage from './components/storage/storage'
+import PublicStorage from './components/storage/PublicStorage';
+import ViewPublicProject from './components/storage/ViewPublicProject';
 
 class App extends Component {
   
@@ -47,6 +49,8 @@ class App extends Component {
             <Route path='/register' component={Register} />
             <Route exact path='/home' component={RequireAuth(Home)} />
             <Route path='/notification' component={RequireAuth(Notification)} />
+            <Route exact path='/publicStorage' component={RequireAuth(PublicStorage)} />
+            <Route path='/publicStorage/viewProject' component={RequireAuth(ViewPublicProject)} />
             <Route path='/home/newproject' component={RequireAuth(CreateProject)} />
             <Route exact path='/home/projectSettings' component={RequireAuth(ProjectSettings)} />
             <Route path='/home/projectSettings/grantAuthority' component={RequireAuth(GrantAuthorities)} />
