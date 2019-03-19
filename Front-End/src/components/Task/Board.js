@@ -45,20 +45,29 @@ class Board extends Component {
         }
     }
     renderConfirmSubmissionButton = (task) => {
+<<<<<<< HEAD
         
         if (checkAuthority(this.props.projectInContext, "CONFIRM_TASK_SUBMISSION", this.props.userInfo) && task.status === "PENDING_FOR_CONFIRMATION") {
             
+=======
+        // console.log("hey")
+        if (checkAuthority(this.props.projectInContext, "CONFIRM_TASK_SUBMISSION", this.props.userInfo) && task.status === "PENDING_FOR_CONFIRMATION") {
+            // console.log(this.props.userInfo, "USER_INFO")
+>>>>>>> f99c78e0729d9efd66a351b79009bdf07fd6fd58
             return (
-                <div>
-                    <td >
-                        <button className="btn btn-success btn-sm" onClick={() => { this.confirmTaskSubmission(task) }}>Accept Submission</button>
-                    </td>
+                <button className="btn btn-outline-info btn-sm SBM" onClick={() => { this.confirmTaskSubmission(task) }}>Accept Submission</button>
+            )
+        }
+    }
 
+    renderRejectSubmissionButton = (task) => {
+        if (checkAuthority(this.props.projectInContext, "CONFIRM_TASK_SUBMISSION", this.props.userInfo) && task.status === "PENDING_FOR_CONFIRMATION") {
+            // console.log(this.props.userInfo, "USER_INFO")
+            return (
                     <td >
                         <button data-toggle="modal" data-target=".bd-example-modal-sm" className="btn btn-info btn-sm" className="btn btn-success btn-sm" >Reject Submission</button>
-                    </td>
-                    {/*code below is a modal (which is triggered by the button above) for entering a feed back from the team leader */}
-                    <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                        {/*code below is a modal (which is triggered by the button above) for entering a feed back from the team leader */}
+                        <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-sm">
                             <div class="modal-content">
                                 <div className="modal-header">
@@ -74,7 +83,9 @@ class Board extends Component {
                             </div>
                         </div>
                     </div>
-                </div>
+                    </td>
+                    
+                    
             )
         }
     }
@@ -178,16 +189,16 @@ class Board extends Component {
                 else if (task.status === "PENDING_FOR_CONFIRMATION") { rowColor = "table-warning"; taskStatus = "Waiting for Confirmation" }
                 else { rowColor = ""; taskStatus = "To Do" }
                 return (
-                    <tr className={rowColor}>
-                        <th scope="row">{++number}</th>
+                    <tr className={rowColor+" taskBorder spaceUnder"}>
+                        <th scope="row" width="10" id="taskNumber">{++number}</th>
                         <td>
                             {task.name}
                         </td>
                         <td>
-                            <div>{taskStatus}</div>
+                            {taskStatus}
                         </td>
                         <td>
-                            {this.renderSubmissionButton(task)}{this.renderConfirmSubmissionButton(task)}
+                            {this.renderSubmissionButton(task)}{this.renderConfirmSubmissionButton(task)}{this.renderRejectSubmissionButton(task)}
                         </td>
                         <td>
                             {this.renderFeedback(task)}
@@ -203,7 +214,7 @@ class Board extends Component {
                         </td>
                         <td><ModifyTask tasks={tasks} task={task} /></td>
                         <td>{this.renderWatchTask(task)}</td>
-                        <td>{this.renderDeleteTask(task)}</td>
+                        <td id="lastTB">{this.renderDeleteTask(task)}</td>
 
                     </tr>
                 )
@@ -259,13 +270,14 @@ class Board extends Component {
         let tasks = this.props.projectInContext.tasks.length ? (
             <div>
                 <ProjectSubBar />
-                <div className="table-responsive">
-                    <table class="table table-hover table-sm ">
-                        <thead>
+                <div className="table-responsive tasksTableContainer">
+                    <table class="table table-hover table-sm tasksList" id="albums" cellspacing="0">
+                        <thead className="alert-secondary" >
                             <tr>
-                                <th scope="col">Task Number</th>
-                                <th scope="col">Task Name</th>
-                                <th scope="col">Status</th>
+                                <th scope="col" width="70">Task Number</th>
+                                <th scope="col" width="250">Task Name</th>
+                                <th scope="col" width="250">Status</th>
+                                <th></th><th></th><th></th><th></th><th></th><th></th><th></th>
                             </tr>
                         </thead>
                         <tbody className="">

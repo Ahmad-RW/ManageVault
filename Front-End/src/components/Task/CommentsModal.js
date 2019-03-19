@@ -44,8 +44,8 @@ class CommentsModal extends Component {
         var text = makeid()
         return(
             <div>
-                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target={"#" + text} >
-                    Comments
+                <button title="Comment" type="button" class="close" data-toggle="modal" data-target={"#" + text} >
+                <i class="material-icons">comment</i>
                 </button>
                 <div class="modal fade" id={text} tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
