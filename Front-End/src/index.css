@@ -163,6 +163,9 @@ html {
   text-decoration: none !important
 }
 
-.storage-upload-text-field {
-  overflow: auto
+.vertical-line{
+  border:         none;
+    border-left:    1px solid hsla(200, 10%, 50%,100);
+    height:         100%;
+    width:          1px;       
 }

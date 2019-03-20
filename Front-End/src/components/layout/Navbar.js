@@ -39,6 +39,7 @@ class NavBar extends Component {
                         <div className="navbar-nav">
                             <Link className="nav-item nav-link" to='/home'>Home</Link>
                             <Link className="nav-item nav-link" onClick={this.handleSignOut} to='#'>Sign Out</Link>
+                            <Link className="nav-item nav-link" to="/publicStorage">Public Storage</Link>
                             <Link className="nav-item nav-link" onClick={this.props.history.goBack}to='#'><i class="material-icons">arrow_back</i></Link>
                             <BC />
                         </div>

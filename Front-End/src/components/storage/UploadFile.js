@@ -103,7 +103,6 @@ class UploadFile extends Component {
                 {this.renderUploadCloud()}
                 <input type="text" onChange={this.handleDocumentName} id="documentName" className="storage-upload-text-field" />
                 <input type="file" id="file-upload" onChange={this.handleFileUpload} />
-
             </div>
         )
     }

@@ -12,22 +12,11 @@ class Notification extends Component {
         userInfo: this.props.userInfo,
         notifications: []
     }
-    // componentWillMount() {
-    //     console.log(this.props.isAuthenticated)
-    //     let listLength = this.props.notifications.length
-    //     console.log(listLength, "Hereeeee")
-    //     if (this.props.isAuthenticated === false) {
-    //         this.props.history.push("/")
-    //     }
-    // }
+   
     handleAccept = (project, notification) => {// handles accepting project invitation
         console.log(this.state.userInfo, "howdy")
         this.props.handleInvite(project, this.state.userInfo, notification)
         this.props.handleNotificationDelete(project, this.props.userInfo, notification)
-
-        // window.location.reload()
-        // this.props.history.push('/home');
-        // window.location.reload()
     }
     handleDelete = (notification, projectId) =>{// deletes a notification from the store and database. my very own baby.
         this.props.handleNotificationDelete(projectId, this.props.userInfo, notification)

@@ -3,15 +3,11 @@ const storageRoute = express.Router()
 const projects = require('../models/projects')
 const mongoose = require('../dbConfig/databaseCon')
 
-storageRoute.post("/fileUpload", function(req,res){
-    console.log(req.body)
-  
-  
-  //  res.status(200).send(req.body)
-  let name = req.body.payload.metaData.fileName
-  if(req.body.payload.documentName){
-      name = req.body.payload.documentName
-  }
+storageRoute.post("/fileUpload", function (req, res) {
+    let name = req.body.payload.metaData.fileName
+    if (req.body.payload.documentName) {
+        name = req.body.payload.documentName
+    }
     const document = {
         name: name,//logical name
         size: req.body.payload.metaData.size,
@@ -23,15 +19,52 @@ storageRoute.post("/fileUpload", function(req,res){
         storageReference: req.body.payload.storageReference
     }
     mongoose.model("projects").findByIdAndUpdate(req.body.payload.projectInContext._id, {
-        $push:{
-            "documents" : document
+        $push: {
+            "documents": document
         },
-        
-    }, {new : true}).then(function(record){
+
+    }, { new: true }).then(function (record) {
         res.status(200).send(record)
-    }).catch(function(exception){
+    }).catch(function (exception) {
         res.status(500).send(exception)
     })
 })
+storageRoute.get('/getPublishedProjects', function (req, res) {//do not delete unused variable req
+    mongoose.model("projects").find({ "status": "PUBLISHED" }).then(function (record) {
+        res.status(200).send(record)
+    }).catch(function (exception) {
+        console.log(500)
+        res.status(500).send(exception)
+    })
+})
+storageRoute.post('/publishProject', function (req, res) {
+    mongoose.model("projects").findByIdAndUpdate(req.body.project._id,
+        {
+            $set: {
+                "status": "PUBLISHED"
+            }
+        }, { new: true }
+    ).then(function (record) {
+        res.status(200).send(record)
+    }).catch(function (exception) {
+        res, status(500).send(exception)
+    })
+})
+
+storageRoute.post('/unpublishProject', function (req, res) {
+    console.log("HHHHHHHHHHHHHHHHHHH")
+    mongoose.model("projects").findByIdAndUpdate(req.body.project._id,
+        {
+            $set: {
+                "status": "RUNNING"
+            }
+        }, { new: true }
+    ).then(function (record) {
+        res.status(200).send(record)
+    }).catch(function (exception) {
+        res, status(500).send(exception)
+    })
+})
+
 
 module.exports = storageRoute
