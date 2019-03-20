@@ -273,7 +273,7 @@ class Board extends Component {
                                 <th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th>
                             </tr>
                         </thead>
-                        <tbody className="">
+                        <tbody className="alert-secondary">
                             {this.renderTasks()}
                         </tbody>
                     </table>
