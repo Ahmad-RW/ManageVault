@@ -59,6 +59,8 @@ const projectsSchema = new schema({
         },
         field: String,
         description: String,
+        feedback : String,
+        test : String,
         startDate: Date,
         endDate: Date,
         duration: Number, // we need to find integers in react OR handle entering floats as days. 
@@ -73,7 +75,6 @@ const projectsSchema = new schema({
                 taskName: String,
                 taskId: String
             }],
-            //successor: [String]
         },
         //     channel : {
         //         name : String,
@@ -113,8 +114,6 @@ const projectsSchema = new schema({
             file: String,
             storageReference : String
         }],
-        //     attachments : [{name : String}]
-        // }]
     }]
 })
 
