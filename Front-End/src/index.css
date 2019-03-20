@@ -193,12 +193,21 @@ table#albums
 }
 td#lastTB{
   border-right: 1px solid rgb(83, 83, 83);
-  /* border-radius: 25px; */
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
 th#taskNumber {
   border: 1px solid rgb(83, 83, 83);
-  /* border-radius: 25px; */
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
 }
 table#tasksList{
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.rejectSub{
+  margin-top: 5px;
+}
+.submissionContainer{
+  text-align: center;
+  display: inline-block
 }

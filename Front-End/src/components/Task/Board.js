@@ -58,8 +58,8 @@ class Board extends Component {
         if (checkAuthority(this.props.projectInContext, "CONFIRM_TASK_SUBMISSION", this.props.userInfo) && task.status === "PENDING_FOR_CONFIRMATION") {
             // console.log(this.props.userInfo, "USER_INFO")
             return (
-                    <td >
-                        <button data-toggle="modal" data-target=".bd-example-modal-sm" className="btn btn-info btn-sm" className="btn btn-success btn-sm" >Reject Submission</button>
+                    <div className="submissionContainer">
+                        <button data-toggle="modal" data-target=".bd-example-modal-sm" className="btn btn-outline-danger btn-sm rejectSub" >Reject Submission</button>
                         {/*code below is a modal (which is triggered by the button above) for entering a feed back from the team leader */}
                         <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-sm">
@@ -77,13 +77,12 @@ class Board extends Component {
                             </div>
                         </div>
                     </div>
-                    </td>
+                    </div>
                     
                     
             )
         }
     }
-
 
     arePredecessorsSubmitted = task => {
         var result = true
@@ -269,12 +268,12 @@ class Board extends Component {
                         <thead className="alert-secondary" >
                             <tr>
                                 <th scope="col" width="70">Task Number</th>
-                                <th scope="col" width="250">Task Name</th>
-                                <th scope="col" width="250">Status</th>
-                                <th></th><th></th><th></th><th></th><th></th><th></th><th></th>
+                                <th scope="col" width="350">Task Name</th>
+                                <th scope="col" width="200">Status</th>
+                                <th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th>
                             </tr>
                         </thead>
-                        <tbody className="">
+                        <tbody className="alert-secondary">
                             {this.renderTasks()}
                         </tbody>
                     </table>
