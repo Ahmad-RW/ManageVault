@@ -5,6 +5,7 @@ const mongoose = require('../dbConfig/databaseCon')
 const users = require('../models/users');
 
 projectRoute.post('/newproject', function (req, res) {
+    
     console.log(req.body, "REQUEST")
     let project = {
         title: req.body.project.title,

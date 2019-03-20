@@ -18,7 +18,8 @@ const usersSchema = new schema({
         kind : String,
         date : Date,
         data : {}
-    }]
+    }],
+    token : {}
 });
 
 const Users = mongoose.model('users', usersSchema)

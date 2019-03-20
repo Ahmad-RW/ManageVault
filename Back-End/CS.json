@@ -1,13 +1,14 @@
 {
     "web": {
-        "client_id": "956469048922-fg2isjscr8vudkos6v4qval8l123q75s.apps.googleusercontent.com",
-        "project_id": "managevault-234920",
+        "client_id": "920806818532-ql186jsdirl07mm8se6d774elo2giquu.apps.googleusercontent.com",
+        "project_id": "managevault",
         "auth_uri": "https://accounts.google.com/o/oauth2/auth",
         "token_uri": "https://oauth2.googleapis.com/token",
         "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-        "client_secret": "L1Kwnle7eDUDeS6l36nnhFo7",
+        "client_secret": "AP4NCOYjkDQ4eHb-RhZk3DPL",
         "redirect_uris": [
-            "http://localhost:3333"
+            "http://localhost:3333",
+            "http://localhost:3000"
         ],
         "javascript_origins": [
             "http://localhost:3333"

@@ -52,7 +52,7 @@ storageRoute.post('/publishProject', function (req, res) {
 })
 
 storageRoute.post('/unpublishProject', function (req, res) {
-    console.log("HHHHHHHHHHHHHHHHHHH")
+    
     mongoose.model("projects").findByIdAndUpdate(req.body.project._id,
         {
             $set: {
@@ -64,6 +64,13 @@ storageRoute.post('/unpublishProject', function (req, res) {
     }).catch(function (exception) {
         res, status(500).send(exception)
     })
+})
+
+
+
+storageRoute.post('/unpublishProject', function (req, res) {
+
+    //connect with google drive and upload the files. at this point we should have the access token for the user.
 })
 
 

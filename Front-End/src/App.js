@@ -3,7 +3,7 @@ import './App.css';
 import Login from './components/accessing the system/login';
 import WelcomeScreen from './components/accessing the system/WelcomeScreen'
 import NavBar from './components/layout/Navbar'
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { BrowserRouter, Switch, Route, withRouter } from 'react-router-dom'
 import Register from './components/accessing the system/register';
 import Home from './components/initiating project/Home';
 import ProjectSettings from './components/initiating project/projectSettings';
@@ -20,25 +20,43 @@ import userDefinedRoles from './components/initiating project/userDefinedRoles';
 import Storage from './components/storage/storage'
 import PublicStorage from './components/storage/PublicStorage';
 import ViewPublicProject from './components/storage/ViewPublicProject';
+import qs from 'query-string'
+import Axios from 'axios';
 
 class App extends Component {
   
 
   componentWillMount(){
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');//user email NOT TO BE CONFUSED WITH GOOGLE API TOKEN !!!!!!!!!!!!
     if (token) {
       this.props.fetchUserInfo(token)
       this.props.fetchUserProjects(token)
       this.props.authenticate()
-      
+     const code =  qs.parse(this.props.location.search, { ignoreQueryPrefix: true }).code
+     if(typeof code === "undefined"){
+       return
+     }
+     const payload = {
+       code,
+       userEmail : token
+     }
+     Axios.post("http://localhost:3333/setAccessToken", {payload} ).then((res)=>{
+       console.log(res)
+     }).catch((execption)=>{
+       console.log(execption)
+     })
+     console.log(this.props)
+     console.log(code)
     }
+
+
   }
   
   render() {
  
     return (
      
-      <BrowserRouter>
+      
       
         <div className="App">
           <NavBar />
@@ -62,7 +80,7 @@ class App extends Component {
           </Switch>
           
         </div>
-      </BrowserRouter>
+      
     );
   }
 }
@@ -81,4 +99,5 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 }
 
 
-export default connect(null, mapDispatchToProps)(App);
+
+export default withRouter(connect(null, mapDispatchToProps)(App))

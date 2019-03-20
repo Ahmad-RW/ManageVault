@@ -25,7 +25,7 @@ class Board extends Component {
         })
     }
     handleDelete = (task_id) => {
-        
+
         this.props.deleteTask(task_id, this.props.projectInContext._id)
     }
     renderDeleteTask = (task) => {
@@ -45,15 +45,9 @@ class Board extends Component {
         }
     }
     renderConfirmSubmissionButton = (task) => {
-<<<<<<< HEAD
-        
+
         if (checkAuthority(this.props.projectInContext, "CONFIRM_TASK_SUBMISSION", this.props.userInfo) && task.status === "PENDING_FOR_CONFIRMATION") {
-            
-=======
-        // console.log("hey")
-        if (checkAuthority(this.props.projectInContext, "CONFIRM_TASK_SUBMISSION", this.props.userInfo) && task.status === "PENDING_FOR_CONFIRMATION") {
-            // console.log(this.props.userInfo, "USER_INFO")
->>>>>>> f99c78e0729d9efd66a351b79009bdf07fd6fd58
+
             return (
                 <button className="btn btn-outline-info btn-sm SBM" onClick={() => { this.confirmTaskSubmission(task) }}>Accept Submission</button>
             )
@@ -64,10 +58,10 @@ class Board extends Component {
         if (checkAuthority(this.props.projectInContext, "CONFIRM_TASK_SUBMISSION", this.props.userInfo) && task.status === "PENDING_FOR_CONFIRMATION") {
             // console.log(this.props.userInfo, "USER_INFO")
             return (
-                    <td >
-                        <button data-toggle="modal" data-target=".bd-example-modal-sm" className="btn btn-info btn-sm" className="btn btn-success btn-sm" >Reject Submission</button>
-                        {/*code below is a modal (which is triggered by the button above) for entering a feed back from the team leader */}
-                        <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                <td >
+                    <button data-toggle="modal" data-target=".bd-example-modal-sm" className="btn btn-info btn-sm" className="btn btn-success btn-sm" >Reject Submission</button>
+                    {/*code below is a modal (which is triggered by the button above) for entering a feed back from the team leader */}
+                    <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-sm">
                             <div class="modal-content">
                                 <div className="modal-header">
@@ -83,9 +77,9 @@ class Board extends Component {
                             </div>
                         </div>
                     </div>
-                    </td>
-                    
-                    
+                </td>
+
+
             )
         }
     }
@@ -121,7 +115,7 @@ class Board extends Component {
         }
     }
     handleTaskSubmission = (task) => {
-        
+
         let payload = {
             task,
             project: this.props.projectInContext,
@@ -136,7 +130,7 @@ class Board extends Component {
     }
     confirmTaskSubmission = (task) => {
         var endDate = new Date()
-      
+
         const payload = {
             task,
             project: this.props.projectInContext,
@@ -165,7 +159,7 @@ class Board extends Component {
         })
     }
     renderFeedback = (task) => {
-        
+
         if (task.feedback === "") {
             return
         }
@@ -183,13 +177,13 @@ class Board extends Component {
             tasks.map(task => {
                 let rowColor = ""
                 let taskStatus = ""
-               
+
 
                 if (task.status === "SUBMITTED") { rowColor = "table-success"; taskStatus = "Done" }
                 else if (task.status === "PENDING_FOR_CONFIRMATION") { rowColor = "table-warning"; taskStatus = "Waiting for Confirmation" }
                 else { rowColor = ""; taskStatus = "To Do" }
                 return (
-                    <tr className={rowColor+" taskBorder spaceUnder"}>
+                    <tr className={rowColor + " taskBorder spaceUnder"}>
                         <th scope="row" width="10" id="taskNumber">{++number}</th>
                         <td>
                             {task.name}
