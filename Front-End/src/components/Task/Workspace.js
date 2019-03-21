@@ -15,18 +15,7 @@ class Workspace extends Component {
         auth : {},
         googleConsentURL: ""
     }
-    componentWillMount(){
-        Axios.post("http://localhost:3333/getGoogleURL").then((res)=>{
-            console.log(res)
-            this.setState({
-                googleConsentURL : res.data
-            })
-        }).catch((err=>{
-            console.log(err)
-        }))
-
-        
-    }
+    
     render() {
         return (
             <div>
