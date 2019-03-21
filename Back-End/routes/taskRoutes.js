@@ -101,9 +101,6 @@ taskRoute.post('/confirmTaskSubmission', function (req, res) {
     },
         { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
             console.log(record)
-            req.body.payload.task.outputDocuments.forEach(outDoc=>{
-                checkOutputOf(req.body.payload.project, outDoc, res)
-            })
             res.status(200).send(record)
         }).catch(function (exception) {
             res.status(500).send(exception)
@@ -313,7 +310,6 @@ function handleOutputUpload(payload, document, res) {
             arrayFilters: [{ "element._id": mongoose.Types.ObjectId(payload.task._id) }],
             new: true
         }).then(function (record) {
-            
             checkOutputOf(payload.projectInContext, outputDocument, res)
         }).catch(function (exception) {
             console.log(exception)
@@ -337,8 +333,6 @@ function checkOutputOf(project, outputDocument, res) {
     ).then(function (record) {
         res.status(200).send(record)
     }).catch(function (exception) {
-        console.log(exception)
-
         res.status(500).send(exception)
     })
 }
