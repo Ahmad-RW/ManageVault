@@ -57,17 +57,10 @@ class Board extends Component {
         if (checkAuthority(this.props.projectInContext, "CONFIRM_TASK_SUBMISSION", this.props.userInfo) && task.status === "PENDING_FOR_CONFIRMATION") {
             // console.log(this.props.userInfo, "USER_INFO")
             return (
-<<<<<<< HEAD
-                <td >
-                    <button data-toggle="modal" data-target=".bd-example-modal-sm" className="btn btn-info btn-sm" className="btn btn-success btn-sm" >Reject Submission</button>
-                    {/*code below is a modal (which is triggered by the button above) for entering a feed back from the team leader */}
-                    <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-=======
                     <div className="submissionContainer">
                         <button data-toggle="modal" data-target=".bd-example-modal-sm" className="btn btn-outline-danger btn-sm rejectSub" >Reject Submission</button>
                         {/*code below is a modal (which is triggered by the button above) for entering a feed back from the team leader */}
                         <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
->>>>>>> 8c25a8d3e8858a0978ffe538ba8fac91a8cd3b81
                         <div class="modal-dialog modal-sm">
                             <div class="modal-content">
                                 <div className="modal-header">
@@ -83,15 +76,9 @@ class Board extends Component {
                             </div>
                         </div>
                     </div>
-<<<<<<< HEAD
-                </td>
-
-
-=======
                     </div>
                     
                     
->>>>>>> 8c25a8d3e8858a0978ffe538ba8fac91a8cd3b81
             )
         }
     }
