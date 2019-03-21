@@ -32,25 +32,8 @@ class App extends Component {
       this.props.fetchUserInfo(token)
       this.props.fetchUserProjects(token)
       this.props.authenticate()
-     const code =  qs.parse(this.props.location.search, { ignoreQueryPrefix: true }).code
-     if(typeof code === "undefined"){
-       return
-     }
-     const payload = {
-       code,
-       userEmail : token
-     }
-     Axios.post("http://localhost:3333/setAccessToken", {payload} ).then((res)=>{
-       console.log(res)
-     }).catch((execption)=>{
-       console.log(execption)
-     })
-     console.log(this.props)
-     console.log(code)
-    }
-
-
   }
+}
   
   render() {
  

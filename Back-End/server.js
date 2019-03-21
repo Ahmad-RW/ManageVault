@@ -42,7 +42,6 @@ app.post('/getGoogleURL', function (req, res) {
     res.send(url)
 })
 
-
 app.post('/setAccessToken', function (req, res) {
     console.log(req.body.payload)
 
@@ -66,42 +65,7 @@ app.use('/storage', storageRoute)
 app.listen('3333', function () {
     console.log('listening on 3333')
 })
-// var options = {
-//     directory: __dirname+'/Temp',
-//     filename: "cat.pdf"
-// }
-// download("https://firebasestorage.googleapis.com/v0/b/managevault.appspot.com/o/5c862f0ce313880c1ff8a7ee%2Fe1254a16-56a7-402d-87b8-24d567d7b710?alt=media&token=bb9744d6-56af-424c-9bd7-3d1061b4aa6d",
-// options, function(err){
-//     console.log(err,"hhhhh")
-// })
 
 
-app.get('/test', function (req, res) {
-    console.log(req.query)
 
-    mongoose.model("users").findById(req.query._id).then(function (record) {
-        console.log(record)
-        const token = record.token
-        const drive = google.drive({ version: 'v3', token })
-        drive.files.list({
-            pageSize: 10,
-            fields: 'nextPageToken, files(id, name)'
-        }, function (err, result) {
-            if (err) return console.log('The API returned an error: ' + err);
-            const files = res.data.files;
-            if (files.length) {
-                console.log('Files:');
-                files.map((file) => {
-                    console.log(`${file.name} (${file.id})`);
-                });
-            } else {
-                console.log('No files found.');
-            }
-
-        })
-    }).catch(function (err) {
-        console.log(err)
-    })
-
-})
 

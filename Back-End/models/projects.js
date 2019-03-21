@@ -107,7 +107,7 @@ const projectsSchema = new schema({
             fileName: String,
             file: String,
             storageReference : String,
-            outputOf : String//task ID
+            outputOf : String//documnt output logical name
         }],
         outputDocuments: [{
             name:String,

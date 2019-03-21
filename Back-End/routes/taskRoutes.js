@@ -254,6 +254,7 @@ taskRoute.post('/removeDependency', function (req, res) {
 })
 
 function handleInputUpload(payload, document, res) {
+   
     let name = payload.metaData.fileName
     if (payload.documentName) {
         name = payload.documentName
@@ -320,11 +321,13 @@ function handleOutputUpload(payload, document, res) {
         })
 }
 function checkOutputOf(project, outputDocument, res) {
-    
     mongoose.model("projects").findByIdAndUpdate(project._id,
         {
             $set: {
-                "tasks.$[].inputDocuments.$[doc]": outputDocument,
+                "tasks.$[].inputDocuments.$[doc].file": outputDocument.file,
+                "tasks.$[].inputDocuments.$[doc].fileName": outputDocument.fileName,
+                "tasks.$[].inputDocuments.$[doc].storageReference": outputDocument.storageReference,
+                
             }
         },
         {
@@ -332,7 +335,7 @@ function checkOutputOf(project, outputDocument, res) {
             new: true, multi: true
         }
     ).then(function (record) {
-       // res.status(200).send(record)
+        res.status(200).send(record)
     }).catch(function (exception) {
         console.log(exception)
 

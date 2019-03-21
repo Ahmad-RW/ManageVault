@@ -15,85 +15,18 @@ class Storage extends Component {
         documentsToExport :[]
     }
 
-    componentWillMount() {
-
-        Axios.post("http://localhost:3333/getGoogleURL").then((res)=>{
-            console.log(res)
-            this.setState({
-                googleConsentURL : res.data
-            })
-        }).catch((err=>{
-            console.log(err)
-        }))
-    }
-    addDocument = (doc) =>{
-        let newList = this.state.documentsToExport
-        newList = [...newList, doc._id]
-        this.setState({
-            documentsToExport : newList
-        })
-    }
-    renderFilesList = () =>{
-        const list = this.props.projectInContext.documents.map(doc=>{
-            return(
-                <li>
-                    <span>{doc.name}</span>
-                    <input value={doc._id} type="checkbox" onClick={()=>{this.addDocument(doc)}} />
-                </li>
-            )
-        })
-        return list
-    }
-    exportDocuments = () =>{
-        const payload = {
-            project : this.props.projectInContext,
-            userInfo : this.props.userInfo,
-            documentsToExport : this.state.documentsToExport
-        }
-        this.props.exportDocuments(payload)
-    }
-    renderExportButton = () => {
-        //check for access token. if not render a button that will tak him to this.state.googleConsentURL
-        if(!this.props.userInfo.token){
-            return(
-                <a href={this.state.googleConsentURL} className="">Export Documents</a>
-            )
-        }
-        return (
-            <div>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exportModal">
-                    Export Documents
-                </button>
-                <div class="modal" tabindex="-1" id="exportModal" role="dialog">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Modal title</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                            <ul>
-                                {this.renderFilesList()}
-                            </ul>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" onClick={this.exportDocuments} data-dismiss="modal">Export</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
-    }
+   
+  
+  
+  
+   
     render() {
         return (
             <div>
 
                 <ProjectSubBar />
                 <hr />
-                {this.renderExportButton()}
+             
                 <div className="container-fluid">
                     <SideBar />
                 </div>

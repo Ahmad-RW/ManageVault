@@ -20,7 +20,7 @@ class Workspace extends Component {
         return (
             <div>
                 <ProjectSubBar />
-                <a href={this.state.googleConsentURL}>hey</a>
+              
                 <h1>this is the workspace of {this.state.project.title}</h1>
                 
             </div>
