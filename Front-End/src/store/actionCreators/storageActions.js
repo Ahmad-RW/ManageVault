@@ -49,3 +49,15 @@ export const exportDocuments = payload =>{
         })
     }
 }
+
+export const deleteDocument = payload =>{
+    return(dispatch)=>{
+        axios.post("http://localhost:3333/storage/deleteDocument", {payload}).then((res)=>{
+            console.log(res)
+            payload ={...payload, res}
+            dispatch({type:"MODIFY_TASK", payload})
+        }).catch((err)=>{
+            console.log(err)
+        })
+    }
+}

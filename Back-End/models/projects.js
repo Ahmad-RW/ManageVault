@@ -50,7 +50,8 @@ const projectsSchema = new schema({
         file: String ,//Uniform Resource Locator,
         fileName : String,//physical
         storageReference : String,//name in firebase storage. I put it as reference we might not even need it
-        hidden :Boolean
+        hidden :{type:Boolean, default : false},
+        deleted : {type:Boolean, default : false}
     }],
     tasks: [{
         name: String,
