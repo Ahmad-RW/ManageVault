@@ -91,20 +91,44 @@ taskRoute.post('/submitTask', function (req, res) {
 })
 
 taskRoute.post('/confirmTaskSubmission', function (req, res) {
+    const newTaskDocuments = showHiddenDocuments(req.body.payload.task, req.body.payload.project)
     mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, {
         $set: {
             "tasks.$[elem].status": "SUBMITTED",
-            "tasks.$[elem].endDate": req.body.payload.endDate
+            "tasks.$[elem].endDate": req.body.payload.endDate,
+            "documents" : newTaskDocuments
         }
     },
         { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
             console.log(record)
+            req.body.payload.task.outputDocuments.forEach(outDoc=>{
+                checkOutputOf(req.body.payload.project, outDoc, res)
+            })
             res.status(200).send(record)
         }).catch(function (exception) {
             res.status(500).send(exception)
         })
 })
 
+function showHiddenDocuments(task, project, res){
+    const newTaskDocuments = project.documents.map(doc=>{
+       if(checkNameEquality(task.outputDocuments, doc)){
+           doc.hidden = false
+       }
+       return doc
+    })
+    
+    return newTaskDocuments
+}
+function checkNameEquality(outputDocuments, document){
+    let result = false
+    outputDocuments.forEach(outDoc=>{
+        if(outDoc.name === document.name){
+            result = true
+        }
+    })
+    return result
+}
 taskRoute.post('/editTask', function (req, res) {
     mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, {
         $set: {
@@ -262,7 +286,7 @@ function handleInputUpload(payload, document, res) {
 
 }
 function handleOutputUpload(payload, document, res) {
-
+    document ={...document, hidden:true}
     const outputDocument = {
         name: payload.documentName,
         fileName: payload.metaData.fileName,
@@ -288,16 +312,16 @@ function handleOutputUpload(payload, document, res) {
             arrayFilters: [{ "element._id": mongoose.Types.ObjectId(payload.task._id) }],
             new: true
         }).then(function (record) {
-            // res.status(200).send(record)
-            checkOutputOf(payload, outputDocument, res)
+            
+            checkOutputOf(payload.projectInContext, outputDocument, res)
         }).catch(function (exception) {
             console.log(exception)
             res.status(500).send(exception)
         })
 }
-function checkOutputOf(payload, outputDocument, res) {
-    console.log(payload)
-    mongoose.model("projects").findByIdAndUpdate(payload.projectInContext._id,
+function checkOutputOf(project, outputDocument, res) {
+    
+    mongoose.model("projects").findByIdAndUpdate(project._id,
         {
             $set: {
                 "tasks.$[].inputDocuments.$[doc]": outputDocument,
@@ -308,7 +332,7 @@ function checkOutputOf(payload, outputDocument, res) {
             new: true, multi: true
         }
     ).then(function (record) {
-        res.status(200).send(record)
+       // res.status(200).send(record)
     }).catch(function (exception) {
         console.log(exception)
 

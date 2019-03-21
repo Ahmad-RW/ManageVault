@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { newComment, checkActivity, removeDocument } from '../../store/actionCreators/taskActions'
-import { makeid, normalizeDate } from '../../helper'
+import { makeid, isTaskPending, isTaskSubmitted, isMemberAssigned } from '../../helper'
 import FileSaver from 'file-saver';
 class TaskDetails extends Component {
 
@@ -147,7 +147,7 @@ class TaskDetails extends Component {
     renderInputDocuments = () => {
         console.log(this.props.task.inputDocuments)
         const documentsList = this.props.task.inputDocuments.map(element => {
-            if(element.file !==""){
+            if(element.file !=="" || isTaskSubmitted(element.outputOf, this.props.projectInContext) ){
                 return(
                     <li><a target="_blank" href={element.file}>{element.name}</a></li>
                 )
@@ -163,6 +163,40 @@ class TaskDetails extends Component {
                 <div className="row">
                     <div className="col">
                         <h5>Input Documents</h5>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col">
+                        <ul>
+                            {documentsList}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+    renderOutputDocuments = () => {
+        
+        const documentsList = this.props.task.outputDocuments.map(element => {
+            if(!isMemberAssigned(this.props.task, this.props.userInfo)){
+                return
+            }
+            if(element.file !==""){
+                return(
+                    <li><a target="_blank" href={element.file}>{element.name}</a></li>
+                )
+            }
+            else{
+                return (
+                    <li>{element.name}</li>
+                )
+            }
+        })
+        return (
+            <div>
+                <div className="row">
+                    <div className="col">
+                        <h5>Output Documents</h5>
                     </div>
                 </div>
                 <div className="row">
@@ -211,6 +245,7 @@ class TaskDetails extends Component {
                                 {this.renderDependencies()}
                                 {this.renderActivities()}
                                 {this.renderInputDocuments()}
+                                {this.renderOutputDocuments()}
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

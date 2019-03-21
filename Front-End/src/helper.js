@@ -62,3 +62,23 @@ export const getAbsoluteValue = (number) => {
             return number * -1;
         return number;
 }
+
+export const isTaskSubmitted = (taskId, project) =>{
+    var result = false
+    project.tasks.forEach(task=>{
+        if(task._id === taskId && task.status === "SUBMITTED"){
+            result = true
+        }
+    })
+    return result
+}
+
+export const isTaskPending = (taskId, project) =>{
+    var result = false
+    project.tasks.forEach(task=>{
+        if(task._id === taskId && task.status === "PENDING_FOR_CONFIRMATION"){
+            result = true
+        }
+    })
+    return result
+}

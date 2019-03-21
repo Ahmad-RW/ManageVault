@@ -25,7 +25,6 @@ class Board extends Component {
         })
     }
     handleDelete = (task_id) => {
-
         this.props.deleteTask(task_id, this.props.projectInContext._id)
     }
     renderDeleteTask = (task) => {

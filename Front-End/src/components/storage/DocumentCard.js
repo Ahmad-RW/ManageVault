@@ -22,8 +22,10 @@ class DocumentCard extends Component {
     renderDocumentsCard = () => {
         return (
             this.props.projectInContext.documents.map(doc => {
-
-                if (doc.file !== "") {
+                if(doc.hidden){
+                    return
+                }
+                if (doc.file !== "" ) {
                     return (
                         <div class="card border-secondary mb-3 col-sm-3" key={doc._id} >
                             <div class="card-header bg-transparent border-primary"><span className="storage-card">{doc.name}</span></div>
