@@ -20,7 +20,6 @@ class Workspace extends Component {
                 <div>
                     <ProjectSubBar />             
                     <h1>this is the workspace of {this.state.project.title}</h1>
-                    
                 </div>
         )
     }
