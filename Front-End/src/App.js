@@ -41,8 +41,6 @@ class App extends Component {
       <BrowserRouter>
       
         <div className="App">
-          <NavBar />
-          
           <Switch>
             <Route exact path='/' component={WelcomeScreen} />
             <Route path='/login' component={Login} />

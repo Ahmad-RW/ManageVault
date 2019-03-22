@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import {setProject} from '../../store/actionCreators/projectActions'
+import ChatChannel from '../Channels/ChatChannel';
 class ProjectSubBar extends Component{
     constructor(props) {
         super(props)

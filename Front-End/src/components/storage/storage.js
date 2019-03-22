@@ -4,11 +4,13 @@ import FileViewer from 'react-file-viewer'
 import SideBar from '../layout/Sidebar';
 import ProjectSubBar from '../layout/projectSubBar'
 import DocumentCard from './DocumentCard';
+import Navbar from '../layout/Navbar'
 class Storage extends Component {
 
     render() {
         return (
             <div>
+                <Navbar />
                 <ProjectSubBar />
                 <hr />
                 <div className="container-fluid">

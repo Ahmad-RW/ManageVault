@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import axios from 'axios';
+import Navbar from '../layout/Navbar'
 
 class PublicStorage extends Component {
     state = {
@@ -66,6 +67,8 @@ class PublicStorage extends Component {
     }
     render() {
         return (
+            <div>
+            <Navbar />
             <div className="container">
                 <div className="row">
                     <div className="col-md-4 offset-md-8">
@@ -76,6 +79,7 @@ class PublicStorage extends Component {
                 <div className="row">
                     {this.renderProjects()}
                 </div>
+            </div>
             </div>
         )
     }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { handleInvite, handleVoting, handleNotificationDelete } from '../../store/actionCreators/projectActions'
-
+import Navbar from '../layout/Navbar'
 
 class Notification extends Component {
     constructor(props) {
@@ -101,13 +101,18 @@ class Notification extends Component {
                 )//return 
             })
         ) : (//parent predecate
-        <div className="container">
+        <div> 
+            <div className="container">
             <img src={require('../../images/silent.png')} width="350" height="350" style={{marginTop: 20 + "%"}} />
             <p>You have no notifications at the moment :(</p>
         </div>
+        </div>
         )
         return (
-            NotificationsList
+            <div> 
+                <Navbar />
+                {NotificationsList}
+            </div>
         )
     }
 }

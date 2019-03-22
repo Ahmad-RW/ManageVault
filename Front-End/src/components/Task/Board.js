@@ -9,6 +9,7 @@ import TaskDetails from './TaskDetails';
 import ModifyTask from './ModifyTask'
 import CommentsModal from './CommentsModal'
 import TaskDocumentModal from './TaskDocumentModal'
+import Navbar from '../layout/Navbar'
 
 class Board extends Component {
     state = {
@@ -262,9 +263,10 @@ class Board extends Component {
     render() {
         let tasks = this.props.projectInContext.tasks.length ? (
             <div>
+                <Navbar />
                 <ProjectSubBar />
                 <div className="table-responsive tasksTableContainer">
-                    <table class="table table-hover table-sm tasksList" id="albums" cellspacing="0">
+                    <table class="table table-hover table-sm tasksList" id="albums" cellSpacing="0">
                         <thead className="alert-secondary" >
                             <tr>
                                 <th scope="col" width="70">Task Number</th>
@@ -284,6 +286,7 @@ class Board extends Component {
 
         ) : (
                 <div>
+                    <Navbar />
                     <ProjectSubBar />
                     {this.renderEmptyState()}
                     {this.renderCreateTaskButton()}

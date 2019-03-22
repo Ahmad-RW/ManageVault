@@ -3,6 +3,8 @@ import fb from '../../FirebaseConfig/authConfig';
 import { connect } from 'react-redux';
 import {fetchUserInfo} from '../../store/actionCreators/authAction'
 import {fetchUserProjects} from '../../store/actionCreators/projectActions'
+import Navbar from '../layout/Navbar'
+
 class Login extends Component {
     state = {
         email :'',
@@ -36,6 +38,8 @@ class Login extends Component {
     }
     render() {
         return (
+            <div>
+            <Navbar />
             <form onSubmit={this.handelClick}>
             <div className="card container ">
                 <div className="form-group card-body" >
@@ -47,6 +51,7 @@ class Login extends Component {
                 </div>
             </div>
             </form>
+            </div>
         )
     }
 }

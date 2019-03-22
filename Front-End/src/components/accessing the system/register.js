@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import fb from '../../FirebaseConfig/authConfig';
 import axios from 'axios';
+import Navbar from '../layout/Navbar'
+
 class Register extends Component {
     state = {
 
@@ -43,6 +45,8 @@ class Register extends Component {
     }
     render() {
         return (
+            <div>
+            <Navbar />
             <div className="card container ">
                 <div className="form-group card-body" >
                     <form onSubmit={this.handleClick}>
@@ -64,6 +68,7 @@ class Register extends Component {
                         <button className="form-control btn btn-info sign-in-button" type="submit" >Open the Vault</button>
                     </form>
                 </div>
+            </div>
             </div>
         )
     }

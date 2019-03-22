@@ -8,6 +8,7 @@ import { leaveProject, requestToDeleteProject, removeTeamMember, requestDeleteAc
 import { publishProject, unpublishProject } from '../../store/actionCreators/storageActions'
 import { checkAuthority } from '../../helper'
 import MemberAnalysis from './MemberAnalysis'
+import Navbar from '../layout/Navbar'
 
 class ProjectSettings extends Component {
     constructor(props) {
@@ -172,6 +173,7 @@ class ProjectSettings extends Component {
         ) : (<li class="list-group-item">project has no members</li>)
         return (
             <div className="container-fluid">
+                <Navbar />
                 <div className="jumbotron jumbotron-fluid">
                     <div className="container">
                         <h1 className="display-1">{project.title}</h1>
