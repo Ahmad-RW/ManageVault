@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import ProjectSubBar from '../layout/projectSubBar'
 import Board from './Board'
+import Axios from 'axios';
 
 class Workspace extends Component {
     constructor(props) {
@@ -10,10 +11,10 @@ class Workspace extends Component {
     state = {
         userInfo: this.props.userInfo,
         project: this.props.project,
+        auth : {},
+        googleConsentURL: ""
     }
-    onSetSidebarOpen = (open) => {
-        this.setState({ sidebarOpen: open });
-      }
+
     render() {
         return (
                 <div>
@@ -29,15 +30,15 @@ const mapStateToProps = (state) => {
     return {
         isAuthenticated: state.isAuthenticated,
         userInfo: state.userInfo,
-        project : state.projectInContext
+        project: state.projectInContext
 
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        
+
     }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(Workspace)
+export default connect(mapStateToProps, mapDispatchToProps)(Workspace)

@@ -26,7 +26,6 @@ class Board extends Component {
         })
     }
     handleDelete = (task_id) => {
-        console.log(task_id)
         this.props.deleteTask(task_id, this.props.projectInContext._id)
     }
     renderDeleteTask = (task) => {
@@ -50,9 +49,9 @@ class Board extends Component {
         }
     }
     renderConfirmSubmissionButton = (task) => {
-        // console.log("hey")
+
         if (checkAuthority(this.props.projectInContext, "CONFIRM_TASK_SUBMISSION", this.props.userInfo) && task.status === "PENDING_FOR_CONFIRMATION") {
-            // console.log(this.props.userInfo, "USER_INFO")
+
             return (
                 <button className="btn btn-outline-info btn-sm SBM" onClick={() => { this.confirmTaskSubmission(task) }}>Accept Submission</button>
             )
@@ -119,7 +118,7 @@ class Board extends Component {
         }
     }
     handleTaskSubmission = (task) => {
-        console.log(task)
+
         let payload = {
             task,
             project: this.props.projectInContext,
@@ -134,7 +133,7 @@ class Board extends Component {
     }
     confirmTaskSubmission = (task) => {
         var endDate = new Date()
-        console.log(endDate, "EEEENNND")
+
         const payload = {
             task,
             project: this.props.projectInContext,
@@ -163,7 +162,7 @@ class Board extends Component {
         })
     }
     renderFeedback = (task) => {
-        console.log(task.test)
+
         if (task.feedback === "") {
             return
         }
@@ -183,13 +182,13 @@ class Board extends Component {
             tasks.map(task => {
                 let rowColor = ""
                 let taskStatus = ""
-                console.log(task.status, "STATUS")
+
 
                 if (task.status === "SUBMITTED") { rowColor = "table-success"; taskStatus = "Done" }
                 else if (task.status === "PENDING_FOR_CONFIRMATION") { rowColor = "table-warning"; taskStatus = "Waiting for Confirmation" }
                 else { rowColor = ""; taskStatus = "To Do" }
                 return (
-                    <tr className={rowColor+" taskBorder spaceUnder"}>
+                    <tr className={rowColor + " taskBorder spaceUnder"}>
                         <th scope="row" width="10" id="taskNumber">{++number}</th>
                         <td>
                             {task.name}

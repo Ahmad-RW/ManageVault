@@ -38,3 +38,26 @@ export const unpublishProject = project =>{
         })
     }
 }
+
+export const exportDocuments = payload =>{
+    return(dispatch)=>{
+        axios.post("http://localhost:3333/storage/export", {payload}).then(res=>{
+            // let payload = {res, project}
+            // dispatch({type:"CHANGE_PUBLIC_STATUS", payload})
+        }).then((exception)=>{
+            console.log(exception)
+        })
+    }
+}
+
+export const deleteDocument = payload =>{
+    return(dispatch)=>{
+        axios.post("http://localhost:3333/storage/deleteDocument", {payload}).then((res)=>{
+            console.log(res)
+            payload ={...payload, res}
+            dispatch({type:"MODIFY_TASK", payload})
+        }).catch((err)=>{
+            console.log(err)
+        })
+    }
+}

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { newComment, checkActivity, removeDocument } from '../../store/actionCreators/taskActions'
-import { makeid, normalizeDate } from '../../helper'
+import { makeid, isTaskPending, isTaskSubmitted, isMemberAssigned, isOutputTaskSubmitted } from '../../helper'
 import FileSaver from 'file-saver';
 class TaskDetails extends Component {
 
@@ -145,14 +145,17 @@ class TaskDetails extends Component {
         )
     }
     renderInputDocuments = () => {
-        console.log(this.props.task.inputDocuments)
+        
         const documentsList = this.props.task.inputDocuments.map(element => {
-            if(element.file !==""){
-                return(
-                    <li><a target="_blank" href={element.file}>{element.name}</a></li>
-                )
+            console.log(element)
+            if (element.file !== "" && isOutputTaskSubmitted(element.outputOf, this.props.projectInContext)) { //output task checks if the task submitted where it's out is outputof
+                
+                    return (
+                        <li><a target="_blank" href={element.file}>{element.name}</a></li>
+                    )
+                
             }
-            else{
+            else {
                 return (
                     <li>{element.name}</li>
                 )
@@ -175,8 +178,44 @@ class TaskDetails extends Component {
             </div>
         )
     }
+    renderOutputDocuments = () => {
+
+        const documentsList = this.props.task.outputDocuments.map(element => {
+            if (element.file !== "" && (isTaskSubmitted(this.props.task._id, this.props.projectInContext) || isTaskPending(this.props.task._id, this.props.projectInContext))) {
+                return (
+                    <li><a target="_blank" href={element.file}>{element.name}</a></li>
+                )
+            }
+            if (element.file !== ""  && isMemberAssigned(this.props.task, this.props.userInfo)) {
+                return (
+                    <li><a target="_blank" href={element.file}>{element.name}</a></li>
+                )
+            }
+            else {
+                return (
+                    <li>{element.name}</li>
+                )
+            }
+        })
+        return (
+            <div>
+                <div className="row">
+                    <div className="col">
+                        <h5>Output Documents</h5>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col">
+                        <ul>
+                            {documentsList}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        )
+    }
     render() {
-        
+
         let text = makeid()
         console.log(this.props.task)
         var date = this.props.task.startDate.split("T")
@@ -211,6 +250,7 @@ class TaskDetails extends Component {
                                 {this.renderDependencies()}
                                 {this.renderActivities()}
                                 {this.renderInputDocuments()}
+                                {this.renderOutputDocuments()}
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

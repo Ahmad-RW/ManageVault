@@ -12,11 +12,11 @@ import MemberAnalysis from './MemberAnalysis'
 class ProjectSettings extends Component {
     constructor(props) {
         super(props)
-        console.log(this.state, "CONSTURCTOR")
+       
     }
 
     state = {
-        project: this.props.location.state.project,
+        project: this.props.projectInContext,
         teamLeader: "",
         members: {},
         requestDeleteButton: false,
@@ -71,7 +71,7 @@ class ProjectSettings extends Component {
                     )
                 }
             })
-            console.log(membersList)
+            
             return (
                 <div>
                     <h5>Select A New Leader</h5>
@@ -84,7 +84,7 @@ class ProjectSettings extends Component {
         const currentMember = this.state.project.members.find(member => {
             return member.email === this.props.userInfo.email
         })
-        const project = this.props.location.state.project
+        const project = this.props.projectInContext
         if (currentMember.teamLeader) {
             return <Link to={{ pathname: "/home/projectSettings/grantAuthority", state: { project } }}>  <button className="btn btn-primary">Manage Roles</button></Link>
         }
@@ -109,7 +109,7 @@ class ProjectSettings extends Component {
         }
     }
     handleDelete = () => {
-        console.log(this.state)
+        
         if (this.state.project.members.length === 1) {
             this.props.requestDelete(this.state.project)
             this.props.history.push('/home')

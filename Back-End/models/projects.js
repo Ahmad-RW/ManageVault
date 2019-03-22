@@ -49,7 +49,9 @@ const projectsSchema = new schema({
         creator: String,
         file: String ,//Uniform Resource Locator,
         fileName : String,//physical
-        storageReference : String//name in firebase storage. I put it as reference we might not even need it
+        storageReference : String,//name in firebase storage. I put it as reference we might not even need it
+        hidden :{type:Boolean, default : false},
+        deleted : {type:Boolean, default : false}
     }],
     tasks: [{
         name: String,
@@ -106,7 +108,7 @@ const projectsSchema = new schema({
             fileName: String,
             file: String,
             storageReference : String,
-            outputOf : String//task ID
+            outputOf : String//documnt output logical name
         }],
         outputDocuments: [{
             name:String,
