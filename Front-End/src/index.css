@@ -416,12 +416,15 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 }
 .task-done{
   background-color: #85d698;
+  transition: 0.2s;
 }
 .task-wfc{
-  background-color: #fde088
+  background-color: #fde088;
+  transition: 0.2s;
 }
 .task-todo{
-  background-color: #dee2e6
+  background-color: #dee2e6;
+  transition: 0.2s;
 }
 .task-done:hover{
   background: #80cc92;
