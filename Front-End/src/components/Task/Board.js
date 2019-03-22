@@ -4,7 +4,7 @@ import CreateTask from './CreateTask'
 import ProjectSubBar from '../layout/projectSubBar';
 import { setProject } from '../../store/actionCreators/projectActions'
 import { deleteTask, submitTask, confirmTaskSubmission, watchTask, unWatchTask, declineTaskSubmission } from '../../store/actionCreators/taskActions'
-import { checkAuthority, isMemberAssigned, isUserTeamLeader } from '../../helper'
+import { checkAuthority, isMemberAssigned, isUserTeamLeader, makeid } from '../../helper'
 import TaskDetails from './TaskDetails';
 import ModifyTask from './ModifyTask'
 import CommentsModal from './CommentsModal'
@@ -55,12 +55,12 @@ class Board extends Component {
 
     renderRejectSubmissionButton = (task) => {
         if (checkAuthority(this.props.projectInContext, "CONFIRM_TASK_SUBMISSION", this.props.userInfo) && task.status === "PENDING_FOR_CONFIRMATION") {
-            // console.log(this.props.userInfo, "USER_INFO")
+            const id = makeid()
             return (
                     <div className="submissionContainer">
-                        <button data-toggle="modal" data-target=".bd-example-modal-sm" className="btn btn-outline-danger btn-sm rejectSub" >Reject Submission</button>
+                        <button data-toggle="modal" data-target={"#"+ id} className="btn btn-outline-danger btn-sm rejectSub" >Reject Submission</button>
                         {/*code below is a modal (which is triggered by the button above) for entering a feed back from the team leader */}
-                        <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                        <div id = {id} class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-sm">
                             <div class="modal-content">
                                 <div className="modal-header">
