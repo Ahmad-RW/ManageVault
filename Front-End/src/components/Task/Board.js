@@ -184,11 +184,11 @@ class Board extends Component {
                 let taskStatus = ""
 
 
-                if (task.status === "SUBMITTED") { rowColor = "table-success"; taskStatus = "Done" }
-                else if (task.status === "PENDING_FOR_CONFIRMATION") { rowColor = "table-warning"; taskStatus = "Waiting for Confirmation" }
-                else { rowColor = ""; taskStatus = "To Do" }
+                if (task.status === "SUBMITTED") { rowColor = "task-done"; taskStatus = "Done" }
+                else if (task.status === "PENDING_FOR_CONFIRMATION") { rowColor = "task-wfc"; taskStatus = "Waiting for Confirmation" }
+                else { rowColor = "task-todo"; taskStatus = "To Do" }
                 return (
-                    <tr className={rowColor + " taskBorder spaceUnder"}>
+                    <tr className={rowColor + " task taskBorder spaceUnder"}>
                         <th scope="row" width="10" id="taskNumber">{++number}</th>
                         <td>
                             {task.name}
@@ -275,7 +275,7 @@ class Board extends Component {
             <div>
                 <ProjectSubBar />
                 <div className="table-responsive tasksTableContainer">
-                    <table class="table table-hover table-sm tasksList" id="albums" cellspacing="0">
+                    <table class="table table-sm tasksList" id="albums" cellspacing="0">
                         <thead className="alert-secondary" >
                             <tr>
                                 <th className="tasksTableHeaderFirst" scope="col" width="70">Task Number</th>

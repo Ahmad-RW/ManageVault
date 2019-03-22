@@ -300,7 +300,6 @@ body {
     text-transform: uppercase;
     font-weight: bold;
     padding: 20px;
-    cursor: pointer;
     border-bottom: 1px solid rgba(255, 255, 255, 0.10);
 }
 .sidebarMenuInner li span{
@@ -414,4 +413,22 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 .tooltips:hover .tooltiptext {
   visibility: visible;
   opacity: 1;
+}
+.task-done{
+  background-color: #85d698;
+}
+.task-wfc{
+  background-color: #fde088
+}
+.task-todo{
+  background-color: #dee2e6
+}
+.task-done:hover{
+  background: #80cc92;
+}
+.task-wfc:hover{
+  background-color: #f5d883
+}
+.task-todo:hover{
+  background-color: #ced1d4
 }
