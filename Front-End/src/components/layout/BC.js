@@ -8,8 +8,8 @@ const PureBreadcrumbs = ({ breadcrumbs }) => {
       return
     }
     return(
-      <div className="bc" key={match.url}>
-       <Link  className="nav-item nav-link" to={match.url || ""}>{breadcrumb}</Link>>
+      <div className="bc navWelcome" key={match.url}>
+       <Link  className="nav-item nav-link" to={match.url || ""}> <small>{breadcrumb}</small></Link> >
       </div>
     )
   })

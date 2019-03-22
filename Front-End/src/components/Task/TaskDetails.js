@@ -222,7 +222,7 @@ class TaskDetails extends Component {
         var time = date[1].split(":")[0] + ":" + date[1].split(":")[1]
         return (
             <div>
-                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target={"#" + text} >
+                <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target={"#" + text} >
                     Task Details
                 </button>
                 <div class="modal fade" id={text} tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

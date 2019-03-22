@@ -10,14 +10,15 @@ import ModifyTask from './ModifyTask'
 import CommentsModal from './CommentsModal'
 import TaskDocumentModal from './TaskDocumentModal'
 
-class Board extends Component {
-    state = {
-        feedback: ""
-    }
-    constructor(props) {
 
+class Board extends Component {
+    constructor(props) {
         super(props)
+        this.state = {
+            feedback: "",
+        }
     }
+    
     handleChange = (e) => {
         this.setState({
             [e.target.id]: e.target.value
@@ -30,9 +31,13 @@ class Board extends Component {
     renderDeleteTask = (task) => {
         if (checkAuthority(this.props.projectInContext, "DELETE_TASK", this.props.userInfo)) {
             return (
+                <div className="tooltips">
                 <button title="Delete task" className="close deleteTask" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleDelete(task._id, this.props.projectInContext._id) }} key={task._id}>
                     <i className="material-icons">highlight_off</i>
                 </button>
+                <span className="tooltiptext">Delete Task</span>
+                </div>
+                
             )
         }
     }
@@ -162,9 +167,11 @@ class Board extends Component {
             return
         }
         return (
-            <i class="material-icons" title={task.feedback}>
-                feedback
-            </i>
+            <div className="tooltips">
+                <i class="material-icons" title={task.feedback}>feedback</i>
+                <span className="tooltiptext">{task.feedback}</span>
+            </div>
+            
         )
     }
     renderTasks = () => {
@@ -177,11 +184,11 @@ class Board extends Component {
                 let taskStatus = ""
 
 
-                if (task.status === "SUBMITTED") { rowColor = "table-success"; taskStatus = "Done" }
-                else if (task.status === "PENDING_FOR_CONFIRMATION") { rowColor = "table-warning"; taskStatus = "Waiting for Confirmation" }
-                else { rowColor = ""; taskStatus = "To Do" }
+                if (task.status === "SUBMITTED") { rowColor = "task-done"; taskStatus = "Done" }
+                else if (task.status === "PENDING_FOR_CONFIRMATION") { rowColor = "task-wfc"; taskStatus = "Waiting for Confirmation" }
+                else { rowColor = "task-todo"; taskStatus = "To Do" }
                 return (
-                    <tr className={rowColor + " taskBorder spaceUnder"}>
+                    <tr className={rowColor + " task taskBorder spaceUnder"}>
                         <th scope="row" width="10" id="taskNumber">{++number}</th>
                         <td>
                             {task.name}
@@ -233,7 +240,12 @@ class Board extends Component {
         })
         if (!found) {
             return (
-                <button title="Watch task" className="close watchTask" onClick={() => { this.handleWatchTask(task) }}> <i className="material-icons">visibility</i> </button>
+                <div className="tooltips">
+                <button title="Watch task" className="close watchTask" onClick={() => { this.handleWatchTask(task) }}>
+                    <i className="material-icons">visibility</i>
+                </button>
+                <span className="tooltiptext">Watch Task</span>
+                </div>
             )
         } else {
             return (
@@ -263,13 +275,13 @@ class Board extends Component {
             <div>
                 <ProjectSubBar />
                 <div className="table-responsive tasksTableContainer">
-                    <table class="table table-hover table-sm tasksList" id="albums" cellspacing="0">
+                    <table class="table table-sm tasksList" id="albums" cellspacing="0">
                         <thead className="alert-secondary" >
                             <tr>
-                                <th scope="col" width="70">Task Number</th>
+                                <th className="tasksTableHeaderFirst" scope="col" width="70">Task Number</th>
                                 <th scope="col" width="350">Task Name</th>
                                 <th scope="col" width="200">Status</th>
-                                <th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th>
+                                <th></th><th></th><th></th><th></th><th></th><th></th><th></th><th className="tasksTableHeaderLast"></th>
                             </tr>
                         </thead>
                         <tbody className="alert-secondary">

@@ -8,22 +8,20 @@ class Workspace extends Component {
     constructor(props) {
         super(props)
     }
-
     state = {
         userInfo: this.props.userInfo,
         project: this.props.project,
         auth : {},
         googleConsentURL: ""
     }
-    
+
     render() {
         return (
-            <div>
-                <ProjectSubBar />
-              
-                <h1>this is the workspace of {this.state.project.title}</h1>
-                
-            </div>
+                <div>
+                    <ProjectSubBar />             
+                    <h1>this is the workspace of {this.state.project.title}</h1>
+                    
+                </div>
         )
     }
 }
