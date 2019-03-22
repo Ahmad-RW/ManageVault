@@ -28,8 +28,7 @@ class NavBar extends Component {
     }
     render() {//if he is signed in we render different Navbar
         const navbar = this.props.authenticated ? (
-            <div>
-             
+            <div className="fixed-top">
                 <nav className="navbar navbar-expand-lg navbar-dark bg-dark navBarPadding">
                     {/* <Link className="navbar-brand" to="/"><img src={require('../../favicon.ico')} width="30" height="30" alt="logo" /></Link> */}
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">

@@ -106,7 +106,7 @@ html {
     margin-left: auto;
   margin-right: auto;
 }
-
+/* Start For Navbar */
 .app,
 .breadcrumbs,
 .bc,
@@ -161,7 +161,10 @@ display: inline;
   display: flex;
   align-items: center;
 }
-
+.fixed{
+  position:fixed;
+}
+/* End for Navbar  */
 .storage-card {
   display: block;
   width: 200px;
