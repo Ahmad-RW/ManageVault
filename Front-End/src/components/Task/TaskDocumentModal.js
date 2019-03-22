@@ -192,9 +192,12 @@ class TaskDocumentModal extends Component {
         const text = makeid()
         return (
             <div>
-                <button title="Task Documents" type="button" class="close" data-toggle="modal" data-target={"#" + text} >
-                <i class="material-icons">folder</i>
-                </button>
+                <div className="tooltips">
+                    <button title="Task Documents" type="button" class="close tooltips" data-toggle="modal" data-target={"#" + text} >
+                        <i class="material-icons">folder</i>
+                    </button>
+                    <span className="tooltiptext">Task's Documents</span>
+                </div>
                 <div class="modal fade" id={text} tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">

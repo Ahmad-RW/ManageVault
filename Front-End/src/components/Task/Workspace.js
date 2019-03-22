@@ -7,16 +7,17 @@ class Workspace extends Component {
     constructor(props) {
         super(props)
     }
-
     state = {
         userInfo: this.props.userInfo,
-        project: this.props.project
+        project: this.props.project,
     }
-
+    onSetSidebarOpen = (open) => {
+        this.setState({ sidebarOpen: open });
+      }
     render() {
         return (
                 <div>
-                    <ProjectSubBar />
+                    <ProjectSubBar />             
                     <h1>this is the workspace of {this.state.project.title}</h1>
                     
                 </div>

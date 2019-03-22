@@ -286,9 +286,12 @@ class ModifyTask extends Component {
         let text = makeid()
         return (
             <div className="editTask">
+                <div className="tooltips">
                 <button title="Edit task"className="close" aria-label="Close" data-toggle="modal" data-target={"#" + text}>
                     <i class="material-icons">edit</i>
                 </button>
+                <span className="tooltiptext">Edit Task</span>
+                </div>
                 <div class="modal fade" id={text} tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
