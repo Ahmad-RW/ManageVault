@@ -13,25 +13,23 @@ class Workspace extends Component {
         userInfo: this.props.userInfo,
         project: this.props.project,
         auth : {},
-        googleConsentURL: ""
+        consentURL: ""
     }
     componentWillMount(){
-        Axios.post("http://localhost:3333/getGoogleURL").then((res)=>{
+        Axios.get("http://localhost:3333/testGetURL").then((res)=>{
             console.log(res)
             this.setState({
-                googleConsentURL : res.data
+                consentURL : res.data
             })
         }).catch((err=>{
             console.log(err)
         }))
-//master
-        
     }
     render() {
         return (
             <div>
                 <ProjectSubBar />
-                <a href={this.state.googleConsentURL}>hey</a>
+                <a href={this.state.consentURL}>hey</a>
                 <h1>this is the workspace of {this.state.project.title}</h1>
                 
             </div>

@@ -11,16 +11,15 @@ class Storage extends Component {
     state = {
         userInfo: this.props.userInfo,
         project: this.props.project,
-        googleConsentURL: "",
+        consentURL: "",
         documentsToExport :[]
     }
 
-    componentWillMount() {
-
-        Axios.post("http://localhost:3333/getGoogleURL").then((res)=>{
-            console.log(res)
+    componentWillMount(){
+        Axios.get("http://localhost:3333/dropbox/getURL").then((res)=>{
+           
             this.setState({
-                googleConsentURL : res.data
+                consentURL : res.data
             })
         }).catch((err=>{
             console.log(err)
@@ -28,7 +27,7 @@ class Storage extends Component {
     }
     addDocument = (doc) =>{
         let newList = this.state.documentsToExport
-        newList = [...newList, doc._id]
+        newList = [...newList, doc]
         this.setState({
             documentsToExport : newList
         })
@@ -48,15 +47,16 @@ class Storage extends Component {
         const payload = {
             project : this.props.projectInContext,
             userInfo : this.props.userInfo,
-            documentsToExport : this.state.documentsToExport
+            documents : this.state.documentsToExport
         }
+        console.log(this.state)
         this.props.exportDocuments(payload)
     }
     renderExportButton = () => {
         //check for access token. if not render a button that will tak him to this.state.googleConsentURL
         if(!this.props.userInfo.token){
             return(
-                <a href={this.state.googleConsentURL} className="">Export Documents</a>
+                <a href={this.state.consentURL} className="">Export Documents</a>
             )
         }
         return (
