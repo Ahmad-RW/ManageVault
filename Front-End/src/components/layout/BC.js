@@ -9,7 +9,7 @@ const PureBreadcrumbs = ({ breadcrumbs }) => {
     }
     return(
       <div className="bc navWelcome" key={match.url}>
-       <Link  className="nav-item nav-link" to={match.url || ""}> <small>{breadcrumb}</small></Link> >
+       <Link  className="nav-item nav-link" to={match.url || ""}> <small>{breadcrumb}</small></Link> /
       </div>
     )
   })

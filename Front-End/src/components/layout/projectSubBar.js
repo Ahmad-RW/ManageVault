@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import {setProject} from '../../store/actionCreators/projectActions'
-import Sidebar from 'react-sidebar'
 
 class ProjectSubBar extends Component{
     constructor(props) {
@@ -54,7 +53,9 @@ class ProjectSubBar extends Component{
                         <li><Link to='/home/projectWorkSpace/storage'>Storage</Link></li>
                         <li>Chat channels</li>
                         <li>Whiteboard</li>
-                        <li>Progress bar</li>
+                        <li>
+                            <p>Project Progress</p>{this.renderProgressBar()}
+                        </li>
                     </ul>
                 </div>
             </div>
