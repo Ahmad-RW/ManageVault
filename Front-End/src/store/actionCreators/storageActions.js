@@ -41,9 +41,10 @@ export const unpublishProject = project =>{
 
 export const exportDocuments = payload =>{
     return(dispatch)=>{
-        axios.post("http://localhost:3333/storage/export", {payload}).then(res=>{
+        axios.post("http://localhost:3333/dropbox/export", {payload}).then(res=>{
             // let payload = {res, project}
             // dispatch({type:"CHANGE_PUBLIC_STATUS", payload})
+            console.log(res)
         }).then((exception)=>{
             console.log(exception)
         })
