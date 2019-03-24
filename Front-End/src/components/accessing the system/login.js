@@ -6,7 +6,8 @@ import {fetchUserProjects} from '../../store/actionCreators/projectActions'
 class Login extends Component {
     state = {
         email :'',
-        password : ''
+        password : '',
+        startSpinner: false,
     }
     constructor(props){
         super(props)
@@ -21,6 +22,7 @@ class Login extends Component {
         
     }
     handelClick = (e) =>{
+        this.setState({...this.state,startSpinner:true})
         e.preventDefault();
         fb.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((res)=>{
             console.log(res)
@@ -34,6 +36,13 @@ class Login extends Component {
             alert("wrong email or password")
         })
     }
+    renderspinner = () => {
+        if(this.state.startSpinner===true){
+            return(
+                <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+            )
+        }
+    }
     render() {
         return (
             <form onSubmit={this.handelClick}>
@@ -46,6 +55,7 @@ class Login extends Component {
                     <button className="form-control btn btn-info sign-in-button" type="submit" onClick={this.handelClick}>Sign In</button>
                 </div>
             </div>
+            {this.renderspinner()}
             </form>
         )
     }

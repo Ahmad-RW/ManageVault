@@ -249,7 +249,12 @@ class Board extends Component {
             )
         } else {
             return (
-                <button title="Unwatch task" className="close" onClick={() => { this.handleUnWatchTask(task) }}> <i class="material-icons">visibility_off</i> </button>
+                <div className="tooltips">
+                <button title="Unwatch task" className="close" onClick={() => { this.handleUnWatchTask(task) }}>
+                    <i class="material-icons">visibility_off</i>
+                </button>
+                <span className="tooltiptext">Unwatch Task</span>
+                </div>
             )
         }
 
