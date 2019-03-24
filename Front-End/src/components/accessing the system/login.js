@@ -33,6 +33,7 @@ class Login extends Component {
            this.props.history.push('/home');//redirection
         }).catch((exception)=>{
             console.log(exception)
+            this.setState({...this.state,startSpinner:false})
             alert("wrong email or password")
         })
     }
