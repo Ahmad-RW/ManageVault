@@ -100,7 +100,7 @@ class Storage extends Component {
                 <ProjectSubBar />
                 <hr />
                 {this.renderExportButton()}
-                <div className="container-fluid">
+                <div>
                     <SideBar />
                 </div>
                 <div className="container">
