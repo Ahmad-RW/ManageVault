@@ -22,19 +22,26 @@ class DocumentCard extends Component {
 
     }
     deleteDocument = (doc) => {
+        if(doc.isImported){
+            this.dispatchDeleteDocAction(doc)
+            return
+        }
         var path = "" + this.props.projectInContext._id + "/" + doc.storageReference
         console.log(path)
         var folderRef = firebase.storage().ref().child(this.props.projectInContext._id)
         folderRef.child(doc.storageReference).delete().then(()=>{
             console.log("done")
-            const payload = {
-                project : this.props.projectInContext,
-                document : doc
-            }
-            this.props.deleteDocument(payload)
+            this.dispatchDeleteDocAction(doc)
         }).catch((err)=>{
             console.log(err)
         })
+    }
+    dispatchDeleteDocAction = (doc)=>{
+        const payload = {
+            project : this.props.projectInContext,
+            document : doc
+        }
+        this.props.deleteDocument(payload)
     }
     renderDocumentsCard = () => {
         return (

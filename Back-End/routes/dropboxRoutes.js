@@ -90,7 +90,6 @@ function makeDocumentObject(file) {
         contentType,
         size: file.size,
         filename: file.name,
-        hidden: false,
         file: file.link,
         isImported: true
     }

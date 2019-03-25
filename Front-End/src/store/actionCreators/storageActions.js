@@ -51,7 +51,6 @@ export const exportDocuments = payload =>{
     }
 }
 
-<<<<<<< HEAD
 export const handleDBXImport = payload =>{
     return dispatch=>{
         axios.post('http://localhost:3333/dropbox/import', {payload}).then((res)=>{
@@ -59,8 +58,9 @@ export const handleDBXImport = payload =>{
           dispatch({type:"MODIFY_TASK", payload})
         }).catch((err)=>{
           console.log(err)
-        
-=======
+        })
+    }
+}
 export const deleteDocument = payload =>{
     return(dispatch)=>{
         axios.post("http://localhost:3333/storage/deleteDocument", {payload}).then((res)=>{
@@ -69,7 +69,6 @@ export const deleteDocument = payload =>{
             dispatch({type:"MODIFY_TASK", payload})
         }).catch((err)=>{
             console.log(err)
->>>>>>> 580f86790f63b409ceae070ecd48b05861ba21ef
         })
     }
 }
