@@ -148,19 +148,10 @@ class TaskDetails extends Component {
         
         const documentsList = this.props.task.inputDocuments.map(element => {
             console.log(element)
-            if (element.file !== "" ) { //output task checks if the task submitted where it's out is outputof
-                if(isOutputTaskSubmitted(element.outputOf, this.props.projectInContext)){
+            if (element.file !== "" && isOutputTaskSubmitted(element.outputOf, this.props.projectInContext) ) { //output task checks if the task submitted where it's out is outputof
                     return (
                         <li><a target="_blank" href={element.file}>{element.name}</a></li>
                     )
-                }
-                else{
-                    return (
-                        <li>{element.name}</li>
-                    )
-                }
-                
-                
             }
             else {
                 return (
