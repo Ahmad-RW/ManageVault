@@ -110,12 +110,14 @@ const projectsSchema = new schema({
             fileName: String,
             file: String,
             storageReference : String,
+            deleted : {type:Boolean, default : false},
             outputOf : String//documnt output logical name
         }],
         outputDocuments: [{
             name:String,
             fileName: String,
             file: String,
+            deleted : {type:Boolean, default : false},
             storageReference : String
         }],
     }]

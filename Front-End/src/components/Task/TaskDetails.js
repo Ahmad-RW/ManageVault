@@ -147,8 +147,11 @@ class TaskDetails extends Component {
     renderInputDocuments = () => {
         
         const documentsList = this.props.task.inputDocuments.map(element => {
-            console.log(element)
-            if (element.file !== "" && isOutputTaskSubmitted(element.outputOf, this.props.projectInContext) ) { //output task checks if the task submitted where it's out is outputof
+            if(element.deleted){
+                return
+            }
+            if (element.file !== "" && isOutputTaskSubmitted(element.outputOf, this.props.projectInContext)  ) {
+                 //output task checks if the task submitted where it's out is outputof
                     return (
                         <li><a target="_blank" href={element.file}>{element.name}</a></li>
                     )

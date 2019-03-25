@@ -70,12 +70,13 @@ storageRoute.post('/unpublishProject', function (req, res) {
 storageRoute.post('/deleteDocument', function (req, res) {
 
     mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, {$set:{
-        "documents.$[doc].deleted" : true
-    }}, {arrayFilters:[{"doc._id": mongoose.Types.ObjectId(req.body.payload.document._id)}],new:true}).then(function(Record){
+        "documents.$[doc].deleted" : true, "tasks.$[].inputDocuments.$[inputDoc].deleted" : true
+    }}, {arrayFilters:[{"doc._id": mongoose.Types.ObjectId(req.body.payload.document._id) 
+     }, {"inputDoc.storageReference": req.body.payload.document.storageReference  }],new:true}).then(function(Record){
         console.log(Record)
         res.status(200).send(Record)
     }).catch(function(err){
-        console.log
+        console.log(err)
         res.status(500).send(err)
     })
 })

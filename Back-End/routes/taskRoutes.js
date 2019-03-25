@@ -352,7 +352,7 @@ taskRoute.post('/fileUpload', function (req, res) {
 
     }
     else {
-        console.log("ba")
+        
         handleOutputUpload(req.body.payload, document, res)
     }
 

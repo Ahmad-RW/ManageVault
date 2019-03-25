@@ -99,6 +99,7 @@ class DocumentCard extends Component {
             <div className="form-group">
 
                 <select className="form-control" onChange={this.reRenderView} id="showDocumentsOf">
+                <option  value="" id="showDocumentsOf">Dont apply filters</option>
                     <option value="Project_Documents" id="showDocumentsOf">Project Documents</option>
                     {this.renderFilterByTaskItems()}
                 </select>
