@@ -101,9 +101,6 @@ taskRoute.post('/confirmTaskSubmission', function (req, res) {
     },
         { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
             console.log(record)
-            req.body.payload.task.outputDocuments.forEach(outDoc=>{
-                checkOutputOf(req.body.payload.project, outDoc, res)
-            })
             res.status(200).send(record)
         }).catch(function (exception) {
             res.status(500).send(exception)
@@ -254,6 +251,7 @@ taskRoute.post('/removeDependency', function (req, res) {
 })
 
 function handleInputUpload(payload, document, res) {
+   
     let name = payload.metaData.fileName
     if (payload.documentName) {
         name = payload.documentName
@@ -312,7 +310,6 @@ function handleOutputUpload(payload, document, res) {
             arrayFilters: [{ "element._id": mongoose.Types.ObjectId(payload.task._id) }],
             new: true
         }).then(function (record) {
-            
             checkOutputOf(payload.projectInContext, outputDocument, res)
         }).catch(function (exception) {
             console.log(exception)
@@ -320,11 +317,13 @@ function handleOutputUpload(payload, document, res) {
         })
 }
 function checkOutputOf(project, outputDocument, res) {
-    
     mongoose.model("projects").findByIdAndUpdate(project._id,
         {
             $set: {
-                "tasks.$[].inputDocuments.$[doc]": outputDocument,
+                "tasks.$[].inputDocuments.$[doc].file": outputDocument.file,
+                "tasks.$[].inputDocuments.$[doc].fileName": outputDocument.fileName,
+                "tasks.$[].inputDocuments.$[doc].storageReference": outputDocument.storageReference,
+                
             }
         },
         {
@@ -332,10 +331,8 @@ function checkOutputOf(project, outputDocument, res) {
             new: true, multi: true
         }
     ).then(function (record) {
-       // res.status(200).send(record)
+        res.status(200).send(record)
     }).catch(function (exception) {
-        console.log(exception)
-
         res.status(500).send(exception)
     })
 }

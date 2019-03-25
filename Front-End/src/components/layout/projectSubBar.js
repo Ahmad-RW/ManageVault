@@ -2,9 +2,18 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import {setProject} from '../../store/actionCreators/projectActions'
+
 class ProjectSubBar extends Component{
     constructor(props) {
         super(props)
+        this.state = {
+            sidebarOpen: false
+        }
+        this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
+    }
+
+    onSetSidebarOpen(open) {
+        this.setState({ sidebarOpen: open });
     }
     
     renderProgressBar = () => {
@@ -26,24 +35,29 @@ class ProjectSubBar extends Component{
                 <div className="progress-bar progress-bar-striped bg-success" role="progressbar" aria-valuenow='50' aria-valuemin='0' aria-valuemax="100" style={{width: widthValue+'%'}}></div>
             </div>
         )
-}
+    }
     render() {
         const project = this.props.project
         return (
             <div>
-            <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-                <Link className="navbar-brand" to="#">{project.title}</Link>
-                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#subnavbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon"></span>
-                </button>
-                <div className="collapse navbar-collapse" id="subnavbarNavAltMarkup">
-                    <div className="navbar-nav">
-                        <Link className="nav-item nav-link" to={{ pathname: "/home/projectWorkSpace/board", state: { project} }}>Board</Link>
-                        <Link className="nav-item nav-link" to='/home/projectWorkSpace/storage'>Storage</Link>
-                    </div>
+                <input type="checkbox" class="openSidebarMenu toggleCheckBox" id="openSidebarMenu" />
+                <label for="openSidebarMenu" class="sidebarIconToggle">
+                    <div class="spinner diagonal part-1"></div>
+                    <div class="spinner horizontal"></div>
+                    <div class="spinner diagonal part-2"></div>
+                </label>
+                <div id="sidebarMenu">
+                    <ul class="sidebarMenuInner">
+                        <li><Link to="#"><h1>{project.title}</h1></Link></li>
+                        <li><Link to={{ pathname: "/home/projectWorkSpace/board", state: { project} }}>Board</Link></li>
+                        <li><Link to='/home/projectWorkSpace/storage'>Storage</Link></li>
+                        <li>Chat channels</li>
+                        <li>Whiteboard</li>
+                        <li>
+                            <p>Project Progress</p>{this.renderProgressBar()}
+                        </li>
+                    </ul>
                 </div>
-                {this.renderProgressBar()}
-            </nav>
             </div>
         )
     }

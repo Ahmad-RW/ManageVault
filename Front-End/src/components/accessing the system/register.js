@@ -7,7 +7,8 @@ class Register extends Component {
         name: "",
         password: "",
         email: "",
-        warningMessage: <h2></h2>
+        warningMessage: <h2></h2>,
+        startSpinner: false,
     }
     handlechange = (e) => {
         this.setState({
@@ -16,6 +17,7 @@ class Register extends Component {
         console.log(this.state)
     }
     handleClick = (e) => {
+        this.setState({...this.state,startSpinner:true})
         e.preventDefault()
         console.log(e)
         fb.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then((res) => {
@@ -25,7 +27,8 @@ class Register extends Component {
         }).catch((exception) => {
             console.log(exception)
             this.setState({
-                warningMessage: <div className="alert alert-danger" role="alert">{exception.message} </div>
+                warningMessage: <div className="alert alert-danger" role="alert">{exception.message} </div>,
+                startSpinner:false
             })
         })
 
@@ -40,6 +43,13 @@ class Register extends Component {
         }).catch((exception) => {
             console.log(exception)
         })
+    }
+    renderspinner = () => {
+        if(this.state.startSpinner===true){
+            return(
+                <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+            )
+        }
     }
     render() {
         return (
@@ -63,6 +73,7 @@ class Register extends Component {
                         </div>
                         <button className="form-control btn btn-info sign-in-button" type="submit" >Open the Vault</button>
                     </form>
+                    {this.renderspinner()}
                 </div>
             </div>
         )

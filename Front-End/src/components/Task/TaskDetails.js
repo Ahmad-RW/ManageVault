@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { newComment, checkActivity, removeDocument } from '../../store/actionCreators/taskActions'
-import { makeid, isTaskPending, isTaskSubmitted, isMemberAssigned } from '../../helper'
+import { makeid, isTaskPending, isTaskSubmitted, isMemberAssigned, isOutputTaskSubmitted } from '../../helper'
 import FileSaver from 'file-saver';
 class TaskDetails extends Component {
 
@@ -145,14 +145,17 @@ class TaskDetails extends Component {
         )
     }
     renderInputDocuments = () => {
-        console.log(this.props.task.inputDocuments)
+        
         const documentsList = this.props.task.inputDocuments.map(element => {
-            if(element.file !=="" || isTaskSubmitted(element.outputOf, this.props.projectInContext) ){
-                return(
-                    <li><a target="_blank" href={element.file}>{element.name}</a></li>
-                )
+            console.log(element)
+            if (element.file !== "" && isOutputTaskSubmitted(element.outputOf, this.props.projectInContext)) { //output task checks if the task submitted where it's out is outputof
+                
+                    return (
+                        <li><a target="_blank" href={element.file}>{element.name}</a></li>
+                    )
+                
             }
-            else{
+            else {
                 return (
                     <li>{element.name}</li>
                 )
@@ -176,17 +179,19 @@ class TaskDetails extends Component {
         )
     }
     renderOutputDocuments = () => {
-        
+
         const documentsList = this.props.task.outputDocuments.map(element => {
-            if(!isMemberAssigned(this.props.task, this.props.userInfo)){
-                return
-            }
-            if(element.file !==""){
-                return(
+            if (element.file !== "" && (isTaskSubmitted(this.props.task._id, this.props.projectInContext) || isTaskPending(this.props.task._id, this.props.projectInContext))) {
+                return (
                     <li><a target="_blank" href={element.file}>{element.name}</a></li>
                 )
             }
-            else{
+            if (element.file !== ""  && isMemberAssigned(this.props.task, this.props.userInfo)) {
+                return (
+                    <li><a target="_blank" href={element.file}>{element.name}</a></li>
+                )
+            }
+            else {
                 return (
                     <li>{element.name}</li>
                 )
@@ -210,14 +215,14 @@ class TaskDetails extends Component {
         )
     }
     render() {
-        
+
         let text = makeid()
         console.log(this.props.task)
         var date = this.props.task.startDate.split("T")
         var time = date[1].split(":")[0] + ":" + date[1].split(":")[1]
         return (
             <div>
-                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target={"#" + text} >
+                <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target={"#" + text} >
                     Task Details
                 </button>
                 <div class="modal fade" id={text} tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

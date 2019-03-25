@@ -6,7 +6,6 @@ class Workspace extends Component {
     constructor(props) {
         super(props)
     }
-
     state = {
         userInfo: this.props.userInfo,
         project: this.props.project,

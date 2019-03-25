@@ -50,8 +50,13 @@ const projectsSchema = new schema({
         file: String ,//Uniform Resource Locator,
         fileName : String,//physical
         storageReference : String,//name in firebase storage. I put it as reference we might not even need it
+<<<<<<< HEAD
         hidden :Boolean,
         isImported : Boolean
+=======
+        hidden :{type:Boolean, default : false},
+        deleted : {type:Boolean, default : false}
+>>>>>>> 580f86790f63b409ceae070ecd48b05861ba21ef
     }],
     tasks: [{
         name: String,
@@ -108,7 +113,7 @@ const projectsSchema = new schema({
             fileName: String,
             file: String,
             storageReference : String,
-            outputOf : String//task ID
+            outputOf : String//documnt output logical name
         }],
         outputDocuments: [{
             name:String,

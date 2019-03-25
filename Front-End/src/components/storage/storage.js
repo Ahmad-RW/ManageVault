@@ -35,6 +35,9 @@ class Storage extends Component {
     }
     renderFilesList = () =>{
         const list = this.props.projectInContext.documents.map(doc=>{
+            if(doc.deleted || doc.hidden){
+                return
+            }
             return(
                 <li>
                     <span>{doc.name}</span>
@@ -52,6 +55,9 @@ class Storage extends Component {
         }
         console.log(this.state)
         this.props.exportDocuments(payload)
+        this.setState({
+            documentsToExport :[]
+        })
     }
     renderExportButton = () => {
         //check for access token. if not render a button that will tak him to this.state.googleConsentURL

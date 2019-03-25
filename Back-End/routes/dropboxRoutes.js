@@ -128,13 +128,26 @@ dbxRoute.post('/export', function (req, res) {
                 const dbx = new Dropbox({ accessToken: access_token })
                 file_system.readFile(compressedDir, function (err, data) {
                     if (err) {
-                        throw err;
+                        res.status(500).send(err)
                     }
                     console.log(data)
-                    dbx.filesUpload({ path: "/" + payload.project.title + ' exported files.zip', contents: data }).then(function (result) {
+                    dbx.filesUpload({ path: "/" + payload.project.title + ' exported files.zip', contents: data, autorename:true }).then(function (result) {
+                        rimraf(tempDir, function (err) {
+                            if (err) {
+                                res.status(500).send(err)
+                            }
+
+                        })
+                        rimraf(compressedDir, function (err) {
+                            if (err) {
+                                res.status(500).send(err)
+                            }
+                            res.status(200).send()
+                        })
                     }).catch(function (err) {
                         res.status(500).send(err)
                     })
+<<<<<<< HEAD
                     rimraf(tempDir, function (err) {
                         if (err) {
                             res.status(500).send(err)
@@ -148,6 +161,8 @@ dbxRoute.post('/export', function (req, res) {
                         res.status(200).send()
                     })
 
+=======
+>>>>>>> 580f86790f63b409ceae070ecd48b05861ba21ef
 
                 })
             })

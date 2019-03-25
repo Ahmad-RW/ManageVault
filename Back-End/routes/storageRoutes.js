@@ -67,8 +67,20 @@ storageRoute.post('/unpublishProject', function (req, res) {
 })
 
 
+storageRoute.post('/deleteDocument', function (req, res) {
 
-storageRoute.post('/unpublishProject', function (req, res) {
+    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, {$set:{
+        "documents.$[doc].deleted" : true
+    }}, {arrayFilters:[{"doc._id": mongoose.Types.ObjectId(req.body.payload.document._id)}],new:true}).then(function(Record){
+        console.log(Record)
+        res.status(200).send(Record)
+    }).catch(function(err){
+        console.log
+        res.status(500).send(err)
+    })
+})
+
+storageRoute.post('/exportFiles', function (req, res) {
 
     //connect with google drive and upload the files. at this point we should have the access token for the user.
 })

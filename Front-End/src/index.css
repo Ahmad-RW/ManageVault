@@ -30,7 +30,9 @@ code {
 .btn-danger {
   margin-left: 10px;
 }
-
+.notiIcon{
+  background: #F3F5F6
+}
 .label {
 padding-right: 100px;
 }
@@ -68,7 +70,7 @@ background-color: lightblue;
 .inline { float:left; }
 
 .progress {
-  width: 15%;
+  width: 100%;
 }
 
 .material-icons.md-light { color: rgba(255, 255, 255, 1); }
@@ -104,14 +106,23 @@ html {
     margin-left: auto;
   margin-right: auto;
 }
-
+/* Start For Navbar */
 .app,
 .breadcrumbs,
 .bc,
 .content {
   display: flex;
 }
-
+.navWelcome{
+  color: rgba(255,255,255,.5);
+}
+.navBarPadding{
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+.NavElements{
+display: inline;
+}
 .app {
   flex-direction: column;
 }
@@ -150,7 +161,10 @@ html {
   display: flex;
   align-items: center;
 }
-
+.fixed{
+  position:fixed;
+}
+/* End for Navbar  */
 .storage-card {
   display: block;
   width: 200px;
@@ -169,13 +183,24 @@ html {
     height:         100%;
     width:          1px;       
 }
+/* for Navbar */
+.stickyNav{
+  position: sticky;
+  top: 0;
+}
 /* For tasks display */
 .tasksTableContainer{
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 40px;
+  padding-right: 40px;
 }
 .taskTableRow{
   border-radius: 25px;
+}
+.tasksTableHeaderFirst{
+  border-top-left-radius: 20px;
+}
+.tasksTableHeaderLast{
+  border-top-right-radius: 20px;
 }
 tr.taskBorder td {
   /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
@@ -193,12 +218,300 @@ table#albums
 }
 td#lastTB{
   border-right: 1px solid rgb(83, 83, 83);
-  /* border-radius: 25px; */
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
 th#taskNumber {
   border: 1px solid rgb(83, 83, 83);
-  /* border-radius: 25px; */
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
 }
 table#tasksList{
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+.rejectSub{
+  margin-top: 5px;
+}
+.submissionContainer{
+  text-align: center;
+  display: inline-block
+}
+/* for sidebar */
+@import url('https://fonts.googleapis.com/css?family=Varela+Round');
+html, body {
+    overflow-x: hidden;
+    height: 100%;
+}
+body {
+    background: #fff;
+    padding: 0;
+    margin: 0;
+    font-family: 'Varela Round', sans-serif;
+}
+.header {
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 100%;
+    box-shadow: none;
+    background-color: #343a40;
+    position: fixed;
+    height: 60px!important;
+    overflow: hidden;
+    z-index: 10;
+}
+.main {
+    margin: 0 auto;
+    display: block;
+    height: 100%;
+    margin-top: 60px;
+}
+.mainInner{
+    display: table;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+}
+.mainInner div{
+    display:table-cell;
+    vertical-align: middle;
+    font-size: 3em;
+    font-weight: bold;
+    letter-spacing: 1.25px;
+}
+#sidebarMenu {
+    height: 100%;
+    position: fixed;
+    left: 0;
+    width: 250px;
+
+    transform: translateX(-250px);
+    transition: transform 250ms ease-in-out;
+    background: linear-gradient(180deg, #343a40 0%, #343a40a4 100%);
+}
+.sidebarMenuInner{
+    margin:0;
+    padding:0;
+    border-top: 1px solid rgba(255, 255, 255, 0.10);
+}
+.sidebarMenuInner li{
+    list-style: none;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+}
+.sidebarMenuInner li span{
+    display: block;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.50);
+}
+.sidebarMenuInner li a{
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+}
+input[type="checkbox"]:checked ~ #sidebarMenu {
+    transform: translateX(0);
+}
+
+input[type=checkbox]{
+    transition: all 0.3s;
+    box-sizing: border-box;
+}
+.toggleCheckBox{
+  display: none;
+}
+.sidebarIconToggle {
+    transition: all 0.3s;
+    box-sizing: border-box;
+    cursor: pointer;
+    position: absolute;
+    z-index: 99;
+    height: 100%;
+    width: 100%;
+    top: 100px;
+    left: 10px;
+    height: 22px;
+    width: 22px;
+}
+.spinner {
+    transition: all 0.3s;
+    box-sizing: border-box;
+    position: absolute;
+    height: 3px;
+    width: 100%;
+    background-color: #343a40;
+}
+.horizontal {
+    transition: all 0.3s;
+    box-sizing: border-box;
+    position: relative;
+    float: left;
+    margin-top: 3px;
+}
+.diagonal.part-1 {
+    position: relative;
+    transition: all 0.3s;
+    box-sizing: border-box;
+    float: left;
+}
+.diagonal.part-2 {
+    transition: all 0.3s;
+    box-sizing: border-box;
+    position: relative;
+    float: left;
+    margin-top: 3px;
+}
+input[type=checkbox]:checked ~ .sidebarIconToggle > .horizontal {
+    transition: all 0.3s;
+    box-sizing: border-box;
+    opacity: 0;
+}
+input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-1 {
+    transition: all 0.3s;
+    box-sizing: border-box;
+    transform: rotate(135deg);
+    margin-top: 8px;
+    background-color: #F3F5F6
+}
+input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
+    transition: all 0.3s;
+    box-sizing: border-box;
+    transform: rotate(-135deg);
+    margin-top: -9px;
+    background-color: #F3F5F6
+}
+/* tooltip */
+.tooltips {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltips .tooltiptext {
+  visibility: hidden;
+  width: 100px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px;
+  font-size: 15px;
+  /* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+.tooltips:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+.task-done{
+  background-color: #85d698;
+  transition: 0.2s;
+}
+.task-wfc{
+  background-color: #fde088;
+  transition: 0.2s;
+}
+.task-todo{
+  background-color: #dee2e6;
+  transition: 0.2s;
+}
+.task-done:hover{
+  background: #80cc92;
+}
+.task-wfc:hover{
+  background-color: #f5d883
+}
+.task-todo:hover{
+  background-color: #ced1d4
+}
+/* start For spinner */
+.lds-spinner {
+  color: official;
+  display: inline-block;
+  position: relative;
+  width: 64px;
+  height: 64px;
+}
+.lds-spinner div {
+  transform-origin: 32px 32px;
+  animation: lds-spinner 1.2s linear infinite;
+}
+.lds-spinner div:after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 3px;
+  left: 29px;
+  width: 5px;
+  height: 14px;
+  border-radius: 20%;
+  background: #000;
+}
+.lds-spinner div:nth-child(1) {
+  transform: rotate(0deg);
+  animation-delay: -1.1s;
+}
+.lds-spinner div:nth-child(2) {
+  transform: rotate(30deg);
+  animation-delay: -1s;
+}
+.lds-spinner div:nth-child(3) {
+  transform: rotate(60deg);
+  animation-delay: -0.9s;
+}
+.lds-spinner div:nth-child(4) {
+  transform: rotate(90deg);
+  animation-delay: -0.8s;
+}
+.lds-spinner div:nth-child(5) {
+  transform: rotate(120deg);
+  animation-delay: -0.7s;
+}
+.lds-spinner div:nth-child(6) {
+  transform: rotate(150deg);
+  animation-delay: -0.6s;
+}
+.lds-spinner div:nth-child(7) {
+  transform: rotate(180deg);
+  animation-delay: -0.5s;
+}
+.lds-spinner div:nth-child(8) {
+  transform: rotate(210deg);
+  animation-delay: -0.4s;
+}
+.lds-spinner div:nth-child(9) {
+  transform: rotate(240deg);
+  animation-delay: -0.3s;
+}
+.lds-spinner div:nth-child(10) {
+  transform: rotate(270deg);
+  animation-delay: -0.2s;
+}
+.lds-spinner div:nth-child(11) {
+  transform: rotate(300deg);
+  animation-delay: -0.1s;
+}
+.lds-spinner div:nth-child(12) {
+  transform: rotate(330deg);
+  animation-delay: 0s;
+}
+@keyframes lds-spinner {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+/* End for spinner */
