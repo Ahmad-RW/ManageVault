@@ -41,7 +41,7 @@ dbxRoute.post('/import', function (req, res) {
     console.log(req.body.payload)
     
     async.each(req.body.payload.files, function (file, callback) {
-        const document = makeDocumentObject(file)
+        const document = makeDocumentObject(file, req.body.payload.task)
         if (req.body.payload.isInput) {
             const inputDocument = {
                 name: document.name,
@@ -82,7 +82,7 @@ dbxRoute.post('/import', function (req, res) {
 
 
 })
-function makeDocumentObject(file) {
+function makeDocumentObject(file, task) {
     const contentType = mime.getType(fileExtension(file.name))
     console.log(contentType)
     const document = {
@@ -91,7 +91,8 @@ function makeDocumentObject(file) {
         size: file.size,
         filename: file.name,
         file: file.link,
-        isImported: true
+        isImported: true,
+        relatedTasks : [task._id]
     }
     console.log(document)
     return document

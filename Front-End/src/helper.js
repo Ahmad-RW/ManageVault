@@ -84,11 +84,11 @@ export const isTaskPending = (taskId, project) =>{
 }
 
 export const isOutputTaskSubmitted = (outputOf, project) =>{
-    let result = false
+    let result = true
     project.tasks.forEach(task=>{
         task.outputDocuments.forEach(output=>{
-            if(output.name === outputOf && task.status === "SUBMITTED"){
-                result = true
+            if(output.name === outputOf && task.status !== "SUBMITTED"){
+                result = false
             }
         })
     })

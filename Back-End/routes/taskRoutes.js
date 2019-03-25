@@ -11,8 +11,6 @@ taskRoute.post('/newTask', function (req, res) {
         startDate: req.body.payload.task.startDate,
         duration: req.body.payload.task.duration,
         feedback : "",
-        t : "",
-        hhhhhhhhhhhhh : ""
     }
     mongoose.model("projects").findByIdAndUpdate(req.body.payload.project, { $push: { "tasks": task } }, { new: true }).then(function (record) {
         
@@ -259,6 +257,7 @@ function handleInputUpload(payload, document, res) {
     document = {
         ...document,
         name: name,
+        
     }
     const inputDocument = {
         name: name,
@@ -345,7 +344,8 @@ taskRoute.post('/fileUpload', function (req, res) {
         lastModified: req.body.payload.metaData.updated,
         file: req.body.payload.url,
         fileName: req.body.payload.metaData.fileName,//physical name
-        storageReference: req.body.payload.storageReference
+        storageReference: req.body.payload.storageReference,
+        relatedTasks : [ req.body.payload.task._id]
     }
     if (req.body.payload.isInput) {
         handleInputUpload(req.body.payload, document, res)
@@ -359,7 +359,7 @@ taskRoute.post('/fileUpload', function (req, res) {
 })
 
 taskRoute.post('/inputDocument', function (req, res) {
-    console.log(req.body)
+   
     const document = {
         name: req.body.payload.documentName,//logical name
         size: req.body.payload.metaData.size,
@@ -368,10 +368,11 @@ taskRoute.post('/inputDocument', function (req, res) {
         lastModified: req.body.payload.metaData.updated,
         file: req.body.payload.url,
         fileName: req.body.payload.metaData.fileName,//physical name
-        storageReference: req.body.payload.storageReference
+        storageReference: req.body.payload.storageReference,
+        relatedTasks :[req.body.payload.task._id]
     }
 
-    console.log(document)
+
 
     const inputDocument = {
         name: req.body.payload.documentName,
@@ -406,14 +407,7 @@ taskRoute.post('/removeDocument', function (req, res) {
                 res.status(500).send(exception)
             })
     }
-    // else{
-    //     mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, { $pull: { "tasks.$[element].outputDocuments": { _id: req.body.payload.document._id } } },
-    //         { arrayFilters: [{ "element._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
-    //             res.status(200).send(record)
-    //         }).catch(function (exception) {
-    //             res.status(500).send(exception)
-    //         })
-    // }
+  
 })
 
 taskRoute.post('/handleOutput', function (req, res) {

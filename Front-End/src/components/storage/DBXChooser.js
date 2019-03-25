@@ -14,7 +14,12 @@ class DBXChooser extends Component {
 
         }
         var button = window.Dropbox.createChooseButton(options)
-        document.getElementById('chooser-button-container').append(button)
+        if(this.props.task === null){
+            document.getElementById("storage-DBX-chooser").append(button)
+            return
+        }
+        var eID = this.props.task._id + " DBXChooser" 
+        document.getElementById(eID).append(button)
     }
     onSuccess = (files) => {
         const payload = {
@@ -29,9 +34,7 @@ class DBXChooser extends Component {
     }
     render() {
         return (
-            <div id="chooser-button-container">
-
-            </div>
+           <span></span>
         )
     }
 

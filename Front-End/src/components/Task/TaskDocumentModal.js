@@ -5,11 +5,35 @@ import { handleOutput, removeOutputDocument, handleInputDocument, removeInputDoc
 import UploadFile from './UploadInput';
 import UploadOutput from './UploadOutput'
 import DBXChooser from '../storage/DBXChooser';
+import { handleDBXImport } from '../../store/actionCreators/storageActions';
 
 class TaskDocumentModal extends Component {
     state = {
         outputDocuments: null,
         errorMSG: <div></div>,
+    }
+    componentDidMount() {
+        var options = {
+            success: (files) => {
+                this.onSuccess(files)
+            },
+            multiselect: true,
+
+        }
+        var button = window.Dropbox.createChooseButton(options)
+        var eID = this.props.task._id + " DBXChooser" 
+        document.getElementById(eID).append(button)
+    }
+    onSuccess = (files) => {
+        const payload = {
+            files,
+            userInfo : this.props.userInfo,
+            project : this.props.projectInContext,
+            isInput : this.props.isInput,
+            task : this.props.task
+        }
+        this.props.handleDBXImport(payload)
+       
     }
     handleChange = (e) => {
         this.setState({
@@ -220,7 +244,10 @@ class TaskDocumentModal extends Component {
                                 <div className="row">
                                     <div className="col-12">
                                         <UploadFile task={this.props.task} isInput={true} />
-                                        <DBXChooser task={this.props.task} isInput={true} />
+                                        
+                                        <div id={this.props.task._id+" DBXChooser"}>
+
+                                        </div>
                                     </div>
                                 </div>
                                 <hr />
@@ -236,7 +263,7 @@ class TaskDocumentModal extends Component {
                                     <p>output Documents of this task:</p>
                                     {this.renderOutput()}
                                 </div>
-                                {/* ahmad */}
+                                
                                 <hr />
                             </div>
                             <div class="modal-footer">
@@ -263,7 +290,8 @@ const mapDispatchToProps = (dispatch) => {
         handleOutput: (payload) => dispatch(handleOutput(payload)),
         removeOutputDocument: (payload) => dispatch(removeOutputDocument(payload)),
         handleInputDocument: (payload) => dispatch(handleInputDocument(payload)),
-        removeInputDocument: (payload) => dispatch(removeInputDocument(payload))
+        removeInputDocument: (payload) => dispatch(removeInputDocument(payload)),
+        handleDBXImport : (payload)=>dispatch(handleDBXImport(payload))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TaskDocumentModal)

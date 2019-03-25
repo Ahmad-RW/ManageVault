@@ -234,19 +234,7 @@ export const inputDocument = payload => {
         })
     }
 }
-export const outputDocument = payload =>{
-    return(dispatch)=>{
-        axios.post("http://localhost:3333/task/outputDocument", {payload}).then((res) => {
-            console.log(res)
-            payload = {...payload,
-                project : payload.projectInContext,//dont mind this
-                res}
-           // dispatch({type:"MODIFY_TASK" ,payload})
-        }).catch((exception) => {
-            console.log(exception)
-        })
-    }
-}
+
 
 export const removeOutputDocument = payload => {
     return (dispatch) => {
