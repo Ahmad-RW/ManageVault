@@ -50,3 +50,15 @@ export const exportDocuments = payload =>{
         })
     }
 }
+
+export const handleDBXImport = payload =>{
+    return dispatch=>{
+        axios.post('http://localhost:3333/dropbox/import', {payload}).then((res)=>{
+          payload ={...payload , res}
+          dispatch({type:"MODIFY_TASK", payload})
+        }).catch((err)=>{
+          console.log(err)
+        
+        })
+    }
+}

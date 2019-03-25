@@ -4,7 +4,8 @@ import FileViewer from 'react-file-viewer'
 import SideBar from '../layout/Sidebar';
 import ProjectSubBar from '../layout/projectSubBar'
 import DocumentCard from './DocumentCard';
-import Axios from 'axios'
+import Axios from 'axios';
+import DBXChooser from './DBXChooser';
 import {exportDocuments} from '../../store/actionCreators/storageActions'
 class Storage extends Component {
 
@@ -94,6 +95,10 @@ class Storage extends Component {
                 <ProjectSubBar />
                 <hr />
                 {this.renderExportButton()}
+                <DBXChooser />
+                <div id="container">
+
+                </div>
                 <div className="container-fluid">
                     <SideBar />
                 </div>

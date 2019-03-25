@@ -4,6 +4,7 @@ import { makeid, isMemberAssigned, isUserTeamLeader, checkAuthority } from '../.
 import { handleOutput, removeOutputDocument, handleInputDocument, removeInputDocument, checkActivity } from '../../store/actionCreators/taskActions'
 import UploadFile from './UploadInput';
 import UploadOutput from './UploadOutput'
+import DBXChooser from '../storage/DBXChooser';
 
 class TaskDocumentModal extends Component {
     state = {
@@ -216,6 +217,7 @@ class TaskDocumentModal extends Component {
                                 <div className="row">
                                     <div className="col-12">
                                         <UploadFile task={this.props.task} isInput={true} />
+                                        <DBXChooser task={this.props.task} isInput={true} />
                                     </div>
                                 </div>
                                 <hr />
