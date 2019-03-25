@@ -147,22 +147,6 @@ dbxRoute.post('/export', function (req, res) {
                     }).catch(function (err) {
                         res.status(500).send(err)
                     })
-<<<<<<< HEAD
-                    rimraf(tempDir, function (err) {
-                        if (err) {
-                            res.status(500).send(err)
-                        }
-
-                    })
-                    rimraf(compressedDir, function (err) {
-                        if (err) {
-                            res.status(500).send(err)
-                        }
-                        res.status(200).send()
-                    })
-
-=======
->>>>>>> 580f86790f63b409ceae070ecd48b05861ba21ef
 
                 })
             })
