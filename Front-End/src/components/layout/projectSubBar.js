@@ -25,7 +25,6 @@ class ProjectSubBar extends Component{
             }
         }
         let percentage = submittedTasks / totalTasks * 100
-        console.log(percentage, "Finished Tasks")
         if(totalTasks === 0){
             percentage = 0  
           }
@@ -50,7 +49,7 @@ class ProjectSubBar extends Component{
                     <ul class="sidebarMenuInner">
                         <li><Link to="#"><h1>{project.title}</h1></Link></li>
                         <li><Link to={{ pathname: "/home/projectWorkSpace/board", state: { project} }}>Board</Link></li>
-                        <li><Link to='/home/projectWorkSpace/storage'>Storage</Link></li>
+                        <li><Link to='/home/projectWorkSpace/storage'>Documents</Link></li>
                         <li>Chat channels</li>
                         <li>Whiteboard</li>
                         <li>

@@ -38,45 +38,42 @@ dbxRoute.post('/setAccessToken', function (req, res) {
 })
 
 dbxRoute.post('/import', function (req, res) {
-    console.log(req.body.payload)
-    
     async.each(req.body.payload.files, function (file, callback) {
         const document = makeDocumentObject(file, req.body.payload.task)
         if (req.body.payload.isInput) {
             const inputDocument = {
                 name: document.name,
+                contentType: document.contentType,
                 fileName: document.fileName,
                 file: document.file,
-
+                isImported : true
             }
             mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id,
-                { $push: { "documents": document, "tasks.$[elem].inputDocuments": inputDocument }}, 
-                {arrayFilters:[{"elem._id":mongoose.Types.ObjectId(req.body.payload.task._id)}]}).then(function (record) {
+                { $push: { "tasks.$[elem].inputDocuments": inputDocument } },
+                { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }] }).then(function (record) {
+                  
                     callback()
-                  console.log(r)
                 }).catch(function (err) {
                     callback(err)
                 })
         }
         else {
-            mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, 
+            mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id,
                 { $push: { "documents": document } }).then(function (record) {
-                callback()
-                
-            }).catch(function (err) {
-                callback(err)
-            })
+                   
+                    callback()
+                }).catch(function (err) {
+                    callback(err)
+                })
         }
-
     }, function (err) {
         if (err) {
             res.status(500).send(err)
         }
-        mongoose.model("projects").findById(req.body.payload.project._id).then(function(record){
+        mongoose.model("projects").findById(req.body.payload.project._id).then(function (record) {
             res.status(200).send(record)
-        }).catch(function(err){
+        }).catch(function (err) {
             res.status(500).send(err)
-
         })
     })
 
@@ -92,9 +89,7 @@ function makeDocumentObject(file, task) {
         filename: file.name,
         file: file.link,
         isImported: true,
-        relatedTasks : [task._id]
     }
-    console.log(document)
     return document
 }
 dbxRoute.post('/export', function (req, res) {
@@ -110,7 +105,7 @@ dbxRoute.post('/export', function (req, res) {
                 filename: doc.name
             }
             download(doc.file, options, function (err) {
-                console.log("downloading")
+             
                 if (err) {
                     callback(err)
                 }
@@ -119,7 +114,7 @@ dbxRoute.post('/export', function (req, res) {
         }, function (err) {
             const compressedDir = path.join(__dirname, "/ " + payload.project.title + ' exported files.zip')
             zipFolder(tempDir, compressedDir, function (err) {
-                console.log("zipping")
+              
                 if (err) {
                     res.status(500).send(err)
                 }
@@ -131,7 +126,7 @@ dbxRoute.post('/export', function (req, res) {
                         res.status(500).send(err)
                     }
                     console.log(data)
-                    dbx.filesUpload({ path: "/" + payload.project.title + ' exported files.zip', contents: data, autorename:true }).then(function (result) {
+                    dbx.filesUpload({ path: "/" + payload.project.title + ' exported files.zip', contents: data, autorename: true }).then(function (result) {
                         rimraf(tempDir, function (err) {
                             if (err) {
                                 res.status(500).send(err)

@@ -146,7 +146,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        uploadInput: (payload) => dispatch(inputDocument(payload)),
+        
         fileUpload: (payload) => dispatch(fileUpload(payload))
     }
 }

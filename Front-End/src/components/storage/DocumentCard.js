@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import firebase from "firebase";
 import { deleteDocument } from '../../store/actionCreators/storageActions'
+import { isOutputTaskSubmitted, isTaskOfOutputSubmitted } from '../../helper';
 var assets = require.context("../../assets", true)
 class DocumentCard extends Component {
     state = {
@@ -14,9 +15,9 @@ class DocumentCard extends Component {
         try {
             let type = contentType.substring(contentType.indexOf("/") + 1);
             console.log(type)
-            imgSrc = assets("./" + type + ".png")
+            imgSrc = assets("./" + type + ".svg")
         } catch (error) {
-            imgSrc = assets("./file.png")
+            imgSrc = assets("./file.svg")
         }
         return (
             <img src={imgSrc} />
@@ -32,10 +33,10 @@ class DocumentCard extends Component {
         console.log(path)
         var folderRef = firebase.storage().ref().child(this.props.projectInContext._id)
         folderRef.child(doc.storageReference).delete().then(() => {
-            console.log("done")
+         
             this.dispatchDeleteDocAction(doc)
         }).catch((err) => {
-            console.log(err)
+            
         })
     }
     dispatchDeleteDocAction = (doc) => {
@@ -47,34 +48,60 @@ class DocumentCard extends Component {
     }
 
     renderDocumentsCard = () => {
-        const docList = this.props.projectInContext.documents.map(doc => {
-            if (doc.hidden || doc.deleted) {
-                return
-            }
-            if (doc.file === "") {
-                return
-            }
-            if (this.state.showDocumentsOf === "") {
-                return (
-                    this.getDocumentTemplate(doc)
-                )
-            }
-            if (this.state.showDocumentsOf === "Project_Documents") {
-                if (doc.relatedTasks.length === 0) {
+        if (this.state.showDocumentsOf === "Project_Documents") {
+            return (
+                this.renderProjectDocuments()
+            )
+        }
+        if (this.state.showDocumentsOf === "") {
+            return
+        }
+        else {
+            const task = this.getTask(this.state.showDocumentsOf)
+
+            const inputList = task.inputDocuments.map(inDoc => {
+                if(inDoc.isImported||inDoc.uploadedFromDisk){
                     return (
-                        this.getDocumentTemplate(doc)
+                        this.getDocumentTemplate(inDoc)
                     )
                 }
-            }
-            if (doc.relatedTasks.includes(this.state.showDocumentsOf)) {
+                if( isTaskOfOutputSubmitted(inDoc, this.props.projectInContext) ){
+                    return (this.getDocumentTemplate(inDoc))
+                }
+                if(inDoc.deleted||inDoc.file===""){
+                    return
+                
+                }
+                
+            })
+            const outList = task.outputDocuments.map(outDoc => {
+                if(outDoc.hidden ){return}
+                return (
+                    this.getDocumentTemplate(outDoc)
+                )
+            })
+            return inputList.concat(outList)
+        }
+    }
+    renderProjectDocuments = () => {
+        return (
+            this.props.projectInContext.documents.map(doc => {
                 return (
                     this.getDocumentTemplate(doc)
                 )
+            })
+        )
+    }
+
+    getTask = taskId => {
+        let selectedTask;
+        this.props.projectInContext.tasks.forEach(task => {
+            if (task._id === taskId) {
+                selectedTask = { ...task }
+
             }
         })
-        return (
-            docList
-        )
+        return selectedTask
     }
     getDocumentTemplate = doc => {
         return (
@@ -99,7 +126,7 @@ class DocumentCard extends Component {
             <div className="form-group">
 
                 <select className="form-control" onChange={this.reRenderView} id="showDocumentsOf">
-                <option  value="" id="showDocumentsOf">Dont apply filters</option>
+                    <option value="" id="showDocumentsOf">Dont apply filters</option>
                     <option value="Project_Documents" id="showDocumentsOf">Project Documents</option>
                     {this.renderFilterByTaskItems()}
                 </select>

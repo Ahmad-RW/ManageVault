@@ -29,7 +29,7 @@ class TaskDocumentModal extends Component {
             files,
             userInfo : this.props.userInfo,
             project : this.props.projectInContext,
-            isInput : this.props.isInput,
+            isInput : true,
             task : this.props.task
         }
         this.props.handleDBXImport(payload)
@@ -74,7 +74,8 @@ class TaskDocumentModal extends Component {
                 fileName: outputDocument.fileName,
                 file: outputDocument.file,
                 storageReference: outputDocument.storageReference,
-                outputOf: logicalName
+                outputOf: logicalName,
+                
             }
         }
         this.props.handleInputDocument(payload)
@@ -88,7 +89,7 @@ class TaskDocumentModal extends Component {
         return list
     }
     renderRemoveInputDocument = (Document) => {
-        if(isUserTeamLeader(this.props.userInfo, this.props.projectInContext)|| checkAuthority(this.props.projectInContext, "MODIFY_TASK", this.props.userInfo)){
+        if(isUserTeamLeader(this.props.userInfo, this.props.projectInContext) || checkAuthority(this.props.projectInContext, "MODIFY_TASK", this.props.userInfo)){
         return (
             <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleRemoveInputDocument(Document) }}>
                 <i className="material-icons ">highlight_off</i>
@@ -129,7 +130,6 @@ class TaskDocumentModal extends Component {
       
         if (this.searchForOutputDocument(this.state.outputDocuments)) {
             this.renderErrorMessage("redundant")
-           
             return
         }
 
@@ -137,6 +137,7 @@ class TaskDocumentModal extends Component {
             task: this.props.task,
             project: this.props.projectInContext,
             outputDocument: {
+                hidden : true,
                 name: this.state.outputDocuments,
                 fileName: "",
                 file: "",

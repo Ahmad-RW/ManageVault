@@ -107,16 +107,21 @@ const projectsSchema = new schema({
         }],
         inputDocuments: [{
             name:String,
+            contentType: String,
             fileName: String,
             file: String,
             storageReference : String,
             deleted : {type:Boolean, default : false},
+            uploadedFromDisk :  {type:Boolean, default : false},
+            isImported : {type:Boolean, default : false},
             outputOf : String//documnt output logical name
         }],
         outputDocuments: [{
             name:String,
+            contentType: String,
             fileName: String,
             file: String,
+            hidden :  {type:Boolean, default : false},
             deleted : {type:Boolean, default : false},
             storageReference : String
         }],

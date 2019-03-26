@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { newComment, checkActivity, removeDocument } from '../../store/actionCreators/taskActions'
-import { makeid, isTaskPending, isTaskSubmitted, isMemberAssigned, isOutputTaskSubmitted } from '../../helper'
+import { makeid, isTaskPending, isTaskSubmitted, isMemberAssigned, isOutputTaskSubmitted, isTaskOfOutputSubmitted } from '../../helper'
 import FileSaver from 'file-saver';
 class TaskDetails extends Component {
 
@@ -147,16 +147,25 @@ class TaskDetails extends Component {
     renderInputDocuments = () => {
         
         const documentsList = this.props.task.inputDocuments.map(element => {
-            if(element.deleted){
+            if(element.deleted ){
                 return
             }
-            if (element.file !== "" && isOutputTaskSubmitted(element.outputOf, this.props.projectInContext)  ) {
-                 //output task checks if the task submitted where it's out is outputof
-                    return (
-                        <li><a target="_blank" href={element.file}>{element.name}</a></li>
-                    )
+            if(element.file === ""){
+                return (
+                    <li>{element.name}</li>
+                )
             }
-            else {
+            if(element.isImported || element.uploadedFromDisk){
+                return(
+                    <li><a target="_blank" href={element.file}>{element.name}</a></li>
+                )
+            }
+            if(isTaskOfOutputSubmitted(element, this.props.projectInContext)){
+                return(
+                    <li><a target="_blank" href={element.file}>{element.name}</a></li>
+                )
+            }
+            else{
                 return (
                     <li>{element.name}</li>
                 )
@@ -218,7 +227,7 @@ class TaskDetails extends Component {
     render() {
 
         let text = makeid()
-        console.log(this.props.task)
+      
         var date = this.props.task.startDate.split("T")
         var time = date[1].split(":")[0] + ":" + date[1].split(":")[1]
         return (
