@@ -10,11 +10,12 @@ class DocumentCard extends Component {
         showDocumentsOf: ""
     }
 
-    renderLogo = (contentType) => {
+    renderLogo = (fileName) => {
         let imgSrc;
         try {
-            let type = contentType.substring(contentType.indexOf("/") + 1);
+            let type = fileName.substring(fileName.indexOf(".") + 1);
             console.log(type)
+            type = type.toLowerCase(type)
             imgSrc = assets("./" + type + ".svg")
         } catch (error) {
             imgSrc = assets("./file.svg")
@@ -109,7 +110,7 @@ class DocumentCard extends Component {
                 <div class="card-header bg-transparent border-primary"><span className="storage-card">{doc.name}</span></div>
                 <div class="card-body ">
                     <h5 class="card-title">
-                        {this.renderLogo(doc.contentType)}
+                        {this.renderLogo(doc.fileName)}
                     </h5>
                     <p class="card-text">
                         <a className="text-dark" href={doc.file} target="_blank"><i class="material-icons">cloud_download</i></a>

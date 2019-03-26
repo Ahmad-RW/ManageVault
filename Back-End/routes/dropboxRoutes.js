@@ -86,7 +86,7 @@ function makeDocumentObject(file, task) {
         name: file.name,
         contentType,
         size: file.size,
-        filename: file.name,
+        fileName: file.name,
         file: file.link,
         isImported: true,
     }
