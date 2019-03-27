@@ -13,7 +13,6 @@ var download = require('download-file')
 var fileExtension = require('file-extension')
 var mime = require('mime')
 file_system = require('fs')
-
 require('isomorphic-fetch');
 const credentials = require('../DBX_CRED.json')
 dbxRoute.get('/getURL', function (req, res) {
