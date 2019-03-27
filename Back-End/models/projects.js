@@ -68,7 +68,7 @@ const projectsSchema = new schema({
         startDate: Date,
         endDate: Date,
         duration: Number, // we need to find integers in react OR handle entering floats as days. 
-        submissionCriteria : String,
+        submissionCriteria : [String],
         dependencies: {
             Date: Date,
             predecessor: [{

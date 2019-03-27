@@ -398,7 +398,15 @@ taskRoute.post('/removeDocument', function (req, res) {
     }
 
 })
-
+taskRoute.post('/newCriteria', function(req, res){
+    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id,{$set:{
+        "tasks.$[elem].submissionCriteria" : req.body.payload.newCriteria
+    }}, { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true } ).then(function (record) {
+        res.status(200).send(record)
+    }).catch(function (exception) {
+        res.status(500).send(exception)
+    })
+})
 taskRoute.post('/handleOutput', function (req, res) {
     const outputDocument = req.body.payload.outputDocument
     const newoutputDocuments = [...req.body.payload.task.outputDocuments, outputDocument]
