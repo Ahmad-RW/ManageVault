@@ -45,29 +45,23 @@ class Notification extends Component {
         this.props.handleRequest(payload)
         this.props.handleNotificationDelete(projectId, userInfo, notification)
     }
-    render() {
-        
+    renderNotification = () => {
         var { notifications } = this.props
         if (typeof notifications === "undefined") {
             notifications = []
         }
-        
         const NotificationsList = notifications.length ? (
             this.props.notifications.map(Notification => {
                 //foe printing the date
                 var date = Notification.date.split("T")
                 var time = date[1].split(":")[0] + ":" + date[1].split(":")[1]
-                return (
-                    Notification.kind === "PROJECT_INVITE" ? (
+                if(Notification.kind === "PROJECT_INVITE"){
+                    return (
                         <div className="container pt-3" key={Notification._id}>
                             <div class="card text-center" >
                                 <div>
                                     <div className="alert alert-primary">
                                         <h4 className="notiHead">Project Invitation</h4>
-
-                                        <button className="close" data-dismiss="alert" aria-label="Close"  onClick={() => { this.handleDelete(Notification, Notification.data.projectId) }} hidden>
-                                        <i className="material-icons">highlight_off</i>
-                                        </button>
                                     </div>
                                     <div class="card-body">
                                         <p class="card-text">You have been invited to {Notification.data.title} by {Notification.data.creator} do you accept?</p>
@@ -79,12 +73,14 @@ class Notification extends Component {
                             </div>
                             
                         </div>
-                    ) : (
+                    )
+                }
+                else if(Notification.kind === "DELETE_VOTE"){
+                    return (
                         <div className="container pt-3" key={Notification._id}>
                             <div class="card text-center" >
                                 <div>
-                                    <div className="alert alert-primary">
-                                        <button type="button" className="close" data-dismiss="alert" aria-label="Close"></button>
+                                    <div className="alert alert-danger">
                                         <h4 className="notiHead">Delete request</h4>
                                     </div>
                                     <div class="card-body">
@@ -97,14 +93,97 @@ class Notification extends Component {
                             </div>
                         </div>
                     )
-
-                )//return 
+                }
+                else if(Notification.kind === "NEW_TEAM_MEMBER"){
+                    return(
+                        <div className="container pt-3" key={Notification._id}>
+                            <div class="card text-center" >
+                                <div>
+                                    <div className="alert alert-info">
+                                    <button className="close" onClick={() => { this.handleDelete(Notification, Notification.data.projectId) }}>
+                                        <i className="material-icons">highlight_off</i>
+                                    </button>
+                                    <h4 className="notiHead">New team member</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">New member <strong>{Notification.data.newTM.name}</strong> has join the project <strong>{Notification.data.project_title}</strong></p>
+                                    </div>
+                                </div>
+                                <div className="pt-2">{date[0]} {time}</div>
+                            </div>
+                        </div>
+                    )
+                }
+                else if(Notification.kind === "ASSIGN_TASK") {
+                    return(
+                        <div className="container pt-3" key={Notification._id}>
+                            <div class="card text-center" >
+                                <div>
+                                    <div className="alert alert-info">
+                                    <button className="close" onClick={() => { this.handleDelete(Notification, Notification.data.projectId) }}>
+                                        <i className="material-icons">highlight_off</i>
+                                    </button>
+                                    <h4 className="notiHead">New task Assignment</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">You have been assigned to task <strong>{Notification.data.assignedTask_name}</strong> in project <strong>{Notification.data.project_title}</strong> by <strong>{Notification.data.assignedTM.assigner}</strong></p>
+                                    </div>
+                                </div>
+                                <div className="pt-2">{date[0]} {time}</div>
+                            </div>
+                        </div>
+                    )
+                }
+                else if(Notification.kind === "NEW_COMMENT") {
+                    return(
+                        <div className="container pt-3" key={Notification._id}>
+                            <div class="card text-center" >
+                                <div>
+                                    <div className="alert alert-info">
+                                    <button className="close" onClick={() => { this.handleDelete(Notification, Notification.data.projectId) }}>
+                                        <i className="material-icons">highlight_off</i>
+                                    </button>
+                                    <h4 className="notiHead">New comment</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text"><strong>{Notification.data.author}</strong> just wrote a comment in task <strong>{Notification.data.watchedTask_name}</strong> of project <strong>{Notification.data.project_title}</strong></p>
+                                    </div>
+                                </div>
+                                <div className="pt-2">{date[0]} {time}</div>
+                            </div>
+                        </div>
+                    )
+                }
+                else if(Notification.kind === "EDITTING_TASK") {
+                    return(
+                        <div className="container pt-3" key={Notification._id}>
+                            <div class="card text-center" >
+                                <div>
+                                    <div className="alert alert-info">
+                                    <button className="close" onClick={() => { this.handleDelete(Notification, Notification.data.projectId) }}>
+                                        <i className="material-icons">highlight_off</i>
+                                    </button>
+                                    <h4 className="notiHead">New changes on task</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text"><strong>{Notification.data.editor}</strong> modefied task <strong>{Notification.data.watchedTask_name}</strong> of project <strong>{Notification.data.project_title}</strong></p>
+                                    </div>
+                                </div>
+                                <div className="pt-2">{date[0]} {time}</div>
+                            </div>
+                        </div>
+                    )
+                }
             })
         ) : (//parent predecate
         <img src={require('../../No-Notifications.png')} width="350" height="350"/>
         )
+        return NotificationsList
+    }
+    render() {
         return (
-            NotificationsList
+            <div>{this.renderNotification()}</div>
+            
         )
     }
 }

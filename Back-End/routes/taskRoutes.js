@@ -39,6 +39,12 @@ taskRoute.post('/newComment', function (req, res) {
     mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id,
         { $set: { "tasks.$[elem].comments": newComments } },
         { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
+            let data ={
+                comment:req.body.payload.comment,
+                project:req.body.payload.project,
+                task:req.body.payload.task
+            }
+            sendNotification("NEW_COMMENT",data)
             console.log(record)
             res.status(200).send(record)
         }).catch(function (exception) {
@@ -137,6 +143,13 @@ taskRoute.post('/editTask', function (req, res) {
         }
     }, { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
         console.log(record, "edit task")
+        let data ={
+            project:req.body.payload.project,
+            task:req.body.payload.task,
+            editor:req.body.payload.editor,
+            editor_email:req.body.payload.editor_email
+        }
+        sendNotification("EDITTING_TASK",data)
         res.status(200).send(record)
     }).catch(function (err) {
         res.status(500).send(err)
@@ -154,6 +167,12 @@ taskRoute.post('/assignTask', function (req, res) {
     newAssignedMembers = [...req.body.payload.task.assignedMembers, assignedMember]
     mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, { $set: { "tasks.$[elem].assignedMembers": newAssignedMembers } }
         , { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
+            let data = {
+                project:req.body.payload.project,
+                assignedMember:assignedMember,
+                task:req.body.payload.task
+            }
+            sendNotification("ASSIGN_TASK", data)
             console.log(record, "assign task")
             res.status(200).send(record)
         }).catch(function (err) {
@@ -476,7 +495,73 @@ taskRoute.post('/declineTaskSubmission', function (req, res) {
             res.status(500).send(exception)
         })
 })
-//helper function
+//helper functions
+function sendNotification(kind, data) {
+    let notification={}
+    if(kind === "ASSIGN_TASK"){
+        notification = {
+            kind: "ASSIGN_TASK",
+            date: new Date,
+            data: {projectID: data.project._id,
+                    assignedTM: data.assignedMember,
+                    assignedTask_name:data.task.name,
+                    project_title:data.project.title,
+                }
+        }
+        console.log(notification)
+            console.log(data.assignedMember.email)
+            mongoose.model("users").findOneAndUpdate({ email: data.assignedMember.email}, { $push: { "notifications":  notification}} ).then(function (record) {
+                console.log(record,"Notificatoin sent to members")
+            }).catch(function (error) {
+                console.log(error)
+        })
+    }
+    if(kind === "NEW_COMMENT"){
+        notification = {
+            kind: "NEW_COMMENT",
+            date: new Date,
+            data: {projectID: data.project._id,
+                    author: data.comment.author,
+                    watchedTask_name:data.task.name,
+                    project_title:data.project.title,
+                }    
+        }
+        console.log(notification)
+        data.task.watchedBy.forEach(function(member){
+            if(data.comment.author_email === member){
+                return
+            }
+            mongoose.model("users").findOneAndUpdate({ email: member}, { $push: { "notifications":  notification}} ).then(function (record) {
+                console.log(record,"Notificatoin sent to members")
+            }).catch(function (error) {
+                console.log(error)
+            })
+        })
+    }
+    if(kind === "EDITTING_TASK"){
+        notification = {
+            kind: "EDITTING_TASK",
+            date: new Date,
+            data: {projectID: data.project._id,
+                    watchedTask_name:data.task.name,
+                    project_title:data.project.title,
+                    editor:data.editor
+                }    
+        }
+        console.log(notification)
+        data.task.watchedBy.forEach(function(member){
+            if(data.editor_email === member){
+                return
+            }
+            mongoose.model("users").findOneAndUpdate({ email: member}, { $push: { "notifications":  notification}} ).then(function (record) {
+                console.log(record,"Notificatoin sent to members")
+            }).catch(function (error) {
+                console.log(error)
+            })
+        })
+    }
+}
+
 function normalize(text) {
     text = text.replace(/\s/g, '');
     text = text.split(',')

@@ -16,6 +16,7 @@ class Board extends Component {
         super(props)
         this.state = {
             feedback: "",
+            wfcFilter:false
         }
     }
     
@@ -275,6 +276,9 @@ class Board extends Component {
         }
         this.props.unWatchTask(payload)
     }
+    // render = () => {
+
+    // }
     render() {
         let tasks = this.props.projectInContext.tasks.length ? (
             <div>

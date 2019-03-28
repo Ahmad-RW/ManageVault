@@ -19,6 +19,7 @@ const projectsSchema = new schema({
     creator: {
         type: String
     },
+    chatRoomId: String,
     major_course: { type: String },
     status: {
         type: String,

@@ -43,7 +43,8 @@ class ModifyTask extends Component {
             submissionCriteria: this.state.submissionCriteria,
             project: this.props.projectInContext,
             task: this.props.task,
-
+            editor: this.props.userInfo.name,
+            editor_email:this.props.userInfo.email
         }
 
         this.props.editTask(payload)
