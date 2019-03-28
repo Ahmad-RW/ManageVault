@@ -49,16 +49,8 @@ class ProjectSubBar extends Component{
                     <ul class="sidebarMenuInner">
                         <li><Link to="#"><h1>{project.title}</h1></Link></li>
                         <li><Link to={{ pathname: "/home/projectWorkSpace/board", state: { project} }}>Board</Link></li>
-<<<<<<< HEAD
                         <li><Link to='/home/projectWorkSpace/storage'>Storage</Link></li>
                         <li><Link to='/home/projectWorkSpace/channel'>Chat channels</Link></li>
-||||||| merged common ancestors
-                        <li><Link to='/home/projectWorkSpace/storage'>Storage</Link></li>
-                        <li>Chat channels</li>
-=======
-                        <li><Link to='/home/projectWorkSpace/storage'>Documents</Link></li>
-                        <li>Chat channels</li>
->>>>>>> e404338c5aab690ccb175c729bf83641f109eceb
                         <li>Whiteboard</li>
                         <li>
                             <p>Project Progress</p>{this.renderProgressBar()}
