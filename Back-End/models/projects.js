@@ -51,6 +51,8 @@ const projectsSchema = new schema({
         file: String ,//Uniform Resource Locator,
         fileName : String,//physical
         storageReference : String,//name in firebase storage. I put it as reference we might not even need it
+        relatedTasks : [String], // tasks IDs
+        isImported : Boolean,
         hidden :{type:Boolean, default : false},
         deleted : {type:Boolean, default : false}
     }],
@@ -67,7 +69,7 @@ const projectsSchema = new schema({
         startDate: Date,
         endDate: Date,
         duration: Number, // we need to find integers in react OR handle entering floats as days. 
-        submissionCriteria : String,
+        submissionCriteria : [String],
         dependencies: {
             Date: Date,
             predecessor: [{
@@ -106,15 +108,22 @@ const projectsSchema = new schema({
         }],
         inputDocuments: [{
             name:String,
+            contentType: String,
             fileName: String,
             file: String,
             storageReference : String,
+            deleted : {type:Boolean, default : false},
+            uploadedFromDisk :  {type:Boolean, default : false},
+            isImported : {type:Boolean, default : false},
             outputOf : String//documnt output logical name
         }],
         outputDocuments: [{
             name:String,
+            contentType: String,
             fileName: String,
             file: String,
+            hidden :  {type:Boolean, default : false},
+            deleted : {type:Boolean, default : false},
             storageReference : String
         }],
     }]

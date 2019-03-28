@@ -10,6 +10,8 @@ var mkdirp = require('mkdirp');
 var rimraf = require('rimraf');
 var async = require("async");
 var download = require('download-file')
+var fileExtension = require('file-extension')
+var mime = require('mime')
 file_system = require('fs')
 require('isomorphic-fetch');
 const credentials = require('../DBX_CRED.json')
@@ -33,6 +35,62 @@ dbxRoute.post('/setAccessToken', function (req, res) {
             res.status(500).send(err)
         })
 })
+
+dbxRoute.post('/import', function (req, res) {
+    async.each(req.body.payload.files, function (file, callback) {
+        const document = makeDocumentObject(file, req.body.payload.task)
+        if (req.body.payload.isInput) {
+            const inputDocument = {
+                name: document.name,
+                contentType: document.contentType,
+                fileName: document.fileName,
+                file: document.file,
+                isImported : true
+            }
+            mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id,
+                { $push: { "tasks.$[elem].inputDocuments": inputDocument } },
+                { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }] }).then(function (record) {
+                  
+                    callback()
+                }).catch(function (err) {
+                    callback(err)
+                })
+        }
+        else {
+            mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id,
+                { $push: { "documents": document } }).then(function (record) {
+                   
+                    callback()
+                }).catch(function (err) {
+                    callback(err)
+                })
+        }
+    }, function (err) {
+        if (err) {
+            res.status(500).send(err)
+        }
+        mongoose.model("projects").findById(req.body.payload.project._id).then(function (record) {
+            res.status(200).send(record)
+        }).catch(function (err) {
+            res.status(500).send(err)
+        })
+    })
+
+
+})
+function makeDocumentObject(file, task) {
+    const contentType = mime.getType(fileExtension(file.name))
+    console.log(contentType)
+    const document = {
+        name: file.name,
+        contentType,
+        size: file.size,
+        fileName: file.name,
+        file: file.link,
+        isImported: true,
+    }
+    return document
+}
 dbxRoute.post('/export', function (req, res) {
     const payload = req.body.payload
     const tempDir = path.join(__dirname, "" + payload.project.title + " exported files")
@@ -46,7 +104,7 @@ dbxRoute.post('/export', function (req, res) {
                 filename: doc.name
             }
             download(doc.file, options, function (err) {
-                console.log("downloading")
+             
                 if (err) {
                     callback(err)
                 }
@@ -55,7 +113,7 @@ dbxRoute.post('/export', function (req, res) {
         }, function (err) {
             const compressedDir = path.join(__dirname, "/ " + payload.project.title + ' exported files.zip')
             zipFolder(tempDir, compressedDir, function (err) {
-                console.log("zipping")
+              
                 if (err) {
                     res.status(500).send(err)
                 }
@@ -67,7 +125,7 @@ dbxRoute.post('/export', function (req, res) {
                         res.status(500).send(err)
                     }
                     console.log(data)
-                    dbx.filesUpload({ path: "/" + payload.project.title + ' exported files.zip', contents: data, autorename:true }).then(function (result) {
+                    dbx.filesUpload({ path: "/" + payload.project.title + ' exported files.zip', contents: data, autorename: true }).then(function (result) {
                         rimraf(tempDir, function (err) {
                             if (err) {
                                 res.status(500).send(err)

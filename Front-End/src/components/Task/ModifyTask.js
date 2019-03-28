@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { makeid, isMemberAssigned } from '../../helper'
 import DatePicker from "react-datepicker";
 import { connect } from 'react-redux'
-import { setDependancy, editTask, assignTask, newActivity, unAssignTask, removeDependency } from '../../store/actionCreators/taskActions'
+import { setDependancy, editTask, assignTask, newActivity, unAssignTask, removeDependency, newCriteria } from '../../store/actionCreators/taskActions'
 import { checkAuthority } from '../../helper'
 
 
@@ -40,7 +40,6 @@ class ModifyTask extends Component {
             description: this.state.description,
             startDate: this.state.startDate,
             duration: this.state.duration,
-            submissionCriteria: this.state.submissionCriteria,
             project: this.props.projectInContext,
             task: this.props.task,
             editor: this.props.userInfo.name,
@@ -279,15 +278,36 @@ class ModifyTask extends Component {
             [e.target.id]: e.target.value
         })
     }
+    addNewCriteria = (e) => {
+        const newCriteria = [...this.props.task.submissionCriteria, this.state.submissionCriteria]
+        const payload = {
+            newCriteria,
+            task: this.props.task,
+            project: this.props.projectInContext
+        }
+        this.props.newCriteria(payload)
+    }
+    renderTaskSubmissionCriteria = () => {
+        return (
+            this.props.task.submissionCriteria.map(criterion => {
+                return(
+                <li>
+                    {criterion}
+              
+                </li>
+                )    
+            })
+        )
+    }
     render() {
         let text = makeid()
         return (
             <div className="editTask">
                 <div className="tooltips">
-                <button title="Edit task"className="close" aria-label="Close" data-toggle="modal" data-target={"#" + text}>
-                    <i class="material-icons">edit</i>
-                </button>
-                <span className="tooltiptext">Edit Task</span>
+                    <button title="Edit task" className="close" aria-label="Close" data-toggle="modal" data-target={"#" + text}>
+                        <i class="material-icons">edit</i>
+                    </button>
+                    <span className="tooltiptext">Edit Task</span>
                 </div>
                 <div class="modal fade" id={text} tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg" role="document">
@@ -315,17 +335,27 @@ class ModifyTask extends Component {
                                 </div>
                                 <div className='row'>
                                     <div className="col-12">
-                                        <label htmlFor="submissionCriteria">Task Submission Criteria</label>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-12">
-                                        <textarea class="form-control" id="submissionCriteria" rows="3" placeholder={this.props.task.submissionCriteria} onChange={this.handleCriteriaChange}></textarea><br /><br />
+                                        <label htmlFor="submissionCriteria">Output Acceptence Criteria</label>
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="col align-self-end">
                                         <button className="btn btn-primary btn-sm" onClick={this.handleEdit}>edit task</button>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-12">
+                                        <ul>
+                                            {this.renderTaskSubmissionCriteria()}
+                                        </ul>
+                                        <div className="row">
+                                            <div className="col">
+                                                <input onChange={this.handleChange} id="submissionCriteria" type="text" placeholder="Criteria" />
+                                            </div>
+                                            <div className="col">
+                                                <button className="btn btn-primary btn-sm" onClick={this.addNewCriteria}>Add Criteria</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <hr />
@@ -377,7 +407,8 @@ const mapDispatchToProps = (dispatch) => {
         editTask: (payload) => { dispatch(editTask(payload)) },
         newActivity: (payload) => { dispatch(newActivity(payload)) },
         unAssignTask: (payload) => { dispatch(unAssignTask(payload)) },
-        removeDependency: payload => { dispatch(removeDependency(payload)) }  //No (payload)?
+        removeDependency: payload => { dispatch(removeDependency(payload)) },
+        newCriteria: payload => { dispatch(newCriteria(payload)) }
     }
 }
 

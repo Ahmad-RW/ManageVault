@@ -159,7 +159,7 @@ class UploadFile extends Component {
         return (
             <div>
                 {this.state.errorMSG}
-                <input type="text" onChange={this.handleDocumentNameChange} id="documentName" />
+                <input type="text" onChange={this.handleDocumentNameChange} id="documentName" placeholder={this.state.metaData.fileName} />
             </div>
         )
 
@@ -177,7 +177,7 @@ class UploadFile extends Component {
                 {this.renderProgressBar()}
                 {this.renderUploadCloud()}
                 {this.renderTextField()}
-                <input type="file" id={this.props.task._id} onChange={this.setFile} />
+                <input  type="file" id={this.props.task._id} onChange={this.setFile} />
                 <button className="btn btn-primary" onClick={this.handleFileUpload}>Submit</button>
                 {this.renderSuccessMessage()}
                 <Spinner startSpinner={this.state.startSpinner} />
@@ -194,7 +194,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        uploadInput: (payload) => dispatch(inputDocument(payload)),
         fileUpload: (payload) => dispatch(fileUpload(payload))
     }
 }

@@ -16,13 +16,16 @@
     "dropbox": "^4.0.17",
     "dropbox-v2-api": "^2.3.0",
     "express": "^4.16.4",
+    "file-extension": "^4.0.5",
     "googleapis": "^27.0.0",
     "isomorphic-fetch": "^2.2.1",
+    "mime": "^2.4.0",
     "mongoose": "^5.4.2",
     "nodemon": "^1.18.9",
     "query-string": "^6.4.0",
     "rimraf": "^2.6.3",
     "save": "^2.3.3",
+    "uuid": "^3.3.2",
     "zip-folder": "^1.0.0"
   }
 }
