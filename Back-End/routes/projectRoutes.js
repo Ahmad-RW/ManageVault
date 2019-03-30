@@ -3,13 +3,23 @@ const projectRoute = express.Router()
 const projects = require('../models/projects')
 const mongoose = require('../dbConfig/databaseCon')
 const users = require('../models/users');
-
+projectRoute.post('/setRoomId', function(req,res){
+    console.log(req)
+    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id,
+        {"$set":{"chatRoomId" : req.body.payload.res.id}}, {new:true}).then(function(record){
+            res.status(200).send(record)
+        }).catch(function(err){
+            res.status(500).send(err)
+        })
+})
 projectRoute.post('/newproject', function (req, res) {
+    
     console.log(req.body, "REQUEST")
     let project = {
         title: req.body.project.title,
         creator: req.body.project.creator,
         major_course: req.body.project.major_course,
+     
         status: 'RUNNING',
         votes: {
             yes: 0,

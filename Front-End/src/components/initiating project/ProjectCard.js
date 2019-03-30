@@ -10,7 +10,7 @@ class ProjectCard extends Component {
     isTeamLeader = (project) => {
         let result = false
         project.members.forEach(member => {
-            console.log(member, "EACH MEMBER")
+        
             if (member.email === this.props.userInfo.email && member.teamLeader) {
                 result = true
             }

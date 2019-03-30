@@ -30,7 +30,9 @@ code {
 .btn-danger {
   margin-left: 10px;
 }
-
+.notiIcon{
+  background: #F3F5F6
+}
 .label {
 padding-right: 100px;
 }
@@ -68,7 +70,7 @@ background-color: lightblue;
 .inline { float:left; }
 
 .progress {
-  width: 15%;
+  width: 100%;
 }
 
 .material-icons.md-light { color: rgba(255, 255, 255, 1); }
@@ -104,14 +106,23 @@ html {
   margin-left: auto;
   margin-right: auto;
 }
-
+/* Start For Navbar */
 .app,
 .breadcrumbs,
 .bc,
 .content {
   display: flex;
 }
-
+.navWelcome{
+  color: rgba(255,255,255,.5);
+}
+.navBarPadding{
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+.NavElements{
+display: inline;
+}
 .app {
   flex-direction: column;
 }
@@ -150,7 +161,10 @@ html {
   display: flex;
   align-items: center;
 }
-
+.fixed{
+  position:fixed;
+}
+/* End for Navbar  */
 .storage-card {
   display: block;
   width: 200px;
@@ -169,13 +183,28 @@ html {
     height:         100%;
     width:          1px;       
 }
+/* for Navbar */
+.stickyNav{
+  position: sticky;
+  top: 0;
+}
+.sticky-top {
+  padding-bottom: 1.5%;
+}
+
 /* For tasks display */
 .tasksTableContainer{
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 40px;
+  padding-right: 40px;
 }
 .taskTableRow{
   border-radius: 25px;
+}
+.tasksTableHeaderFirst{
+  border-top-left-radius: 20px;
+}
+.tasksTableHeaderLast{
+  border-top-right-radius: 20px;
 }
 tr.taskBorder td {
   /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
@@ -210,4 +239,346 @@ table#tasksList{
 .submissionContainer{
   text-align: center;
   display: inline-block
+}
+/* for sidebar */
+@import url('https://fonts.googleapis.com/css?family=Varela+Round');
+html, body {
+    overflow-x: hidden;
+    height: 100%;
+}
+body {
+    background: #fff;
+    padding: 0;
+    margin: 0;
+    font-family: 'Varela Round', sans-serif;
+}
+.header {
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 100%;
+    box-shadow: none;
+    background-color: #343a40;
+    position: fixed;
+    height: 60px!important;
+    overflow: hidden;
+    z-index: 10;
+}
+.main {
+    margin: 0 auto;
+    display: block;
+    height: 100%;
+    margin-top: 60px;
+}
+.mainInner{
+    display: table;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+}
+.mainInner div{
+    display:table-cell;
+    vertical-align: middle;
+    font-size: 3em;
+    font-weight: bold;
+    letter-spacing: 1.25px;
+}
+#sidebarMenu {
+    height: 100%;
+    position: fixed;
+    left: 0;
+    width: 250px;
+
+    transform: translateX(-250px);
+    transition: transform 250ms ease-in-out;
+    background: linear-gradient(180deg, #343a40 0%, #343a40a4 100%);
+}
+.sidebarMenuInner{
+    margin:0;
+    padding:0;
+    border-top: 1px solid rgba(255, 255, 255, 0.10);
+}
+.sidebarMenuInner li{
+    list-style: none;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+}
+.sidebarMenuInner li span{
+    display: block;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.50);
+}
+.sidebarMenuInner li a{
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+}
+input[type="checkbox"]:checked ~ #sidebarMenu {
+    transform: translateX(0);
+}
+
+input[type=checkbox]{
+    transition: all 0.3s;
+    box-sizing: border-box;
+}
+.toggleCheckBox{
+  display: none;
+}
+.sidebarIconToggle {
+    transition: all 0.3s;
+    box-sizing: border-box;
+    cursor: pointer;
+    position: absolute;
+    z-index: 99;
+    height: 100%;
+    width: 100%;
+    top: 100px;
+    left: 10px;
+    height: 22px;
+    width: 22px;
+}
+.spinner {
+    transition: all 0.3s;
+    box-sizing: border-box;
+    position: absolute;
+    height: 3px;
+    width: 100%;
+    background-color: #343a40;
+}
+.horizontal {
+    transition: all 0.3s;
+    box-sizing: border-box;
+    position: relative;
+    float: left;
+    margin-top: 3px;
+}
+.diagonal.part-1 {
+    position: relative;
+    transition: all 0.3s;
+    box-sizing: border-box;
+    float: left;
+}
+.diagonal.part-2 {
+    transition: all 0.3s;
+    box-sizing: border-box;
+    position: relative;
+    float: left;
+    margin-top: 3px;
+}
+input[type=checkbox]:checked ~ .sidebarIconToggle > .horizontal {
+    transition: all 0.3s;
+    box-sizing: border-box;
+    opacity: 0;
+}
+input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-1 {
+    transition: all 0.3s;
+    box-sizing: border-box;
+    transform: rotate(135deg);
+    margin-top: 8px;
+    background-color: #F3F5F6
+}
+input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
+    transition: all 0.3s;
+    box-sizing: border-box;
+    transform: rotate(-135deg);
+    margin-top: -9px;
+    background-color: #F3F5F6
+}
+/* tooltip */
+.tooltips {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltips .tooltiptext {
+  visibility: hidden;
+  width: 100px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px;
+  font-size: 15px;
+  /* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+.tooltips:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+.task-done{
+  background-color: #85d698;
+  transition: 0.2s;
+}
+.task-wfc{
+  background-color: #fde088;
+  transition: 0.2s;
+}
+.task-todo{
+  background-color: #dee2e6;
+  transition: 0.2s;
+}
+.task-done:hover{
+  background: #80cc92;
+}
+.task-wfc:hover{
+  background-color: #f5d883
+}
+.task-todo:hover{
+  background-color: #ced1d4
+}
+.card-signin {
+  border: 0;
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
+}
+.card-signin .card-title {
+  margin-bottom: 2rem;
+  font-weight: 300;
+  font-size: 1.5rem;
+}
+
+.card-signin .card-body {
+  padding: 2rem;
+}
+
+.form-signin {
+  width: 100%;
+}
+.form-signin .btn {
+  font-size: 80%;
+  border-radius: 5rem;
+  letter-spacing: .1rem;
+  font-weight: bold;
+  padding: 1rem;
+  transition: all 0.2s;
+}
+
+
+
+.chat-button {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  background: #5E0565;
+  height: 50px;
+  font-size: 16px;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  border: 0;
+  box-shadow: 1px 1px 4px 1px grey;
+  cursor: pointer;
+}
+.form-container {
+  height: 400px;
+  border: 1px solid #5E0565;
+}
+.form-container h1 {
+  padding: 10px;
+  background-color: #5E0565;
+  font-size: 20px;
+  color: white;
+  margin: 0;
+  margin-bottom: 10px;
+}
+.form {
+  padding: 30px;
+}
+.input  {
+  display: block;
+  width: 100%;
+  margin: 20px auto;
+  height: 50px;
+  font-size: 20px
+}
+.submit  {
+  height: 40px;
+  padding: 0 20px;
+  background-color: #5E0565;
+  color: white;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.form {
+  padding: 30px;
+}
+.input  {
+  display: block;
+  width: 100%;
+  margin: 20px auto;
+  height: 50px;
+  font-size: 20px
+}
+.submit  {
+  height: 40px;
+  padding: 0 20px;
+  background-color: #5E0565;
+  color: white;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.chatapp  {
+  margin: 0 auto;
+  height: 80vh;
+  border: 1px solid #a1a1a4;
+}
+.header  {
+  padding: 20px;
+  color: white;
+  margin-top: 0;
+  text-align: left;
+  border-bottom: 1px solid #5E0565;
+  background-color: #5E0565;
+}
+.message-list  {
+  list-style-type: none;
+  padding: 0px 20px;
+  overflow: scroll;
+  max-height: calc(100vh - 150px);
+  margin-bottom: 35px;
+}
+.message-sender  {
+  font-weight: bold;
+  font-size: 1em;
+  margin: 0;
+}
+.message-text  {
+  margin-bottom: 20px;
+  margin-top: 5px
+}
+.message-input  {
+  width: 70%;
+  height: 50px;
+  border: 0;
+  border-top: 1px solid #e0e0e0;
+  font-size: 18px;
+  padding-left: 2px
+}
+.message-submit  {
+  width: 30%;
+  background-color: #5E0565;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+.input-field {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
 }

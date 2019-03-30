@@ -1,3 +1,9 @@
+import { default as Chatkit } from '@pusher/chatkit-server';
+
+const chatkit = new Chatkit({
+    instanceLocator: "v1:us1:284bc324-9274-4bee-b49f-efd146384063",
+    key: "8e5a1191-4999-417c-87e3-a2ccb54c775b:EgBlYSiXIv9TFfqSM/cQxO9ECOR5jXhemLqcHCwNrhE="
+})
 
 export const checkAuthority = (project, authority, userInfo) => {
     const member = project.members.find(member => member.email === userInfo.email)
@@ -15,6 +21,18 @@ export const checkAuthority = (project, authority, userInfo) => {
     });
     console.log(result, authority)
     return result
+}
+
+export const setChatId = project =>{
+    console.log("hey")
+    chatkit.createRoom({
+        creatorId: "ManageVault",
+        name : project.title
+    }).then(res=>{
+        console.log(res)
+    }).catch(err=>{
+        console.log(err)
+    })
 }
 
 export const makeid = () => {
@@ -61,4 +79,36 @@ export const getAbsoluteValue = (number) => {
         if(number < 0)
             return number * -1;
         return number;
+}
+
+export const isTaskSubmitted = (taskId, project) =>{
+    var result = false
+    project.tasks.forEach(task=>{
+        if(task._id === taskId && task.status === "SUBMITTED"){
+            result = true
+        }
+    })
+    return result
+}
+
+export const isTaskPending = (taskId, project) =>{
+    var result = false
+    project.tasks.forEach(task=>{
+        if(task._id === taskId && task.status === "PENDING_FOR_CONFIRMATION"){
+            result = true
+        }
+    })
+    return result
+}
+
+export const isOutputTaskSubmitted = (outputOf, project) =>{
+    let result = false
+    project.tasks.forEach(task=>{
+        task.outputDocuments.forEach(output=>{
+            if(output.name === outputOf && task.status === "SUBMITTED"){
+                result = true
+            }
+        })
+    })
+    return result
 }

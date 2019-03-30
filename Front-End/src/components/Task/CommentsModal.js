@@ -24,7 +24,7 @@ class CommentsModal extends Component {
         return commentsList
     }
     handleComment = (e) => {
-        console.log(e.target.value)
+       
         this.setState({
             [e.target.id]: e.target.value
         })
@@ -35,7 +35,7 @@ class CommentsModal extends Component {
             author: this.props.userInfo.name,
             date: new Date()
         }
-        console.log(comment)
+       
         this.props.newComment(comment, this.props.task, this.props.projectInContext)
 
     }
@@ -44,9 +44,12 @@ class CommentsModal extends Component {
         var text = makeid()
         return(
             <div>
-                <button title="Comment" type="button" class="close" data-toggle="modal" data-target={"#" + text} >
-                <i class="material-icons">comment</i>
-                </button>
+                <div className="tooltips">
+                    <button title="Comments" type="button" class="close" data-toggle="modal" data-target={"#" + text} >
+                        <i class="material-icons">comment</i>
+                    </button>
+                    <span className="tooltiptext">Comments</span>
+                </div>
                 <div class="modal fade" id={text} tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">

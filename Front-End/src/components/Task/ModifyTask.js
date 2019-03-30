@@ -40,12 +40,12 @@ class ModifyTask extends Component {
             description: this.state.description,
             startDate: this.state.startDate,
             duration: this.state.duration,
-            submissionCriteria : this.state.submissionCriteria,
+            submissionCriteria: this.state.submissionCriteria,
             project: this.props.projectInContext,
             task: this.props.task,
 
         }
-        console.log(payload)
+
         this.props.editTask(payload)
     }
     setDependancy = (task) => {
@@ -172,9 +172,9 @@ class ModifyTask extends Component {
         }
     }
     handleAssign = (member) => {
-        console.log(member, "member")
+
         var startDate = new Date() //Retrieves the current date like this Mon Mar 11 2019 17:39:55 GMT+0300 (Arabian Standard Time)
-        console.log(startDate, "ASSIGNMENT DATE")
+
         const payload = {
             member: member,
             task: this.props.task,
@@ -219,10 +219,6 @@ class ModifyTask extends Component {
         })
     }
     renderActivities = () => {
-        // if(!isMemberAssigned(this.props.task, this.props.userInfo)){
-        //     return;
-        // }
-        console.log(this.props.task)
         const activites = this.props.task.activities.map(activity => {
             if (activity.status === "CHECKED") {
                 return (
@@ -286,9 +282,12 @@ class ModifyTask extends Component {
         let text = makeid()
         return (
             <div className="editTask">
+                <div className="tooltips">
                 <button title="Edit task"className="close" aria-label="Close" data-toggle="modal" data-target={"#" + text}>
                     <i class="material-icons">edit</i>
                 </button>
+                <span className="tooltiptext">Edit Task</span>
+                </div>
                 <div class="modal fade" id={text} tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
@@ -315,7 +314,7 @@ class ModifyTask extends Component {
                                 </div>
                                 <div className='row'>
                                     <div className="col-12">
-                                    <label htmlFor="submissionCriteria">Task Submission Criteria</label>
+                                        <label htmlFor="submissionCriteria">Task Submission Criteria</label>
                                     </div>
                                 </div>
                                 <div className="row">

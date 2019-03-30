@@ -1,13 +1,22 @@
 import axios from 'axios'
+import { default as Chatkit } from '@pusher/chatkit-server';
+import {setChatId} from '../../helper'
+const chatkit = new Chatkit({
+    instanceLocator: "v1:us1:284bc324-9274-4bee-b49f-efd146384063",
+    key: "8e5a1191-4999-417c-87e3-a2ccb54c775b:EgBlYSiXIv9TFfqSM/cQxO9ECOR5jXhemLqcHCwNrhE="
+})
+
 export const createProjectAction = (project, userInfo) => {
     return (dispatch, getState) => {
         //async call to database. after that the dispatcher is sent 
-        axios.post('http://localhost:3333/project/newproject', { project, userInfo }).then((res) => {
-            dispatch({ type: "CREATE_PROJECT", project : res.data })
-        }).catch((exception) => {
-            console.log(exception)
-        })
+        
+            axios.post('http://localhost:3333/project/newproject', { project , userInfo }).then((res) => {
+                this.setChatId(res.data)
+            dispatch({ type: "CREATE_PROJECT", project: res.data })
 
+            }).catch((exception) => {
+                console.log(exception)
+            })
     }
     //using thunk instead of returning an object as you would usually do. You would return a function as implemented above
     //when a component calls this as a dispatch. We halt the dispatch action and do database query. Which is an async request. 
@@ -28,10 +37,10 @@ export const fetchUserProjects = (userEmail) => {
 }
 
 export const requestDeleteAction = (project) => {
-    return(dispatch) => {
+    return (dispatch) => {
         console.log(project)
-        axios.post('http://localhost:3333/project/deleteproject', {project}).then((res) => {
-            dispatch({ type: "REQUEST_DELETE", project})
+        axios.post('http://localhost:3333/project/deleteproject', { project }).then((res) => {
+            dispatch({ type: "REQUEST_DELETE", project })
             console.log(res)
         }).catch((exception) => {
             console.log(exception)
@@ -39,18 +48,18 @@ export const requestDeleteAction = (project) => {
     }
 }
 
-export const requestToDeleteProject = (project, userInfo) =>{
-    return(dispatch)=>{
+export const requestToDeleteProject = (project, userInfo) => {
+    return (dispatch) => {
         console.log(project, userInfo)
         console.log("In request to delete project")
-        const payload ={ 
-            project, 
+        const payload = {
+            project,
             userInfo
         }
-        axios.post('http://localhost:3333/project/requestDeleteProject', {project, userInfo}).then((res)=>{
-            dispatch({ type: "REQUEST_TO_DELETE_PROJECT", payload})  
-        console.log(res)
-        }).catch((exception)=>{
+        axios.post('http://localhost:3333/project/requestDeleteProject', { project, userInfo }).then((res) => {
+            dispatch({ type: "REQUEST_TO_DELETE_PROJECT", payload })
+            console.log(res)
+        }).catch((exception) => {
             console.log(exception)
         })
     }
@@ -74,8 +83,8 @@ export const leaveProject = (project, userInfo) => {
 export const removeTeamMember = (project, member) => {
     console.log("remove action here")
     return (dispatch, getState) => {
-        const payload = { project, member}
-        axios.post('http://localhost:3333/project/removeTeamMember', { project, member}).then((res) => {
+        const payload = { project, member }
+        axios.post('http://localhost:3333/project/removeTeamMember', { project, member }).then((res) => {
             dispatch({ type: "REMOVE_TEAM_MEMBER", payload })
             console.log(res)
         })
@@ -93,14 +102,14 @@ export const handleInvite = (project, userInfo, notification) => {
         })
     }
 }
-export const handleNotificationDelete = (projectId, userInfo, notification)=>{
+export const handleNotificationDelete = (projectId, userInfo, notification) => {
     console.log(userInfo)
-    return (dispatch) =>{
-        const payload = {projectId, userInfo, notification}
-        axios.post('http://localhost:3333/project/handleNotificationDelete', {projectId, userInfo, notification}).then((res)=>{
-            dispatch({type : "DELETE_NOTIFICATION", payload})
+    return (dispatch) => {
+        const payload = { projectId, userInfo, notification }
+        axios.post('http://localhost:3333/project/handleNotificationDelete', { projectId, userInfo, notification }).then((res) => {
+            dispatch({ type: "DELETE_NOTIFICATION", payload })
             console.log(res)
-        }).catch((exception)=>{
+        }).catch((exception) => {
             console.log(exception)
         })
     }
@@ -112,9 +121,9 @@ export const handleNotificationDelete = (projectId, userInfo, notification)=>{
 export const handleVoting = (payload) => {
     console.log(payload, "IN ACTION")
     return (dispatch) => {
-        axios.post("http://localhost:3333/project/handleVoting", {payload}).then((res) => {
+        axios.post("http://localhost:3333/project/handleVoting", { payload }).then((res) => {
             console.log(res)
-            payload={...payload, res}
+            payload = { ...payload, res }
             //dispatch({ type: "REQUEST_TO_DELETE_PROJECT", payload})
             console.log("DISPATCHED")
         }).catch((exception) => {
@@ -123,82 +132,84 @@ export const handleVoting = (payload) => {
     }
 }
 
-export const newRole = (payload) =>{
-    return (dispatch) =>{
+export const newRole = (payload) => {
+    return (dispatch) => {
 
-        axios.post("http://localhost:3333/project/newRole", {payload}).then((res)=>{
-        console.log(res)    
-        payload = {...payload, res}
-        dispatch({type:"NEW_ROLE", payload})
-        }).catch((exception)=>{
+        axios.post("http://localhost:3333/project/newRole", { payload }).then((res) => {
+            console.log(res)
+            payload = { ...payload, res }
+            dispatch({ type: "NEW_ROLE", payload })
+        }).catch((exception) => {
             console.log(exception)
         })
     }
 }
 
 export const setAuthority = (payload) => {
-return (dispatch)=>{
-    console.log(payload)
-    axios.post('http://localhost:3333/project/setAuthority', {payload}).then((res)=>{
-        console.log(res)
-        payload = {...payload, res}
-        dispatch({type : "SET_AUTHORITY", payload})
-    }).catch((exception)=>{
-        console.log(exception)
-    })
-}
-}
-
-export const revokeAuthorities = (payload) =>{
-    return (dispatch) =>{
-        axios.post('http://localhost:3333/project/revokeAuthorities', {payload}).then((res)=>{
+    return (dispatch) => {
+        console.log(payload)
+        axios.post('http://localhost:3333/project/setAuthority', { payload }).then((res) => {
             console.log(res)
-            payload = {...payload, res}
-            dispatch({type:"SET_AUTHORITY", payload})
-        }).catch((exception)=>{
+            payload = { ...payload, res }
+            dispatch({ type: "SET_AUTHORITY", payload })
+        }).catch((exception) => {
             console.log(exception)
         })
     }
 }
 
-export const assignNewTeamLeader = (memberEmail, project) =>{
-    return(dispatch) => {
+export const revokeAuthorities = (payload) => {
+    return (dispatch) => {
+        axios.post('http://localhost:3333/project/revokeAuthorities', { payload }).then((res) => {
+            console.log(res)
+            payload = { ...payload, res }
+            dispatch({ type: "SET_AUTHORITY", payload })
+        }).catch((exception) => {
+            console.log(exception)
+        })
+    }
+}
+
+export const assignNewTeamLeader = (memberEmail, project) => {
+    return (dispatch) => {
         console.log(memberEmail, project)
-        let payload = {memberEmail,
-        project}
-        axios.post("http://localhost:3333/project/assignNewTeamLeader", {payload} ).then((res)=>{
-            payload = {...payload, res}
-            dispatch({type:"ASSIGN_NEW_TEAM_LEADER", payload })
-        }).catch((exception)=>{
+        let payload = {
+            memberEmail,
+            project
+        }
+        axios.post("http://localhost:3333/project/assignNewTeamLeader", { payload }).then((res) => {
+            payload = { ...payload, res }
+            dispatch({ type: "ASSIGN_NEW_TEAM_LEADER", payload })
+        }).catch((exception) => {
             console.log(exception)
         })
     }
 }
 
-export const inviteMoreMembers = (invitedUsers, project, userInfo) =>{
-    return(dispatch) =>{
+export const inviteMoreMembers = (invitedUsers, project, userInfo) => {
+    return (dispatch) => {
         const payload = {
             project,
             invitedUsers,
             userInfo
         }
-        axios.post('http://localhost:3333/project/inviteUsers', {payload}).then((res)=>{
+        axios.post('http://localhost:3333/project/inviteUsers', { payload }).then((res) => {
             console.log(res)
             //redux has no role here
-        }).catch((exception)=>{
+        }).catch((exception) => {
             console.log(exception)
         })
     }
 }
 
-export const setProject = (project) =>{
-    return(dispatch)=>{
-        dispatch({type : "SET_PROJECT", project})
+export const setProject = (project) => {
+    return (dispatch) => {
+        dispatch({ type: "SET_PROJECT", project })
     }
 }
 
-export const findUsers = (searchQuery) =>{
-    return(dispatch)=>{
+export const findUsers = (searchQuery) => {
+    return (dispatch) => {
         axios.get('http://localhost:3333/project/findUsers?searchQuery=' + searchQuery).then((res) => {
             console.log(res.data, "finding users")
             dispatch({ type: "FIND_USERS", users: res.data })

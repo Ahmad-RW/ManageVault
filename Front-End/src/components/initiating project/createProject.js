@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { createProjectAction, findUsers } from '../../store/actionCreators/projectActions'
+import Navbar from '../layout/Navbar'
 
 class CreateProject extends Component {
     constructor(props) {
@@ -83,6 +84,8 @@ class CreateProject extends Component {
             this.warningMessage = <div className="alert alert-danger" role="alert">You are Required to Enter a Project Title </div>
         }
         return (
+            <div>
+            <Navbar />
             <div className="container">
                 <form className="dropdown" onSubmit={this.handleSubmit}>
                     <div className="form-group">
@@ -118,6 +121,7 @@ class CreateProject extends Component {
                     </div>
                     <button type="submit" className="btn btn-primary " >Create Project</button>
                 </form>
+            </div>
             </div>
         )
     }

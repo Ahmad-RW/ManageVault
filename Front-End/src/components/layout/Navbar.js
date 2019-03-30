@@ -28,31 +28,31 @@ class NavBar extends Component {
     }
     render() {//if he is signed in we render different Navbar
         const navbar = this.props.authenticated ? (
-            <div>
-             
-                <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                    <Link className="navbar-brand" to="/"><img src={require('../../favicon.ico')} width="30" height="30" alt="logo" /></Link>
+            <div className="sticky-top">
+                <nav className="navbar navbar-expand-lg navbar-dark bg-dark navBarPadding">
+                    {/* <Link className="navbar-brand" to="/"><img src={require('../../favicon.ico')} width="30" height="30" alt="logo" /></Link> */}
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
-                    <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div className="collapse navbar-collapse NavElements" id="navbarNavAltMarkup">
                         <div className="navbar-nav">
                             <Link className="nav-item nav-link" to='/home'>Home</Link>
                             <Link className="nav-item nav-link" onClick={this.handleSignOut} to='#'>Sign Out</Link>
                             <Link className="nav-item nav-link" to="/publicStorage">Public Storage</Link>
-                            <Link className="nav-item nav-link" onClick={this.props.history.goBack}to='#'><i class="material-icons">arrow_back</i></Link>
+                        </div>
+                        <div className="navbar-nav" >
                             <BC />
                         </div>
                     </div>
-                    <div className="mx-auto welcome-badge"  >
-                        <Link class="btn my-2 my-sm-0" to="/notification"><i class="material-icons">notification_important</i></Link>
+                    <div className="mx-auto welcome-badge nav-item nav-link navWelcome"  >
+                        <Link class="btn btn-dark my-2 my-sm-0" to="/notification"><i class="material-icons">notification_important</i></Link>
                         Welcome {this.props.userInfo.name}
                     </div>
                 </nav>
             </div>
         ) : (//ture : false
-                <div>
-                    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+                <div className="UnAuth-sticky-top">
+                    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
                         <Link className="navbar-brand" to="/"><img src={require('../../favicon.ico')} width="30" height="30" alt="logo" /></Link>
                         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                             <span className="navbar-toggler-icon"></span>
@@ -64,7 +64,8 @@ class NavBar extends Component {
                             </div>
                         </div>
                     </nav>
-                </div>)
+                </div>
+                )
 
         return (navbar)
     }

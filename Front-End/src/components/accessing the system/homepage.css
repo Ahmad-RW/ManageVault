@@ -228,9 +228,6 @@
   .banner p {
     font-size: 2rem;
   }
-  .navbar-dark .navbar-nav .nav-link {
-    padding: 23px 15px;
-  }
   .navbar-dark .navbar-nav .nav-link::after {
     content: '';
     position: absolute;

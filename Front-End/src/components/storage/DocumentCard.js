@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import firebase from "firebase";
+import {deleteDocument} from '../../store/actionCreators/storageActions'
 var assets = require.context("../../assets", true)
 class DocumentCard extends Component {
     state = {
@@ -10,19 +12,36 @@ class DocumentCard extends Component {
         try {
             let type = contentType.substring(contentType.indexOf("/") + 1);
             console.log(type)
-            imgSrc = assets("./"+type+".png")
+            imgSrc = assets("./" + type + ".png")
         } catch (error) {
             imgSrc = assets("./file.png")
         }
-        return(
+        return (
             <img src={imgSrc} />
         )
 
     }
+    deleteDocument = (doc) => {
+        var path = "" + this.props.projectInContext._id + "/" + doc.storageReference
+        console.log(path)
+        var folderRef = firebase.storage().ref().child(this.props.projectInContext._id)
+        folderRef.child(doc.storageReference).delete().then(()=>{
+            console.log("done")
+            const payload = {
+                project : this.props.projectInContext,
+                document : doc
+            }
+            this.props.deleteDocument(payload)
+        }).catch((err)=>{
+            console.log(err)
+        })
+    }
     renderDocumentsCard = () => {
         return (
             this.props.projectInContext.documents.map(doc => {
-
+                if (doc.hidden || doc.deleted) {
+                    return
+                }
                 if (doc.file !== "") {
                     return (
                         <div class="card border-secondary mb-3 col-sm-3" key={doc._id} >
@@ -33,6 +52,7 @@ class DocumentCard extends Component {
                                 </h5>
                                 <p class="card-text">
                                     <a className="text-dark" href={doc.file} target="_blank"><i class="material-icons">cloud_download</i></a>
+                                    <a onClick={()=>{this.deleteDocument(doc)}} className="text-dark"><i class="material-icons">delete_forever</i></a>
                                 </p>
                             </div>
                             <div class="card-footer bg-transparent border-primary">Footer</div>
@@ -56,4 +76,10 @@ const mapStateToProps = (state) => {
         projectInContext: state.projectInContext
     }
 }
-export default connect(mapStateToProps)(DocumentCard)
+
+const mapDispatchToProps = dispatch =>{
+    return{
+        deleteDocument : (payload) => dispatch(deleteDocument(payload))
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(DocumentCard)

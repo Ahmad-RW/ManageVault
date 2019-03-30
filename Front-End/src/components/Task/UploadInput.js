@@ -5,7 +5,7 @@ import { fileUpload, inputDocument } from '../../store/actionCreators/taskAction
 import uuid from 'uuid'
 class UploadFile extends Component {
     constructor(props) {
-        console.log(props, "INPUT CONS")
+       
         super(props)
         this.state = {
             isUploading: false,
@@ -64,7 +64,7 @@ class UploadFile extends Component {
                 }
 
 
-                console.log(payload)
+                
                 this.props.fileUpload(payload)
                 this.setState({
                     renderSuccessMessage: true

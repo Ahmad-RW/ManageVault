@@ -39,7 +39,7 @@ class WelcomeScreen extends Component {
                         <div class="container">
                             <a class="navbar-brand" style={NavBrand}>ManageVault</a>
                             <div id="main-nav" class="collapse navbar-collapse">
-                                <ul class="navbar-nav ml-auto">
+                                <ul class="navbar-nav ml-auto" id="WCnavbar">
                                     <li><a href="#" class="nav-item nav-link active" id='WC'>Home</a></li>
                                     <li><a href="#" class="nav-item nav-link">About Us</a></li>
                                     <li class="dropdown">
