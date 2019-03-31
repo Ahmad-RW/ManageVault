@@ -4,6 +4,7 @@ import FileViewer from 'react-file-viewer'
 import SideBar from '../layout/Sidebar';
 import ProjectSubBar from '../layout/projectSubBar'
 import DocumentCard from './DocumentCard';
+import UploadFile from './UploadFile'
 import Axios from 'axios';
 import DBXChooser from './DBXChooser';
 import { exportDocuments, handleDBXImport } from '../../store/actionCreators/storageActions'
@@ -14,7 +15,7 @@ class Storage extends Component {
         project: this.props.project,
         consentURL: "",
         documentsToExport: [],
-        
+
     }
     componentDidMount() {
         var options = {
@@ -25,19 +26,19 @@ class Storage extends Component {
 
         }
         var button = window.Dropbox.createChooseButton(options)
-       
+
         document.getElementById("storage-DBX-chooser").append(button)
     }
     onSuccess = (files) => {
         const payload = {
             files,
-            userInfo : this.props.userInfo,
-            project : this.props.projectInContext,
-            isInput : false,
-          
+            userInfo: this.props.userInfo,
+            project: this.props.projectInContext,
+            isInput: false,
+
         }
         this.props.handleDBXImport(payload)
-       
+
     }
 
     componentWillMount() {
@@ -87,7 +88,7 @@ class Storage extends Component {
         //check for access token. if not render a button that will tak him to this.state.googleConsentURL
         if (!this.props.userInfo.token) {
             return (
-                <a href={this.state.consentURL} className="">Export Documents</a>
+                <a href={this.state.consentURL} className="btn btn-primary" title="sign in to dropbox to export/import documents">Export Files to Dropbox</a>
             )
         }
         return (
@@ -118,28 +119,30 @@ class Storage extends Component {
             </div>
         )
     }
-    
+
     render() {
         return (
             <div>
 
                 <ProjectSubBar />
                 <hr />
-                {this.renderExportButton()}
-               
-                <div id="storage-DBX-chooser"> {/* DBX chooser will be inserted here. */}
+                <div className="row">
+                    <div className="col-8">
+                        {this.renderExportButton()}
 
-                </div>
-               
-                <div id="container">
+                        <div id="storage-DBX-chooser"> {/* DBX chooser will be inserted here. */}
 
-                </div>
-                <div className="container-fluid">
-                    <SideBar />
+                        </div>
+                    </div>
+                    <div className="col-4">
+                        <UploadFile />
+                    </div>
+                    
                 </div>
                 <div className="container">
                     <DocumentCard />
                 </div>
+
             </div>
         )
     }
@@ -148,7 +151,7 @@ class Storage extends Component {
 const mapDispatchToProps = (dispatch) => {
     return {
         exportDocuments: (payload) => { dispatch(exportDocuments(payload)) },
-        handleDBXImport : (payload)=>dispatch(handleDBXImport(payload))
+        handleDBXImport: (payload) => dispatch(handleDBXImport(payload))
     }
 }
 

@@ -10,10 +10,6 @@ const usersSchema = new schema({
         type : String,
         required : true
     },
-    password : {
-        type : String,
-        required : true
-    },
     notifications : [{
         kind : String,
         date : Date,

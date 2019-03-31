@@ -41,7 +41,8 @@ storageRoute.post('/publishProject', function (req, res) {
     mongoose.model("projects").findByIdAndUpdate(req.body.project._id,
         {
             $set: {
-                "status": "PUBLISHED"
+                "status": "PUBLISHED",
+                publishDate : new Date()
             }
         }, { new: true }
     ).then(function (record) {

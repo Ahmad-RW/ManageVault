@@ -25,6 +25,7 @@ const projectsSchema = new schema({
         enum: ['PENDING', 'RUNNING', 'PUBLISHED', 'STOPPED'],
         required: true
     },
+    publishDate : {type: Date},
     votes: {
         yes: Number,
         no: Number
@@ -92,7 +93,7 @@ const projectsSchema = new schema({
             assigner: String,
             name: String,
             email: String,
-            startDate: Date  //Should we change it to 'Number'?. No we want it date (D7M)
+            startDate: Date  
         }],
         watchedBy: [String],
         comments: [{
@@ -114,7 +115,7 @@ const projectsSchema = new schema({
             deleted : {type:Boolean, default : false},
             uploadedFromDisk :  {type:Boolean, default : false},
             isImported : {type:Boolean, default : false},
-            outputOf : String//documnt output logical name
+            outputOf : String
         }],
         outputDocuments: [{
             name:String,
