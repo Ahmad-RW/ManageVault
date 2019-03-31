@@ -50,7 +50,7 @@ class ProjectSubBar extends Component{
                         <li><Link to="#"><h1>{project.title}</h1></Link></li>
                         <li><Link to={{ pathname: "/home/projectWorkSpace/board", state: { project} }}>Board</Link></li>
                         <li><Link to='/home/projectWorkSpace/storage'>Documents</Link></li>
-                        <li>Chat channels</li>
+                        <li><Link to='/home/projectWorkSpace/channel'>Chat channels</Link></li>
                         <li>Whiteboard</li>
                         <li>
                             <p>Project Progress</p>{this.renderProgressBar()}

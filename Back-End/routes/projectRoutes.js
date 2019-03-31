@@ -3,12 +3,23 @@ const projectRoute = express.Router()
 const projects = require('../models/projects')
 const mongoose = require('../dbConfig/databaseCon')
 const users = require('../models/users');
+const Chatkit = require('@pusher/chatkit-server')
+
+const chatkit = new Chatkit.default({
+    instanceLocator: "v1:us1:284bc324-9274-4bee-b49f-efd146384063",
+    key: "8e5a1191-4999-417c-87e3-a2ccb54c775b:EgBlYSiXIv9TFfqSM/cQxO9ECOR5jXhemLqcHCwNrhE="
+})
 
 projectRoute.post('/newproject', function (req, res) {
-    
-    console.log(req.body, "REQUEST")
+    chatkit.createRoom({
+        creatorId: "ManageVault",
+        name: req.body.project.title,
+    }).then(function(response){
+        let id=response.id
+        console.log(req.body, "REQUEST")
     let project = {
         title: req.body.project.title,
+        chatRoomId: id, 
         creator: req.body.project.creator,
         major_course: req.body.project.major_course,
         status: 'RUNNING',
@@ -30,6 +41,11 @@ projectRoute.post('/newproject', function (req, res) {
         console.log(error)
         res.status(500)
     });
+        console.log(response.id)
+    }).catch(function(err){
+        console.log(err)
+    })
+    
 });
 projectRoute.get('/getUserProjects', function (req, res) {
     mongoose.model('projects').find({ "members.email": req.query.userEmail },

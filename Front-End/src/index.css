@@ -15,8 +15,6 @@ code {
 
 .notiHead {
   display: inline;
-  margin-left: 400px;
-  margin-right: 400px;
 }
 
 .Xicon {
@@ -515,3 +513,119 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   }
 }
 /* End for spinner */
+
+
+.chat-button {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  background: #5E0565;
+  height: 50px;
+  font-size: 16px;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  border: 0;
+  box-shadow: 1px 1px 4px 1px grey;
+  cursor: pointer;
+}
+.form-container {
+  height: 400px;
+  border: 1px solid #5E0565;
+}
+.form-container h1 {
+  padding: 10px;
+  background-color: #5E0565;
+  font-size: 20px;
+  color: white;
+  margin: 0;
+  margin-bottom: 10px;
+}
+.form {
+  padding: 30px;
+}
+.input  {
+  display: block;
+  width: 100%;
+  margin: 20px auto;
+  height: 50px;
+  font-size: 20px
+}
+.submit  {
+  height: 40px;
+  padding: 0 20px;
+  background-color: #5E0565;
+  color: white;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.form {
+  padding: 30px;
+}
+.input  {
+  display: block;
+  width: 100%;
+  margin: 20px auto;
+  height: 50px;
+  font-size: 20px
+}
+.submit  {
+  height: 40px;
+  padding: 0 20px;
+  background-color: #5E0565;
+  color: white;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.chatapp  {
+  margin: 0 auto;
+  height: 80vh;
+  border: 1px solid #a1a1a4;
+}
+.header  {
+  padding: 20px;
+  color: white;
+  margin-top: 0;
+  text-align: left;
+  border-bottom: 1px solid #5E0565;
+  background-color: #5E0565;
+}
+.message-list  {
+  list-style-type: none;
+  padding: 0px 20px;
+  overflow: scroll;
+  max-height: calc(100vh - 150px);
+  margin-bottom: 35px;
+}
+.message-sender  {
+  font-weight: bold;
+  font-size: 1em;
+  margin: 0;
+}
+.message-text  {
+  margin-bottom: 20px;
+  margin-top: 5px
+}
+.message-input  {
+  width: 70%;
+  height: 50px;
+  border: 0;
+  border-top: 1px solid #e0e0e0;
+  font-size: 18px;
+  padding-left: 2px
+}
+.message-submit  {
+  width: 30%;
+  background-color: #5E0565;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+.input-field {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+}

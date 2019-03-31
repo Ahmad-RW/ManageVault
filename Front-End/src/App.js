@@ -20,6 +20,7 @@ import userDefinedRoles from './components/initiating project/userDefinedRoles';
 import Storage from './components/storage/storage'
 import PublicStorage from './components/storage/PublicStorage';
 import ViewPublicProject from './components/storage/ViewPublicProject';
+import Channel from './components/Channels/Channel'
 import qs from 'query-string'
 import Axios from 'axios';
 
@@ -76,7 +77,7 @@ class App extends Component {
           <Route exact path='/home/projectWorkSpace' component={RequireAuth(WorkSpace)} />
           <Route path='/home/projectWorkSpace/board' component={RequireAuth(Board)} />
           <Route path='/home/projectWorkSpace/storage' component={RequireAuth(Storage)} />
-
+          <Route path='/home/projectWorkSpace/channel' component={RequireAuth(Channel)} />
         </Switch>
 
       </div>

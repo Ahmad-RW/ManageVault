@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@pusher/chatkit-client": "^1.4.1",
+    "@pusher/chatkit-server": "^1.1.0",
     "async.js": "^0.9.5",
     "axios": "^0.18.0",
     "chart.js": "^2.8.0",
