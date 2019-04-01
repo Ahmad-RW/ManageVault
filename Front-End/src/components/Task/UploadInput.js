@@ -3,6 +3,7 @@ import firebase from "firebase";
 import { connect } from 'react-redux'
 import { fileUpload, inputDocument } from '../../store/actionCreators/taskActions'
 import uuid from 'uuid'
+import Spinner from '../../helper_Components/Spinner'
 class UploadFile extends Component {
     constructor(props) {
        
@@ -15,12 +16,13 @@ class UploadFile extends Component {
             metaData: {},
             renderSuccessMessage: false,
             documentName: "",
-            errorMSG: ""
+            errorMSG: "",
+            startSpinner: false
         };
     }
 
     handleUploadStart = () => {
-        this.setState({
+        this.setState({...this.state,
             isUploading: true,
         })
     }
@@ -34,17 +36,17 @@ class UploadFile extends Component {
             progress
         })
     }
-    renderProgressBar = () => {     //PROBLEM: Progress is Zero, that causes a problem in the progress bar.
+    renderProgressBar = () => {     //PROBLEM: Progress is Zero, that causes a problem in the progress bar. -> Solved -D7M-
         if (this.state.isUploading) {
             return (
                 <div className="progress">
-                    <div className="progress-bar progress-bar-striped bg-success" role="progressbar" aria-valuenow='50' aria-valuemin='0' aria-valuemax="100" style={{ width: 100 + '%' }}>{this.state.progress}</div>
+                    <div className="progress-bar bg-success progress-bar-striped" role="progressbar" aria-valuenow='50' aria-valuemin='0' aria-valuemax="100" style={{ width: this.state.progress + '%' }}>{/*this.state.progress*/}</div>
                 </div>
             )
         }
     }
     handleSuccess = (filename) => {
-        this.setState({ progress: 100, isUploading: false });
+        this.setState({ progress: 100, isUploading: false,startSpinner:false });
         var reference = firebase.storage().ref(this.props.projectInContext._id).child(filename)
         reference.getMetadata().then(metaData => {
             reference.getDownloadURL().then(url => {
@@ -76,7 +78,7 @@ class UploadFile extends Component {
     renderSuccessMessage = () => {
         if (this.state.renderSuccessMessage) {
             return (
-                <h1>Upload Complete</h1>
+                <p>Upload Complete</p>
             )
         }
     }
@@ -91,7 +93,10 @@ class UploadFile extends Component {
         return result
     }
 
-    handleFileUpload = (e) => {     
+    handleFileUpload = (e) => {
+        this.setState({
+            startSpinner:true
+        })
         if (this.isLogicalNameDuplicate(this.state.documentName)) {
             this.renderDuplicationMessage()
             return
@@ -107,7 +112,8 @@ class UploadFile extends Component {
             </button>
         </div>
         this.setState({
-            errorMSG: error
+            errorMSG: error,
+            startSpinner:false
         })
     }
     closeAlert = () => {
@@ -153,7 +159,7 @@ class UploadFile extends Component {
         return (
             <div>
                 {this.state.errorMSG}
-                <input type="text" onChange={this.handleDocumentNameChange} id="documentName" />
+                <input type="text" onChange={this.handleDocumentNameChange} id="documentName" placeholder={this.state.metaData.fileName} />
             </div>
         )
 
@@ -165,15 +171,16 @@ class UploadFile extends Component {
         })
     }
     render() {
-
+        console.log(this.state.startSpinner,"spinner")
         return (
             <div>
                 {this.renderProgressBar()}
                 {this.renderUploadCloud()}
                 {this.renderTextField()}
-                <input type="file" id={this.props.task._id} onChange={this.setFile} />
+                <input  type="file" id={this.props.task._id} onChange={this.setFile} />
                 <button className="btn btn-primary" onClick={this.handleFileUpload}>Submit</button>
                 {this.renderSuccessMessage()}
+                <Spinner startSpinner={this.state.startSpinner} />
             </div>
         )
     }
@@ -187,7 +194,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        uploadInput: (payload) => dispatch(inputDocument(payload)),
         fileUpload: (payload) => dispatch(fileUpload(payload))
     }
 }

@@ -36,12 +36,9 @@ class UploadOutput extends Component {
     }
     renderProgressBar = () => {
         if (this.state.isUploading) {
-            const style = {
-                width: "100%;"
-            }
             return (
                 <div class="progress">
-                    <div class="progress-bar" role="progressbar" style={style} aria-valuemin="0" aria-valuemax="100">{this.state.progress}</div>
+                    <div class="progress-bar bg-success progress-bar-striped" role="progressbar" aria-valuemin="0" aria-valuemax="100" style={{ width: this.state.progress + '%' }}>{/*this.state.progress*/}</div>
                 </div>
             )
         }
@@ -81,7 +78,7 @@ class UploadOutput extends Component {
     renderSuccessMessage = () => {
         if (this.state.renderSuccessMessage) {
             return (
-                <h1>Upload Complete</h1>
+                <p>Upload Complete</p>
 
             )
         }
@@ -146,7 +143,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        uploadInput: (payload) => dispatch(inputDocument(payload)),
+        
         fileUpload: (payload) => dispatch(fileUpload(payload))
     }
 }

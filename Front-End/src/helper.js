@@ -102,13 +102,27 @@ export const isTaskPending = (taskId, project) =>{
 }
 
 export const isOutputTaskSubmitted = (outputOf, project) =>{
-    let result = false
+    let result = true
     project.tasks.forEach(task=>{
         task.outputDocuments.forEach(output=>{
-            if(output.name === outputOf && task.status === "SUBMITTED"){
-                result = true
+            if(output.name === outputOf && task.status !== "SUBMITTED"){
+                result = false
             }
         })
     })
     return result
+}
+
+export const isTaskOfOutputSubmitted = (inputDoc, project) =>{ //this method checks whether the task of the doc with storageReference passed is submitted or not
+    let result= false
+        project.tasks.forEach(task=>{
+            task.outputDocuments.forEach(outDoc=>{
+                if((outDoc.storageReference === inputDoc.storageReference && task.status ==="SUBMITTED")){
+                    result = true
+                    
+                }
+            })
+        })
+        return result
+    
 }

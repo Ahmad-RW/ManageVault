@@ -4,11 +4,13 @@ import { connect } from 'react-redux';
 import { fetchUserInfo } from '../../store/actionCreators/authAction'
 import { fetchUserProjects } from '../../store/actionCreators/projectActions'
 import Navbar from '../layout/Navbar'
+import Spinner from '../../helper_Components/Spinner'
 
 class Login extends Component {
     state = {
-        email: '',
-        password: ''
+        email :'',
+        password : '',
+        startSpinner: false,
     }
     constructor(props) {
         super(props)
@@ -22,7 +24,8 @@ class Login extends Component {
         console.log(this.state)
 
     }
-    handelClick = (e) => {
+    handelClick = (e) =>{
+        this.setState({...this.state,startSpinner:true})
         e.preventDefault();
         fb.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((res) => {
             console.log(res)
@@ -33,9 +36,11 @@ class Login extends Component {
             this.props.history.push('/home');//redirection
         }).catch((exception) => {
             console.log(exception)
+            this.setState({...this.state,startSpinner:false})
             alert("wrong email or password")
         })
     }
+    
     render() {
         return (
             <div>
@@ -53,12 +58,13 @@ class Login extends Component {
                                         <input type="password" className="form-control" id="password" placeholder="password" onChange={this.handlechange} />
                                         <button className="form-control btn btn-info sign-in-button" type="submit" onClick={this.handelClick}>Sign In</button>
                                     </div>
+                                    <Spinner startSpinner={this.state.startSpinner} />
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
-            </div>
+        </div>
         )
     }
 }

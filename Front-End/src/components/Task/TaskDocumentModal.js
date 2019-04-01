@@ -4,11 +4,36 @@ import { makeid, isMemberAssigned, isUserTeamLeader, checkAuthority } from '../.
 import { handleOutput, removeOutputDocument, handleInputDocument, removeInputDocument, checkActivity } from '../../store/actionCreators/taskActions'
 import UploadFile from './UploadInput';
 import UploadOutput from './UploadOutput'
+import DBXChooser from '../storage/DBXChooser';
+import { handleDBXImport } from '../../store/actionCreators/storageActions';
 
 class TaskDocumentModal extends Component {
     state = {
         outputDocuments: null,
         errorMSG: <div></div>,
+    }
+    componentDidMount() {
+        var options = {
+            success: (files) => {
+                this.onSuccess(files)
+            },
+            multiselect: true,
+
+        }
+        var button = window.Dropbox.createChooseButton(options)
+        var eID = this.props.task._id + " DBXChooser"
+        document.getElementById(eID).append(button)
+    }
+    onSuccess = (files) => {
+        const payload = {
+            files,
+            userInfo: this.props.userInfo,
+            project: this.props.projectInContext,
+            isInput: true,
+            task: this.props.task
+        }
+        this.props.handleDBXImport(payload)
+
     }
     handleChange = (e) => {
         this.setState({
@@ -49,7 +74,8 @@ class TaskDocumentModal extends Component {
                 fileName: outputDocument.fileName,
                 file: outputDocument.file,
                 storageReference: outputDocument.storageReference,
-                outputOf: logicalName
+                outputOf: logicalName,
+
             }
         }
         this.props.handleInputDocument(payload)
@@ -63,12 +89,12 @@ class TaskDocumentModal extends Component {
         return list
     }
     renderRemoveInputDocument = (Document) => {
-        if(isUserTeamLeader(this.props.userInfo, this.props.projectInContext)|| checkAuthority(this.props.projectInContext, "MODIFY_TASK", this.props.userInfo)){
-        return (
-            <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleRemoveInputDocument(Document) }}>
-                <i className="material-icons ">highlight_off</i>
-            </button>
-        )
+        if (isUserTeamLeader(this.props.userInfo, this.props.projectInContext) || checkAuthority(this.props.projectInContext, "MODIFY_TASK", this.props.userInfo)) {
+            return (
+                <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleRemoveInputDocument(Document) }}>
+                    <i className="material-icons ">highlight_off</i>
+                </button>
+            )
         }
     }
     handleRemoveInputDocument = (Document) => {
@@ -83,7 +109,7 @@ class TaskDocumentModal extends Component {
         return (
             <div class="dropdown">
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                    Enter input documents
+                    Output of Other Tasks
                     </button>
                 <div class="dropdown-menu">
                     {this.renderInputDocuments()}
@@ -101,10 +127,9 @@ class TaskDocumentModal extends Component {
             this.renderErrorMessage("null")
             return
         }
-      
+
         if (this.searchForOutputDocument(this.state.outputDocuments)) {
             this.renderErrorMessage("redundant")
-           
             return
         }
 
@@ -112,6 +137,7 @@ class TaskDocumentModal extends Component {
             task: this.props.task,
             project: this.props.projectInContext,
             outputDocument: {
+                hidden: true,
                 name: this.state.outputDocuments,
                 fileName: "",
                 file: "",
@@ -166,7 +192,7 @@ class TaskDocumentModal extends Component {
         return outputDocuments
     }
     renderRemoveOutputDocument = (Document) => {
-        if (isMemberAssigned(this.props.task, this.props.userInfo)|| checkAuthority(this.props.projectInContext, "MODIFY_TASK", this.props.userInfo)) {
+        if (isMemberAssigned(this.props.task, this.props.userInfo) || checkAuthority(this.props.projectInContext, "MODIFY_TASK", this.props.userInfo)) {
             return (
                 <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.handleRemoveOutputDocument(Document) }}>
                     <i className="material-icons ">highlight_off</i>
@@ -180,8 +206,32 @@ class TaskDocumentModal extends Component {
             project: this.props.projectInContext,
             Document: Document
         }
-       
+
         this.props.removeOutputDocument(payload)
+    }
+    renderSelectInputFromProjectDocuments = () => {
+        return (
+            <div class="dropdown">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    Project Documents
+                    </button>
+                <div class="dropdown-menu">
+                    {this.renderProjectDocuments()}
+                </div>
+            </div>
+        )
+    }
+    renderProjectDocuments = () => {
+        if (this.props.projectInContext.documents.length === 0) {
+            return
+        }
+        return (
+            this.props.projectInContext.documents.map(doc => {
+                return (
+                    <a class="dropdown-item" onClick={() => { this.handleInputDocument(doc, doc.name) }}>{doc.name}</a>
+                )
+            })
+        )
     }
     render() {
         const text = makeid()
@@ -203,28 +253,39 @@ class TaskDocumentModal extends Component {
                                 </button>
                             </div>
                             <div class="modal-body container">
+                                <div className="row">
+                                    <div className="col-12">
+                                        <h5>Set Input Document</h5>
+                                    </div>
+                                </div>
                                 <div>
                                     <p>input Documents of this  task:</p>
-                                    {this.renderInputDocumentsButton()}
-                                </div>
-                                <div>
                                     {this.renderInputDocumentsList()}
+
                                 </div>
-                                <hr />
                                 <div className="row">
-                                    <div className="col-12">
-                                        <h5>Upload Input Document</h5>
+                                    <div classname="col-6">
+                                        {this.renderInputDocumentsButton()}
+                                    </div>
+                                    <div className="col-6">
+                                        {this.renderSelectInputFromProjectDocuments()}
                                     </div>
                                 </div>
+                                <hr />
+
                                 <div className="row">
-                                    <div className="col-12">
+                                    <div className="col-6">
+                                        <p>Upload from your disk</p>
                                         <UploadFile task={this.props.task} isInput={true} />
                                     </div>
+                                    <div className="col-6" id={this.props.task._id + " DBXChooser"}>
+                                        <p>or Import input documents from Dropbox</p>
+                                    </div>
                                 </div>
                                 <hr />
                                 <div className="row">
                                     <div className="col-12">
-                                        <h5>Upload Output Document</h5>
+                                        <h5>Set Output Document</h5>
                                     </div>
                                 </div>
                                 {this.state.errorMSG}
@@ -234,7 +295,7 @@ class TaskDocumentModal extends Component {
                                     <p>output Documents of this task:</p>
                                     {this.renderOutput()}
                                 </div>
-                                {/* ahmad */}
+
                                 <hr />
                             </div>
                             <div class="modal-footer">
@@ -261,7 +322,8 @@ const mapDispatchToProps = (dispatch) => {
         handleOutput: (payload) => dispatch(handleOutput(payload)),
         removeOutputDocument: (payload) => dispatch(removeOutputDocument(payload)),
         handleInputDocument: (payload) => dispatch(handleInputDocument(payload)),
-        removeInputDocument: (payload) => dispatch(removeInputDocument(payload))
+        removeInputDocument: (payload) => dispatch(removeInputDocument(payload)),
+        handleDBXImport: (payload) => dispatch(handleDBXImport(payload))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TaskDocumentModal)

@@ -155,7 +155,7 @@ export const watchTask = payload => {
 export const unWatchTask = payload => {
     return (dispatch) => {
         axios.post('http://localhost:3333/task/unWatchTask', { payload }).then((res) => {
-            console.log(res)
+            
             payload = { ...payload, res }
             dispatch({ type: "MODIFY_TASK", payload })
         }).catch((exception) => {
@@ -168,7 +168,7 @@ export const handleOutput = payload => {
     return(dispatch)=>{
         axios.post('http://localhost:3333/task/handleOutput', {payload}).then((res)=>{
             payload = {...payload, res}
-            // console.log(payload)
+            
             dispatch({type:"MODIFY_TASK", payload})
         }).catch((exception)=>{
             console.log(exception)
@@ -179,10 +179,20 @@ export const handleOutput = payload => {
 export const removeDependency = payload => {
     return (dispatch) => {
         axios.post('http://localhost:3333/task/removeDependency', { payload }).then((res) => {
-            console.log(res)
+           
             payload = { ...payload, res }
              dispatch({type:"MODIFY_TASK", payload})
         }).catch((exception) => {
+            console.log(exception)
+        })
+    }
+}
+export const newCriteria = payload =>{
+    return(dispatch)=>{
+        axios.post("http://localhost:3333/task/newCriteria", {payload}).then(res=>{
+            payload = { ...payload, res }
+            dispatch({type:"MODIFY_TASK", payload})
+        }).catch(exception=>{
             console.log(exception)
         })
     }
@@ -191,7 +201,7 @@ export const removeDependency = payload => {
 export const fileUpload = payload => {
     return (dispatch) => {
         axios.post("http://localhost:3333/task/fileUpload", { payload }).then((res) => {
-            console.log(res)
+          
             payload = {
                 ...payload,
                 res,
@@ -234,19 +244,7 @@ export const inputDocument = payload => {
         })
     }
 }
-export const outputDocument = payload =>{
-    return(dispatch)=>{
-        axios.post("http://localhost:3333/task/outputDocument", {payload}).then((res) => {
-            console.log(res)
-            payload = {...payload,
-                project : payload.projectInContext,//dont mind this
-                res}
-           // dispatch({type:"MODIFY_TASK" ,payload})
-        }).catch((exception) => {
-            console.log(exception)
-        })
-    }
-}
+
 
 export const removeOutputDocument = payload => {
     return (dispatch) => {

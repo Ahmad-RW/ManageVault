@@ -17,6 +17,7 @@ class Board extends Component {
         super(props)
         this.state = {
             feedback: "",
+            wfcFilter:false
         }
     }
     
@@ -252,7 +253,12 @@ class Board extends Component {
             )
         } else {
             return (
-                <button title="Unwatch task" className="close" onClick={() => { this.handleUnWatchTask(task) }}> <i class="material-icons">visibility_off</i> </button>
+                <div className="tooltips">
+                <button title="Unwatch task" className="close" onClick={() => { this.handleUnWatchTask(task) }}>
+                    <i class="material-icons">visibility_off</i>
+                </button>
+                <span className="tooltiptext">Unwatch Task</span>
+                </div>
             )
         }
 
@@ -273,6 +279,9 @@ class Board extends Component {
         }
         this.props.unWatchTask(payload)
     }
+    // render = () => {
+
+    // }
     render() {
         let tasks = this.props.projectInContext.tasks.length ? (
             <div>

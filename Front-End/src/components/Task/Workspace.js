@@ -12,10 +12,9 @@ class Workspace extends Component {
     state = {
         userInfo: this.props.userInfo,
         project: this.props.project,
-        auth : {},
-        googleConsentURL: ""
+        
     }
-
+    
     render() {
         return (
                 <div>

@@ -3,20 +3,23 @@ const projectRoute = express.Router()
 const projects = require('../models/projects')
 const mongoose = require('../dbConfig/databaseCon')
 const users = require('../models/users');
-projectRoute.post('/setRoomId', function(req,res){
-    console.log(req)
-    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id,
-        {"$set":{"chatRoomId" : req.body.payload.res.id}}, {new:true}).then(function(record){
-            res.status(200).send(record)
-        }).catch(function(err){
-            res.status(500).send(err)
-        })
+const Chatkit = require('@pusher/chatkit-server')
+
+const chatkit = new Chatkit.default({
+    instanceLocator: "v1:us1:284bc324-9274-4bee-b49f-efd146384063",
+    key: "8e5a1191-4999-417c-87e3-a2ccb54c775b:EgBlYSiXIv9TFfqSM/cQxO9ECOR5jXhemLqcHCwNrhE="
 })
+
 projectRoute.post('/newproject', function (req, res) {
-    
-    console.log(req.body, "REQUEST")
+    chatkit.createRoom({
+        creatorId: "ManageVault",
+        name: req.body.project.title,
+    }).then(function(response){
+        let id=response.id
+        console.log(req.body, "REQUEST")
     let project = {
         title: req.body.project.title,
+        chatRoomId: id, 
         creator: req.body.project.creator,
         major_course: req.body.project.major_course,
      
@@ -39,6 +42,11 @@ projectRoute.post('/newproject', function (req, res) {
         console.log(error)
         res.status(500)
     });
+        console.log(response.id)
+    }).catch(function(err){
+        console.log(err)
+    })
+    
 });
 projectRoute.get('/getUserProjects', function (req, res) {
     mongoose.model('projects').find({ "members.email": req.query.userEmail },
@@ -157,6 +165,10 @@ projectRoute.post('/handleInvite', function (req, res) {
     // })
     mongoose.model("projects").findByIdAndUpdate(req.body.project, { $push: { "members": member } }).then(function (record) {//handles accepting invite. First it pushess themmeber in the project then removes the notification from his mailbox
         mongoose.model("users").findByIdAndUpdate(req.body.userInfo._id, { $pull: { "notifications": { _id: req.body.notification._id } } }).then(function (record) {
+            mongoose.model('projects').findById(req.body.project).then(function (record) {
+                const data = {projectID:req.body.project,newTM:member, project:record}
+                sendNotification("NEW_TEAM_MEMBER", data)
+            })
             // console.log(record)
             res.status(200).send(record)
         })
@@ -292,4 +304,38 @@ function handleRequest(project) {  //Takes the members who will recieve the requ
         }
     })
 }
+
+function  sendNotification(kind, data) {
+    let notification={}
+    if(kind === "NEW_TEAM_MEMBER"){
+        notification = {
+            kind: "NEW_TEAM_MEMBER",
+            date: new Date,
+            data: {projectID: data.project._id,
+                    project_title:data.project.title,
+                    newTM: data.newTM
+                }
+        }
+        console.log(notification)
+        data.project.members.forEach(function(member){
+            if(member.email === data.newTM.email){
+                return
+            }
+            console.log(member.email)
+            mongoose.model("users").findOneAndUpdate({ email: member.email}, { $push: { "notifications":  notification}} ).then(function (record) {
+                console.log(record,"Notificatoin sent to members")
+            }).catch(function (error) {
+                console.log(error)
+            })
+        })
+    }
+
+}
+// function findProject(project){
+//     mongoose.model('projects').findById(project).then(function (record) {
+//         return record
+//     }).catch(function (exception) {
+//         console.log(exception)
+//     })
+// }
 module.exports = projectRoute
