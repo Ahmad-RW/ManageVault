@@ -42,8 +42,7 @@ class ModifyTask extends Component {
             duration: this.state.duration,
             project: this.props.projectInContext,
             task: this.props.task,
-            editor: this.props.userInfo.name,
-            editor_email:this.props.userInfo.email
+
         }
 
         this.props.editTask(payload)

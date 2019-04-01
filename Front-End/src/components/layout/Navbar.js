@@ -39,6 +39,7 @@ class NavBar extends Component {
                             <Link className="nav-item nav-link" to='/home'>Home</Link>
                             <Link className="nav-item nav-link" onClick={this.handleSignOut} to='#'>Sign Out</Link>
                             <Link className="nav-item nav-link" to="/publicStorage">Public Projects</Link>
+                            
                         </div>
                         <div className="navbar-nav" >
                             <BC />

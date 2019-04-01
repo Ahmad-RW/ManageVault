@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import fb from '../../FirebaseConfig/authConfig';
 import axios from 'axios';
 import Navbar from '../layout/Navbar'
-import Spinner from '../../helper_Components/Spinner'
 
 class Register extends Component {
     state = {
+
         name: "",
         password: "",
         email: "",
@@ -46,6 +46,13 @@ class Register extends Component {
             console.log(exception)
         })
     }
+    renderspinner = () => {
+        if(this.state.startSpinner===true){
+            return(
+                <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+            )
+        }
+    }
     render() {
         return (
             <div>
@@ -70,7 +77,7 @@ class Register extends Component {
                         </div>
                         <button className="form-control btn btn-info sign-in-button" type="submit" >Open the Vault</button>
                     </form>
-                    <Spinner startSpinner={this.state.startSpinner} />
+                    {this.renderspinner()}
                 </div>
             </div>
             </div>

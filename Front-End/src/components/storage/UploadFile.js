@@ -31,7 +31,7 @@ class UploadFile extends Component {
     renderUploadCloud = () => {
         return (
             <label for="file-upload" className="btn">
-                <i class="material-icons md-light">cloud_upload</i>
+                <i class="material-icons md-dark">cloud_upload</i>
             </label>
         )
     }
@@ -101,7 +101,8 @@ class UploadFile extends Component {
         return (
             <div>
                 {this.renderUploadCloud()}
-                <input type="text" onChange={this.handleDocumentName} id="documentName" className="storage-upload-text-field" />
+                {/* <input type="text" placeholder={this.state.metaData.fileName} onChange={this.handleDocumentName} id="documentName" className="storage-upload-text-field" /> */}
+                
                 <input type="file" id="file-upload" onChange={this.handleFileUpload} />
             </div>
         )

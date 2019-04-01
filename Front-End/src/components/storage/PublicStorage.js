@@ -7,14 +7,15 @@ import Navbar from '../layout/Navbar'
 class PublicStorage extends Component {
     state = {
         major_courseFilter: "",
-        projects: []
+        projects: [],
+        viewRecent: false
     }
     componentWillMount() {
         axios.get("http://localhost:3333/storage/getPublishedProjects").then((res) => {
             this.setState({
                 projects: res.data
             })
-            console.log(this.state)
+            
         })
     }
     handleCriteriaChange = (e) => {
@@ -24,8 +25,12 @@ class PublicStorage extends Component {
 
     }
     renderProjects = () => {
+        
         let projectsList = this.state.projects
-        if(this.state.major_courseFilter !== ""){//to check if filtering is applied
+        if(this.state.viewRecent){
+            projectsList.sort(this.projectsComparator)
+        }
+        if (this.state.major_courseFilter !== "") {//to check if filtering is applied
             projectsList = this.state.projects.filter(project => { return (project.major_course === this.state.major_courseFilter) })
         }
         const projects = projectsList.map(project => {
@@ -46,7 +51,23 @@ class PublicStorage extends Component {
                 </div>
             )
         })
+        
+        
         return projects
+    }
+    projectsComparator = (p1, p2) => {
+        var d1 = new Date(p1.publishDate)
+        var d2 = new Date(p2.publishDate)
+        if (d1 < d2) {
+            console.log("-1")
+            return -1
+        }
+        if (d1 > d2) {
+            console.log("1")
+            return 1
+        }
+        console.log("0")
+        return 0
     }
     renderDropDown = () => {
         return (
@@ -66,6 +87,7 @@ class PublicStorage extends Component {
         )
     }
     render() {
+       
         return (
             <div>
             <Navbar />
@@ -74,6 +96,13 @@ class PublicStorage extends Component {
                     <div className="col-md-4 offset-md-8">
                         <span>Filter By major/course</span>
                         {this.renderDropDown()}
+                    </div>
+                    <div className="col-md-4 offset-md-8">
+                        <input onClick={(e) => {
+                            console.log(e.target.checked)
+                            this.setState({ viewRecent: e.target.checked })
+                        }} type="checkbox" id="viewRecent" title="" />
+                        <lable for="viewRecent">View Most Recent Published Projects</lable>
                     </div>
                 </div>
                 <div className="row">

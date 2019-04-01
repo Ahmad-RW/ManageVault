@@ -22,7 +22,6 @@ projectRoute.post('/newproject', function (req, res) {
         chatRoomId: id, 
         creator: req.body.project.creator,
         major_course: req.body.project.major_course,
-     
         status: 'RUNNING',
         votes: {
             yes: 0,

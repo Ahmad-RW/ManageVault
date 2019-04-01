@@ -34,10 +34,10 @@ class DocumentCard extends Component {
         console.log(path)
         var folderRef = firebase.storage().ref().child(this.props.projectInContext._id)
         folderRef.child(doc.storageReference).delete().then(() => {
-         
+
             this.dispatchDeleteDocAction(doc)
         }).catch((err) => {
-            
+
         })
     }
     dispatchDeleteDocAction = (doc) => {
@@ -55,34 +55,63 @@ class DocumentCard extends Component {
             )
         }
         if (this.state.showDocumentsOf === "") {
-            return
+            return (
+                this.renderAllDocuments()
+            )
         }
         else {
             const task = this.getTask(this.state.showDocumentsOf)
 
             const inputList = task.inputDocuments.map(inDoc => {
-                if(inDoc.isImported||inDoc.uploadedFromDisk){
+                if (inDoc.deleted || inDoc.file === "") {
+                    return
+
+                }
+                if (inDoc.isImported || inDoc.uploadedFromDisk) {
                     return (
                         this.getDocumentTemplate(inDoc)
                     )
                 }
-                if( isTaskOfOutputSubmitted(inDoc, this.props.projectInContext) ){
+                if (isTaskOfOutputSubmitted(inDoc, this.props.projectInContext)) {
                     return (this.getDocumentTemplate(inDoc))
                 }
-                if(inDoc.deleted||inDoc.file===""){
-                    return
-                
-                }
-                
+               
+
             })
             const outList = task.outputDocuments.map(outDoc => {
-                if(outDoc.hidden ){return}
+                if (outDoc.hidden || outDoc.deleted) { return }
                 return (
                     this.getDocumentTemplate(outDoc)
                 )
             })
             return inputList.concat(outList)
         }
+    }
+    renderAllDocuments = () => {
+        let projectDocs = this.renderProjectDocuments()
+        let tasks = this.props.projectInContext.tasks
+        var allInputDocs = tasks.map(element => {
+            if (element.deleted || element.file === "") {
+                return
+
+            }
+            return (element.inputDocuments.map(inputDoc => {
+                return (
+                    this.getDocumentTemplate(inputDoc, element.name)
+                )
+            })
+            )
+        })
+        var allOutputDocs = tasks.map(element => {
+            if (element.hidden || element.deleted) { return }
+            return (element.outputDocuments.map(outDoc => {
+                return (
+                    this.getDocumentTemplate(outDoc, element.name)
+                )
+            }))
+        })
+        console.log(allInputDocs)
+        return projectDocs.concat(allInputDocs, allOutputDocs)
     }
     renderProjectDocuments = () => {
         return (
@@ -104,7 +133,11 @@ class DocumentCard extends Component {
         })
         return selectedTask
     }
-    getDocumentTemplate = doc => {
+    getDocumentTemplate = (doc, taskName = "") => {
+        var relatedTask = "This documents is related to " + taskName + " task "
+        if(taskName===""){
+            relatedTask = " "
+        }
         return (
             <div class="card border-secondary mb-3 col-sm-3" key={doc._id} >
                 <div class="card-header bg-transparent border-primary"><span className="storage-card">{doc.name}</span></div>
@@ -117,7 +150,7 @@ class DocumentCard extends Component {
                         <a onClick={() => { this.deleteDocument(doc) }} className="text-dark"><i class="material-icons">delete_forever</i></a>
                     </p>
                 </div>
-                <div class="card-footer bg-transparent border-primary">Footer</div>
+                <div class="card-footer bg-transparent border-primary">{relatedTask}</div>
             </div>
         )
     }
@@ -125,7 +158,7 @@ class DocumentCard extends Component {
 
         return (
             <div className="form-group">
-
+                <label>Filter by Task</label>
                 <select className="form-control" onChange={this.reRenderView} id="showDocumentsOf">
                     <option value="" id="showDocumentsOf">Dont apply filters</option>
                     <option value="Project_Documents" id="showDocumentsOf">Project Documents</option>
@@ -148,13 +181,15 @@ class DocumentCard extends Component {
         this.setState({
             [e.target.id]: e.target.value
         })
-        console.log(this.state.showDocumentsOf)
+
     }
     render() {
         return (
             <div>
                 <div className="row">
-                    {this.renderFilterByTaskDropdown()}
+                    <div className="col-8">
+                        {this.renderFilterByTaskDropdown()}
+                    </div>
                 </div>
                 <div className="row">
                     {this.renderDocumentsCard()}

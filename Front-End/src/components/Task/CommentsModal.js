@@ -33,8 +33,7 @@ class CommentsModal extends Component {
         const comment = {
             content: this.state.comment,
             author: this.props.userInfo.name,
-            date: new Date(),
-            author_email:this.props.userInfo.email,
+            date: new Date()
         }
        
         this.props.newComment(comment, this.props.task, this.props.projectInContext)

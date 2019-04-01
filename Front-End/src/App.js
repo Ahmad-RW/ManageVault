@@ -20,9 +20,9 @@ import userDefinedRoles from './components/initiating project/userDefinedRoles';
 import Storage from './components/storage/storage'
 import PublicStorage from './components/storage/PublicStorage';
 import ViewPublicProject from './components/storage/ViewPublicProject';
+import Channel from './components/Channels/Channel'
 import qs from 'query-string'
 import Axios from 'axios';
-import Channel from './components/Channels/Channel'
 
 class App extends Component {
 

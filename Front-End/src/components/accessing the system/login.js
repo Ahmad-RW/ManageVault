@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
 import fb from '../../FirebaseConfig/authConfig';
-import { connect } from 'react-redux';
-import { fetchUserInfo } from '../../store/actionCreators/authAction'
-import { fetchUserProjects } from '../../store/actionCreators/projectActions'
 import Navbar from '../layout/Navbar'
-import Spinner from '../../helper_Components/Spinner'
-
+import {fetchUserInfo} from '../../store/actionCreators/authAction'
+import {fetchUserProjects} from '../../store/actionCreators/projectActions'
+import { connect } from 'react-redux'
 class Login extends Component {
     state = {
         email :'',
@@ -40,7 +38,13 @@ class Login extends Component {
             alert("wrong email or password")
         })
     }
-    
+    renderspinner = () => {
+        if(this.state.startSpinner===true){
+            return(
+                <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+            )
+        }
+    }
     render() {
         return (
             <div>
@@ -58,7 +62,7 @@ class Login extends Component {
                                         <input type="password" className="form-control" id="password" placeholder="password" onChange={this.handlechange} />
                                         <button className="form-control btn btn-info sign-in-button" type="submit" onClick={this.handelClick}>Sign In</button>
                                     </div>
-                                    <Spinner startSpinner={this.state.startSpinner} />
+                                    {this.renderspinner()}
                             </form>
                         </div>
                     </div>

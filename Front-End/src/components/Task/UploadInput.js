@@ -3,7 +3,6 @@ import firebase from "firebase";
 import { connect } from 'react-redux'
 import { fileUpload, inputDocument } from '../../store/actionCreators/taskActions'
 import uuid from 'uuid'
-import Spinner from '../../helper_Components/Spinner'
 class UploadFile extends Component {
     constructor(props) {
        
@@ -16,13 +15,12 @@ class UploadFile extends Component {
             metaData: {},
             renderSuccessMessage: false,
             documentName: "",
-            errorMSG: "",
-            startSpinner: false
+            errorMSG: ""
         };
     }
 
     handleUploadStart = () => {
-        this.setState({...this.state,
+        this.setState({
             isUploading: true,
         })
     }
@@ -36,17 +34,17 @@ class UploadFile extends Component {
             progress
         })
     }
-    renderProgressBar = () => {     //PROBLEM: Progress is Zero, that causes a problem in the progress bar. -> Solved -D7M-
+    renderProgressBar = () => {     //PROBLEM: Progress is Zero, that causes a problem in the progress bar.
         if (this.state.isUploading) {
             return (
                 <div className="progress">
-                    <div className="progress-bar bg-success progress-bar-striped" role="progressbar" aria-valuenow='50' aria-valuemin='0' aria-valuemax="100" style={{ width: this.state.progress + '%' }}>{/*this.state.progress*/}</div>
+                    <div className="progress-bar progress-bar-striped bg-success" role="progressbar" aria-valuenow='50' aria-valuemin='0' aria-valuemax="100" style={{ width: 100 + '%' }}>{this.state.progress}</div>
                 </div>
             )
         }
     }
     handleSuccess = (filename) => {
-        this.setState({ progress: 100, isUploading: false,startSpinner:false });
+        this.setState({ progress: 100, isUploading: false });
         var reference = firebase.storage().ref(this.props.projectInContext._id).child(filename)
         reference.getMetadata().then(metaData => {
             reference.getDownloadURL().then(url => {
@@ -78,7 +76,7 @@ class UploadFile extends Component {
     renderSuccessMessage = () => {
         if (this.state.renderSuccessMessage) {
             return (
-                <p>Upload Complete</p>
+                <h1>Upload Complete</h1>
             )
         }
     }
@@ -93,10 +91,7 @@ class UploadFile extends Component {
         return result
     }
 
-    handleFileUpload = (e) => {
-        this.setState({
-            startSpinner:true
-        })
+    handleFileUpload = (e) => {     
         if (this.isLogicalNameDuplicate(this.state.documentName)) {
             this.renderDuplicationMessage()
             return
@@ -112,8 +107,7 @@ class UploadFile extends Component {
             </button>
         </div>
         this.setState({
-            errorMSG: error,
-            startSpinner:false
+            errorMSG: error
         })
     }
     closeAlert = () => {
@@ -171,7 +165,7 @@ class UploadFile extends Component {
         })
     }
     render() {
-        console.log(this.state.startSpinner,"spinner")
+
         return (
             <div>
                 {this.renderProgressBar()}
@@ -180,7 +174,6 @@ class UploadFile extends Component {
                 <input  type="file" id={this.props.task._id} onChange={this.setFile} />
                 <button className="btn btn-primary" onClick={this.handleFileUpload}>Submit</button>
                 {this.renderSuccessMessage()}
-                <Spinner startSpinner={this.state.startSpinner} />
             </div>
         )
     }
