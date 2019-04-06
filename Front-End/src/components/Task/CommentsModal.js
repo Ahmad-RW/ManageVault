@@ -65,7 +65,7 @@ class CommentsModal extends Component {
                                 <div className="container">
                                     <div className="row">
                                         <div className="col-12">
-                                            <textarea placeholder="write your comment here..." className="comment-textarea" id="comment" onChange={(e) => { this.handleComment(e) }}></textarea>
+                                            <textarea minLength="1" maxLength="160" placeholder="write your comment here..." className="comment-textarea" id="comment" onChange={(e) => { this.handleComment(e) }}></textarea>
                                         </div>
                                     </div>
                                     <div className="row">
