@@ -17,7 +17,7 @@ export const fetchUserProjects = (userEmail) => {
             console.log(res.data, "in fetch projects action")
             dispatch({ type: "SET_USER_PROJECTS", projects: res.data })
         }).catch((exception) => {
-            console.log(exception)
+            dispatch({type:"REMOVE_AUTH"})
         })
     }
 }
