@@ -42,6 +42,10 @@ class CreateProject extends Component {
             })
             return
         }
+        if(this.state.projectTitle.length >60){
+            alert("project name has to be less than 60 characters")
+            return
+        }
         else {
             let project = {
                 creator: this.props.userInfo.name,
@@ -54,6 +58,7 @@ class CreateProject extends Component {
                     teamLeader: true
                 }]
             }
+
             this.props.createProject(project, this.props.userInfo)
           
             this.props.history.push('/home')

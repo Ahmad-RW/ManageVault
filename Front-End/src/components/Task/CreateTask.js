@@ -40,6 +40,14 @@ class CreateTask extends Component {
         }
         console.log(this.props.project)
         console.log(task)
+        if(this.state.name.length > 60 ){
+            alert("task name is too long")
+            return
+        }
+        if(this.state.name.length <3){
+            alert("task name is too short")
+            return
+        }
         this.props.createTask(this.props.project, task)
     }
 
