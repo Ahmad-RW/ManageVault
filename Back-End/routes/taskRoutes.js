@@ -24,7 +24,6 @@ taskRoute.post('/newTask', function (req, res) {
 taskRoute.post('/deleteTask', function (req, res) {
 
     mongoose.model("projects").findByIdAndUpdate(req.body.payload.PID, { $pull: { "tasks": { "_id": req.body.payload.task_id } } }, { new: true }).then(function (record) {
-
         res.status(200).send(record)
     }).catch(function (err) {
         res.status(500).send(err)

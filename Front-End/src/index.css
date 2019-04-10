@@ -101,7 +101,7 @@ html {
   position: -ms-page;
 }
 .noTasks{
-    margin-left: auto;
+  margin-left: auto;
   margin-right: auto;
 }
 /* Start For Navbar */
@@ -186,6 +186,10 @@ display: inline;
   position: sticky;
   top: 0;
 }
+.sticky-top {
+  padding-bottom: 1.5%;
+}
+
 /* For tasks display */
 .tasksTableContainer{
   padding-left: 40px;
@@ -281,9 +285,9 @@ body {
     height: 100%;
     position: fixed;
     left: 0;
-    width: 250px;
-
-    transform: translateX(-250px);
+    width: 298px;
+    margin-top: -1.7%;
+    transform: translateX(-299px);
     transition: transform 250ms ease-in-out;
     background: linear-gradient(180deg, #343a40 0%, #343a40a4 100%);
 }
@@ -412,27 +416,179 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   visibility: visible;
   opacity: 1;
 }
-.task-done, .task-done-card{
+.task-done{
   background-color: #85d698;
   transition: 0.2s;
 }
-.task-wfc, .task-wfc-card{
+.task-wfc{
   background-color: #fde088;
   transition: 0.2s;
 }
-.task-todo, .task-todo-card{
+.task-todo{
   background-color: #dee2e6;
   transition: 0.2s;
 }
-.task-done:hover, .task-done-card:hover{
+.task-done:hover{
   background: #80cc92;
 }
-.task-wfc:hover, .task-wfc-card:hover{
+.task-wfc:hover{
   background-color: #f5d883
 }
-.task-todo:hover, .task-todo-card:hover{
+.task-todo:hover{
   background-color: #ced1d4
 }
+.card-signin {
+  border: 0;
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
+}
+.card-signin .card-title {
+  margin-bottom: 2rem;
+  font-weight: 300;
+  font-size: 1.5rem;
+}
+
+.card-signin .card-body {
+  padding: 2rem;
+}
+
+.form-signin {
+  width: 100%;
+}
+.form-signin .btn {
+  font-size: 80%;
+  border-radius: 5rem;
+  letter-spacing: .1rem;
+  font-weight: bold;
+  padding: 1rem;
+  transition: all 0.2s;
+}
+
+
+/* start of Chat */
+.chat-button {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  background: #5E0565;
+  height: 50px;
+  font-size: 16px;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  border: 0;
+  box-shadow: 1px 1px 4px 1px grey;
+  cursor: pointer;
+}
+.form-container {
+  height: 910px;  /* To make it full screen */
+  border: 1px solid #5E0565;
+  margin-top: -2.5%;
+}
+.chat-title {
+  height: 900px;  /* To make it full screen */
+  border: 1px solid #5E0565;
+  margin-top: -2.3%;
+}
+.form-container h1 {
+  padding: 10px;
+  background-color: #5E0565;
+  font-size: 20px;
+  color: white;
+  margin: 0;
+  margin-bottom: 10px;
+}
+.form {
+  margin: 250px;
+}
+.input  {
+  display: block;
+  width: 100%;
+  margin: 20px auto;
+  height: 50px;
+  font-size: 20px
+}
+.submit  {
+  height: 40px;
+  padding: 0 20px;
+  background-color: #5E0565;
+  color: white;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.form {
+  padding: 30px;
+}
+.input  {
+  display: block;
+  width: 100%;
+  margin: 20px auto;
+  height: 50px;
+  font-size: 20px
+}
+.submit  {
+  height: 40px;
+  padding: 0 20px;
+  background-color: #5E0565;
+  color: white;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.chatapp  {
+  margin: 0 auto;
+  height: 80vh;
+  border: 1px solid #a1a1a4;
+}
+.header  {
+  padding: 10px;
+  background-color: #5E0565;
+  font-size: 20px;
+  color: white;
+  margin: 0;
+  margin-bottom: 10px;
+  width: 1109px;
+}
+.message-list  {
+  list-style-type: none;
+  padding: 60px 10px;
+  overflow: scroll;
+  max-height: calc(100vh - 150px);
+  margin-bottom: 35px;
+}
+.message-sender  {
+  font-weight: bold;
+  font-size: 1em;
+  margin: 0;
+}
+.message-text  {
+  margin-bottom: 20px;
+  margin-top: 5px
+}
+.message-input  {
+  width: 938px;
+  height: 50px;
+  border: 0;
+  border-top: 1px solid #e0e0e0;
+  font-size: 18px;
+  padding-left: 2px
+}
+.message-submit  {
+  width: 10%;
+  background-color: #5E0565;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+.input-field {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+}
+/* end of Chat */
+
 /* start For spinner */
 .lds-spinner {
   color: official;
@@ -513,122 +669,6 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   }
 }
 /* End for spinner */
-
-
-.chat-button {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  background: #5E0565;
-  height: 50px;
-  font-size: 16px;
-  color: white;
-  padding: 10px;
-  border-radius: 5px;
-  border: 0;
-  box-shadow: 1px 1px 4px 1px grey;
-  cursor: pointer;
-}
-.form-container {
-  height: 400px;
-  border: 1px solid #5E0565;
-}
-.form-container h1 {
-  padding: 10px;
-  background-color: #5E0565;
-  font-size: 20px;
-  color: white;
-  margin: 0;
-  margin-bottom: 10px;
-}
-.form {
-  padding: 30px;
-}
-.input  {
-  display: block;
-  width: 100%;
-  margin: 20px auto;
-  height: 50px;
-  font-size: 20px
-}
-.submit  {
-  height: 40px;
-  padding: 0 20px;
-  background-color: #5E0565;
-  color: white;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-}
-.form {
-  padding: 30px;
-}
-.input  {
-  display: block;
-  width: 100%;
-  margin: 20px auto;
-  height: 50px;
-  font-size: 20px
-}
-.submit  {
-  height: 40px;
-  padding: 0 20px;
-  background-color: #5E0565;
-  color: white;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-}
-.chatapp  {
-  margin: 0 auto;
-  height: 80vh;
-  border: 1px solid #a1a1a4;
-}
-.header  {
-  padding: 20px;
-  color: white;
-  margin-top: 0;
-  text-align: left;
-  border-bottom: 1px solid #5E0565;
-  background-color: #5E0565;
-}
-.message-list  {
-  list-style-type: none;
-  padding: 0px 20px;
-  overflow: scroll;
-  max-height: calc(100vh - 150px);
-  margin-bottom: 35px;
-}
-.message-sender  {
-  font-weight: bold;
-  font-size: 1em;
-  margin: 0;
-}
-.message-text  {
-  margin-bottom: 20px;
-  margin-top: 5px
-}
-.message-input  {
-  width: 70%;
-  height: 50px;
-  border: 0;
-  border-top: 1px solid #e0e0e0;
-  font-size: 18px;
-  padding-left: 2px
-}
-.message-submit  {
-  width: 30%;
-  background-color: #5E0565;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-}
-.input-field {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  display: flex;
-}
 /* Start For Toggle team leader view */
 /* The switch - the box around the slider */
 .switch {
@@ -699,9 +739,3 @@ input:checked + .slider:before {
   left: 600px;
 }
 /* End for toggle teamleader view */
-.inlineElement{
-  display: inline;
-}
-.task-card{
-  width: 18rem;
-}

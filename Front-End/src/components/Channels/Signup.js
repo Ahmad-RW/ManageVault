@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import {connect}from 'react-redux'
+import Navbar from '../layout/Navbar';
+import ProjectSubBar from '../layout/projectSubBar';
 class  Signup extends Component {
     constructor(props) {
         super(props);
@@ -18,13 +20,19 @@ class  Signup extends Component {
     }
     render() {
         return(
+            <div>
+            <Navbar />
+            <ProjectSubBar />
+            <div className="container">
             <div className="form-container">
                 <h1>Let's Talk</h1>
                 <form onSubmit={this.handleSubmit} className="form">
-                    <label htmlFor="email">What is your email?</label>
+                    <label htmlFor="email">You will enter the chat as: </label>
                     <input value={this.props.userInfo.email} type="email" name="username" onChange={this.handleChange} className="input" />
-                    <button className="submit">Submit</button>
+                    <button className="submit">Enter</button>
                 </form>
+            </div>
+            </div>
             </div>
         )
     }
