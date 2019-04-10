@@ -69,11 +69,11 @@ class DocumentCard extends Component {
                 }
                 if (inDoc.isImported || inDoc.uploadedFromDisk) {
                     return (
-                        this.getDocumentTemplate(inDoc,"", "input document")
+                        this.getDocumentTemplate(inDoc,task.name, "input document")
                     )
                 }
                 if (isTaskOfOutputSubmitted(inDoc, this.props.projectInContext)) {
-                    return (this.getDocumentTemplate(inDoc,"", "input document"))
+                    return (this.getDocumentTemplate(inDoc, task.name, "input document"))
                 }
                
 
@@ -81,7 +81,7 @@ class DocumentCard extends Component {
             const outList = task.outputDocuments.map(outDoc => {
                 if (outDoc.hidden || outDoc.deleted) { return }
                 return (
-                    this.getDocumentTemplate(outDoc, "", "input document")
+                    this.getDocumentTemplate(outDoc, task.name, "input document")
                 )
             })
             return inputList.concat(outList)

@@ -71,7 +71,35 @@ class Storage extends Component {
                 </li>
             )
         })
-        return list
+        let tasks = this.props.projectInContext.tasks
+        var allInputDocs = tasks.map(element => {
+            if (element.deleted || element.file === "") {
+                return
+
+            }
+            return (element.inputDocuments.map(inputDoc => {
+                return (
+                      <li>
+                    <span>{inputDoc.name}</span>
+                    <input value={inputDoc._id} type="checkbox" onClick={() => { this.addDocument(inputDoc) }} />
+                </li>
+                )
+            })
+            )
+        })
+        var allOutputDocs = tasks.map(element => {
+            if (element.hidden || element.deleted) { return }
+            return (element.outputDocuments.map(outDoc => {
+                return (
+                     <li>
+                    <span>{outDoc.name}</span>
+                    <input value={outDoc._id} type="checkbox" onClick={() => { this.addDocument(outDoc) }} />
+                </li>
+                )
+            }))
+        })
+        const finalList=  list.concat(allInputDocs.concat(allOutputDocs))
+        return finalList
     }
     exportDocuments = () => {
         const payload = {

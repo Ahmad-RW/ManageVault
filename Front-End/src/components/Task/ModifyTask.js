@@ -242,8 +242,8 @@ class ModifyTask extends Component {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-3">
-                        <ol className="list-group">
+                    <div className="col-12">
+                        <ol className="">
                             {activites}
                         </ol>
                     </div>

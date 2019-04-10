@@ -104,7 +104,8 @@ class TaskDetails extends Component {
             }
             else {
                 return (
-                    <li>{activity.name}
+                    <li>
+                        {activity.name}
                         <input type="checkbox" onClick={(e) => { this.handleActivityCheck(e, activity) }} />
                     </li>
                 )
@@ -118,7 +119,7 @@ class TaskDetails extends Component {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-6">
+                    <div className="col-12">
                         <ol>
                             {activities}
                         </ol>
