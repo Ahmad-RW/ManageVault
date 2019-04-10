@@ -70,10 +70,6 @@ class Register extends Component {
                                 <label>Name</label>
                                 <input type="text" className="form-control" id="name" placeholder="Name" onChange={this.handlechange} />
                             </div>
-                            <div className="col">
-                                <label>Last Name</label>
-                                <input type="text" className="form-control" id="lastName" placeholder="Last Name" onChange={this.handlechange} />
-                            </div>
                         </div>
                         <button className="form-control btn btn-info sign-in-button" type="submit" >Open the Vault</button>
                     </form>
