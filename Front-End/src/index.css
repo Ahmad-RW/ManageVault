@@ -285,9 +285,9 @@ body {
     height: 100%;
     position: fixed;
     left: 0;
-    width: 250px;
-
-    transform: translateX(-250px);
+    width: 298px;
+    margin-top: -1.7%;
+    transform: translateX(-299px);
     transition: transform 250ms ease-in-out;
     background: linear-gradient(180deg, #343a40 0%, #343a40a4 100%);
 }
@@ -481,8 +481,14 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   cursor: pointer;
 }
 .form-container {
-  height: 400px;
+  height: 910px;  /* To make it full screen */
   border: 1px solid #5E0565;
+  margin-top: -2.5%;
+}
+.chat-title {
+  height: 900px;  /* To make it full screen */
+  border: 1px solid #5E0565;
+  margin-top: -2.3%;
 }
 .form-container h1 {
   padding: 10px;
@@ -493,7 +499,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   margin-bottom: 10px;
 }
 .form {
-  padding: 30px;
+  margin: 250px;
 }
 .input  {
   display: block;
@@ -536,16 +542,17 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   border: 1px solid #a1a1a4;
 }
 .header  {
-  padding: 20px;
-  color: white;
-  margin-top: 0;
-  text-align: left;
-  border-bottom: 1px solid #5E0565;
+  padding: 10px;
   background-color: #5E0565;
+  font-size: 20px;
+  color: white;
+  margin: 0;
+  margin-bottom: 10px;
+  width: 1109px;
 }
 .message-list  {
   list-style-type: none;
-  padding: 0px 20px;
+  padding: 60px 10px;
   overflow: scroll;
   max-height: calc(100vh - 150px);
   margin-bottom: 35px;
@@ -560,7 +567,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   margin-top: 5px
 }
 .message-input  {
-  width: 70%;
+  width: 938px;
   height: 50px;
   border: 0;
   border-top: 1px solid #e0e0e0;
@@ -568,7 +575,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   padding-left: 2px
 }
 .message-submit  {
-  width: 30%;
+  width: 10%;
   background-color: #5E0565;
   color: white;
   font-size: 16px;

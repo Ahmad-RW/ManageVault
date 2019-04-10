@@ -3,6 +3,8 @@ import { ChatManager, TokenProvider } from '@pusher/chatkit-client';
 import Input from './Input';
 import MessageList from './MessageList';
 import {connect} from 'react-redux'
+import Navbar from '../layout/Navbar';
+import ProjectSubBar from '../layout/projectSubBar';
 class ChatApp extends Component {
     constructor(props) {
         super(props); 
@@ -56,9 +58,15 @@ class ChatApp extends Component {
     render() {
         return (
             <div>
-                <h2 className="header">{this.props.currentId}</h2>
+            <Navbar />
+            <ProjectSubBar />
+            <div className="container">
+                <div className="chat-title">
+                <h2 className="header">{this.state.currentRoom.name}</h2>
                 <MessageList messages={this.state.messages} />
                 <Input className="input-field" onSubmit={this.addMessage} />
+                </div>
+            </div>
             </div>
         )
     }
