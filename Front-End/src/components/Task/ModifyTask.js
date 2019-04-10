@@ -270,6 +270,10 @@ class ModifyTask extends Component {
             task: this.props.task,
             project: this.props.projectInContext
         }
+        if(this.state.activity.length >60){
+            alert("activity name can't be more than 60 characters")
+            return
+        }
         this.props.newActivity(payload)
     }
     handleCriteriaChange = (e) => {

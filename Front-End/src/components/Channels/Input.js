@@ -16,6 +16,10 @@ import React, {Component} from 'react';
         }
         handleSubmit(e) {
             e.preventDefault();
+            if(this.state.message.length > 160){
+                alert('message cannot be more than 160 characters')
+                return
+            }
             this.props.onSubmit(this.state.message);
             this.setState({
                 message: ''
@@ -25,7 +29,7 @@ import React, {Component} from 'react';
             return (
                 <form onSubmit={this.handleSubmit} className="input-field">
                     <input className="message-input" type="text" onChange={this.handleChange} value={this.state.message}/>
-                    <input className="message-submit" type="submit" value="send" />   
+                    <input  className="message-submit" type="submit" value="send" />   
                 </form>
             )
         }

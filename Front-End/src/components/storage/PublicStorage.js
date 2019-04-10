@@ -8,7 +8,8 @@ class PublicStorage extends Component {
     state = {
         major_courseFilter: "",
         projects: [],
-        viewRecent: false
+        viewRecent: false,
+        alphabetically : false
     }
     componentWillMount() {
         axios.get("http://localhost:3333/storage/getPublishedProjects").then((res) => {
@@ -28,7 +29,10 @@ class PublicStorage extends Component {
         
         let projectsList = this.state.projects
         if(this.state.viewRecent){
-            projectsList.sort(this.projectsComparator)
+            projectsList.sort(this.projectsDateComparator)
+        }
+        if(this.state.alphabetically){
+            projectsList.sort(this.projectsAlphabeticalComparator)
         }
         if (this.state.major_courseFilter !== "") {//to check if filtering is applied
             projectsList = this.state.projects.filter(project => { return (project.major_course === this.state.major_courseFilter) })
@@ -55,18 +59,32 @@ class PublicStorage extends Component {
         
         return projects
     }
-    projectsComparator = (p1, p2) => {
-        var d1 = new Date(p1.publishDate)
-        var d2 = new Date(p2.publishDate)
-        if (d1 < d2) {
-            console.log("-1")
+    projectsAlphabeticalComparator =(p1,p2)=>{
+        var name1 = p1.title.toUpperCase()
+        var name2 = p2.title.toUpperCase()
+        if (name1 < name2) {
+    
             return -1
         }
-        if (d1 > d2) {
-            console.log("1")
+        if (name1 > name2) {
+           
             return 1
         }
-        console.log("0")
+        
+        return 0
+    }
+    projectsDateComparator = (p1, p2) => {
+        var d1 = new Date(p1.publishDate)
+        var d2 = new Date(p2.publishDate)
+        if (d1 > d2) {
+          
+            return -1
+        }
+        if (d1 < d2) {
+           
+            return 1
+        }
+        
         return 0
     }
     renderDropDown = () => {
@@ -98,11 +116,23 @@ class PublicStorage extends Component {
                         {this.renderDropDown()}
                     </div>
                     <div className="col-md-4 offset-md-8">
+                        <form>
                         <input onClick={(e) => {
                             console.log(e.target.checked)
-                            this.setState({ viewRecent: e.target.checked })
-                        }} type="checkbox" id="viewRecent" title="" />
-                        <lable for="viewRecent">View Most Recent Published Projects</lable>
+                            this.setState({ viewRecent: e.target.checked, alphabetically:false })
+                            console.log(this.state)
+                        }} type="radio" id="viewRecent" name="sorting" />
+                        <lable for="viewRecent">View Most Recent Published Projects First</lable>
+                        <br/>
+                        <input onClick={(e) => {
+                            console.log(e.target.checked)
+                            this.setState({ alphabetically: e.target.checked, viewRecent:false })
+                            console.log(this.state)
+                        }} type="radio" id="alphabetically" name="sorting" />
+                        <label for="alphabetically">View By Alphabetical Order</label>
+                        </form>
+                       
+                       
                     </div>
                 </div>
                 <div className="row">

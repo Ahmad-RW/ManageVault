@@ -1,9 +1,4 @@
-import { default as Chatkit } from '@pusher/chatkit-server';
 
-const chatkit = new Chatkit({
-    instanceLocator: "v1:us1:284bc324-9274-4bee-b49f-efd146384063",
-    key: "8e5a1191-4999-417c-87e3-a2ccb54c775b:EgBlYSiXIv9TFfqSM/cQxO9ECOR5jXhemLqcHCwNrhE="
-})
 
 export const checkAuthority = (project, authority, userInfo) => {
     const member = project.members.find(member => member.email === userInfo.email)
@@ -23,17 +18,6 @@ export const checkAuthority = (project, authority, userInfo) => {
     return result
 }
 
-export const setChatId = project =>{
-    console.log("hey")
-    chatkit.createRoom({
-        creatorId: "ManageVault",
-        name : project.title
-    }).then(res=>{
-        console.log(res)
-    }).catch(err=>{
-        console.log(err)
-    })
-}
 
 export const makeid = () => {
     var text = "";
@@ -53,8 +37,8 @@ export const normalizeDate = (date) => {
     return normalizedDate
 }
 export const isMemberAssigned = (task, member) => {
-    
-    var result = false 
+
+    var result = false
     const assignedMembers = task.assignedMembers
     assignedMembers.forEach(assignedMember => {
         if (member.email === assignedMember.email) {
@@ -75,37 +59,37 @@ export const isUserTeamLeader = (userInfo, project) => {
     return result
 }
 
-export const getAbsoluteValue = (number) => {  
-        if(number < 0)
-            return number * -1;
-        return number;
+export const getAbsoluteValue = (number) => {
+    if (number < 0)
+        return number * -1;
+    return number;
 }
 
-export const isTaskSubmitted = (taskId, project) =>{
+export const isTaskSubmitted = (taskId, project) => {
     var result = false
-    project.tasks.forEach(task=>{
-        if(task._id === taskId && task.status === "SUBMITTED"){
+    project.tasks.forEach(task => {
+        if (task._id === taskId && task.status === "SUBMITTED") {
             result = true
         }
     })
     return result
 }
 
-export const isTaskPending = (taskId, project) =>{
+export const isTaskPending = (taskId, project) => {
     var result = false
-    project.tasks.forEach(task=>{
-        if(task._id === taskId && task.status === "PENDING_FOR_CONFIRMATION"){
+    project.tasks.forEach(task => {
+        if (task._id === taskId && task.status === "PENDING_FOR_CONFIRMATION") {
             result = true
         }
     })
     return result
 }
 
-export const isOutputTaskSubmitted = (outputOf, project) =>{
+export const isOutputTaskSubmitted = (outputOf, project) => {
     let result = true
-    project.tasks.forEach(task=>{
-        task.outputDocuments.forEach(output=>{
-            if(output.name === outputOf && task.status !== "SUBMITTED"){
+    project.tasks.forEach(task => {
+        task.outputDocuments.forEach(output => {
+            if (output.name === outputOf && task.status !== "SUBMITTED") {
                 result = false
             }
         })
@@ -113,16 +97,16 @@ export const isOutputTaskSubmitted = (outputOf, project) =>{
     return result
 }
 
-export const isTaskOfOutputSubmitted = (inputDoc, project) =>{ //this method checks whether the task of the doc with storageReference passed is submitted or not
-    let result= false
-        project.tasks.forEach(task=>{
-            task.outputDocuments.forEach(outDoc=>{
-                if((outDoc.storageReference === inputDoc.storageReference && task.status ==="SUBMITTED")){
-                    result = true
-                    
-                }
-            })
+export const isTaskOfOutputSubmitted = (inputDoc, project) => { //this method checks whether the task of the doc with storageReference passed is submitted or not
+    let result = false
+    project.tasks.forEach(task => {
+        task.outputDocuments.forEach(outDoc => {
+            if ((outDoc.storageReference === inputDoc.storageReference && task.status === "SUBMITTED")) {
+                result = true
+
+            }
         })
-        return result
-    
+    })
+    return result
+
 }

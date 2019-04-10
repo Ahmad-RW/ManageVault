@@ -69,11 +69,11 @@ class DocumentCard extends Component {
                 }
                 if (inDoc.isImported || inDoc.uploadedFromDisk) {
                     return (
-                        this.getDocumentTemplate(inDoc)
+                        this.getDocumentTemplate(inDoc,"", "input document")
                     )
                 }
                 if (isTaskOfOutputSubmitted(inDoc, this.props.projectInContext)) {
-                    return (this.getDocumentTemplate(inDoc))
+                    return (this.getDocumentTemplate(inDoc,"", "input document"))
                 }
                
 
@@ -81,7 +81,7 @@ class DocumentCard extends Component {
             const outList = task.outputDocuments.map(outDoc => {
                 if (outDoc.hidden || outDoc.deleted) { return }
                 return (
-                    this.getDocumentTemplate(outDoc)
+                    this.getDocumentTemplate(outDoc, "", "input document")
                 )
             })
             return inputList.concat(outList)
@@ -97,7 +97,7 @@ class DocumentCard extends Component {
             }
             return (element.inputDocuments.map(inputDoc => {
                 return (
-                    this.getDocumentTemplate(inputDoc, element.name)
+                    this.getDocumentTemplate(inputDoc, element.name,"input document")
                 )
             })
             )
@@ -106,7 +106,7 @@ class DocumentCard extends Component {
             if (element.hidden || element.deleted) { return }
             return (element.outputDocuments.map(outDoc => {
                 return (
-                    this.getDocumentTemplate(outDoc, element.name)
+                    this.getDocumentTemplate(outDoc, element.name, "output document")
                 )
             }))
         })
@@ -117,7 +117,7 @@ class DocumentCard extends Component {
         return (
             this.props.projectInContext.documents.map(doc => {
                 return (
-                    this.getDocumentTemplate(doc)
+                    this.getDocumentTemplate(doc, "", "project document")
                 )
             })
         )
@@ -133,16 +133,18 @@ class DocumentCard extends Component {
         })
         return selectedTask
     }
-    getDocumentTemplate = (doc, taskName = "") => {
-        var relatedTask = "This documents is related to " + taskName + " task "
-        if(taskName===""){
-            relatedTask = " "
-        }
+    getDocumentTemplate = (doc, taskName = "", docRole) => {
+      var footer = <div class="card-footer bg-transparent border-primary">this document is related to the task <b>({taskName})</b> </div>
+      if(taskName===""){
+          footer = <div class="card-footer bg-transparent border-primary"> this is a <b>project</b> documents </div>
+      }
         return (
             <div class="card border-secondary mb-3 col-sm-3" key={doc._id} >
-                <div class="card-header bg-transparent border-primary"><span className="storage-card">{doc.name}</span></div>
+                <div class="card-header bg-transparent border-primary"><span className="storage-card">{doc.name}   </span></div>
                 <div class="card-body ">
+                {docRole}
                     <h5 class="card-title">
+                    
                         {this.renderLogo(doc.fileName)}
                     </h5>
                     <p class="card-text">
@@ -150,7 +152,7 @@ class DocumentCard extends Component {
                         <a onClick={() => { this.deleteDocument(doc) }} className="text-dark"><i class="material-icons">delete_forever</i></a>
                     </p>
                 </div>
-                <div class="card-footer bg-transparent border-primary">{relatedTask}</div>
+                {footer}
             </div>
         )
     }

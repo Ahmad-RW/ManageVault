@@ -10,9 +10,9 @@ class ViewPublicProject extends Component {
         try {
             let type = contentType.substring(contentType.indexOf("/") + 1);
             console.log(type)
-            imgSrc = assets("./" + type + ".png")
+            imgSrc = assets("./" + type + ".svg")
         } catch (error) {
-            imgSrc = assets("./file.png")
+            imgSrc = assets("./file.svg")
         }
         return (
             <img src={imgSrc} />

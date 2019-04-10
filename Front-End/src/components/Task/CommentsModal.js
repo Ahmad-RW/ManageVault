@@ -35,7 +35,11 @@ class CommentsModal extends Component {
             author: this.props.userInfo.name,
             date: new Date()
         }
-       
+        if(this.state.comment.length >160)
+        {
+            alert("comments have to be less than 160 characters")
+            return
+        }
         this.props.newComment(comment, this.props.task, this.props.projectInContext)
 
     }
@@ -65,7 +69,7 @@ class CommentsModal extends Component {
                                 <div className="container">
                                     <div className="row">
                                         <div className="col-12">
-                                            <textarea placeholder="write your comment here..." className="comment-textarea" id="comment" onChange={(e) => { this.handleComment(e) }}></textarea>
+                                            <textarea  placeholder="write your comment here..." className="comment-textarea" id="comment" onChange={(e) => { this.handleComment(e) }}></textarea>
                                         </div>
                                     </div>
                                     <div className="row">

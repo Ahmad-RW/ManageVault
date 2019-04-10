@@ -1,37 +1,23 @@
 import axios from 'axios'
-import { default as Chatkit } from '@pusher/chatkit-server';
-import {setChatId} from '../../helper'
-const chatkit = new Chatkit({
-    instanceLocator: "v1:us1:284bc324-9274-4bee-b49f-efd146384063",
-    key: "8e5a1191-4999-417c-87e3-a2ccb54c775b:EgBlYSiXIv9TFfqSM/cQxO9ECOR5jXhemLqcHCwNrhE="
-})
 
 export const createProjectAction = (project, userInfo) => {
     return (dispatch, getState) => {
-        //async call to database. after that the dispatcher is sent 
-        
-            axios.post('http://localhost:3333/project/newproject', { project , userInfo }).then((res) => {
-                this.setChatId(res.data)
+        axios.post('http://localhost:3333/project/newproject', { project, userInfo }).then((res) => {
             dispatch({ type: "CREATE_PROJECT", project: res.data })
-
-            }).catch((exception) => {
-                console.log(exception)
-            })
+        }).catch((exception) => {
+            console.log(exception)
+        })
     }
-    //using thunk instead of returning an object as you would usually do. You would return a function as implemented above
-    //when a component calls this as a dispatch. We halt the dispatch action and do database query. Which is an async request. 
-    //after adding to the data base the dispatcher continues his role.
 }
 
 
-//this action creator is used to fetch projects from the database. With thunk also
 export const fetchUserProjects = (userEmail) => {
     return (dispatch, getState) => {
         axios.get('http://localhost:3333/project/getUserProjects?userEmail=' + userEmail).then((res) => {
             console.log(res.data, "in fetch projects action")
             dispatch({ type: "SET_USER_PROJECTS", projects: res.data })
         }).catch((exception) => {
-            console.log(exception)
+            dispatch({type:"REMOVE_AUTH"})
         })
     }
 }

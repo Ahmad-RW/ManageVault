@@ -17,7 +17,8 @@ export const fetchUserInfo = (userEmail) =>{
             console.log(res.data, 'continue dispatch')
             dispatch({type: "SET_USER_INFO", userInfo :res.data})
         }).catch((res)=>{
-            console.log('failed')
+            alert("an exception occured trying to load your projects please try again later")
+            dispatch({type:"REMOVE_AUTH"})
         })
     }
 }
