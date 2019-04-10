@@ -34,7 +34,7 @@ class UploadFile extends Component {
             progress
         })
     }
-    renderProgressBar = () => {     //PROBLEM: Progress is Zero, that causes a problem in the progress bar.
+    renderProgressBar = () => {     
         if (this.state.isUploading) {
             return (
                 <div className="progress">
@@ -76,7 +76,7 @@ class UploadFile extends Component {
     renderSuccessMessage = () => {
         if (this.state.renderSuccessMessage) {
             return (
-                <h1>Upload Complete</h1>
+                <h4>Upload Complete</h4>
             )
         }
     }
@@ -171,9 +171,9 @@ class UploadFile extends Component {
                 {this.renderProgressBar()}
                 {this.renderUploadCloud()}
                 {this.renderTextField()}
+                {this.renderSuccessMessage()}
                 <input  type="file" id={this.props.task._id} onChange={this.setFile} />
                 <button className="btn btn-primary" onClick={this.handleFileUpload}>Submit</button>
-                {this.renderSuccessMessage()}
             </div>
         )
     }

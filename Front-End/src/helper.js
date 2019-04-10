@@ -110,3 +110,9 @@ export const isTaskOfOutputSubmitted = (inputDoc, project) => { //this method ch
     return result
 
 }
+
+export const calculateEndDate = (startDate, duration) => {
+    var durationMs = (((duration * 24) * 60) * 60) * 1000
+    var endDate = new Date(startDate) + durationMs
+    return endDate
+}

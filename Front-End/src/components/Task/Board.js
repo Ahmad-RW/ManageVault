@@ -11,12 +11,13 @@ import CommentsModal from './CommentsModal'
 import TaskDocumentModal from './TaskDocumentModal'
 import Navbar from '../layout/Navbar'
 
-
 class Board extends Component {
     constructor(props) {
         super(props)
         this.state = {
             feedback: "",
+            wfcFilter:false,
+            cardStyle:false
         }
     }
     
@@ -64,9 +65,7 @@ class Board extends Component {
             const id = makeid()
             return (
                     <div className="submissionContainer">
-                        <div className="rejectSub">
-                        <button data-toggle="modal" data-target={"#"+ id} className="btn btn-outline-danger btn-sm" >Reject Submission</button>
-                        </div>
+                        <button data-toggle="modal" data-target={"#"+ id} className="btn btn-outline-danger btn-sm rejectSub" >Reject Submission</button>
                         {/*code below is a modal (which is triggered by the button above) for entering a feed back from the team leader */}
                         <div id = {id} class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-sm">
@@ -181,17 +180,21 @@ class Board extends Component {
         let number = 0
         let taskList
         var tasks = this.props.projectInContext.tasks
-        taskList = tasks.length ? (
-            tasks.map(task => {
+        taskList = tasks.map(task => {
                 let rowColor = ""
                 let taskStatus = ""
-
-
                 if (task.status === "SUBMITTED") { rowColor = "task-done"; taskStatus = "Done" }
                 else if (task.status === "PENDING_FOR_CONFIRMATION") { rowColor = "task-wfc"; taskStatus = "Waiting for Confirmation" }
                 else { rowColor = "task-todo"; taskStatus = "To Do" }
+                if(this.state.wfcFilter === true){
+                    rowColor = "task-wfc"
+                    taskStatus = "Waiting for Confirmation"
+                    if(task.status === "SUBMITTED" || task.status === "TO_DO"){
+                        return
+                    }
+                }
                 return (
-                    <tr className={rowColor + " task taskBorder spaceUnder"}>
+                    <tr className={rowColor + " task taskBorder spaceUnder"} key={task._id}>
                         <th scope="row" width="10" id="taskNumber">{++number}</th>
                         <td>
                             {task.name}
@@ -221,12 +224,6 @@ class Board extends Component {
                     </tr>
                 )
             })
-        ) : (
-                <div>
-                    {/* <h4>There are no tasks  yet</h4> */}
-
-                </div>
-            )
         return taskList
 
     }
@@ -278,40 +275,146 @@ class Board extends Component {
         }
         this.props.unWatchTask(payload)
     }
-    render() {
-        let tasks = this.props.projectInContext.tasks.length ? (
-            <div>
-                <Navbar />
-                <ProjectSubBar />
-                <div className="table-responsive tasksTableContainer">
-                    <table class="table table-sm tasksList" id="albums" cellspacing="0">
-                        <thead className="alert-secondary" >
-                            <tr>
-                                <th className="tasksTableHeaderFirst" scope="col" width="70">Task Number</th>
-                                <th scope="col" width="350">Task Name</th>
-                                <th scope="col" width="200">Status</th>
-                                <th></th><th></th><th></th><th></th><th></th><th></th><th></th><th className="tasksTableHeaderLast"></th>
-                            </tr>
-                        </thead>
-                        <tbody className="alert-secondary">
-                            {this.renderTasks()}
-                        </tbody>
-                    </table>
-                </div>
-                {this.renderCreateTaskButton()}
-                <div id="footer"></div>
-            </div>
-
-        ) : (
-                <div>
-                    <Navbar />
-                    <ProjectSubBar />
-                    {this.renderEmptyState()}
-                    {this.renderCreateTaskButton()}
-                </div>
-            )
+    changeTLview = () => {
+        if(this.state.wfcFilter === true){
+            this.setState({
+                wfcFilter:false
+            })
+        }
+        if(this.state.wfcFilter === false){
+            this.setState({
+                wfcFilter:true
+            })
+        }
+    }
+    
+    renderToggleTLview = () => {
+        if(isUserTeamLeader(this.props.userInfo,this.props.projectInContext) === false){return}
         return (
-            tasks
+            <div className="location inlineElement">
+            Team leader view
+            <label className="switch">
+                <input onClick={this.changeTLview} type="checkbox" />
+                <span class="slider round"></span>
+            </label>
+            </div>
+            
+        )
+    }
+    renderChangeStyleSwitch = () =>{
+        return (
+            <div className="location2 inlineElement">
+            Card style
+            <label className="switch">
+                <input onClick={this.changeStyle} type="checkbox" />
+                <span class="slider round"></span>
+            </label>
+            </div>
+        )
+    }
+    changeStyle = () => {
+        if(this.state.cardStyle === true){
+            this.setState({
+                cardStyle:false
+            })
+        }
+        if(this.state.cardStyle === false){
+            this.setState({
+                cardStyle:true
+            })
+        }
+    }
+    renderCardStyle = () =>{
+        let number = 0
+        let taskList
+        var tasks = this.props.projectInContext.tasks
+        taskList = tasks.map(task => {
+                let rowColor = ""
+                let taskStatus = ""
+                if (task.status === "SUBMITTED") { rowColor = "task-done"; taskStatus = "Done" }
+                else if (task.status === "PENDING_FOR_CONFIRMATION") { rowColor = "task-wfc"; taskStatus = "Waiting for Confirmation" }
+                else { rowColor = "task-todo"; taskStatus = "To Do" }
+                if(this.state.wfcFilter === true){
+                    rowColor = "task-wfc"
+                    taskStatus = "Waiting for Confirmation"
+                    if(task.status === "SUBMITTED" || task.status === "TO_DO"){
+                        return
+                    }
+                }
+                return (
+                    <div class="card" className="task-card inlineElement">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                            </div>
+                    </div>
+                )
+            })
+        return taskList
+
+    }
+    render() {
+        let tasks
+        if(this.state.cardStyle === false){
+            tasks = this.props.projectInContext.tasks.length ? (
+                <div>
+                    <div className="table-responsive tasksTableContainer">
+                        <table class="table table-sm tasksList" id="albums" cellspacing="0">
+                            <thead className="alert-secondary" >
+                                <tr>
+                                    <th className="tasksTableHeaderFirst" scope="col" width="70">Task Number</th>
+                                    <th scope="col" width="350">Task Name</th>
+                                    <th scope="col" width="200">Status</th>
+                                    <th></th>
+                                    <th></th><th></th><th></th><th></th><th></th><th></th><th className="tasksTableHeaderLast"></th>
+                                </tr>
+                            </thead>
+                            <tbody className="alert-secondary">
+                                {this.renderTasks()}
+                            </tbody>
+                        </table>
+                    </div>
+                    {this.renderCreateTaskButton()}
+                    <div id="footer"></div>
+                </div>
+    
+            ) : (
+                    <div>
+                        <ProjectSubBar />
+                        {this.renderEmptyState()}
+                        {this.renderCreateTaskButton()}
+                    </div>
+                )
+        }
+        else{
+            tasks = this.props.projectInContext.tasks.length ? (
+                <div>
+                    {this.renderCardStyle()}
+                    {this.renderCreateTaskButton()}
+                    <div id="footer"></div>
+                </div>
+    
+            ) : (
+                    <div>
+                        <ProjectSubBar />
+                        {this.renderEmptyState()}
+                        {this.renderCreateTaskButton()}
+                    </div>
+                )
+        }
+        
+        return (
+            <div>
+            <Navbar/>
+            <ProjectSubBar />
+                <div>
+                    {this.renderToggleTLview()}
+                    {this.renderChangeStyleSwitch()}
+                </div>
+                {tasks}
+            </div>
+            
         )
     }
 }
