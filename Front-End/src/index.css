@@ -101,7 +101,7 @@ html {
   position: -ms-page;
 }
 .noTasks{
-  margin-left: auto;
+    margin-left: auto;
   margin-right: auto;
 }
 /* Start For Navbar */
@@ -186,10 +186,6 @@ display: inline;
   position: sticky;
   top: 0;
 }
-.sticky-top {
-  padding-bottom: 1.5%;
-}
-
 /* For tasks display */
 .tasksTableContainer{
   padding-left: 40px;
@@ -416,56 +412,109 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   visibility: visible;
   opacity: 1;
 }
-.task-done{
+.task-done, .task-done-card{
   background-color: #85d698;
   transition: 0.2s;
 }
-.task-wfc{
+.task-wfc, .task-wfc-card{
   background-color: #fde088;
   transition: 0.2s;
 }
-.task-todo{
+.task-todo, .task-todo-card{
   background-color: #dee2e6;
   transition: 0.2s;
 }
-.task-done:hover{
+.task-done:hover, .task-done-card:hover{
   background: #80cc92;
 }
-.task-wfc:hover{
+.task-wfc:hover, .task-wfc-card:hover{
   background-color: #f5d883
 }
-.task-todo:hover{
+.task-todo:hover, .task-todo-card:hover{
   background-color: #ced1d4
 }
-.card-signin {
-  border: 0;
-  border-radius: 1rem;
-  box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
+/* start For spinner */
+.lds-spinner {
+  color: official;
+  display: inline-block;
+  position: relative;
+  width: 64px;
+  height: 64px;
 }
-.card-signin .card-title {
-  margin-bottom: 2rem;
-  font-weight: 300;
-  font-size: 1.5rem;
+.lds-spinner div {
+  transform-origin: 32px 32px;
+  animation: lds-spinner 1.2s linear infinite;
 }
+.lds-spinner div:after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 3px;
+  left: 29px;
+  width: 5px;
+  height: 14px;
+  border-radius: 20%;
+  background: #000;
+}
+.lds-spinner div:nth-child(1) {
+  transform: rotate(0deg);
+  animation-delay: -1.1s;
+}
+.lds-spinner div:nth-child(2) {
+  transform: rotate(30deg);
+  animation-delay: -1s;
+}
+.lds-spinner div:nth-child(3) {
+  transform: rotate(60deg);
+  animation-delay: -0.9s;
+}
+.lds-spinner div:nth-child(4) {
+  transform: rotate(90deg);
+  animation-delay: -0.8s;
+}
+.lds-spinner div:nth-child(5) {
+  transform: rotate(120deg);
+  animation-delay: -0.7s;
+}
+.lds-spinner div:nth-child(6) {
+  transform: rotate(150deg);
+  animation-delay: -0.6s;
+}
+.lds-spinner div:nth-child(7) {
+  transform: rotate(180deg);
+  animation-delay: -0.5s;
+}
+.lds-spinner div:nth-child(8) {
+  transform: rotate(210deg);
+  animation-delay: -0.4s;
+}
+.lds-spinner div:nth-child(9) {
+  transform: rotate(240deg);
+  animation-delay: -0.3s;
+}
+.lds-spinner div:nth-child(10) {
+  transform: rotate(270deg);
+  animation-delay: -0.2s;
+}
+.lds-spinner div:nth-child(11) {
+  transform: rotate(300deg);
+  animation-delay: -0.1s;
+}
+.lds-spinner div:nth-child(12) {
+  transform: rotate(330deg);
+  animation-delay: 0s;
+}
+@keyframes lds-spinner {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+/* End for spinner */
 
-.card-signin .card-body {
-  padding: 2rem;
-}
 
-.form-signin {
-  width: 100%;
-}
-.form-signin .btn {
-  font-size: 80%;
-  border-radius: 5rem;
-  letter-spacing: .1rem;
-  font-weight: bold;
-  padding: 1rem;
-  transition: all 0.2s;
-}
-
-
-/* start of Chat */
 .chat-button {
   position: absolute;
   right: 10px;
@@ -580,85 +629,79 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   width: 100%;
   display: flex;
 }
-/* end of Chat */
-
-/* start For spinner */
-.lds-spinner {
-  color: official;
-  display: inline-block;
+/* Start For Toggle team leader view */
+/* The switch - the box around the slider */
+.switch {
   position: relative;
-  width: 64px;
-  height: 64px;
+  display: inline-block;
+  width: 45px;
+  height: 23px;
 }
-.lds-spinner div {
-  transform-origin: 32px 32px;
-  animation: lds-spinner 1.2s linear infinite;
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
-.lds-spinner div:after {
-  content: " ";
-  display: block;
+
+/* The slider */
+.slider {
   position: absolute;
-  top: 3px;
-  left: 29px;
-  width: 5px;
-  height: 14px;
-  border-radius: 20%;
-  background: #000;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
 }
-.lds-spinner div:nth-child(1) {
-  transform: rotate(0deg);
-  animation-delay: -1.1s;
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
 }
-.lds-spinner div:nth-child(2) {
-  transform: rotate(30deg);
-  animation-delay: -1s;
+
+input:checked + .slider {
+  background-color: #2196F3;
 }
-.lds-spinner div:nth-child(3) {
-  transform: rotate(60deg);
-  animation-delay: -0.9s;
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
 }
-.lds-spinner div:nth-child(4) {
-  transform: rotate(90deg);
-  animation-delay: -0.8s;
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(23px);
+  -ms-transform: translateX(23px);
+  transform: translateX(23px);
 }
-.lds-spinner div:nth-child(5) {
-  transform: rotate(120deg);
-  animation-delay: -0.7s;
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 17px;
 }
-.lds-spinner div:nth-child(6) {
-  transform: rotate(150deg);
-  animation-delay: -0.6s;
+
+.slider.round:before {
+  border-radius: 50%;
 }
-.lds-spinner div:nth-child(7) {
-  transform: rotate(180deg);
-  animation-delay: -0.5s;
+.location{
+  left: 600px;
 }
-.lds-spinner div:nth-child(8) {
-  transform: rotate(210deg);
-  animation-delay: -0.4s;
+.location2{
+  left: 600px;
 }
-.lds-spinner div:nth-child(9) {
-  transform: rotate(240deg);
-  animation-delay: -0.3s;
+/* End for toggle teamleader view */
+.inlineElement{
+  display: inline;
 }
-.lds-spinner div:nth-child(10) {
-  transform: rotate(270deg);
-  animation-delay: -0.2s;
+.task-card{
+  width: 18rem;
 }
-.lds-spinner div:nth-child(11) {
-  transform: rotate(300deg);
-  animation-delay: -0.1s;
-}
-.lds-spinner div:nth-child(12) {
-  transform: rotate(330deg);
-  animation-delay: 0s;
-}
-@keyframes lds-spinner {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-/* End for spinner */

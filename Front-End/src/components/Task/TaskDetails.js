@@ -251,6 +251,11 @@ class TaskDetails extends Component {
                                     </div>
                                 </div>
                                 <div className="row">
+                                    <div className="col-12">
+                                        <label>Start Date : {date[0]} {time} </label>
+                                    </div>
+                                </div>
+                                <div className="row">
                                     <div className="col-4">
                                         <label>Duration: {this.props.task.duration} Days</label>
                                     </div>

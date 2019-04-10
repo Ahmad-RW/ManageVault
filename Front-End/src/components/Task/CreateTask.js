@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import { createTask } from '../../store/actionCreators/taskActions'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { calculateEndDate } from '../../helper'
+
 class CreateTask extends Component {
     constructor(props) {
         super(props);
@@ -31,6 +33,8 @@ class CreateTask extends Component {
     handleSubmit = (e) => {
         e.preventDefault()
         console.log("in submit")
+        var endDate = calculateEndDate(this.state.startDate, this.state.duration)
+        console.log(endDate)
         let task = {
             name: this.state.name,
             status : "TO_DO",
