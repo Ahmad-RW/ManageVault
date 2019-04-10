@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {newRole} from '../../store/actionCreators/projectActions'
+import Navbar from '../layout/Navbar';
 class UserDefinedRoles extends Component {
 
     constructor(props) {
@@ -44,6 +45,8 @@ class UserDefinedRoles extends Component {
     render() {
         return (
             <div>
+            <Navbar />
+            <div>
                 <div className="row">
                     <div className="col-sm-6">
                         <h6>Name the role and assign authorities</h6>
@@ -70,7 +73,7 @@ class UserDefinedRoles extends Component {
                     </div>
                 </div>
             </div>
-
+            </div>
 
         )
     }

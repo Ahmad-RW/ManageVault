@@ -127,7 +127,7 @@ taskRoute.post('/editTask', function (req, res) {
             "tasks.$[elem].description": req.body.payload.description,
             "tasks.$[elem].startDate": req.body.payload.startDate,
             "tasks.$[elem].duration": req.body.payload.duration,
-            "tasks.$[elem].submissionCriteria": req.body.payload.submissionCriteria
+    
         }
     }, { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
         console.log(record, "edit task")

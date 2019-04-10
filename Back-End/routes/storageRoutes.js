@@ -30,6 +30,7 @@ storageRoute.post("/fileUpload", function (req, res) {
     })
 })
 storageRoute.get('/getPublishedProjects', function (req, res) {//do not delete unused variable req
+    console.log("ewgwegwgwgweg")
     mongoose.model("projects").find({ "status": "PUBLISHED" }).then(function (record) {
         res.status(200).send(record)
     }).catch(function (exception) {

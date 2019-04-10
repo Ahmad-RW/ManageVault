@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Navbar from '../layout/Navbar';
 var assets = require.context("../../assets", true)
 class ViewPublicProject extends Component {
     constructor(props) {
@@ -44,10 +45,13 @@ class ViewPublicProject extends Component {
     }
     render() {
         return (
+            <div>
+            <Navbar />
             <div className="container">
                 <div className="row">
                     {this.renderDocumentsCard()}
                 </div>
+            </div>
             </div>
         )
     }

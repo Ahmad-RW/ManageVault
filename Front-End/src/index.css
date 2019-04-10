@@ -739,3 +739,8 @@ input:checked + .slider:before {
   left: 600px;
 }
 /* End for toggle teamleader view */
+.ManageVault{
+  font-family: Lobster, cursive; 
+  font-size: 1.5rem;
+  color: #fff !important;
+}

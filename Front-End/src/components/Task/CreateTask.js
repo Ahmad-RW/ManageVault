@@ -61,7 +61,7 @@ class CreateTask extends Component {
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createTask">
                     Create task
                     </button>
-                <div class="modal fade" id="createTask" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="createTask" tabindex="-1" data-backdrop="false" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">

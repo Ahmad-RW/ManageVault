@@ -41,7 +41,7 @@ class Register extends Component {
             password: this.state.password,
             email: this.state.email
         }).then((res) => {
-            console.log(res)
+            this.props.history.push('/login')
         }).catch((exception) => {
             console.log(exception)
         })
