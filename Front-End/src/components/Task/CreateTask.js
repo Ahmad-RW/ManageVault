@@ -40,7 +40,7 @@ class CreateTask extends Component {
             status : "TO_DO",
             duration : this.state.duration,
             Description: this.state.Description,
-            startDate: this.state.startDate,
+            //startDate: this.state.startDate,
         }
         console.log(this.props.project)
         console.log(task)
