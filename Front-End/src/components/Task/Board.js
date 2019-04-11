@@ -359,6 +359,10 @@ class Board extends Component {
         if(this.state.cardStyle === false){
             tasks = this.props.projectInContext.tasks.length ? (
                 <div>
+                <div>
+                    {this.renderToggleTLview()}
+                    {this.renderChangeStyleSwitch()}
+                </div>
                     <div className="table-responsive tasksTableContainer">
                         <table class="table table-sm tasksList" id="albums" cellspacing="0">
                             <thead className="alert-secondary" >
@@ -390,6 +394,10 @@ class Board extends Component {
         else{
             tasks = this.props.projectInContext.tasks.length ? (
                 <div>
+                <div>
+                    {this.renderToggleTLview()}
+                    {this.renderChangeStyleSwitch()}
+                </div>
                     {this.renderCardStyle()}
                     {this.renderCreateTaskButton()}
                     <div id="footer"></div>
@@ -408,10 +416,6 @@ class Board extends Component {
             <div>
             <Navbar/>
             <ProjectSubBar />
-                <div>
-                    {this.renderToggleTLview()}
-                    {this.renderChangeStyleSwitch()}
-                </div>
                 {tasks}
             </div>
             

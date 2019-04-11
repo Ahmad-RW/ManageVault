@@ -14,12 +14,12 @@ class CreateProject extends Component {
         major_course: "",
         invitedMembers: "",
         showWarningMessage: false,
-        redirect: false
+        redirect: false,
+      
     }
 
     handleChange = (e) => {
         this.handleNoneSelection(e)
-        if (e.target.id === "invitedMembers" ){this.props.findUsers(e.target.value)}//the other && e.target.value.length > 0
         this.setState({
             [e.target.id]: e.target.value
         })
@@ -64,19 +64,19 @@ class CreateProject extends Component {
             this.props.history.push('/home')
         }
     }
-     renderUsers = () => {
-         console.log(this.props.users)
-         // if(this.props.users.email === undefined){return}
-         const users = this.props.users.map(user => {//stuck here
-             return (
-                 <div>
-                 <li role="presentation"><a onClick={(e) => {this.handleSelectingUser(e)}}role="menuitem" tabindex="-1" href="#">{user.email}</a></li>
-                 <div class="dropdown-divider"></div>
-                 </div>
-         )}
-         )
-         return users
-     }
+    //  renderUsers = () => {
+    //      console.log(this.props.users)
+    //      // if(this.props.users.email === undefined){return}
+    //      const users = this.props.users.map(user => {//stuck here
+    //          return (
+    //              <div>
+    //              <li role="presentation"><a onClick={(e) => {this.handleSelectingUser(e)}}role="menuitem" tabindex="-1" href="#">{user.email}</a></li>
+    //              <div class="dropdown-divider"></div>
+    //              </div>
+    //      )}
+    //      )
+    //      return users
+    //  }
     handleSelectingUser = (e) => {
         console.log(e)
     }
@@ -117,10 +117,10 @@ class CreateProject extends Component {
                     <div>
                         <div className="form-group">
                             <label>Invite Members</label>
-                            <input data-toggle="dropdown" type="text" className="form-control" onChange={this.handleChange} id="invitedMembers" />
-                            <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                            <input type="text" className="form-control" onChange={this.handleChange} id="invitedMembers" />
+                            {/* <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
                             {this.renderUsers()}
-                            </ul>
+                            </ul> */}
                             <small className='form-text text-muted'>Enter each email seperated by commas</small>
                         </div>
                     </div>

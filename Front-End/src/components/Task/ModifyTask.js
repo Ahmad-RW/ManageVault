@@ -10,10 +10,10 @@ class ModifyTask extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: "",
-            description: "",
+            name: this.props.task.name,
+            description: this.props.task.description,
             startDate: this.props.task.startDate,
-            duration: "",
+            duration: this.props.task.duration,
             predecessor: "",
             successor: "",
             redirect: false,
@@ -242,8 +242,8 @@ class ModifyTask extends Component {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-3">
-                        <ol className="list-group">
+                    <div className="col-12">
+                        <ol className="">
                             {activites}
                         </ol>
                     </div>
@@ -333,17 +333,19 @@ class ModifyTask extends Component {
                                         <label className="label" htmlFor="startDate">Start Date: </label>
                                         <DatePicker className="form-control" selected={this.state.startDate} onChange={this.handleDateChange} /><br /><br />
                                         <label className="label" htmlFor="Duration">Duration: </label>
-                                        <input id="duration" onChange={this.handleChange} />
+                                        <input placeholder="Duration in days" id="duration" onChange={this.handleChange} />
                                     </div>
                                 </div>
-                                <div className='row'>
-                                    <div className="col-12">
-                                        <label htmlFor="submissionCriteria">Output Acceptence Criteria</label>
-                                    </div>
-                                </div>
+                             
                                 <div className="row">
                                     <div className="col align-self-end">
                                         <button className="btn btn-primary btn-sm" onClick={this.handleEdit}>edit task</button>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div className='row'>
+                                    <div className="col-12">
+                                        <label htmlFor="submissionCriteria">Output Acceptence Criteria</label>
                                     </div>
                                 </div>
                                 <div className="row">

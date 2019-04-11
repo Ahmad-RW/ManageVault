@@ -30,6 +30,7 @@ class NavBar extends Component {
         const navbar = this.props.authenticated ? (
             <div className="sticky-top">
                 <nav className="navbar navbar-expand-lg navbar-dark bg-dark navBarPadding">
+                <Link to="/" class="navbar-brand" class="ManageVault">ManageVault</Link>
                     {/* <Link className="navbar-brand" to="/"><img src={require('../../favicon.ico')} width="30" height="30" alt="logo" /></Link> */}
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
@@ -54,7 +55,7 @@ class NavBar extends Component {
         ) : (//ture : false
                 <div className="UnAuth-sticky-top">
                     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-                        <Link className="navbar-brand" to="/"><img src={require('../../favicon.ico')} width="30" height="30" alt="logo" /></Link>
+                        <Link to="/" class="navbar-brand" class="ManageVault">ManageVault</Link>
                         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                             <span className="navbar-toggler-icon"></span>
                         </button>
