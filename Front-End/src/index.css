@@ -12,7 +12,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-
+.inlineElement{
+  display: inline;
+}
+.splitTANDC{
+  margin: 20px
+}
 .notiHead {
   display: inline;
 }
@@ -117,6 +122,9 @@ html {
 .navBarPadding{
   padding-top: 0px;
   padding-bottom: 0px;
+}
+.redIcon{
+  color: red
 }
 .NavElements{
 display: inline;
@@ -743,4 +751,9 @@ input:checked + .slider:before {
   font-family: Lobster, cursive; 
   font-size: 1.5rem;
   color: #fff !important;
+}
+/* Card style */
+.Bordercard{
+  border: #000,
+  
 }

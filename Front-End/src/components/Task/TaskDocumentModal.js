@@ -51,7 +51,7 @@ class TaskDocumentModal extends Component {
                     if (this.searchForInputDocument(outputDocument)) { return }
                     return (
                         <div>
-                            <a class="dropdown-item" onClick={() => { this.handleInputDocument(outputDocument, outputDocument.name) }}>{task.name}:{outputDocument.name}</a>
+                            <a class="dropdown-item" onClick={() => { this.handleInputDocument(outputDocument, outputDocument.name) }}> <b>{task.name} : {outputDocument.name} </b></a>
                         </div>
                     )
                 })

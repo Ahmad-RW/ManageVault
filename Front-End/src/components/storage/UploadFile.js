@@ -95,11 +95,27 @@ class UploadFile extends Component {
                 })
             })
         }
-    
-
+        renderProgressBar = () => {     
+            if (this.state.isUploading) {
+                return (
+                    <div className="progress">
+                        <div className="progress-bar progress-bar-striped bg-success" role="progressbar" aria-valuenow='30' aria-valuemin='0' aria-valuemax="100" style={{ width: 100 + '%' }}>{this.state.progress}</div>
+                    </div>
+                )
+            }
+        }
+        renderSuccessMessage = () => {
+            if (this.state.renderSuccessMessage) {
+                return (
+                    <h4>Upload Complete</h4>
+                )
+            }
+        }
     render() {
         return (
             <div>
+                {this.renderProgressBar()}
+                {this.renderSuccessMessage()}
                 {this.renderUploadCloud()}
                 {/* <input type="text" placeholder={this.state.metaData.fileName} onChange={this.handleDocumentName} id="documentName" className="storage-upload-text-field" /> */}
                 

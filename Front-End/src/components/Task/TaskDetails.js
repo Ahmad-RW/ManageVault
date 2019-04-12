@@ -228,9 +228,17 @@ class TaskDetails extends Component {
     render() {
 
         let text = makeid()
-      
-        var date = this.props.task.startDate.split("T")
+        var startDate
+        var date = this.props.task.startDate
+    //  this.props.task.startDate ? (date = this.props.task.startDate.split("T")) : (date = "not specified yet")
+     if(typeof this.props.task.startDate === "undefined"){
+        startDate = "not specified yet"
+     }
+     else{
         var time = date[1].split(":")[0] + ":" + date[1].split(":")[1]
+        startDate = date + " " + time
+     }
+        
         return (
             <div>
                 <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target={"#" + text} >
@@ -248,14 +256,14 @@ class TaskDetails extends Component {
                             <div class="modal-body container">
                                 <div className="row">
                                     <div className="col-12">
-                                        <label>Start Date : {date[0]} {time} </label>
+                                        <label>Start Date : {startDate} </label>
                                     </div>
                                 </div>
-                                <div className="row">
+                                {/* <div className="row">
                                     <div className="col-12">
-                                        <label>Start Date : {date[0]} {time} </label>
+                                        <label>End Date : {date[0]} {time} </label>
                                     </div>
-                                </div>
+                                </div> */}
                                 <div className="row">
                                     <div className="col-4">
                                         <label>Duration: {this.props.task.duration} Days</label>
@@ -270,7 +278,6 @@ class TaskDetails extends Component {
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
                             </div>
                         </div>
                     </div>
