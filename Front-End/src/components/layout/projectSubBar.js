@@ -47,7 +47,7 @@ class ProjectSubBar extends Component{
                 <div id="sidebarMenu">
                     <ul class="sidebarMenuInner">
                         <li><Link to="#"><h1>{project.title}</h1></Link></li>
-                        <li><Link to={{ pathname: "/home/projectWorkSpace/board", state: { project} }}>Manage Tasks</Link></li>
+                        <li><Link to={{ pathname: "/home/projectWorkSpace/tasksboard", state: { project} }}>Tasks Board</Link></li>
                         <li><Link to='/home/projectWorkSpace/documents'>Documents</Link></li>
                         <li><Link to='/home/projectWorkSpace/channel'>Chat channels</Link></li>
                      
