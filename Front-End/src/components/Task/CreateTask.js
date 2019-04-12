@@ -15,9 +15,9 @@ class CreateTask extends Component {
             duration: "",
             redirect: false
         }
-      }
+    }
 
-      handleDateChange = (date) => {//for DATEPICKER
+    handleDateChange = (date) => {//for DATEPICKER
         this.setState({
             startDate: date
         });
@@ -37,18 +37,18 @@ class CreateTask extends Component {
         console.log(endDate)
         let task = {
             name: this.state.name,
-            status : "TO_DO",
-            duration : this.state.duration,
+            status: "TO_DO",
+            duration: this.state.duration,
             Description: this.state.Description,
             //startDate: this.state.startDate,
         }
         console.log(this.props.project)
         console.log(task)
-        if(this.state.name.length > 60 ){
+        if (this.state.name.length > 60) {
             alert("task name is too long")
             return
         }
-        if(this.state.name.length <3){
+        if (this.state.name.length < 3) {
             alert("task name is too short")
             return
         }
@@ -58,7 +58,7 @@ class CreateTask extends Component {
     render() {
         return (
             <div>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createTask">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createTask">
                     Create task
                     </button>
                 <div class="modal fade" id="createTask" tabindex="-1" data-backdrop="false" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -74,16 +74,17 @@ class CreateTask extends Component {
                                 <form onSubmit={this.handleSubmit}>
                                     <div class="form-group">
                                         <label for="name">Task name</label>
-                                        <input class="form-control" id="name" placeholder="Task name" onChange={this.handleChanges} required/>
+                                        <input class="form-control" id="name" placeholder="Task name" onChange={this.handleChanges} required />
 
                                         <label for="Description">Task description</label>
                                         <textarea class="form-control" id="Description" rows="3" placeholder="Task description" onChange={this.handleChanges}></textarea><br /><br />
                                         <div className="centered">
-                                            <label className="label" htmlFor="startDate">Start Date: </label>
-                                            <DatePicker className="form-control" selected={this.state.startDate} onChange={this.handleDateChange} /><br /><br />
+                                            {/* <label className="label" htmlFor="startDate">Start Date: </label>
+                                            <DatePicker className="form-control" selected={this.state.startDate} onChange={this.handleDateChange} /><br /><br /> */}
+
+                                            <label className="label" htmlFor="Duration">Duration: </label>
+                                            <input id="duration" onChange={this.handleChanges} required />
                                         </div>
-                                        <label className="label" htmlFor="Duration">Duration: </label>
-                                        <input id="duration" onChange={this.handleChanges} required/>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -105,4 +106,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(null,mapDispatchToProps)(CreateTask);
+export default connect(null, mapDispatchToProps)(CreateTask);
