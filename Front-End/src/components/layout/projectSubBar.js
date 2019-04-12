@@ -35,6 +35,11 @@ class ProjectSubBar extends Component{
         )
     }
     render() {
+        var url = window.location.href
+        var ws = "sidebarMenu"
+        if(url === "http://localhost:3000/home/projectWorkSpace"){
+            ws = "WSsidebarMenu"
+        }
         const project = this.props.project
         return (
             <div>
@@ -44,7 +49,7 @@ class ProjectSubBar extends Component{
                     <div class="spinner horizontal"></div>
                     <div class="spinner diagonal part-2"></div>
                 </label>
-                <div id="sidebarMenu">
+                <div id={ws}>
                     <ul class="sidebarMenuInner">
                         <li><Link to="#"><h1>{project.title}</h1></Link></li>
                         <li><Link to={{ pathname: "/home/projectWorkSpace/tasksboard", state: { project} }}>Tasks Board</Link></li>

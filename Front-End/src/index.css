@@ -111,8 +111,8 @@ html {
 .content {
   display: flex;
 }
-.navWelcome{
-  color: rgba(255,255,255,.5);
+.navWelcome, .BCText{
+  color: rgba(255,255,255,.5) !important;
 }
 .navBarPadding{
   padding-top: 0px;
@@ -281,7 +281,7 @@ body {
     font-weight: bold;
     letter-spacing: 1.25px;
 }
-#sidebarMenu {
+#sidebarMenu, #WSsidebarMenu {
     height: 100%;
     position: fixed;
     left: 0;
@@ -317,9 +317,11 @@ body {
     text-decoration: none;
 }
 input[type="checkbox"]:checked ~ #sidebarMenu {
-    transform: translateX(0);
+    transform: translateX(0px);
 }
-
+input[type="checkbox"] ~ #WSsidebarMenu {
+  transform: translateX(0px);
+}
 input[type=checkbox]{
     transition: all 0.3s;
     box-sizing: border-box;
