@@ -51,7 +51,7 @@ class TaskDocumentModal extends Component {
                     if (this.searchForInputDocument(outputDocument)) { return }
                     return (
                         <div>
-                            <a class="dropdown-item" onClick={() => { this.handleInputDocument(outputDocument, outputDocument.name) }}>{outputDocument.name}</a>
+                            <a class="dropdown-item" onClick={() => { this.handleInputDocument(outputDocument, outputDocument.name) }}>{task.name}:{outputDocument.name}</a>
                         </div>
                     )
                 })
@@ -289,7 +289,7 @@ class TaskDocumentModal extends Component {
                                     </div>
                                 </div>
                                 {this.state.errorMSG}
-                                <input className="form-control" onChange={this.handleChange} placeholder={this.props.task.outputDocuments} id="outputDocuments" type="text" />
+                                <input className="form-control" onChange={this.handleChange}id="outputDocuments" type="text" />
                                 <button className="btn btn-primary" onClick={this.handleSubmitOutput}>Submit</button>
                                 <div>
                                     <p>output Documents of this task:</p>
