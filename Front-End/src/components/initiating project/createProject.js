@@ -15,7 +15,6 @@ class CreateProject extends Component {
         invitedMembers: "",
         showWarningMessage: false,
         redirect: false,
-      
     }
 
     handleChange = (e) => {
