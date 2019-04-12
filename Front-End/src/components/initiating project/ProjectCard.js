@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import {setProject} from '../../store/actionCreators/projectActions'
-
+import { isUserTeamLeader } from "../../helper";
+import { leaveProject } from '../../store/actionCreators/projectActions'
 
 class ProjectCard extends Component {
 
@@ -27,6 +28,27 @@ class ProjectCard extends Component {
        // localStorage.setItem("currentProject", projectId)
         this.props.setProject(projectId)
     }
+    renderManageProject = (userInfo, project) =>{
+        if(isUserTeamLeader(userInfo, project )){
+            return(
+                <Link onClick= {() => this.setProjectCookie(project, project._id)} to={{ pathname: "/home/projectSettings", state: { project } }}>Manage Project</Link>
+            )
+        }
+        return(
+            <Link onClick= {() => this.setProjectCookie(project, project._id)} to={{ pathname: "/home/projectSettings", state: { project } }}>Project Information</Link>
+        )
+    }
+    renderLeaveProject = (userInfo, project) =>{
+        if(!isUserTeamLeader(userInfo, project)){
+            return (
+                <button className="btn btn-danger btn-sm" onClick={()=>{this.props.leaveProject(project, userInfo)}}>Leave Project</button>
+            )
+        }
+    }
+    handleLeave = () => {
+        this.props.leaveProject(this.state.project, this.props.userInfo)
+        this.props.history.push('/home')
+    }
     render() {
         const projects = this.props.projects
         const projectsList = projects.length ? (
@@ -39,13 +61,16 @@ class ProjectCard extends Component {
                         <div>
                             <ul className="nav nav-pills card-header-pills">
                                 <li className="nav-item">
-                                    <Link onClick= {() => this.setProjectCookie(project, project._id)} to={{ pathname: "/home/projectSettings", state: { project } }}>Manage Project</Link>
+                                    {this.renderManageProject(this.props.userInfo, project)}
                                 </li>
                                 <li className="nav-item ml-2 ">
                                     <span >{project.status}</span>
                                 </li>
                                 <li>
                                     {this.renderTeamLeaderStar(project)}
+                                </li>
+                                <li>
+                                    {this.renderLeaveProject(this.props.userInfo, project)}
                                 </li>
                             </ul>
                         </div>
@@ -77,7 +102,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) =>{
     return{
-    setProject : (project) => dispatch(setProject(project))
+    setProject : (project) => dispatch(setProject(project)),
+    leaveProject : (project, userInfo) => dispatch(leaveProject(project, userInfo))
 }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectCard)
