@@ -41,8 +41,7 @@ class ModifyTask extends Component {
             startDate: this.state.startDate,
             duration: this.state.duration,
             project: this.props.projectInContext,
-            task: this.props.task,
-
+            task: this.props.task
         }
 
         this.props.editTask(payload)
@@ -291,12 +290,12 @@ class ModifyTask extends Component {
         this.props.newCriteria(payload)
     }
     renderTaskSubmissionCriteria = () => {
+        
         return (
             this.props.task.submissionCriteria.map(criterion => {
                 return(
                 <li>
                     {criterion}
-              
                 </li>
                 )    
             })

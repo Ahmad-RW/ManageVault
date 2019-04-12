@@ -34,10 +34,10 @@ class DocumentCard extends Component {
         console.log(path)
         var folderRef = firebase.storage().ref().child(this.props.projectInContext._id)
         folderRef.child(doc.storageReference).delete().then(() => {
-
+            console.log("debugging :(")
             this.dispatchDeleteDocAction(doc)
         }).catch((err) => {
-
+            console.log(err.message)
         })
     }
     dispatchDeleteDocAction = (doc) => {
@@ -134,6 +134,9 @@ class DocumentCard extends Component {
         return selectedTask
     }
     getDocumentTemplate = (doc, taskName = "", docRole) => {
+        if(doc.deleted){
+            return
+        }
       var footer = <div class="card-footer bg-transparent border-primary">this document is related to the task <b>({taskName})</b> </div>
       if(taskName===""){
           footer = <div class="card-footer bg-transparent border-primary"> this is a <b>project</b> documents </div>

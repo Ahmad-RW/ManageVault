@@ -19,7 +19,9 @@ class Workspace extends Component {
         return (
                 <div>
                     <Navbar />
+                    <div>
                     <ProjectSubBar />
+                    </div>
                     <h1>this is the workspace of {this.state.project.title}</h1>
                     
                 </div>
