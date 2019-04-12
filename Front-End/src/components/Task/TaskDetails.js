@@ -229,7 +229,8 @@ class TaskDetails extends Component {
 
         let text = makeid()
       
-        var date = this.props.task.startDate.split("T")
+        var date 
+     this.props.task.startDate ? (date = this.props.task.startDate.split("T")) : (date = "not specified yet")
         var time = date[1].split(":")[0] + ":" + date[1].split(":")[1]
         return (
             <div>
@@ -270,7 +271,6 @@ class TaskDetails extends Component {
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
                             </div>
                         </div>
                     </div>

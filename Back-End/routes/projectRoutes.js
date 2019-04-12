@@ -113,7 +113,6 @@ projectRoute.post('/handleVoting', function (req, res) {//payload
                     })
                 }
             }).catch(function (exception) {
-                console.log("EXCEPTION OCCURED")
                 console.log(exception)
             })
         }
@@ -125,7 +124,7 @@ projectRoute.post('/handleVoting', function (req, res) {//payload
 })
 
 projectRoute.post('/leaveProject', function (req, res) {
-    // console.log(req.body)
+    
     mongoose.model('projects').findByIdAndUpdate(req.body.project._id, { $pull: { "members": { email: req.body.userInfo.email } } }).then(function (record) {
         if (record.members.length === 1) {//delete the project if the last member leaves it. RIP 
             mongoose.model('projects').findByIdAndDelete(req.body.project._id).then(function (record) {
@@ -157,11 +156,6 @@ projectRoute.post('/handleInvite', function (req, res) {
         kind: "ACTIVE",
         authorities: []
     }
-    // mongoose.model("projects").findById(req.body.project).then(function(record){
-
-    // }).catch(function(exception){
-
-    // })
     mongoose.model("projects").findByIdAndUpdate(req.body.project, { $push: { "members": member } }).then(function (record) {//handles accepting invite. First it pushess themmeber in the project then removes the notification from his mailbox
         mongoose.model("users").findByIdAndUpdate(req.body.userInfo._id, { $pull: { "notifications": { _id: req.body.notification._id } } }).then(function (record) {
             mongoose.model('projects').findById(req.body.project).then(function (record) {
@@ -274,9 +268,7 @@ function helper(){
 function handleInvite(invitedMembers, project) {//basically this function sends a notification to the users who are invited to a project. It's been refactored due to size.
     const obj = { kind: "PROJECT_INVITE", date: new Date, data: { title: project.title, creator: project.creator, projectId: project._id } }
     invitedMembers.forEach(member => {
-
         mongoose.model('users').findOne({ "notifications.data.projectId": project._id }).then(function (record) {
-            console.log(record, "HEREHRERHEREHRE")
             if (record === null) {
                 mongoose.model('users').findOneAndUpdate({ email: member }, { $push: { "notifications": obj } }).then(function (record) {
                     console.log(record, "record")

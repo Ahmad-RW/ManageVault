@@ -2,18 +2,17 @@ const express = require('express');
 const taskRoute = express.Router()
 const projects = require('../models/projects')
 const mongoose = require('../dbConfig/databaseCon')
-
+const async = require('async')
 taskRoute.post('/newTask', function (req, res) {
     let task = {
         name: req.body.payload.task.name,
         description: req.body.payload.task.Description,
         status: req.body.payload.task.status,
-        startDate: req.body.payload.task.startDate,
+        //startDate: req.body.payload.task.startDate,
         duration: req.body.payload.task.duration,
         feedback: "",
     }
     mongoose.model("projects").findByIdAndUpdate(req.body.payload.project, { $push: { "tasks": task } }, { new: true }).then(function (record) {
-
         res.status(200).send(record)
     }).catch(function (err) {
         res.status(500).send(err)
@@ -36,12 +35,12 @@ taskRoute.post('/newComment', function (req, res) {
     mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id,
         { $set: { "tasks.$[elem].comments": newComments } },
         { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
-            let data ={
-                comment:req.body.payload.comment,
-                project:req.body.payload.project,
-                task:req.body.payload.task
+            let data = {
+                comment: req.body.payload.comment,
+                project: req.body.payload.project,
+                task: req.body.payload.task
             }
-            sendNotification("NEW_COMMENT",data)
+            sendNotification("NEW_COMMENT", data)
             console.log(record)
             res.status(200).send(record)
         }).catch(function (exception) {
@@ -50,7 +49,6 @@ taskRoute.post('/newComment', function (req, res) {
 })
 
 taskRoute.post('/setDependancy', function (req, res) {
-    console.log(req.body.payload)
     const predecessorTask = {
         taskName: req.body.payload.predecessorTask.name,
         taskId: req.body.payload.predecessorTask._id
@@ -69,18 +67,41 @@ taskRoute.post('/setDependancy', function (req, res) {
             ], new: true
         }
     ).then(function (record) {
-        console.log(record, "HI")
-        res.status(200).send(record)
+        let taskInContext = {
+            ...req.body.payload.taskInContext,
+            dependencies: {
+                ...req.body.payload.taskInContext.dependencies,
+                predecessor: [...req.body.payload.taskInContext.dependencies.predecessor, predecessorTask]
+            }
+        }
+
+        if (setStartDate(req.body.payload.project, taskInContext)) {
+            mongoose.model("projects").findByIdAndUpdate(record._id, {
+                $set: {
+                    "tasks.$[elem].startDate": new Date()
+                }
+            }, { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(taskInContext._id) }], new: true }).then(function (record) {
+                res.status(200).send(record)
+                console.log(record)
+            }).catch(function (err) {
+                console.log(err)
+            })
+        }
+        else {
+            res.status(200).send(record)
+        }
+
     }).catch(function (exception) {
         console.log(exception)
         res.status(500).send(exception)
     })
 })
 
+
+
 taskRoute.post('/submitTask', function (req, res) {
     mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, { $set: { "tasks.$[elem].status": "PENDING_FOR_CONFIRMATION" } },
         { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
-            console.log(record)
             res.status(200).send(record)
         }).catch(function (exception) {
             res.status(500).send(exception)
@@ -99,9 +120,9 @@ taskRoute.post('/confirmTaskSubmission', function (req, res) {
         }
     },
         { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
-
+            setDateForTask(record)
             res.status(200).send(record)
-         
+
         }).catch(function (exception) {
             console.log(exception)
             res.status(500).send(exception)
@@ -127,17 +148,17 @@ taskRoute.post('/editTask', function (req, res) {
             "tasks.$[elem].description": req.body.payload.description,
             "tasks.$[elem].startDate": req.body.payload.startDate,
             "tasks.$[elem].duration": req.body.payload.duration,
-    
+
         }
     }, { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
         console.log(record, "edit task")
-        let data ={
-            project:req.body.payload.project,
-            task:req.body.payload.task,
-            editor:req.body.payload.editor,
-            editor_email:req.body.payload.editor_email
+        let data = {
+            project: req.body.payload.project,
+            task: req.body.payload.task,
+            editor: req.body.payload.editor,
+            editor_email: req.body.payload.editor_email
         }
-        sendNotification("EDITTING_TASK",data)
+        sendNotification("EDITTING_TASK", data)
         res.status(200).send(record)
     }).catch(function (err) {
         res.status(500).send(err)
@@ -151,18 +172,35 @@ taskRoute.post('/assignTask', function (req, res) {
         assigner: req.body.payload.assigner,
         startDate: req.body.payload.startDate,
     }
-    console.log(assignedMember, "here")
     newAssignedMembers = [...req.body.payload.task.assignedMembers, assignedMember]
     mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, { $set: { "tasks.$[elem].assignedMembers": newAssignedMembers } }
         , { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
             let data = {
-                project:req.body.payload.project,
-                assignedMember:assignedMember,
-                task:req.body.payload.task
+                project: req.body.payload.project,
+                assignedMember: assignedMember,
+                task: req.body.payload.task
             }
             sendNotification("ASSIGN_TASK", data)
-            console.log(record, "assign task")
-            res.status(200).send(record)
+            const taskInContext = {
+                ...req.body.payload.task,
+                assignedMembers: newAssignedMembers
+            }
+            // setDateForTask(record)
+            if (setStartDate(req.body.payload.project, taskInContext)) {
+                mongoose.model("projects").findByIdAndUpdate(record._id, {
+                    $set: {
+                        "tasks.$[elem].startDate": new Date()
+                    }
+                }, { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(taskInContext._id) }], new: true }).then(function (record) {
+                    res.status(200).send(record)
+                }).catch(function (err) {
+                    console.log(err)
+                })
+            }
+            else {
+                res.status(200).send(record)
+            }
+
         }).catch(function (err) {
             console.log(err)
         })
@@ -271,7 +309,7 @@ function handleInputUpload(payload, document, res) {
     const inputDocument = {
         name: name,
         contentType: document.contenType,
-        uploadedFromDisk : true,
+        uploadedFromDisk: true,
         fileName: payload.metaData.fileName,
         file: payload.url,
         storageReference: payload.storageReference
@@ -286,7 +324,25 @@ function handleInputUpload(payload, document, res) {
             arrayFilters: [{ "element._id": mongoose.Types.ObjectId(payload.task._id) }],
             new: true
         }).then(function (record) {
-            res.status(200).send(record)
+            const taskInContext = {
+                ...payload.task,
+                inputDocuments: [...payload.task.inputDocuments, inputDocument]
+            }
+            if (setStartDate(payload.projectInContext, taskInContext)) {
+                mongoose.model("projects").findByIdAndUpdate(payload.projectInContext._id, {
+                    $set: {
+                        "tasks.$[elem].startDate": new Date()
+                    }
+                }, { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(taskInContext._id) }], new: true }).then(function (record) {
+                    res.status(200).send(record)
+                    console.log(record)
+                }).catch(function (err) {
+                    console.log(err)
+                })
+            }
+            else {
+                res.status(200).send(record)
+            }
         }).catch(function (exception) {
             res.status(500).send(exception)
         })
@@ -317,6 +373,7 @@ function handleOutputUpload(payload, document, res) {
             new: true
         }).then(function (record) {
             checkOutputOf(payload.projectInContext, outputDocument, res)
+
         }).catch(function (exception) {
             console.log(exception)
             res.status(500).send(exception)
@@ -337,11 +394,13 @@ function checkOutputOf(project, outputDocument, res) {
             new: true, multi: true
         }
     ).then(function (record) {
+
         res.status(200).send(record)
     }).catch(function (exception) {
         res.status(500).send(exception)
     })
 }
+
 taskRoute.post('/fileUpload', function (req, res) {
     const document = {
         name: req.body.payload.documentName,//logical name
@@ -416,10 +475,12 @@ taskRoute.post('/removeDocument', function (req, res) {
     }
 
 })
-taskRoute.post('/newCriteria', function(req, res){
-    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id,{$set:{
-        "tasks.$[elem].submissionCriteria" : req.body.payload.newCriteria
-    }}, { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true } ).then(function (record) {
+taskRoute.post('/newCriteria', function (req, res) {
+    mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, {
+        $set: {
+            "tasks.$[elem].submissionCriteria": req.body.payload.newCriteria
+        }
+    }, { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
         res.status(200).send(record)
     }).catch(function (exception) {
         res.status(500).send(exception)
@@ -450,13 +511,31 @@ taskRoute.post('/removeOutputDocument', function (req, res) {
 })
 
 taskRoute.post('/handleInputDocument', function (req, res) {
+
     const inputDocument = req.body.payload.inputDocument
     const newInputDocuments = [...req.body.payload.task.inputDocuments, inputDocument]
 
     mongoose.model("projects").findByIdAndUpdate(req.body.payload.project._id, { $set: { "tasks.$[elem].inputDocuments": newInputDocuments } }
         , { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(req.body.payload.task._id) }], new: true }).then(function (record) {
-            // console.log(record,"output Document")
-            res.status(200).send(record)
+            const taskInContext = {
+                ...req.body.payload.task,
+                inputDocuments: newInputDocuments
+            }
+            if (setStartDate(req.body.payload.project, taskInContext)) {
+                mongoose.model("projects").findByIdAndUpdate(record._id, {
+                    $set: {
+                        "tasks.$[elem].startDate": new Date()
+                    }
+                }, { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(taskInContext._id) }], new: true }).then(function (record) {
+                    res.status(200).send(record)
+                    console.log(record)
+                }).catch(function (err) {
+                    console.log(err)
+                })
+            }
+            else {
+                res.status(200).send(record)
+            }
         }).catch(function (err) {
             console.log(err)
         })
@@ -487,64 +566,64 @@ taskRoute.post('/declineTaskSubmission', function (req, res) {
 })
 //helper functions
 function sendNotification(kind, data) {
-    let notification={}
-    if(kind === "ASSIGN_TASK"){
+    let notification = {}
+    if (kind === "ASSIGN_TASK") {
         notification = {
             kind: "ASSIGN_TASK",
             date: new Date,
-            data: {projectID: data.project._id,
-                    assignedTM: data.assignedMember,
-                    assignedTask_name:data.task.name,
-                    project_title:data.project.title,
-                }
+            data: {
+                projectID: data.project._id,
+                assignedTM: data.assignedMember,
+                assignedTask_name: data.task.name,
+                project_title: data.project.title,
+            }
         }
-        console.log(notification)
-            console.log(data.assignedMember.email)
-            mongoose.model("users").findOneAndUpdate({ email: data.assignedMember.email}, { $push: { "notifications":  notification}} ).then(function (record) {
-                console.log(record,"Notificatoin sent to members")
-            }).catch(function (error) {
-                console.log(error)
+        mongoose.model("users").findOneAndUpdate({ email: data.assignedMember.email }, { $push: { "notifications": notification } }).then(function (record) {
+        }).catch(function (error) {
+            console.log(error)
         })
     }
-    if(kind === "NEW_COMMENT"){
+    if (kind === "NEW_COMMENT") {
         notification = {
             kind: "NEW_COMMENT",
             date: new Date,
-            data: {projectID: data.project._id,
-                    author: data.comment.author,
-                    watchedTask_name:data.task.name,
-                    project_title:data.project.title,
-                }    
+            data: {
+                projectID: data.project._id,
+                author: data.comment.author,
+                watchedTask_name: data.task.name,
+                project_title: data.project.title,
+            }
         }
-        console.log(notification)
-        data.task.watchedBy.forEach(function(member){
-            if(data.comment.author_email === member){
+
+        data.task.watchedBy.forEach(function (member) {
+            if (data.comment.author_email === member) {
                 return
             }
-            mongoose.model("users").findOneAndUpdate({ email: member}, { $push: { "notifications":  notification}} ).then(function (record) {
-                console.log(record,"Notificatoin sent to members")
+            mongoose.model("users").findOneAndUpdate({ email: member }, { $push: { "notifications": notification } }).then(function (record) {
+
             }).catch(function (error) {
                 console.log(error)
             })
         })
     }
-    if(kind === "EDITTING_TASK"){
+    if (kind === "EDITTING_TASK") {
         notification = {
             kind: "EDITTING_TASK",
             date: new Date,
-            data: {projectID: data.project._id,
-                    watchedTask_name:data.task.name,
-                    project_title:data.project.title,
-                    editor:data.editor
-                }    
+            data: {
+                projectID: data.project._id,
+                watchedTask_name: data.task.name,
+                project_title: data.project.title,
+                editor: data.editor
+            }
         }
         console.log(notification)
-        data.task.watchedBy.forEach(function(member){
-            if(data.editor_email === member){
+        data.task.watchedBy.forEach(function (member) {
+            if (data.editor_email === member) {
                 return
             }
-            mongoose.model("users").findOneAndUpdate({ email: member}, { $push: { "notifications":  notification}} ).then(function (record) {
-                console.log(record,"Notificatoin sent to members")
+            mongoose.model("users").findOneAndUpdate({ email: member }, { $push: { "notifications": notification } }).then(function (record) {
+                console.log(record, "Notificatoin sent to members")
             }).catch(function (error) {
                 console.log(error)
             })
@@ -558,3 +637,49 @@ function normalize(text) {
     return text
 }
 module.exports = taskRoute
+
+function setDateForTask(record, res) {
+    record.tasks.forEach(task => {
+        if (task.status === "TO_DO" && setStartDate(record, task)) {
+            mongoose.model("projects").findByIdAndUpdate(record._id, {
+                $set: {
+                    "tasks.$[elem].startDate": new Date()
+                }
+            }, { arrayFilters: [{ "elem._id": mongoose.Types.ObjectId(task._id) }], new: true }).then(function (record) {
+                // res.status(200).send(record)
+                console.log(record)
+            }).catch(function (err) {
+                console.log(err)
+            })
+        }
+    })
+}
+
+function setStartDate(project, taskInContext) {
+
+    var setStartDate = true
+    if (taskInContext.assignedMembers.length === 0) {
+        console.log("no assignment. not gonna set start date")
+        setStartDate = false
+    }
+    taskInContext.inputDocuments.forEach(doc => {
+        if (doc.file === "" && !doc.deleted) {
+            console.log("no input docs available yet. not gonna set start date")
+            setStartDate = false
+        }
+    })
+    if (taskInContext.inputDocuments.length === 0) {
+        console.log("there is no set input docs")
+        setStartDate = false
+    }
+    project.tasks.forEach(element => {
+        taskInContext.dependencies.predecessor.forEach(pred => {
+            if (element._id === pred.taskId && element.status !== "SUBMITTED") {
+                console.log("dependency not satisfied. not gonna set start date")
+                setStartDate = false
+            }
+        })
+    })
+
+    return setStartDate
+}

@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { setAuthority, revokeAuthorities } from '../../store/actionCreators/projectActions'
 import { Link } from 'react-router-dom'
 import UserDefinedRoles from './userDefinedRoles';
+import Navbar from '../layout/Navbar';
 
 
 class GrantAuthorities extends Component {
@@ -135,6 +136,7 @@ class GrantAuthorities extends Component {
         let project = this.getCurrentProject()
         return (
             <div>
+                <Navbar />
                 <div className="container-fluid">
                     <div className="jumbotron jumbotron-fluid">
                         <div className="container">

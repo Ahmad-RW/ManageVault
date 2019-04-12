@@ -56,7 +56,7 @@ class UploadFile extends Component {
 
             },
             (error) => {
-                this.handleUploadError(error)
+                console.log(error)
             },
             () => {
                 this.handleUploadSuccess(tmpID)

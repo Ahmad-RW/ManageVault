@@ -104,9 +104,7 @@ class ProjectSettings extends Component {
             )
         }
         else {
-            return (
-                <button className="btn btn-secondary" onClick={this.handleLeave}>Leave Project</button>
-            )
+            return 
         }
     }
     handleDelete = () => {
