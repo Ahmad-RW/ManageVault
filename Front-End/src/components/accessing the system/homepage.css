@@ -26,7 +26,7 @@
 }
 .button-primary {
   position: relative;
-  background-color: #c0ca33;
+  background-color: #4b6cb7;
   color: #fff;
   font-size: 1.3rem;
   font-weight: 700;
@@ -34,7 +34,7 @@
   z-index: 1;
 }
 .button-primary:hover {
-  color: #c0ca33;
+  color: #4b6cb7;
   text-decoration: none;
 }
 .button-primary::after {
@@ -71,7 +71,9 @@
 .header-area {
   position: relative;
   height: 100vh;
-  background: #5bc0de;
+  background: #4b6cb7;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to top, #182848, #4b6cb7);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to top, #182848, #4b6cb7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */   
   background-attachment: fixed;
   background-position: center center;
   background-repeat: no-repear;

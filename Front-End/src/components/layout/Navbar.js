@@ -26,6 +26,23 @@ class NavBar extends Component {
             console.log(e, 'exception')
         })
     }
+    renderNotificatoins = () => {
+        if(this.props.userInfo.notifications.length === 0){
+            return(
+            <div className="mx-auto welcome-badge nav-item nav-link navWelcome"  >
+                <Link class="btn btn-dark my-2 my-sm-0" to="/notification"><i class="material-icons">notification_important</i></Link>
+                 Welcome {this.props.userInfo.name}
+            </div>
+            )
+        }else{
+            return(
+             <div className="mx-auto welcome-badge nav-item nav-link navWelcome"  >
+                <Link class="btn btn-dark my-2 my-sm-0" to="/notification"><i class="material-icons red">notification_important</i></Link>
+                 Welcome {this.props.userInfo.name}
+            </div>
+            )
+        }
+    }
     render() {//if he is signed in we render different Navbar
         const navbar = this.props.authenticated ? (
             <div className="sticky-top">
@@ -40,16 +57,12 @@ class NavBar extends Component {
                             <Link className="nav-item nav-link" to='/home'>Home</Link>
                             <Link className="nav-item nav-link" onClick={this.handleSignOut} to='#'>Sign Out</Link>
                             <Link className="nav-item nav-link" to="/publicStorage">Public Projects</Link>
-                            
                         </div>
                         <div className="navbar-nav" >
                             <BC />
                         </div>
                     </div>
-                    <div className="mx-auto welcome-badge nav-item nav-link navWelcome"  >
-                        <Link class="btn btn-dark my-2 my-sm-0" to="/notification"><i class="material-icons">notification_important</i></Link>
-                        Welcome {this.props.userInfo.name}
-                    </div>
+                    {this.renderNotificatoins()}
                 </nav>
             </div>
         ) : (//ture : false
