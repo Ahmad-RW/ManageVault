@@ -342,10 +342,10 @@ class Board extends Component {
                     }
                 }
                 return (
-                    <div class="card" className="task-card inlineElement">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <div class="card" className="task-card inlineElement Bordercard">
+                            <div class="card-body Bordercard">
+                                <h5 class="card-title">{task.name}</h5>
+                                <p class="card-text"></p>
                                 <a href="#" class="btn btn-primary">Go somewhere</a>
                             </div>
                     </div>
@@ -361,6 +361,7 @@ class Board extends Component {
                 <div>
                 <div>
                     {this.renderToggleTLview()}
+                    <div className="splitTANDC inlineElement"></div>
                     {this.renderChangeStyleSwitch()}
                 </div>
                     <div className="table-responsive tasksTableContainer">
@@ -396,6 +397,7 @@ class Board extends Component {
                 <div>
                 <div>
                     {this.renderToggleTLview()}
+                    <div className="splitTANDC inlineElement"></div>
                     {this.renderChangeStyleSwitch()}
                 </div>
                     {this.renderCardStyle()}

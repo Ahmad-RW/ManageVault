@@ -322,18 +322,9 @@ class ModifyTask extends Component {
                             </div>
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <label for="name">Task name</label>
-                                    <input type="text" class="form-control" id="name" placeholder={this.props.task.name} onChange={this.handleChange} required />
 
                                     <label for="Description">Task description</label>
                                     <textarea class="form-control" id="Description" rows="3" placeholder={this.props.task.description} onChange={this.handleChange}></textarea><br /><br />
-
-                                    <div className="centered">
-                                        <label className="label" htmlFor="startDate">Start Date: </label>
-                                        <DatePicker className="form-control" selected={this.state.startDate} onChange={this.handleDateChange} /><br /><br />
-                                        <label className="label" htmlFor="Duration">Duration: </label>
-                                        <input placeholder="Duration in days" id="duration" onChange={this.handleChange} />
-                                    </div>
                                 </div>
                              
                                 <div className="row">

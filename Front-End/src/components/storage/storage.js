@@ -154,7 +154,6 @@ class Storage extends Component {
             <div>
                 <Navbar />
                 <ProjectSubBar />
-                <hr />
                 <div className="row">
                 <div className="col-8">
                         {this.renderExportButton()}
@@ -162,7 +161,7 @@ class Storage extends Component {
                             {/* DBX chooser will be inserted here. */}
                         </div>
                 </div>
-                    <div className="col-4">
+                    <div className="col-3">
                         <UploadFile />
                     </div>         
                 <div className="container">
