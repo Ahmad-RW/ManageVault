@@ -6,14 +6,15 @@ import { Link } from 'react-router-dom'
 import InviteMembers from './inviteMembers'
 import { leaveProject, requestToDeleteProject, removeTeamMember, requestDeleteAction, assignNewTeamLeader } from '../../store/actionCreators/projectActions'
 import { publishProject, unpublishProject } from '../../store/actionCreators/storageActions'
-import { checkAuthority } from '../../helper'
+import { checkAuthority, isUserTeamLeader } from '../../helper'
 import MemberAnalysis from './MemberAnalysis'
 import Navbar from '../layout/Navbar'
+import Axios from 'axios';
 
 class ProjectSettings extends Component {
     constructor(props) {
         super(props)
-       
+
     }
 
     state = {
@@ -23,10 +24,20 @@ class ProjectSettings extends Component {
         requestDeleteButton: false,
         renderMessageFlag: false,
         invitedMembers: "",
-        renderMembers: false
+        renderMembers: false,
+        pendingInvitedUsers: []
     }
 
-
+    componentWillMount() {
+        Axios.post('http://localhost:3333/user/getUsers', { projectId: this.props.projectInContext._id }).then(res => {
+            console.log(res.data)
+            this.setState({
+                pendingInvitedUsers: res.data
+            })
+        }).catch(err => {
+            console.log(err, "err")
+        })
+    }
     renderMessage = () => {
         if (this.state.renderMessageFlag && document.getElementById('deletebtn') !== null) {
             document.getElementById('deletebtn').className = "d-none";
@@ -72,7 +83,7 @@ class ProjectSettings extends Component {
                     )
                 }
             })
-            
+
             return (
                 <div>
                     <h5>Select A New Leader</h5>
@@ -104,11 +115,11 @@ class ProjectSettings extends Component {
             )
         }
         else {
-            return 
+            return
         }
     }
     handleDelete = () => {
-        
+
         if (this.state.project.members.length === 1) {
             this.props.requestDelete(this.state.project)
             this.props.history.push('/home')
@@ -122,6 +133,46 @@ class ProjectSettings extends Component {
         this.props.removeTeamMember(this.state.project, member)
         this.props.history.push('/home')
         alert("Team member has been removed")
+    }
+    renderPendingInvitations = () => {
+        if(!isUserTeamLeader(this.props.userInfo, this.props.projectInContext)){
+            return
+        }
+        return (
+            <div>
+                <div className="row">
+                    <h4>Pending Invites:</h4>
+                </div>
+                <div className="row">
+                    <ul className="list-group">
+                        {
+                            this.state.pendingInvitedUsers.map(elem => {
+                                const cancelInvitationButton = <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => { this.cancelInvite(this.props.projectInContext, elem) }}>
+                                    <i className="material-icons ">highlight_off</i>
+                                </button>
+                                return (
+                                    <li className="list-group-item"> {elem.email} {cancelInvitationButton} </li>
+                                )
+                            })
+                        }
+                    </ul>
+                </div>
+            </div>
+        )
+    }
+    cancelInvite = (project, invitedUser) => {
+        Axios.post('http://localhost:3333/project/cancelInvite', { project, invitedUser }).then(res => {
+            if (res.status === 200) {
+                const tmpList = this.state.pendingInvitedUsers.filter(elem => {
+                    return elem._id !== invitedUser._id
+                })
+                this.setState({
+                    pendingInvitedUsers: tmpList
+                })
+            }
+        }).catch(err => {
+            console.log(err)
+        })
     }
     render() {
         const project = this.state.project
@@ -171,75 +222,76 @@ class ProjectSettings extends Component {
         ) : (<li class="list-group-item">project has no members</li>)
         return (
             <div>
-            <Navbar />
-            <div className="container-fluid">
-                <div className="jumbotron jumbotron-fluid">
-                    <div className="container">
-                        <h1 className="display-1">{project.title}</h1>
-                        {this.renderMessage()}
-                        <div className="row">
-                            <h4>Team leader  : </h4>
-                        </div>
-                        <div className="row">
-                            <ul class="list-group">
-                                <li class="list-group-item list-group-item-primary">{teamLeader.name}</li>
-                                <MemberAnalysis member={teamLeader} />
-                            </ul>
-                        </div>
-                        <hr />
-                        <div className="row">
-                            <h4>Team members :</h4>
-                        </div>
-                        <div className="row">
-                            <ul class="list-group">
-                                {members}
-                            </ul>
+                <Navbar />
+                <div className="container-fluid">
+                    <div className="jumbotron jumbotron-fluid">
+                        <div className="container">
+                            <h1 className="display-1">{project.title}</h1>
+                            {this.renderMessage()}
+                            <div className="row">
+                                <h4>Team leader  : </h4>
+                            </div>
+                            <div className="row">
+                                <ul class="list-group">
+                                    <li class="list-group-item list-group-item-primary">{teamLeader.name}</li>
+                                    <MemberAnalysis member={teamLeader} />
+                                </ul>
+                            </div>
+                            <hr />
+                            <div className="row">
+                                <h4>Team members :</h4>
+                            </div>
+                            <div className="row">
+                                <ul class="list-group">
+                                    {members}
+                                </ul>
 
-                        </div>
-                        <hr />
-                        <div className="row">
-                            <div className="col-3">
-                                {this.renderManageRolesButton()}
                             </div>
-                            <div className="col-3">
-                                {this.renderLeaveButton()}
+                       {this.renderPendingInvitations()}
+                            <hr />
+                            <div className="row">
+                                <div className="col-3">
+                                    {this.renderManageRolesButton()}
+                                </div>
+                                <div className="col-3">
+                                    {this.renderLeaveButton()}
+                                </div>
+                                <div className="col-3">
+                                    {deleteButton}
+                                </div>
+                                <div className="col-3">
+                                    {defineRoles}
+                                </div>
                             </div>
-                            <div className="col-3">
-                                {deleteButton}
-                            </div>
-                            <div className="col-3">
-                                {defineRoles}
-                            </div>
-                        </div>
-                        <div className="row mt-3">
-                            <div className="col-4">
-                                <ol>
-                                    {this.renderMembers()}
-                                </ol>
-                            </div>
+                            <div className="row mt-3">
+                                <div className="col-4">
+                                    <ol>
+                                        {this.renderMembers()}
+                                    </ol>
+                                </div>
 
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-4">
+                            <form>
+                                {InvitedMembers}
+                            </form>
+                        </div>
+                        <div className="col-1">
+                            <hr className="vertical-line" />
+                        </div>
+                        <div className="col-4">
+                            {this.renderPublishButtons()}
                         </div>
                     </div>
                 </div>
-                <div className="row">
-                    <div className="col-4">
-                        <form>
-                            {InvitedMembers}
-                        </form>
-                    </div>
-                    <div className="col-1">
-                        <hr className="vertical-line" />
-                    </div>
-                    <div className="col-4">
-                        {this.renderPublishButtons()}
-                    </div>
-                </div>
-            </div>
             </div>
         )
     }
     renderPublishButtons = () => {
-        if(!checkAuthority(this.props.projectInContext, "PUBLISH_PROJECT", this.props.userInfo)){
+        if (!checkAuthority(this.props.projectInContext, "PUBLISH_PROJECT", this.props.userInfo)) {
             return
         }
         let btn;
@@ -275,7 +327,7 @@ const mapDispatchToProps = (dispatch) => {
         requestDelete: (project) => { dispatch(requestDeleteAction(project)) },
         assignNewTeamLeader: (memberEmail, project) => { dispatch(assignNewTeamLeader(memberEmail, project)) },
         publishProject: project => dispatch(publishProject(project)),
-        unpublishProject: project => dispatch(unpublishProject(project))
+        unpublishProject: project => dispatch(unpublishProject(project)),
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectSettings)

@@ -14,6 +14,16 @@ userRoute.get('/getUserData', function (req, res) {
         })
 });
 
+userRoute.post('/getUsers', function(req, res){
+    console.log(req.body)
+    mongoose.model("users").find({"notifications.data.projectId" : mongoose.Types.ObjectId(req.body.projectId) }).then(function(record){
+        console.log(record)
+        res.status(200).send(record)
+    }).catch(function(err){
+        console.log(err)
+        res.status(500).send(err)
+    })
+})
 
 userRoute.post('/newuser', function (req, res) {
     console.log("in new user")

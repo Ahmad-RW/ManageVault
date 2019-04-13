@@ -246,6 +246,19 @@ projectRoute.post('/inviteUsers', function (req, res) {
     res.status(200).send(record)
 })
 
+
+projectRoute.post('/cancelInvite', function(req,res){
+    mongoose.model("users").findOneAndUpdate({"email" : req.body.invitedUser.email}, 
+    {$pull :{"notifications" :  {"data.projectId" : mongoose.Types.ObjectId(req.body.project._id)} }}, {new:true}).then(function(record){
+        console.log(record)
+        res.status(200).send(record)
+    }).catch(function(err){
+        console.log(err)
+        res.status(500).send(err)
+    })
+})
+
+
 projectRoute.get('/findUsers', function (req, res) {
     console.log(req.query,"finding")
     const query = req.query.searchQuery

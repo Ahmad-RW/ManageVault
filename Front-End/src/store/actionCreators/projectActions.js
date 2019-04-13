@@ -88,6 +88,7 @@ export const handleInvite = (project, userInfo, notification) => {
         })
     }
 }
+
 export const handleNotificationDelete = (projectId, userInfo, notification) => {
     console.log(userInfo)
     return (dispatch) => {
