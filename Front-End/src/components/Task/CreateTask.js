@@ -53,6 +53,9 @@ class CreateTask extends Component {
             return
         }
         this.props.createTask(this.props.project, task)
+        document.getElementById("name").value = ""
+        document.getElementById("Description").value = " "
+        document.getElementById("duration").value = ""
     }
 
     render() {
@@ -71,7 +74,7 @@ class CreateTask extends Component {
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form onSubmit={this.handleSubmit}>
+                                <form>
                                     <div class="form-group">
                                         <label for="name">Task name</label>
                                         <input class="form-control" id="name" placeholder="Task name" onChange={this.handleChanges} required />
@@ -83,12 +86,11 @@ class CreateTask extends Component {
                                             <DatePicker className="form-control" selected={this.state.startDate} onChange={this.handleDateChange} /><br /><br /> */}
 
                                             <label className="label" htmlFor="Duration">Duration: </label>
-                                            <input id="duration" onChange={this.handleChanges} placeholder="Duration in days" required />
+                                            <input type="number" min="1" id="duration" onChange={this.handleChanges} placeholder="Duration in days" required />
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary">Create</button>
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal" onClick={this.handleSubmit}>Create</button>
                                     </div>
                                 </form>
                             </div>

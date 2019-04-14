@@ -14,7 +14,6 @@ import Axios from 'axios';
 class ProjectSettings extends Component {
     constructor(props) {
         super(props)
-
     }
 
     state = {

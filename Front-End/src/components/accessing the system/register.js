@@ -5,7 +5,6 @@ import Navbar from '../layout/Navbar'
 import { connect } from 'react-redux'
 class Register extends Component {
     state = {
-
         name: "",
         password: "",
         email: "",
@@ -19,8 +18,8 @@ class Register extends Component {
         console.log(this.state)
     }
     handleClick = (e) => {
-        this.setState({ ...this.state, startSpinner: true })
         e.preventDefault()
+        this.setState({ ...this.state, startSpinner: true })
         console.log(e)
         fb.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then((res) => {
             console.log(res)
@@ -41,7 +40,7 @@ class Register extends Component {
             password: this.state.password,
             email: this.state.email
         }).then((res) => {
-            this.login()
+          this.props.history.push('/login')
         }).catch((exception) => {
             console.log(exception)
         })
@@ -52,7 +51,10 @@ class Register extends Component {
             console.log(res)
             localStorage.setItem('token', this.state.email)
             this.props.authenticate()
+            this.props.fetchUserInfo(this.state.email)
+            this.props.fetchUserProjects(this.state.email)
             this.props.history.push('/home');//redirection
+
         }).catch((exception) => {
             console.log(exception)
             this.setState({ ...this.state, startSpinner: false })
@@ -68,7 +70,7 @@ class Register extends Component {
     }
     render() {
         return (
-            <div>
+        <div>
                 <Navbar />
                 <div className="card container ">
                     <div className="form-group card-body" >

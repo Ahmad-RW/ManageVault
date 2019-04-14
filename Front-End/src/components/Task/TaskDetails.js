@@ -237,7 +237,7 @@ class TaskDetails extends Component {
      else{
         date = startDate.split("T")
         time = date[1].split(":")[0] + ":" + date[1].split(":")[1]
-
+        startDate = date[0] + time
      }
         return (
             <div>
@@ -256,7 +256,7 @@ class TaskDetails extends Component {
                             <div class="modal-body container">
                                 <div className="row">
                                     <div className="col-12">
-                                        <label>Start Date :{date[0]} {time}</label>
+                                        <label>Start Date :{startDate}</label>
                                     </div>
                                 </div>
                                 {/* <div className="row">
@@ -265,7 +265,7 @@ class TaskDetails extends Component {
                                     </div>
                                 </div> */}
                                 <div className="row">
-                                    <div className="col-4">
+                                    <div className="col-12">
                                         <label>Duration: {this.props.task.duration} Days</label>
                                     </div>
                                 </div>

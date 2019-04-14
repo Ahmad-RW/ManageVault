@@ -27,12 +27,12 @@ class NavBar extends Component {
         })
     }
     renderNotificationIcon = () => {
-        var icon 
-        if(this.props.userInfo.notifications.length === 0){
-            icon = <Link class="btn btn-dark my-2 my-sm-0" to="/notification"><i class="material-icons">notification_important</i></Link>
-        }else{
-            icon = <Link class="btn btn-dark my-2 my-sm-0" to="/notification"><i class="material-icons redIcon">notification_important</i></Link>
-        }
+        var icon = <Link class="btn btn-dark my-2 my-sm-0" to="/notification"><i class="material-icons">notification_important</i></Link>
+        // if(this.props.userInfo.notifications.length === 0){
+        //     icon = <Link class="btn btn-dark my-2 my-sm-0" to="/notification"><i class="material-icons">notification_important</i></Link>
+        // }else{
+        //     icon = <Link class="btn btn-dark my-2 my-sm-0" to="/notification"><i class="material-icons redIcon">notification_important</i></Link>
+        // }
         return icon
     }
     render() {//if he is signed in we render different Navbar
@@ -49,7 +49,6 @@ class NavBar extends Component {
                             <Link className="nav-item nav-link" to='/home'>Home</Link>
                             <Link className="nav-item nav-link" onClick={this.handleSignOut} to='#'>Sign Out</Link>
                             <Link className="nav-item nav-link" to="/publicStorage">Public Projects</Link>
-                            
                         </div>
                         <div className="navbar-nav" >
                             <BC />
