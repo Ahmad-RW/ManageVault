@@ -75,7 +75,9 @@ background-color: lightblue;
 .progress {
   width: 100%;
 }
-
+.PCmargin{
+  margin:0px
+}
 .material-icons.md-light { color: rgba(255, 255, 255, 1); }
 
 input[type="file"] {

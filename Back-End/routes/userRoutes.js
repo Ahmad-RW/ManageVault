@@ -16,7 +16,7 @@ userRoute.get('/getUserData', function (req, res) {
 
 userRoute.post('/getUsers', function(req, res){
     console.log(req.body)
-    mongoose.model("users").find({"notifications.data.projectId" : mongoose.Types.ObjectId(req.body.projectId) }).then(function(record){
+    mongoose.model("users").find({ $or: [{"notifications.data.projectId" : mongoose.Types.ObjectId(req.body.projectId)}, {"notifications.data.projectId" : req.body.projectId}]}).then(function(record){
         console.log(record)
         res.status(200).send(record)
     }).catch(function(err){

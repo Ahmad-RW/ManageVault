@@ -57,7 +57,7 @@ class ProjectCard extends Component {
                     return
                 }
                 return (
-                    <div className="card bg-light col-sm-3" key={project._id} >
+                    <div className="card bg-light col-sm-3 PCmargin" key={project._id} >
                         <div>
                             <ul className="nav nav-pills card-header-pills">
                                 <li className="nav-item">

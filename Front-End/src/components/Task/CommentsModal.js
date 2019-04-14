@@ -8,7 +8,12 @@ class CommentsModal extends Component {
     }
 
     renderComments = () => {
+        var startDate,date,time
         const commentsList = this.props.task.comments.map(comment => {
+            startDate = comment.date
+            date = startDate.split("T")
+            time = date[1].split(":")[0] + ":" + date[1].split(":")[1]
+
             return (<div class="container border" >
                 <div>
                     <span>{comment.author}</span>
@@ -16,7 +21,7 @@ class CommentsModal extends Component {
                         {comment.content}
                     </p>
                     <span>
-                        {comment.date}
+                        {date[0]} {time}
                     </span>
                 </div>
             </div>)
@@ -72,16 +77,12 @@ class CommentsModal extends Component {
                                             <textarea  placeholder="write your comment here..." className="comment-textarea" id="comment" onChange={(e) => { this.handleComment(e) }}></textarea>
                                         </div>
                                     </div>
-                                    <div className="row">
-                                        <div className="col-12">
-                                            <button onClick={this.handelCommentSubmit} className="btn btn-primary btn-sm">Submit Comment</button>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
+                            <div className="col-12">
+                                <button onClick={this.handelCommentSubmit} className="btn btn-primary btn-sm">Submit Comment</button>
+                            </div>
                             </div>
                         </div>
                     </div>

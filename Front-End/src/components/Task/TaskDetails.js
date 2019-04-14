@@ -228,17 +228,17 @@ class TaskDetails extends Component {
     render() {
 
         let text = makeid()
-        var startDate
-        var date = this.props.task.startDate
+        var startDate = this.props.task.startDate
+        var date,time
     //  this.props.task.startDate ? (date = this.props.task.startDate.split("T")) : (date = "not specified yet")
      if(typeof this.props.task.startDate === "undefined"){
         startDate = "not specified yet"
      }
      else{
-        var time = date[1].split(":")[0] + ":" + date[1].split(":")[1]
-        startDate = date + " " + time
+        date = startDate.split("T")
+        time = date[1].split(":")[0] + ":" + date[1].split(":")[1]
+
      }
-        
         return (
             <div>
                 <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target={"#" + text} >
@@ -256,7 +256,7 @@ class TaskDetails extends Component {
                             <div class="modal-body container">
                                 <div className="row">
                                     <div className="col-12">
-                                        <label>Start Date : {startDate} </label>
+                                        <label>Start Date :{date[0]} {time}</label>
                                     </div>
                                 </div>
                                 {/* <div className="row">

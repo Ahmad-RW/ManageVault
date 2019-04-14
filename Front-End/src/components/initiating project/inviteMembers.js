@@ -21,19 +21,32 @@ class InviteMembers extends Component {
     }
     handleSubmit = (e) =>{
         e.preventDefault()
-        this.props.inviteMembers(this.state.selectedMembers, this.props.project, this.props.userInfo )
+        let members
+        if(this.state.selectedUsers.length === 0){
+            members = this.state.invitedMembers
+        }
+        else{
+            members = this.state.selectedMembers
+        }
+        this.props.inviteMembers(members, this.props.project, this.props.userInfo )
         window.location.reload()// necessery.
     }
     renderUsers = () => {
         console.log(this.props.users)
         // if(this.props.users.email === undefined){return}
+        var count = 0
         const users = this.props.users.map(user => {//stuck here
-            return (
-                <div>
-                <li role="presentation"><a onClick={() => {this.handleSelectingUser(user)}}role="menuitem" tabindex="-1" >{user.email}</a></li>
-                <div class="dropdown-divider"></div>
-                </div>
-        )}
+            console.log(count)
+            count++
+            if(count >= 10){return}
+            else{
+                return (
+                    <div>
+                    <li role="presentation"><a onClick={() => {this.handleSelectingUser(user)}}role="menuitem" tabindex="-1" >{user.email}</a></li>
+                    <div class="dropdown-divider"></div>
+                    </div>
+            )
+            }}
         )
         return users
     }
