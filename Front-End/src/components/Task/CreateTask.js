@@ -34,7 +34,7 @@ class CreateTask extends Component {
         e.preventDefault()
         console.log("in submit")
         var endDate = calculateEndDate(this.state.startDate, this.state.duration)
-        console.log(endDate)
+        console.log(endDate,"")
         let task = {
             name: this.state.name,
             status: "TO_DO",
@@ -83,7 +83,7 @@ class CreateTask extends Component {
                                             <DatePicker className="form-control" selected={this.state.startDate} onChange={this.handleDateChange} /><br /><br /> */}
 
                                             <label className="label" htmlFor="Duration">Duration: </label>
-                                            <input id="duration" onChange={this.handleChanges} required />
+                                            <input id="duration" onChange={this.handleChanges} placeholder="Duration in days" required />
                                         </div>
                                     </div>
                                     <div class="modal-footer">

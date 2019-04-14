@@ -12,7 +12,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-
+.inlineElement{
+  display: inline;
+}
+.splitTANDC{
+  margin: 20px
+}
 .notiHead {
   display: inline;
 }
@@ -123,6 +128,9 @@ html {
   padding-top: 0px;
   padding-bottom: 0px;
 }
+.redIcon{
+  color: red
+}
 .NavElements{
 display: inline;
 }
@@ -181,7 +189,7 @@ display: inline;
 }
 
 .vertical-line{
-  border:         none;
+    border:         none;
     border-left:    1px solid hsla(200, 10%, 50%,100);
     height:         100%;
     width:          1px;       
@@ -250,9 +258,9 @@ html, body {
     height: 100%;
 }
 body {
-  background: #4b6cb7;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to top, #182848, #4b6cb7);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to top, #182848, #4b6cb7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: #8e9eab;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to bottom, #eef2f3, #8e9eab);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to bottom, #eef2f3, #8e9eab); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     padding: 0;
     margin: 0;
     font-family: 'Varela Round', sans-serif;
@@ -446,6 +454,8 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 .task-todo:hover{
   background-color: #ced1d4
 }
+
+/* Login start */
 .card-signin {
   border: 0;
   border-radius: 1rem;
@@ -471,15 +481,128 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   font-weight: bold;
   padding: 1rem;
   transition: all 0.2s;
+  background-color: #8e9eab;
+}
+.form-signin .btn  {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 8px 25px;
+  border-radius: 4px;
+}
+.form-signin .btn  {
+  position: relative;
+  background-color: #8e9eab;
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: 700;
+  transition: color 0.3s ease-in;
+  z-index: 1;
+}
+.form-signin .btn:hover {
+  color: #8e9eab;
+  text-decoration: none;
+}
+.form-signin .btn::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  background-color: #fff;
+  border-radius: 4px;
+  opacity: 0;
+  -webkit-transform: scaleX(0.8);
+  -ms-transform: scaleX(0.8);
+  transform: scaleX(0.8);
+  transition: all 0.3s ease-in;
+  z-index: -1;
+}
+.form-signin .btn:hover::after {
+  opacity: 1;
+  -webkit-transform: scaleX(1);
+  -ms-transform: scaleX(1);
+  transform: scaleX(1);
+}
+/* Login finish */
+
+/* Register Start */
+.card-register {
+  border: 0;
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
+}
+.card-register .card-title {
+  margin-bottom: 2rem;
+  font-weight: 300;
+  font-size: 1.5rem;
 }
 
+.card-register .card-body {
+  padding: 2rem;
+}
+
+.form-register {
+  width: 100%;
+}
+.form-register .btn { 
+  font-size: 80%;
+  border-radius: 5rem;
+  letter-spacing: .1rem;
+  font-weight: bold;
+  padding: 1rem;
+  transition: all 0.2s;
+  background-color: #8e9eab;
+}
+.form-register .btn  {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 8px 25px;
+  border-radius: 4px;
+}
+.form-register .btn  {
+  position: relative;
+  background-color: #8e9eab;
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: 700;
+  transition: color 0.3s ease-in;
+  z-index: 1;
+}
+.form-register .btn:hover {
+  color: #8e9eab;
+  text-decoration: none;
+}
+.form-register .btn::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  background-color: #fff;
+  border-radius: 4px;
+  opacity: 0;
+  -webkit-transform: scaleX(0.8);
+  -ms-transform: scaleX(0.8);
+  transform: scaleX(0.8);
+  transition: all 0.3s ease-in;
+  z-index: -1;
+}
+.form-register .btn:hover::after {
+  opacity: 1;
+  -webkit-transform: scaleX(1);
+  -ms-transform: scaleX(1);
+  transform: scaleX(1);
+}
+/* Register Finish */
 
 /* start of Chat */
 .chat-button {
   position: absolute;
   right: 10px;
   bottom: 10px;
-  background: #5E0565;
+  background: #8e9eab;
   height: 50px;
   font-size: 16px;
   color: white;
@@ -491,17 +614,17 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 }
 .form-container {
   height: 910px;  /* To make it full screen */
-  border: 1px solid #5E0565;
+  border: 1px solid #8e9eab;
   margin-top: -2.5%;
 }
 .chat-title {
   height: 900px;  /* To make it full screen */
-  border: 1px solid #5E0565;
+  border: 1px solid #8e9eab;
   margin-top: -2.3%;
 }
 .form-container h1 {
   padding: 10px;
-  background-color: #5E0565;
+  background-color: #8e9eab;
   font-size: 20px;
   color: white;
   margin: 0;
@@ -520,7 +643,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 .submit  {
   height: 40px;
   padding: 0 20px;
-  background-color: #5E0565;
+  background-color: #8e9eab;
   color: white;
   border-radius: 5px;
   font-size: 16px;
@@ -539,7 +662,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 .submit  {
   height: 40px;
   padding: 0 20px;
-  background-color: #5E0565;
+  background-color: #8e9eab;
   color: white;
   border-radius: 5px;
   font-size: 16px;
@@ -552,7 +675,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 }
 .header  {
   padding: 10px;
-  background-color: #5E0565;
+  background-color: #8e9eab;
   font-size: 20px;
   color: white;
   margin: 0;
@@ -585,7 +708,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 }
 .message-submit  {
   width: 10%;
-  background-color: #5E0565;
+  background-color: #8e9eab;
   color: white;
   font-size: 16px;
   cursor: pointer;
@@ -752,4 +875,9 @@ input:checked + .slider:before {
   font-family: Lobster, cursive; 
   font-size: 1.5rem;
   color: #fff !important;
+}
+/* Card style */
+.Bordercard{
+  border: #000,
+  
 }

@@ -26,22 +26,14 @@ class NavBar extends Component {
             console.log(e, 'exception')
         })
     }
-    renderNotificatoins = () => {
+    renderNotificationIcon = () => {
+        var icon 
         if(this.props.userInfo.notifications.length === 0){
-            return(
-            <div className="mx-auto welcome-badge nav-item nav-link navWelcome"  >
-                <Link class="btn btn-dark my-2 my-sm-0" to="/notification"><i class="material-icons">notification_important</i></Link>
-                 Welcome {this.props.userInfo.name}
-            </div>
-            )
+            icon = <Link class="btn btn-dark my-2 my-sm-0" to="/notification"><i class="material-icons">notification_important</i></Link>
         }else{
-            return(
-             <div className="mx-auto welcome-badge nav-item nav-link navWelcome"  >
-                <Link class="btn btn-dark my-2 my-sm-0" to="/notification"><i class="material-icons red">notification_important</i></Link>
-                 Welcome {this.props.userInfo.name}
-            </div>
-            )
+            icon = <Link class="btn btn-dark my-2 my-sm-0" to="/notification"><i class="material-icons redIcon">notification_important</i></Link>
         }
+        return icon
     }
     render() {//if he is signed in we render different Navbar
         const navbar = this.props.authenticated ? (
@@ -62,7 +54,10 @@ class NavBar extends Component {
                             <BC />
                         </div>
                     </div>
-                    {this.renderNotificatoins()}
+                    <div className="mx-auto welcome-badge nav-item nav-link navWelcome"  >
+                        {/* {this.renderNotificationIcon()} */}
+                        Welcome {this.props.userInfo.name}
+                    </div>
                 </nav>
             </div>
         ) : (//ture : false

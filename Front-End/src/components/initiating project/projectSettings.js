@@ -12,8 +12,7 @@ import Navbar from '../layout/Navbar'
 
 class ProjectSettings extends Component {
     constructor(props) {
-        super(props)
-       
+        super(props)  
     }
 
     state = {
@@ -194,7 +193,6 @@ class ProjectSettings extends Component {
                             <ul class="list-group">
                                 {members}
                             </ul>
-
                         </div>
                         <hr />
                         <div className="row">

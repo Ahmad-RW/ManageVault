@@ -73,7 +73,7 @@ class App extends Component {
           <Route path='/home/projectSettings/grantAuthority' component={RequireAuth(GrantAuthorities)} />
           <Route path='/home/projectSettings/newRole' component={RequireAuth(userDefinedRoles)} />
           <Route exact path='/home/projectWorkSpace' component={RequireAuth(WorkSpace)} />
-          <Route path='/home/projectWorkSpace/board' component={RequireAuth(Board)} />
+          <Route path='/home/projectWorkSpace/tasksBoard' component={RequireAuth(Board)} />
           <Route path='/home/projectWorkSpace/documents' component={RequireAuth(Storage)} />
           <Route path='/home/projectWorkSpace/channel' component={RequireAuth(Channel)} />
           <Route path='/home/publicStorage/viewProject' component={RequireAuth(ViewPublicProject)} />

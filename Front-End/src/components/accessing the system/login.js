@@ -60,7 +60,7 @@ class Login extends Component {
                                         <input type="email" className="form-control" id="email" placeholder="Email" onChange={this.handlechange} />
                                         <label>Password</label>
                                         <input type="password" className="form-control" id="password" placeholder="password" onChange={this.handlechange} />
-                                        <button className="form-control btn btn-info sign-in-button" type="submit" onClick={this.handelClick}>Sign In</button>
+                                        <button className="form-control btn sign-in-button" type="submit" onClick={this.handelClick}>Sign In</button>
                                     </div>
                                     {this.renderspinner()}
                             </form>

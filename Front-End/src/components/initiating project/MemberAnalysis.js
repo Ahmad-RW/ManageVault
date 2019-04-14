@@ -35,7 +35,12 @@ class MemberAnalysis extends Component {
                 }
             })
         })
-        return result
+        if(isNaN(result)){
+            let text = "None"
+            return text
+        }else{
+          return result
+        }
     }
     renderTasksPerformance = () => {        //Performance using submitted/overall tasks (As an integer).
         return(
