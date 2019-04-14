@@ -40,7 +40,7 @@ class Register extends Component {
             password: this.state.password,
             email: this.state.email
         }).then((res) => {
-          this.props.history.push('/login')
+          this.props.history.push('/login?register=1')
         }).catch((exception) => {
             console.log(exception)
         })

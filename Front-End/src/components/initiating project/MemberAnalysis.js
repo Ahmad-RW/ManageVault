@@ -12,34 +12,35 @@ class MemberAnalysis extends Component {
         this.props.projectInContext.tasks.map(task => {
             task.assignedMembers.map(member => {
                 if(member.email === this.props.member.email){
+                    // if(typeof task.startDate === "undefined"){
+                    //     return
+                    // }
                         let assignmentDate = new Date(member.startDate)
                         let submissionDate = new Date(task.endDate)
                         console.log(assignmentDate, "EH")
-                        // let d1 = new Date('Sat Dec 16 2019 13:08:59 GMT+0300')
-                        // let d2 = new Date('Sat Dec 17 2019 13:08:59 GMT+0300')
+                        console.log(submissionDate)
                         duration = (submissionDate - assignmentDate) / 3600000    //In hours
                         flooredHours = Math.floor(duration)
                     if(flooredHours < 24){
                         overallDuration = overallDuration + flooredHours
-                        result = (
-                            <p>{getAbsoluteValue(overallDuration)} hours.</p>
-                        )
+                        console.log(overallDuration)
+                        result = <p>{overallDuration} hours.</p>
                     }else{
                         flooredHours = flooredHours / 24
                         flooredDays = Math.floor(flooredHours)
                         overallDuration = overallDuration + flooredDays
-                        result = (
-                            <p>{getAbsoluteValue(overallDuration)} days.</p>
-                        )
+                        console.log(overallDuration)
+                        result =     <p>{overallDuration} days.</p>
+                        
                     }
                 }
             })
         })
-        if(isNaN(result)){
+        if(isNaN(overallDuration)){
             let text = "None"
-            return text
+           return text
         }else{
-          return result
+         return result
         }
     }
     renderTasksPerformance = () => {        //Performance using submitted/overall tasks (As an integer).

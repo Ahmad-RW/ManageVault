@@ -41,24 +41,28 @@ class TaskDocumentModal extends Component {
         })
     }
     renderInputDocuments = () => {
-        let x = []
-        this.props.projectInContext.tasks.map(task => {
-
-            if (this.props.task === task) { return }
+        
+        let v = []
+        this.props.projectInContext.tasks.forEach(task => {
+            if (this.props.task._id === task._id) { return }
             if (task.outputDocuments.length === 0) { return }
-            else {
-                x = task.outputDocuments.map(outputDocument => {
-                    if (this.searchForInputDocument(outputDocument)) { return }
-                    return (
-                        <div>
-                            <a class="dropdown-item" onClick={() => { this.handleInputDocument(outputDocument, outputDocument.name) }}> <b>{task.name} : {outputDocument.name} </b></a>
-                        </div>
-                    )
+                task.outputDocuments.map(outputDocument => {
+                    const tmp ={taskName : task.name, outputDocument}
+                    v.push(tmp)
                 })
-
-            }
+            
         })
-        return x
+        return (v.map(element=>{
+            if (this.searchForInputDocument(element.outputDocument) || element.outputDocument.deleted) { return }
+            return (
+                <div>
+                    <a class="dropdown-item" onClick={() => { this.handleInputDocument(element.outputDocument, element.outputDocument.name) }}> <b>{element.taskName} : {element.outputDocument.name} </b></a>
+                </div>
+            )
+        }))
+         
+            
+        
     }
     searchForInputDocument = (Document) => {
         const inputDocuments = this.props.task.inputDocuments
@@ -227,6 +231,9 @@ class TaskDocumentModal extends Component {
         }
         return (
             this.props.projectInContext.documents.map(doc => {
+                if(doc.deleted){
+                    return
+                }
                 return (
                     <a class="dropdown-item" onClick={() => { this.handleInputDocument(doc, doc.name) }}>{doc.name}</a>
                 )

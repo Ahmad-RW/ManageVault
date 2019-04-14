@@ -12,10 +12,11 @@ class DocumentCard extends Component {
 
     renderLogo = (fileName) => {
         let imgSrc;
+        console.log(fileName)
         try {
             let type = fileName.substring(fileName.indexOf(".") + 1);
-           
-            type = type.toLowerCase(type)
+            console.log(type)
+            type = type.toLowerCase()
             imgSrc = assets("./" + type + ".svg")
         } catch (error) {
             imgSrc = assets("./file.svg")
@@ -150,7 +151,7 @@ class DocumentCard extends Component {
                     </h5>
                     <p class="card-text">
                         <a className="text-dark" href={doc.file} target="_blank"><i class="material-icons">cloud_download</i></a>
-                        <a onClick={() => { this.deleteDocument(doc) }} className="text-dark"><i class="material-icons">delete_forever</i></a>
+                        <a onClick={() => { this.deleteDocument(doc) }} className=" close"><i class="material-icons">delete_forever</i></a>
                     </p>
                 </div>
                 {footer}
