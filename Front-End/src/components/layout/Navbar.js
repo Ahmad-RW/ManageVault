@@ -26,6 +26,15 @@ class NavBar extends Component {
             console.log(e, 'exception')
         })
     }
+    renderNotificationIcon = () => {
+        var icon = <Link class="btn btn-dark my-2 my-sm-0" to="/notification"><i class="material-icons">notification_important</i></Link>
+        // if(this.props.userInfo.notifications.length === 0){
+        //     icon = <Link class="btn btn-dark my-2 my-sm-0" to="/notification"><i class="material-icons">notification_important</i></Link>
+        // }else{
+        //     icon = <Link class="btn btn-dark my-2 my-sm-0" to="/notification"><i class="material-icons redIcon">notification_important</i></Link>
+        // }
+        return icon
+    }
     render() {//if he is signed in we render different Navbar
         const navbar = this.props.authenticated ? (
             <div className="sticky-top">
@@ -46,7 +55,7 @@ class NavBar extends Component {
                         </div>
                     </div>
                     <div className="mx-auto welcome-badge nav-item nav-link navWelcome"  >
-                        <Link class="btn btn-dark my-2 my-sm-0" to="/notification"><i class="material-icons">notification_important</i></Link>
+                        {this.renderNotificationIcon()}
                         Welcome {this.props.userInfo.name}
                     </div>
                 </nav>

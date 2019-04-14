@@ -5,7 +5,6 @@ import Navbar from '../layout/Navbar'
 import { connect } from 'react-redux'
 class Register extends Component {
     state = {
-
         name: "",
         password: "",
         email: "",
@@ -19,8 +18,8 @@ class Register extends Component {
         console.log(this.state)
     }
     handleClick = (e) => {
-        this.setState({ ...this.state, startSpinner: true })
         e.preventDefault()
+        this.setState({ ...this.state, startSpinner: true })
         console.log(e)
         fb.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then((res) => {
             console.log(res)
@@ -41,7 +40,7 @@ class Register extends Component {
             password: this.state.password,
             email: this.state.email
         }).then((res) => {
-            this.login()
+          this.props.history.push('/login')
         }).catch((exception) => {
             console.log(exception)
         })
@@ -52,7 +51,10 @@ class Register extends Component {
             console.log(res)
             localStorage.setItem('token', this.state.email)
             this.props.authenticate()
+            this.props.fetchUserInfo(this.state.email)
+            this.props.fetchUserProjects(this.state.email)
             this.props.history.push('/home');//redirection
+
         }).catch((exception) => {
             console.log(exception)
             this.setState({ ...this.state, startSpinner: false })
@@ -68,35 +70,28 @@ class Register extends Component {
     }
     render() {
         return (
-             <div>
-            <Navbar />
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-                        <div class="card card-register my-5">
-                         <h5 className="card-title">Register</h5>
-                            <form className="form-signin" onSubmit={this.handelClick}>
-                                    {this.state.warningMessage}
-                                    <div className="card-body" >
-                                        <label>Email Address</label>
-                                        <input type="email" className="form-control" id="email" placeholder="Email" onChange={this.handlechange} />
-                                        <label>Password</label>
-                                        <input type="password" className="form-control" id="password" placeholder="password" onChange={this.handlechange} />
-                                        <div className="row">
-                                        <div className="col">
-                                            <label>Name</label>
-                                            <input type="text" className="form-control" id="name" placeholder="Name" onChange={this.handlechange} />
-                                        </div>
-                                        </div>
-                                            <button className="form-control btn sign-in-button" type="submit" >Register</button>
-                                    </div>
-                                    {this.renderspinner()}
-                            </form>
-                        </div>
+        <div>
+                <Navbar />
+                <div className="card container ">
+                    <div className="form-group card-body" >
+                        <form onSubmit={this.handleClick}>
+                            {this.state.warningMessage}
+                            <label>Email Address</label>
+                            <input type="email" className="form-control" id="email" placeholder="Email" onChange={this.handlechange} />
+                            <label>Password</label>
+                            <input type="password" className="form-control" id="password" placeholder="Password" onChange={this.handlechange} />
+                            <div className="row">
+                                <div className="col">
+                                    <label>Name</label>
+                                    <input type="text" className="form-control" id="name" placeholder="Name" onChange={this.handlechange} />
+                                </div>
+                            </div>
+                            <button className="form-control btn btn-info sign-in-button" type="submit" >Open the Vault</button>
+                        </form>
+                        {this.renderspinner()}
                     </div>
                 </div>
             </div>
-        </div>
         )
     }
 }
