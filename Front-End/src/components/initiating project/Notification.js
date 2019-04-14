@@ -178,7 +178,7 @@ class Notification extends Component {
         ) : (//parent predecate
             <div className="EmptyIMG">
                 <img src={require('../../images/Empty.svg')} width="150" height="150"/>
-                <h5>You have no notifications at the moment :(</h5>
+                <h5><strong>You have no notifications at the moment</strong></h5>
             </div>
         )
         return NotificationsList
