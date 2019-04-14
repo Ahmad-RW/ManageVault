@@ -21,7 +21,8 @@ class InviteMembers extends Component {
     }
     handleSubmit = (e) =>{
         e.preventDefault()
-        this.props.inviteMembers(this.state.selectedMembers, this.props.project, this.props.userInfo )
+        const input = this.state.invitedMembers.concat(this.state.selectedMembers)
+        this.props.inviteMembers(input, this.props.project, this.props.userInfo )
         window.location.reload()// necessery.
     }
     renderUsers = () => {

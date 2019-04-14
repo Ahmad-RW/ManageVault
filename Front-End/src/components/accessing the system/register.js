@@ -41,7 +41,7 @@ class Register extends Component {
             password: this.state.password,
             email: this.state.email
         }).then((res) => {
-            this.login()
+          this.props.history.push('/login')
         }).catch((exception) => {
             console.log(exception)
         })
@@ -52,7 +52,10 @@ class Register extends Component {
             console.log(res)
             localStorage.setItem('token', this.state.email)
             this.props.authenticate()
+            this.props.fetchUserInfo(this.state.email)
+            this.props.fetchUserProjects(this.state.email)
             this.props.history.push('/home');//redirection
+
         }).catch((exception) => {
             console.log(exception)
             this.setState({ ...this.state, startSpinner: false })
