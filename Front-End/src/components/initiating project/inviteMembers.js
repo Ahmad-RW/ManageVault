@@ -84,11 +84,10 @@ class InviteMembers extends Component {
         return selectedUsers
     }
     deleteSelectedUser = () => {
-
     }
     render() {
         return (
-            <form>
+            <form onSubmit = {this.handleSubmit}>
             <div className="form-group">
                 <label>Invite More Members</label>
                 <input data-toggle="dropdown"type="text" className="form-control" onChange={this.handleChange} id="invitedMembers" />

@@ -281,14 +281,14 @@ function helper(){
 function handleInvite(invitedMembers, project) {//basically this function sends a notification to the users who are invited to a project. It's been refactored due to size.
     const obj = { kind: "PROJECT_INVITE", date: new Date, data: { title: project.title, creator: project.creator, projectId: project._id } }
     invitedMembers.forEach(member => {
-        mongoose.model('users').findOne({ "notifications.data.projectId": project._id }).then(function (record) {
-            if (record === null) {
+        mongoose.model('users').findOne({$or:[{"notifications.data.projectId" : mongoose.Types.ObjectId(project._id) },{"notifications.data.projectId" : project._id } ]}).then(function (record) {
+            //if (record === null) {
                 mongoose.model('users').findOneAndUpdate({ email: member }, { $push: { "notifications": obj } }).then(function (record) {
                     console.log(record, "record")
                 }).catch(function (error) {
                     console.log(error)
                 })
-            }
+            //}   
         }).catch(function (exception) {
             console.log(exception)
         })
