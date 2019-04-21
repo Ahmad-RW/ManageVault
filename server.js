@@ -24,29 +24,28 @@ app.use('/task', taskRoute);
 app.use('/storage', storageRoute)
 app.use('/dropbox', dbxRoute)
 
-
 //Static file declaration
-app.use(express.static('Front-End/build'));
-
-//production mode
-if(process.env.NODE_ENV === 'production') {
-  app.use(express.static('./Front-End/build'));
-  //
-  app.get('/', (req, res) => {
-    res.sendfile('./Front-End/build/index.html');
+app.use(express.static('./Front-End/build'));
+//catch all
+app.get('*', (req, res) => {
+    res.sendFile('./Front-End/public/index.html');
   })
-}
+  
+// //production mode
+// if(process.env.NODE_ENV === 'production') {
+//   app.use(express.static('./Front-End/build'));
+//   //
+//   app.get('*', (req, res) => {
+//     res.sendfile('./Front-End/build/index.html');
+//   })
+// }
 
-//build mode
-app.get('/', (req, res) => {
-  res.sendFile('./Front-End/public/index.html');
-})
 
 
 const port = process.env.PORT || 3333;
 
 
 app.listen(port, function () {
-    console.log('listening on 3333')
+    console.log(`listening on ${port}`)
 })
 
