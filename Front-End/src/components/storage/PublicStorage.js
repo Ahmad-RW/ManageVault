@@ -12,7 +12,7 @@ class PublicStorage extends Component {
         alphabetically : false
     }
     componentWillMount() {
-        axios.get("http://localhost:3333/storage/getPublishedProjects").then((res) => {
+        axios.get("/storage/getPublishedProjects").then((res) => {
             this.setState({
                 projects: res.data
             })

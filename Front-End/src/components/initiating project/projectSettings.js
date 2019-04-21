@@ -28,7 +28,7 @@ class ProjectSettings extends Component {
     }
 
     componentWillMount() {
-        Axios.post('http://localhost:3333/user/getUsers', { projectId: this.props.projectInContext._id }).then(res => {
+        Axios.post('/user/getUsers', { projectId: this.props.projectInContext._id }).then(res => {
             console.log(res.data)
             this.setState({
                 pendingInvitedUsers: res.data
@@ -160,7 +160,7 @@ class ProjectSettings extends Component {
         )
     }
     cancelInvite = (project, invitedUser) => {
-        Axios.post('http://localhost:3333/project/cancelInvite', { project, invitedUser }).then(res => {
+        Axios.post('/project/cancelInvite', { project, invitedUser }).then(res => {
             if (res.status === 200) {
                 const tmpList = this.state.pendingInvitedUsers.filter(elem => {
                     return elem._id !== invitedUser._id

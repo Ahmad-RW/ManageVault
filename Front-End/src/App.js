@@ -43,7 +43,7 @@ class App extends Component {
           userEmail: token
         }
         console.log(payload)
-        Axios.post("http://localhost:3333/dropbox/setAccessToken", { payload }).then((res) => {
+        Axios.post("/dropbox/setAccessToken", { payload }).then((res) => {
           this.props.setUserInfo(res.data)
         }).catch((execption) => {
           console.log(execption)

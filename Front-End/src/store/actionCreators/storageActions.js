@@ -1,7 +1,7 @@
 import axios from 'axios'
 export const storageUpload = payload => {
     return (dispatch) => {
-        axios.post("http://localhost:3333/storage/fileUpload", { payload }).then((res) => {
+        axios.post("/storage/fileUpload", { payload }).then((res) => {
             console.log(res)
             payload = {
                 ...payload,
@@ -18,7 +18,7 @@ export const storageUpload = payload => {
 
 export const publishProject = project =>{
     return(dispatch)=>{
-        axios.post("http://localhost:3333/storage/publishProject", {project}).then(res=>{
+        axios.post("/storage/publishProject", {project}).then(res=>{
             let payload = {res, project}
             dispatch({type:"CHANGE_PUBLIC_STATUS", payload})
 
@@ -30,7 +30,7 @@ export const publishProject = project =>{
 
 export const unpublishProject = project =>{
     return(dispatch)=>{
-        axios.post("http://localhost:3333/storage/unpublishProject", {project}).then(res=>{
+        axios.post("/storage/unpublishProject", {project}).then(res=>{
             let payload = {res, project}
             dispatch({type:"CHANGE_PUBLIC_STATUS", payload})
         }).then((exception)=>{
@@ -41,7 +41,7 @@ export const unpublishProject = project =>{
 
 export const exportDocuments = payload =>{
     return(dispatch)=>{
-        axios.post("http://localhost:3333/dropbox/export", {payload}).then(res=>{
+        axios.post("/dropbox/export", {payload}).then(res=>{
             // let payload = {res, project}
             // dispatch({type:"CHANGE_PUBLIC_STATUS", payload})
             console.log(res)
@@ -53,7 +53,7 @@ export const exportDocuments = payload =>{
 
 export const handleDBXImport = payload =>{
     return dispatch=>{
-        axios.post('http://localhost:3333/dropbox/import', {payload}).then((res)=>{
+        axios.post('/dropbox/import', {payload}).then((res)=>{
           payload ={...payload , res}
           dispatch({type:"MODIFY_TASK", payload})
         }).catch((err)=>{
@@ -63,7 +63,7 @@ export const handleDBXImport = payload =>{
 }
 export const deleteDocument = payload =>{
     return(dispatch)=>{
-        axios.post("http://localhost:3333/storage/deleteDocument", {payload}).then((res)=>{
+        axios.post("/storage/deleteDocument", {payload}).then((res)=>{
             console.log(res)
             payload ={...payload, res}
             dispatch({type:"MODIFY_TASK", payload})

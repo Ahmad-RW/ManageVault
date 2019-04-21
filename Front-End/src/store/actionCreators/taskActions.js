@@ -5,7 +5,7 @@ export const createTask = (project, task) => {
         console.log(project, "this is project")
         console.log(task, "this task")
         const payload = { project, task }
-        axios.post('http://localhost:3333/task/newTask', { payload }).then((res) => {
+        axios.post('/task/newTask', { payload }).then((res) => {
             const payload = { project, task, res }
             dispatch({ type: "CREATE_TASK", payload })
             console.log(res, "response from back end")
@@ -21,7 +21,7 @@ export const deleteTask = (task_id, PID) => {
         console.log(task_id, ", Task ID")
         console.log(PID, ", Project ID")
         const payload = { task_id, PID }
-        axios.post('http://localhost:3333/task/deleteTask', { payload }).then((res) => {
+        axios.post('/task/deleteTask', { payload }).then((res) => {
             const payload = { task_id, PID, res }
             dispatch({ type: "DELETE_TASK", payload })
             console.log(res, "Response")
@@ -35,7 +35,7 @@ export const deleteTask = (task_id, PID) => {
 export const newComment = (comment, task, project) => {
     return (dispatch) => {
         let payload = { comment, task, project }
-        axios.post('http://localhost:3333/task/newComment', { payload }).then((res) => {
+        axios.post('/task/newComment', { payload }).then((res) => {
             payload = { ...payload, res }
             dispatch({ type: "NEW_COMMENT", payload })
         }).catch((exception) => {
@@ -46,7 +46,7 @@ export const newComment = (comment, task, project) => {
 
 export const setDependancy = (payload) => {
     return (dispatch) => {
-        axios.post('http://localhost:3333/task/setDependancy', { payload }).then((res) => {
+        axios.post('/task/setDependancy', { payload }).then((res) => {
             console.log(res)
             payload = { ...payload, res }
             dispatch({ type: "MODIFY_TASK", payload })
@@ -58,7 +58,7 @@ export const setDependancy = (payload) => {
 
 export const submitTask = (payload) => {  //1
     return (dispatch) => {
-        axios.post("http://localhost:3333/task/submitTask", { payload }).then((res) => {
+        axios.post("/task/submitTask", { payload }).then((res) => {
             payload = { ...payload, res }
             dispatch({ type: "MODIFY_TASK", payload })
         }).catch((exception) => {
@@ -69,7 +69,7 @@ export const submitTask = (payload) => {  //1
 
 export const confirmTaskSubmission = (payload) => { //2
     return (dispatch) => {
-        axios.post('http://localhost:3333/task/confirmTaskSubmission', { payload }).then((res) => {
+        axios.post('/task/confirmTaskSubmission', { payload }).then((res) => {
             console.log(res)
             payload = { ...payload, res }
             dispatch({ type: "MODIFY_TASK", payload })
@@ -81,7 +81,7 @@ export const confirmTaskSubmission = (payload) => { //2
 
 export const editTask = (payload) => {
     return (dispatch) => {
-        axios.post('http://localhost:3333/task/editTask', { payload }).then((res) => {
+        axios.post('/task/editTask', { payload }).then((res) => {
             console.log(res)
             payload = { ...payload, res }
             dispatch({ type: "MODIFY_TASK", payload })
@@ -93,7 +93,7 @@ export const editTask = (payload) => {
 
 export const assignTask = (payload) => {  //3
     return (dispatch) => { 
-        axios.post('http://localhost:3333/task/assignTask', { payload }).then((res) => {
+        axios.post('/task/assignTask', { payload }).then((res) => {
             console.log(res)
             payload = { ...payload, res }
             console.log(payload, "CHECKING!")  
@@ -106,7 +106,7 @@ export const assignTask = (payload) => {  //3
 
 export const newActivity = payload => {
     return (dispatch) => {
-        axios.post("http://localhost:3333/task/newActivity", { payload }).then((res) => {
+        axios.post("/task/newActivity", { payload }).then((res) => {
             console.log(res)
             payload = { ...payload, res }
             dispatch({ type: "MODIFY_TASK", payload })
@@ -118,7 +118,7 @@ export const newActivity = payload => {
 
 export const checkActivity = payload => {
     return (dispatch) => {
-        axios.post('http://localhost:3333/task/checkActivity', { payload }).then((res) => {
+        axios.post('/task/checkActivity', { payload }).then((res) => {
             console.log(res)
             payload = { ...payload, res }
             dispatch({ type: "MODIFY_TASK", payload })
@@ -130,7 +130,7 @@ export const checkActivity = payload => {
 
 export const unAssignTask = payload => {
     return (dispatch) => {
-        axios.post('http://localhost:3333/task/unAssignTask', { payload }).then((res) => {
+        axios.post('/task/unAssignTask', { payload }).then((res) => {
             console.log(res)
             payload = { ...payload, res }
             dispatch({ type: "MODIFY_TASK", payload })
@@ -142,7 +142,7 @@ export const unAssignTask = payload => {
 
 export const watchTask = payload => {
     return (dispatch) => {
-        axios.post('http://localhost:3333/task/watchTask', { payload }).then((res) => {
+        axios.post('/task/watchTask', { payload }).then((res) => {
             console.log(res)
             payload = { ...payload, res }
             dispatch({ type: "MODIFY_TASK", payload })
@@ -154,7 +154,7 @@ export const watchTask = payload => {
 
 export const unWatchTask = payload => {
     return (dispatch) => {
-        axios.post('http://localhost:3333/task/unWatchTask', { payload }).then((res) => {
+        axios.post('/task/unWatchTask', { payload }).then((res) => {
             
             payload = { ...payload, res }
             dispatch({ type: "MODIFY_TASK", payload })
@@ -166,7 +166,7 @@ export const unWatchTask = payload => {
 
 export const handleOutput = payload => {
     return(dispatch)=>{
-        axios.post('http://localhost:3333/task/handleOutput', {payload}).then((res)=>{
+        axios.post('/task/handleOutput', {payload}).then((res)=>{
             payload = {...payload, res}
             
             dispatch({type:"MODIFY_TASK", payload})
@@ -178,7 +178,7 @@ export const handleOutput = payload => {
 
 export const removeDependency = payload => {
     return (dispatch) => {
-        axios.post('http://localhost:3333/task/removeDependency', { payload }).then((res) => {
+        axios.post('/task/removeDependency', { payload }).then((res) => {
            
             payload = { ...payload, res }
              dispatch({type:"MODIFY_TASK", payload})
@@ -189,7 +189,7 @@ export const removeDependency = payload => {
 }
 export const newCriteria = payload =>{
     return(dispatch)=>{
-        axios.post("http://localhost:3333/task/newCriteria", {payload}).then(res=>{
+        axios.post("/task/newCriteria", {payload}).then(res=>{
             payload = { ...payload, res }
             dispatch({type:"MODIFY_TASK", payload})
         }).catch(exception=>{
@@ -200,7 +200,7 @@ export const newCriteria = payload =>{
 
 export const fileUpload = payload => {
     return (dispatch) => {
-        axios.post("http://localhost:3333/task/fileUpload", { payload }).then((res) => {
+        axios.post("/task/fileUpload", { payload }).then((res) => {
           
             payload = {
                 ...payload,
@@ -219,7 +219,7 @@ export const fileUpload = payload => {
 
 export const declineTaskSubmission = payload =>{
     return(dispatch) =>{
-        axios.post("http://localhost:3333/task/declineTaskSubmission", {payload}).then((res)=>{
+        axios.post("/task/declineTaskSubmission", {payload}).then((res)=>{
         payload = {...payload,
         res}    
         dispatch({type:"MODIFY_TASK", payload})
@@ -233,7 +233,7 @@ export const declineTaskSubmission = payload =>{
 
 export const inputDocument = payload => {
     return (dispatch) => {
-        axios.post("http://localhost:3333/task/inputDocument", { payload }).then((res) => {
+        axios.post("/task/inputDocument", { payload }).then((res) => {
             console.log(res)
             payload = {...payload,
                 project : payload.projectInContext,//dont mind this
@@ -248,7 +248,7 @@ export const inputDocument = payload => {
 
 export const removeOutputDocument = payload => {
     return (dispatch) => {
-        axios.post("http://localhost:3333/task/removeOutputDocument", { payload }).then((res) => {
+        axios.post("/task/removeOutputDocument", { payload }).then((res) => {
             console.log(res)
             payload = {...payload,res}
             dispatch({type:"MODIFY_TASK" ,payload})
@@ -260,7 +260,7 @@ export const removeOutputDocument = payload => {
 
 export const removeDocument = payload =>{
     return(dispatch)=>{
-        axios.post("http://localhost:3333/task/removeDocument", {payload}).then((res) => {
+        axios.post("/task/removeDocument", {payload}).then((res) => {
             console.log(res)
             payload = {...payload, res}
             dispatch({type:"MODIFY_TASK", payload})
@@ -272,7 +272,7 @@ export const removeDocument = payload =>{
 
 export const handleInputDocument = payload => {
     return(dispatch)=>{
-        axios.post("http://localhost:3333/task/handleInputDocument", {payload}).then((res) => {
+        axios.post("/task/handleInputDocument", {payload}).then((res) => {
             console.log(res)
             payload = {...payload, res}
             dispatch({type:"MODIFY_TASK", payload})
@@ -284,7 +284,7 @@ export const handleInputDocument = payload => {
 
 export const  removeInputDocument = payload => {
     return(dispatch)=>{
-        axios.post("http://localhost:3333/task/removeInputDocument", {payload}).then((res) => {
+        axios.post("/task/removeInputDocument", {payload}).then((res) => {
             console.log(res)
             payload = {...payload, res}
             dispatch({type:"MODIFY_TASK", payload})

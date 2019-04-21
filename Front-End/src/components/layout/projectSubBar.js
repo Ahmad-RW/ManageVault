@@ -37,7 +37,7 @@ class ProjectSubBar extends Component{
     render() {
         var url = window.location.href
         var ws = "sidebarMenu"
-        if(url === "http://localhost:3000/home/projectWorkSpace"){
+        if(url === "https://manage-vault.herokuapp.com/home/projectWorkSpace"){
             ws = "WSsidebarMenu"
         }
         const project = this.props.project

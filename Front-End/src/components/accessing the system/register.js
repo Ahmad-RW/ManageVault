@@ -35,7 +35,7 @@ class Register extends Component {
 
     }
     postToServer = () => {
-        axios.post('http://localhost:3333/user/newuser', {
+        axios.post('/user/newuser', {
             name: this.state.name,
             password: this.state.password,
             email: this.state.email
