@@ -13,7 +13,7 @@ export const createProjectAction = (project, userInfo) => {
 
 export const fetchUserProjects = (userEmail) => {
     return (dispatch, getState) => {
-        axios.get('http://localhost:3333/project/getUserProjects?userEmail=' + userEmail).then((res) => {
+        axios.get('/project/getUserProjects?userEmail=' + userEmail).then((res) => {
             console.log(res.data, "in fetch projects action")
             dispatch({ type: "SET_USER_PROJECTS", projects: res.data })
         }).catch((exception) => {
