@@ -25,10 +25,10 @@ app.use('/storage', storageRoute)
 app.use('/dropbox', dbxRoute)
 
 //Static file declaration
-app.use(express.static('./Front-End/build'));
+app.use(express.static(path.join(__dirname+'/Front-End/build')));
 //catch all
 app.get('*', (req, res) => {
-    res.sendFile('./Front-End/public/index.html');
+    res.sendFile(path.join(__dirname+'/Front-End/build/index.html'));
   })
   
 // //production mode
