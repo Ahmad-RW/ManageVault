@@ -2,7 +2,7 @@
   "name": "cppapi",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js && cd front-end npm start"
@@ -29,5 +29,9 @@
     "save": "^2.3.3",
     "uuid": "^3.3.2",
     "zip-folder": "^1.0.0"
+  },
+  "engines": {
+    "node": "8.11.2"
   }
+
 }
