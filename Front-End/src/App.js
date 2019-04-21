@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Login from './components/accessing the system/login';
 import WelcomeScreen from './components/accessing the system/WelcomeScreen'
-import NavBar from './components/layout/Navbar'
-import { BrowserRouter, Switch, Route, withRouter } from 'react-router-dom'
+import {  Switch, Route, withRouter } from 'react-router-dom'
 import Register from './components/accessing the system/register';
 import Home from './components/initiating project/Home';
 import ProjectSettings from './components/initiating project/projectSettings';

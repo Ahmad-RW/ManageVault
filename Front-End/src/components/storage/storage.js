@@ -43,7 +43,7 @@ class Storage extends Component {
     }
 
     componentWillMount() {
-        Axios.get("http://localhost:3333/dropbox/getURL").then((res) => {
+        Axios.get("/dropbox/getURL").then((res) => {
 
             this.setState({
                 consentURL: res.data
