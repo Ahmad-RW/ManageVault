@@ -30,16 +30,16 @@ app.use(express.static('Front-End/build'));
 
 //production mode
 if(process.env.NODE_ENV === 'production') {
-  app.use(express.static('Front-End/build'));
+  app.use(express.static('./Front-End/build'));
   //
   app.get('/', (req, res) => {
-    res.sendfile('Front-End/build/index.html');
+    res.sendfile('./Front-End/build/index.html');
   })
 }
 
 //build mode
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname+'/Front-End/public/index.html'));
+  res.sendFile('./Front-End/public/index.html');
 })
 
 
