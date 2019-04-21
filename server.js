@@ -13,19 +13,22 @@ app.use(function (req, res, next) {
     next();
     
 });
+//Static file declaration
+app.use(express.static(path.join(__dirname+'/Front-End/build')));
 app.use(bodyParser.json());// post request body parser
 //app.use(express.static('public'));//I think this allows all public URLs in
 console.log(__dirname)
 
-
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname+'/Front-End/build/index.html'));
+  })
 app.use('/project', projectRoute);// any route starting with /project go to project route. which is exported from projectRoutes
 app.use('/user', userRoute);// same goes here
 app.use('/task', taskRoute);
 app.use('/storage', storageRoute)
 app.use('/dropbox', dbxRoute)
 
-//Static file declaration
-app.use(express.static(path.join(__dirname+'/Front-End/build')));
+
 //catch all
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname+'/Front-End/build/index.html'));
