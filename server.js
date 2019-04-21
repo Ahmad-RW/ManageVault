@@ -21,7 +21,7 @@ console.log(__dirname + '/Front-End/build/index.html')
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname + '/Front-End/build/index.html'));
-    res.send('effwefwefewwefefwefwefw')
+   // res.send('effwefwefewwefefwefwefw')
 })
 app.use('/project', projectRoute);// any route starting with /project go to project route. which is exported from projectRoutes
 app.use('/user', userRoute);// same goes here
