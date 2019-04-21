@@ -1,0 +1,53 @@
+{
+  "name": "cpp",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@pusher/chatkit-client": "^1.4.1",
+    "@pusher/chatkit-server": "^1.1.0",
+    "async.js": "^0.9.5",
+    "axios": "^0.18.0",
+    "chart.js": "^2.8.0",
+    "file-saver": "^2.0.1",
+    "firebase": "^5.8.4",
+    "googleapis": "^38.0.0",
+    "jquery": "^3.3.1",
+    "js-file-download": "^0.4.4",
+    "mdbreact": "^4.11.1",
+    "mongoose": "^5.4.1",
+    "primeicons": "^1.0.0",
+    "primereact": "^3.1.0",
+    "query-string": "^6.4.0",
+    "react": "^16.7.0",
+    "react-breadcrumbs": "^2.1.6",
+    "react-chartjs-2": "^2.7.4",
+    "react-datepicker": "^2.1.0",
+    "react-disqus-comments": "^1.4.0",
+    "react-dom": "^16.7.0",
+    "react-file-viewer": "^1.1.0",
+    "react-firebase-file-uploader": "^2.4.2",
+    "react-redux": "^6.0.0",
+    "react-router-breadcrumbs-hoc": "^3.0.0",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "^2.1.5",
+    "react-sidebar": "^3.0.2",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0",
+    "uuid": "^3.3.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
