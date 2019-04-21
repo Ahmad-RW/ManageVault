@@ -14,8 +14,8 @@ app.use(function (req, res, next) {
     
 });
 app.use(bodyParser.json());// post request body parser
-app.use(express.static('public'));//I think this allows all public URLs in
-
+//app.use(express.static('public'));//I think this allows all public URLs in
+console.log(__dirname)
 
 
 app.use('/project', projectRoute);// any route starting with /project go to project route. which is exported from projectRoutes
@@ -38,9 +38,10 @@ if(process.env.NODE_ENV === 'production') {
 }
 
 //build mode
-app.get('*', (req, res) => {
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname+'/Front-End/public/index.html'));
 })
+
 
 const port = process.env.PORT || 3333;
 
