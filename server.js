@@ -17,7 +17,7 @@ app.use(function (req, res, next) {
 app.use(express.static(path.join(__dirname+'/Front-End/build')));
 app.use(bodyParser.json());// post request body parser
 //app.use(express.static('public'));//I think this allows all public URLs in
-console.log(__dirname)
+console.log(__dirname+'/Front-End/build/index.html')
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname+'/Front-End/build/index.html'));
